@@ -13,6 +13,7 @@ model User{
   roll String @unique
   name String
   password String
+
   phone String @db.Char(11)
   role Role @default(Student)
 }
@@ -20,6 +21,13 @@ model User{
 model Class{
   title String @unique
 
+
+}
+model Exam{
+  id String @id @default(uuid())
+  Edescription String @db.Text
+  EName String
+  EDate DateTime
 }
 
 model Course{
