@@ -9,13 +9,12 @@ datasource db {
 }
 
 model User{
-  id String @id @default(uuid())
-  roll String @unique
-  name String
-  password String
-
-  phone String @db.Char(11)
-  role Role @default(Student)
+  UId String @id @default(uuid())
+  URoll String @unique
+  UName String
+  UPassword String
+  UPhone String @db.Char(11)
+  URole Role @default(Student)
 }
 
 model Class{
@@ -24,7 +23,7 @@ model Class{
 
 }
 model Exam{
-  id String @id @default(uuid())
+  Eid String @id @default(uuid())
   Edescription String @db.Text
   EName String
   EDate DateTime
