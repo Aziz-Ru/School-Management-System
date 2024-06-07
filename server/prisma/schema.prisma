@@ -5,36 +5,74 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      =  env("DATABASE_URL")
+}
+// env("DATABASE_URL")
+model School{
+  SHId String @id @unique
+  SHName String @unique
+  SHAddress String
+  Teachers Teacher[]
+  Students Student[]
+  createdAt DateTime @default(now())
 }
 
-model User{
-  id String @id @default(uuid())
-  roll String @unique
-  name String
-  password String
-  phone String @db.Char(11)
-  role Role @default(Student)
+model Teacher{
+  TId String @id @default(uuid()) //Teacher ID
+  TEmail String
+  TName String // Teacher name
+  TPassword String // Teacher Password
+  TImageLink String ?
+  TQualification String ? //Teacher Qualification
+  TBio String ? //Teacher Bio
+  TDOB DateTime ?//Teacher date of birth
+  TAddress String ? // Teacher Address
+  TPhone String ? @db.VarChar(11)
+  School School @relation(fields: [SchoolId], references: [SHId])
+  SchoolId String // Teacher School ID
+  Active Boolean
+  JoindAt DateTime @default(now())
 }
 
-model Class{
-  title String @unique
-
+model Student{
+  STUId String @id @default(uuid())
+  STURoll String @unique
+  STUName String
+  STUPassword String
+  STUImageLink String ?
+  STUPhone String @db.Char(11)
+  School School @relation(fields: [SchoolId], references: [SHId])
+  SchoolId String
+  class Class
+  createdAt DateTime @default(now())
 }
 
-model Course{
-
-  id String @id @default(uuid())
-  title String @unique
-  syllabus String @db.Text
-  // students Student @relation(fields: [studentId],references: [id])
-  studentId String
-
+enum Class{
+   Class_1
+   Class_2
+   Class_3
+   Class_4
+   Class_5
+   Class_6
+   Class_7
+   Class_8
+   Class_9
+   Class_10
+   Class_11
+   Class_12
 
 }
+// model Subject{
+//   SUBId Int @id @default(autoincrement())
+//   SUBName String
 
-enum Role{
-  Student
-  Teacher
-  Admin
-}
+// }
+
+
+
+// model Exam{
+//   Eid String @id @default(uuid())
+//   Edescription String @db.Text
+//   EName String
+//   EDate DateTime
+// }
