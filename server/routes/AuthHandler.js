@@ -1,25 +1,15 @@
 // External import
 const express = require("express");
+const router = express.Router();
+// internal import
 const {
   userSignUpController,
   userSignInController,
 } = require("../controllers/AuthController");
-const router = express.Router();
+const { roleHandler } = require("../middlewares/common/roleHandler");
 
-// internal import
-
-//login
-router.get("/:role/sign-up", userSignUpController);
-router.post("/:role/sign-in", userSignInController);
+//Authentication
+router.get("/:role/sign-up", roleHandler, userSignUpController);
+router.post("/:role/sign-in", roleHandler, userSignInController);
 
 module.exports = router;
-
-/*
-const express = require("express");
-const router = express.Router();
-router.get("/", () => {});
-router.post("/", () => {});
-router.put("/", () => {});
-router.delete("/", () => {});
-module.exports = router;
-*/
