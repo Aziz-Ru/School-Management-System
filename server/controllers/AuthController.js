@@ -1,10 +1,21 @@
 // internal import
-// const prisma = require("./prisma/script");
+const prisma = require("../prisma/script");
 
 function userSignUpController(req, res) {
-  res.status(201).json({ message: "Account Create" });
+  const { role } = req.params;
+  if(role=='student'){
+    
+  }
+  res.send({ role: role });
 }
-function userSignInController(req, res) {}
+
+function userSignInController(req, res) {
+  const { role } = req.params;
+  if (role == "student") {
+  }
+
+  res.send({ role: role });
+}
 
 module.exports = {
   userSignUpController,

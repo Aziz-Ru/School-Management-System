@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+
 function notFoundHandler(req, res, next) {
   next(createError(404, "URL NOT FOUND"));
 }
