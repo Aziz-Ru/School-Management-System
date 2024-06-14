@@ -11,7 +11,7 @@ datasource db {
 model School{
   id            String @id @unique
   name          String @unique
-  address       String
+  address       String  @db.LongText
   createdAt     DateTime @default(now())
 }
 
@@ -22,13 +22,15 @@ model Teacher{
   password       String // Teacher Password
   imageLink      String ?
   qualification  String ? //Teacher Qualification
+  rank           String
   bio            String ? //Teacher Bio
   dob            DateTime
   sex            String //Teacher date of birth
   address        String ? // Teacher Address
   phone          String  @db.VarChar(11)
   activeStatus   Boolean
-  salary         Float @default(100000.0)
+  salary         Float @default(20000.0)
+  attendence     TeacherAttendence[]
   joindAt        DateTime @default(now())
 }
 
@@ -39,12 +41,13 @@ model Student{
   password      String
   dob           DateTime 
   sex           String
-  address       String 
+  address       String ?
   imageLink     String ?
   phone         String @db.Char(11)
-  classroom     EnrolledStudent @relation(fields: [classroomId],references: [id])
+  classroom     EnrolledClass @relation(fields: [classroomId],references: [id])
   classroomId   String
-  attendence    Attendence[]
+  result        Result[]
+  attendence    StudentAttendence[]
   
 }
 
@@ -53,11 +56,11 @@ model Classroom{
   id            String @id @default(uuid())   
   name          String @unique
   course        Course[]
-  enrolled      EnrolledStudent []
+  enrolled      EnrolledClass []
   enrolledclassroomId String @unique
   monthlyFee    Float @default(2000.0)
 }
-model EnrolledStudent{
+model EnrolledClass{
   id            String @id @default(uuid())
   students      Student[]
   classroom     Classroom @relation(fields: [className],references: [name])
@@ -73,12 +76,20 @@ model Course{
   totalMarks    Int @default(100)
   class         Classroom @relation(fields: [classroomId],references: [name])
   classroomId   String
-  exams         Exam[]
+  result         Result[]
 }
-model Attendence{
+
+model StudentAttendence{
   id            String @id @default(uuid())
   student       Student @relation(fields: [studentId],references: [id])
   studentId     String
+  status        Boolean  @default(false)
+  date          DateTime @default(now())
+}
+model TeacherAttendence{
+  id            String @id @default(uuid())
+  teacher       Teacher @relation(fields: [teacherId],references: [id])
+  teacherId     String
   status        Boolean  @default(false)
   date          DateTime @default(now())
 }
@@ -87,8 +98,25 @@ model Exam{
   id            String @id @default(uuid())
   description   String @db.Text
   name          String
-  date          DateTime 
+  date          DateTime
+  result        Result[]
+  
+}
+
+model Result{
+  id            String @id @default(uuid())
+  exam          Exam @relation(fields: [examId],references: [id])
+  examId        String
   course        Course @relation(fields: [courseId],references: [id])
   courseId      String
-  subjectId     String
+  student       Student @relation(fields: [studentId],references: [id])
+  studentId     String
+  marks         Float @default(33.0)
 }
+
+model Issue{
+  id            String @id @default(uuid())
+  type          String
+  details       String @db.LongText
+}
+
