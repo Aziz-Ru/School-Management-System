@@ -10,7 +10,6 @@ const {
   errorHandler,
 } = require("./middlewares/common/errorHandler");
 
-const AuthHandler=require('./routes/AuthHandler')
 const app = express();
 dotenv.config();
 
@@ -25,8 +24,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routing
-app.use('/auth',AuthHandler)
-
+app.use("/school", require("./routes/schoolHandler"));
 
 // Not Found Handler
 app.use(notFoundHandler);
