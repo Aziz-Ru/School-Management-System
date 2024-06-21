@@ -9,6 +9,7 @@ const {
   notFoundHandler,
   errorHandler,
 } = require("./middlewares/common/errorHandler");
+const { query, body, validationResult, check } = require("express-validator");
 
 const app = express();
 dotenv.config();
@@ -19,12 +20,15 @@ dotenv.config();
  * it readily available in the req.body object.
  */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // parse cookie
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routing
 app.use("/school", require("./routes/schoolHandler"));
+
+
 
 // Not Found Handler
 app.use(notFoundHandler);
