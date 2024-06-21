@@ -1,8 +1,13 @@
 const router = require("express").Router();
 
+const { check } = require("express-validator");
 const { getSchool, postSchool } = require("../controllers/SchoolController");
 const { getSchoolData } = require("../middlewares/SchoolMid");
-const prisma = require("../prisma/prismaClient");
+const {
+  addSchoolValidator,
+  addSchoolValidatorHandler,
+} = require("../middlewares/SchoolValidator");
+
 router.get("", getSchool);
-router.post("", getSchoolData, postSchool);
+router.post("", addSchoolValidator, addSchoolValidatorHandler, postSchool);
 module.exports = router;

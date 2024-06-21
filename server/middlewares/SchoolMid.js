@@ -1,3 +1,4 @@
+
 function getSchoolData(req, res, next) {
   const { id, name, address, establishAt } = req.body;
   if (id && name && address && establishAt) {
