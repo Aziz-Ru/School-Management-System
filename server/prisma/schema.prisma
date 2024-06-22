@@ -10,7 +10,9 @@ datasource db {
 // env("DATABASE_URL")
 model School {
   id          String @id @unique
-  name        String @unique
+  name        String 
+  email       String @unique
+  phone       String @unique
   address     String @db.LongText
   establishAt String
 }
