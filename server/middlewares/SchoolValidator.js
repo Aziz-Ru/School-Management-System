@@ -67,16 +67,22 @@ const addSchoolValidator = [
 
 const deleteSchoolValidator = [
   check("id")
-    .trim()
     .notEmpty()
     .withMessage("id must be required")
+    .trim()
     .custom(async (value) => {
-      const schoolId = await prisma.school.findUnique({ where: { id: value } });
-      if (schoolId.isEmpty()) {
-        throw createError("School id is not Found");
+      try {
+        const schoolId = await prisma.school.findUnique({
+          where: { id: value },
+        });
+        console.log(schoolId);
+        if (!schoolId) {
+          throw createError("School id is not Found");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    })
-    .withMessage("School id is not Found"),
+    }),
 ];
 
 const addSchoolValidatorHandler = (req, res, next) => {

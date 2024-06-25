@@ -43,8 +43,8 @@ model Student {
   password    String
   dob         String
   sex         String
-  address     String?
-  imageLink   String?
+  address     String ?
+  imageLink   String ?
   phone       String              @db.Char(11)
   classroom   EnrolledClass       @relation(fields: [classroomId], references: [id])
   classroomId String
@@ -58,7 +58,6 @@ model Classroom {
   name                String          @unique
   course              Course[]
   enrolled            EnrolledClass[]
-  enrolledclassroomId String          @unique
   monthlyFee          Float           @default(2000.0)
 }
 
