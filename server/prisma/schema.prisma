@@ -8,115 +8,130 @@ datasource db {
 }
 
 // env("DATABASE_URL")
-model School {
+model school {
   id          String @id @unique
-  name        String 
+  name        String
   email       String @unique
   phone       String @unique
   address     String @db.LongText
   establishAt String
 }
 
-model Teacher {
+model teachers {
   id            String              @id @default(uuid()) //Teacher ID
   email         String
   name          String // Teacher name
   password      String // Teacher Password
-  imageLink     String ?
-  qualification String ? //Teacher Qualification
+  imageLink     String?
+  qualification String? //Teacher Qualification
   rank          String
-  bio           String ? //Teacher Bio
+  bio           String? //Teacher Bio
   dob           String
   sex           String //Teacher date of birth
-  address       String ? // Teacher Address
+  address       String? // Teacher Address
   phone         String              @db.VarChar(11)
   activeStatus  Boolean
   salary        Float               @default(20000.0)
-  attendence    TeacherAttendence[]
-  joindAt       DateTime            @default(now())
+  attendence    teacherAttendence[]
+
+  createdAt DateTime @default(now())
 }
 
-model Student {
-  id          String              @id @default(uuid())
-  roll        String              @unique
-  name        String
-  password    String
-  dob         String
-  sex         String
-  address     String ?
-  imageLink   String ?
-  phone       String              @db.Char(11)
-  classroom   EnrolledClass       @relation(fields: [classroomId], references: [id])
-  classroomId String
-  result      Result[]
-  attendence  StudentAttendence[]
+model students {
+  id            String              @id @default(uuid())
+  roll          String              @unique
+  name          String
+  email         String
+  password      String
+  dob           String
+  sex           String
+  address       String
+  imageLink     String
+  phone         String              @db.Char(11)
+  enrollClass   enrollClasses       @relation(fields: [enrollClassId], references: [id])
+  enrollClassId String
+  result        results[]
+  attendence    studentAttendence[]
+  createdAt     DateTime            @default(now())
 }
 
 // first create class
-model Classroom {
-  id                  String          @id @default(uuid())
-  name                String          @unique
-  course              Course[]
-  enrolled            EnrolledClass[]
-  monthlyFee          Float           @default(2000.0)
+model classes {
+  classId       String          @id
+  name          String          @unique
+  courses       courses[]
+  enrolledClass enrollClasses[]
+  monthlyFee    Float           @default(2000.0)
+  totalStudents Int             @default(0)
+  totalTeachers Int             @default(0)
+  totalCourses  Int             @default(0)
+  createdAt     DateTime        @default(now())
 }
 
-model EnrolledClass {
-  id        String    @id @default(uuid())
-  students  Student[]
-  classroom Classroom @relation(fields: [className], references: [name])
-  className String
-  year      String
+model enrollClasses {
+  id          String     @id @default(uuid())
+  students    students[]
+  classroom   classes    @relation(fields: [classRoomId], references: [classId])
+  classRoomId String
+  year        String
+  createdAt   DateTime   @default(now())
 }
 
-// create course and connect with class
-model Course {
+model courses {
   id          String    @id
   name        String
   credit      Int       @default(3)
   totalMarks  Int       @default(100)
-  class       Classroom @relation(fields: [classroomId], references: [name])
+  class       classes   @relation(fields: [classroomId], references: [classId])
   classroomId String
-  result      Result[]
+  result      results[]
+  exam        exams[]
 }
 
-model StudentAttendence {
-  id        String  @id @default(uuid())
-  student   Student @relation(fields: [studentId], references: [id])
+model studentAttendence {
+  id        String   @id @default(uuid())
+  student   students @relation(fields: [studentId], references: [id])
   studentId String
-  status    Boolean @default(false)
+  status    Boolean  @default(false)
   date      String
 }
 
-model TeacherAttendence {
-  id        String  @id @default(uuid())
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
+model teacherAttendence {
+  id        String   @id @default(uuid())
+  teacher   teachers @relation(fields: [teacherId], references: [id])
   teacherId String
-  status    Boolean @default(false)
+  status    Boolean  @default(false)
   date      String
 }
 
-model Exam {
-  id          String   @id @default(uuid())
-  description String   @db.Text
+model exams {
+  id          String    @id @default(uuid())
+  description String    @db.Text
   name        String
   date        DateTime
-  result      Result[]
+  result      results[]
+  course      courses   @relation(fields: [courseId], references: [id])
+  courseId    String
 }
 
-model Result {
-  id        String  @id @default(uuid())
-  exam      Exam    @relation(fields: [examId], references: [id])
+model results {
+  id        String   @id @default(uuid())
+  exam      exams    @relation(fields: [examId], references: [id])
   examId    String
-  course    Course  @relation(fields: [courseId], references: [id])
+  course    courses  @relation(fields: [courseId], references: [id])
   courseId  String
-  student   Student @relation(fields: [studentId], references: [id])
+  student   students @relation(fields: [studentId], references: [id])
   studentId String
-  marks     Float   @default(33.0)
+  marks     Float    @default(33.0)
+  grade     String?
+  status    Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
-model Issue {
+model issues {
   id      String @id @default(uuid())
   type    String
   details String @db.LongText
+
+  createdAt DateTime @default(now())
 }
