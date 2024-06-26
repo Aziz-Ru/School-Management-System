@@ -2,17 +2,18 @@ const router = require("express").Router();
 
 const {
   getClasses,
-  createClass,
+  addClass,
   updateClass,
   deleteClass,
 } = require("../controllers/ClassController");
 const {
-  addClassRoomValidator,
+  addClassValidatorHandler,
+  addClassValidator,
   updateClassRoomValidator,
-} = require("../middlewares/ClassRoomValidator");
+} = require("../middlewares/ClassValidator");
 
 router.get("/", getClasses);
-router.post("/", addClassRoomValidator, createClass);
+router.post("/", addClassValidator, addClassValidatorHandler, addClass);
 router.put("/:id", updateClassRoomValidator, updateClass);
 router.delete("/:id", deleteClass);
 
