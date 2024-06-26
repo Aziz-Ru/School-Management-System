@@ -26,9 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routing
-app.use("/school", require("./routes/schoolHandler"));
+// app.use("/school", require("./routes/schoolHandler"));
 app.use("/class", require("./routes/ClassHandler"));
-app.use("/student", require("./routes/StudentHandler"));
+// app.use("/student", require("./routes/StudentHandler"));
 
 // Not Found Handler
 app.use(notFoundHandler);
