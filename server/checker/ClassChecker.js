@@ -1,20 +1,17 @@
-"use strict";
 const prisma = require("../prisma/prismaClient");
 
-const ClassChecker = async (req, res, next) => {
-  const { classroomId } = req.body;
-  console.log(classroomId);
-  const classRoom = await prisma.classroom.findUnique({
+const classChecker = async (req, res, next) => {
+  const { classId } = req.body;
+
+  const ExistingClass = await prisma.classes.findUnique({
     where: {
-      name: `class-${classroomId}`,
+      classId: classId,
     },
   });
-  console.log(classRoom);
-  if (!classRoom) {
-    return res.status(404).json({ error: { msg: "Classroom not found" } });
+  if (ExistingClass) {
+    return res.status(400).json({ errors: { msg: "Class already exists" } });
   }
-  req.body.classroomId = `class-${classroomId}`;
   next();
 };
 
-module.exports = ClassChecker;
+module.exports = { classChecker };

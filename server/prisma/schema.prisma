@@ -66,14 +66,14 @@ model Classes {
   totalStudents Int             @default(0)
   totalTeachers Int             @default(0)
   totalCourses  Int             @default(0)
-  year          String          @default("2021")
+  year          String        @default("2021")
   createdAt     DateTime        @default(now())
 }
 
 model EnrollClasses {
   id          String     @id @default(uuid())
   students    Students[]
-  classroom   Classes    @relation(fields: [classRoomId], references: [classId])
+  classroom   Classes    @relation(fields: [classRoomId], references: [classId],onDelete: Cascade)
   classRoomId String
   year        String
   createdAt   DateTime   @default(now())

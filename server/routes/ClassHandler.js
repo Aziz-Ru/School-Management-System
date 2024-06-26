@@ -5,16 +5,20 @@ const {
   addClass,
   updateClass,
   deleteClass,
+  getClass,
 } = require("../controllers/ClassController");
 const {
-  addClassValidatorHandler,
   addClassValidator,
-  updateClassRoomValidator,
+  updateValidator,
+  getClassValidator,
 } = require("../middlewares/ClassValidator");
 
+const validatorHandler = require("../middlewares/common/validatorHandler");
+
 router.get("/", getClasses);
-router.post("/", addClassValidator, addClassValidatorHandler, addClass);
-router.put("/:id", updateClassRoomValidator, updateClass);
-router.delete("/:id", deleteClass);
+router.get("/:id", getClassValidator, validatorHandler, getClass);
+router.post("/", addClassValidator, validatorHandler, addClass);
+router.put("/:id", updateValidator, validatorHandler, updateClass);
+router.delete("/:id", getClassValidator, validatorHandler, deleteClass);
 
 module.exports = router;

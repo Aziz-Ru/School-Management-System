@@ -5,67 +5,92 @@ const getClasses = async (req, res) => {
     const classes = await prisma.classes.findMany({});
     return res.status(200).json({ data: { class: classes } });
   } catch (error) {
-    // console.log(error);
-    return res
-      .status(400)
-      .json({ errors: { message: "Something went wrong" } });
+    return res.status(400).json({ errors: { msg: "Something went wrong" } });
   }
+};
+const getClass = async (req, res) => {
+  const { id } = req.params;
+  const classData = await prisma.classes.findUnique({
+    where: {
+      classId: id,
+    },
+  });
+  return res.status(200).json({ data: { class: classData } });
 };
 
 const addClass = async (req, res) => {
   try {
-    const { name, monthlyFee } = req.body;
+    const {
+      classId,
+      name,
+      monthlyFee,
+      totalStudents,
+      totalTeachers,
+      totalCourses,
+    } = req.body;
     const className = `class-${name}`;
+
     const newClass = await prisma.classes.create({
       data: {
+        classId,
         name: className,
         monthlyFee,
+        totalStudents,
+        totalTeachers,
+        totalCourses,
+        year: String(new Date().getFullYear()),
+        enrolledClass: {
+          create: {
+            year: String(new Date().getFullYear()),
+          },
+        },
       },
     });
+
     res.status(201).json({
       data: {
         class: newClass,
-        message: "Class created successfully",
+        msg: "Class created successfully",
       },
     });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ errors: { message: "Something went wrong" } });
+    // console.validatorHandlerlog(error.message);
+    res.status(500).json({ errors: { msg: "Something went wrong" } });
   }
 };
 
 const updateClass = async (req, res) => {
   try {
     const { id } = req.params;
-    const { monthlyFee } = req.body;
-
-    const updatedClass = await prisma.classroom.update({
+    req.body.name = `class-${req.body.name}`;
+    const updatedClass = await prisma.classes.update({
       where: {
-        id: id,
+        classId: id,
       },
-      data: { monthlyFee },
+      data: req.body,
     });
-    res
-      .status(200)
-      .json({ data: updatedClass, message: "Class updated successfully" });
+    return res.status(200).json({
+      data: { class: updatedClass, msg: "Class updated successfully" },
+    });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: { message: "Something went wrong" } });
+    // console.log(error.message);
+    return res.status(500).json({ errors: { msg: "Something went wrong" } });
   }
 };
 
 const deleteClass = async (req, res) => {
   try {
     const { id } = req.params;
-    await prisma.classroom.delete({
+    await prisma.classes.delete({
       where: {
-        id: id,
+        classId: id,
       },
     });
-    res.status(200).json({ message: "Class deleted successfully" });
+    res.status(200).json({ data: { msg: "Class deleted successfully" } });
   } catch (error) {
-    res.status(400).json({ error: { message: "Something went wrong" } });
+    // console.log(error.message);
+    res.status(400).json({ errors: { msg: "Something went wrong" } });
   }
 };
 
-module.exports = { getClasses, addClass, updateClass, deleteClass };
+module.exports = { getClasses, getClass, addClass, updateClass, deleteClass };
