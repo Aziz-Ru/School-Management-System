@@ -41,24 +41,25 @@ model Students {
   id            String              @id @default(uuid())
   roll          String              @unique
   name          String
-  email         String
+  email         String              @unique
   password      String
   dob           String
   sex           String
   address       String
   imageLink     String
-  phone         String              @db.Char(11)
+  phone         String              @unique @db.Char(11) 
   enrollClass   EnrollClasses       @relation(fields: [enrollClassId], references: [id])
   enrollClassId String
   result        Results[]
   attendence    StudentAttendence[]
   createdAt     DateTime            @default(now())
+  @@unique([phone,email])
 }
 
 // first create class
 
 model Classes {
-  classId       String          @id
+  classId       Int          @id
   name          String          @unique
   courses       Courses[]
   enrolledClass EnrollClasses[]
@@ -66,17 +67,18 @@ model Classes {
   totalStudents Int             @default(0)
   totalTeachers Int             @default(0)
   totalCourses  Int             @default(0)
-  year          String        @default("2021")
+  year          String          @default("2021")
   createdAt     DateTime        @default(now())
 }
 
 model EnrollClasses {
   id          String     @id @default(uuid())
   students    Students[]
-  classroom   Classes    @relation(fields: [classRoomId], references: [classId],onDelete: Cascade)
-  classRoomId String
+  class   Classes    @relation(fields: [classId], references: [classId],onDelete: Cascade)
+  classId Int
   year        String
   createdAt   DateTime   @default(now())
+  @@unique([classId,year])
 }
 
 model Courses {
@@ -84,8 +86,8 @@ model Courses {
   name        String
   credit      Int       @default(3)
   totalMarks  Int       @default(100)
-  class       Classes   @relation(fields: [classroomId], references: [classId])
-  classroomId String
+  class       Classes   @relation(fields: [classId], references: [classId])
+  classId Int
   enrollCourse EnrollCourses[]
   createdAt DateTime @default(now())
 
@@ -113,7 +115,6 @@ enum ExamType {
 model Exams {
   id          String    @id @default(uuid())
   description String    @db.Text
-  name        String 
   date        String
   course      EnrollCourses   @relation(fields: [courseId], references: [id])
   courseId    String

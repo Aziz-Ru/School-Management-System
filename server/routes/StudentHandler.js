@@ -1,22 +1,25 @@
 const router = require("express").Router();
+// Import StudentController
 const {
   getStudents,
   addStudents,
 } = require("../controllers/StudentController");
+// Import StudentValidator
 const {
   addStudentValidator,
-  addStudentValidatorHandler,
 } = require("../middlewares/StudentValidator");
-const ClassChecker = require("../checker/ClassChecker");
-const prisma = require("../prisma/prismaClient");
+
+// Import validatorHandler
+const validatorHandler = require("../middlewares/common/validatorHandler");
+
+// Handle incoming HTTP requests to /students
 
 router.get("/", getStudents);
 
 router.post(
   "/",
   addStudentValidator,
-  ClassChecker,
-  addStudentValidatorHandler,
+  validatorHandler,
   addStudents
 );
 
