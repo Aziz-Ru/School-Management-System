@@ -50,17 +50,20 @@ CREATE TABLE `Students` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Students_roll_key`(`roll`),
+    UNIQUE INDEX `Students_email_key`(`email`),
+    UNIQUE INDEX `Students_phone_key`(`phone`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Classes` (
-    `classId` VARCHAR(191) NOT NULL,
+    `classId` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `monthlyFee` DOUBLE NOT NULL DEFAULT 2000.0,
     `totalStudents` INTEGER NOT NULL DEFAULT 0,
     `totalTeachers` INTEGER NOT NULL DEFAULT 0,
     `totalCourses` INTEGER NOT NULL DEFAULT 0,
+    `year` VARCHAR(191) NOT NULL DEFAULT '2021',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Classes_name_key`(`name`),
@@ -70,10 +73,11 @@ CREATE TABLE `Classes` (
 -- CreateTable
 CREATE TABLE `EnrollClasses` (
     `id` VARCHAR(191) NOT NULL,
-    `classRoomId` VARCHAR(191) NOT NULL,
+    `classId` INTEGER NOT NULL,
     `year` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `EnrollClasses_classId_year_key`(`classId`, `year`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -83,7 +87,7 @@ CREATE TABLE `Courses` (
     `name` VARCHAR(191) NOT NULL,
     `credit` INTEGER NOT NULL DEFAULT 3,
     `totalMarks` INTEGER NOT NULL DEFAULT 100,
-    `classroomId` VARCHAR(191) NOT NULL,
+    `classId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -103,7 +107,6 @@ CREATE TABLE `EnrollCourses` (
 CREATE TABLE `Exams` (
     `id` VARCHAR(191) NOT NULL,
     `description` TEXT NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
     `date` VARCHAR(191) NOT NULL,
     `courseId` VARCHAR(191) NOT NULL,
     `type` ENUM('MidTerm', 'Final', 'Quiz', 'Assignment') NOT NULL DEFAULT 'Final',
@@ -158,10 +161,10 @@ CREATE TABLE `Issues` (
 ALTER TABLE `Students` ADD CONSTRAINT `Students_enrollClassId_fkey` FOREIGN KEY (`enrollClassId`) REFERENCES `EnrollClasses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `EnrollClasses` ADD CONSTRAINT `EnrollClasses_classRoomId_fkey` FOREIGN KEY (`classRoomId`) REFERENCES `Classes`(`classId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `EnrollClasses` ADD CONSTRAINT `EnrollClasses_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Classes`(`classId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Courses` ADD CONSTRAINT `Courses_classroomId_fkey` FOREIGN KEY (`classroomId`) REFERENCES `Classes`(`classId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Courses` ADD CONSTRAINT `Courses_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Classes`(`classId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `EnrollCourses` ADD CONSTRAINT `EnrollCourses_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `Courses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -9,9 +9,9 @@ const getClassValidator = [
     .custom(async (value) => {
       try {
         const existClass = await prisma.classes.findUnique({
-          where: { classId: value },
+          where: { classId: parseInt(value) },
         });
-        
+
         if (!existClass) {
           return Promise.reject("Class not found");
         }
@@ -23,14 +23,12 @@ const getClassValidator = [
 
 const addClassValidator = [
   body("classId")
-    .notEmpty()
-    .withMessage("classId is required")
-    .isLength({ max: 10 })
-    .withMessage("classId must be less than 10 characters")
+    .isInt({ min: 1, max: 12 })
+    .withMessage("classId must be between 1 and 12")
     .custom(async (value) => {
       try {
         const existClass = await prisma.classes.findUnique({
-          where: { classId: value },
+          where: { classId: parseInt(value) },
         });
         if (existClass) {
           return Promise.reject("class already exists");
@@ -39,10 +37,6 @@ const addClassValidator = [
         return Promise.reject("Something went wrong");
       }
     }),
-
-  body("name")
-    .isInt({ min: 1, max: 12 })
-    .withMessage("name must be between 1 and 12"),
   body("monthlyFee")
     .isInt({ min: 0 })
     .withMessage("monthlyFee must be a positive number"),
@@ -59,14 +53,13 @@ const addClassValidator = [
 
 const updateValidator = [
   param("id")
-    .exists()
-    .withMessage("id is required")
+    .isInt({ min: 1, max: 12 })
+    .withMessage("id must be between 1 and 12")
     .custom(async (value) => {
       try {
         const existClass = await prisma.classes.findUnique({
-          where: { classId: value },
+          where: { classId: parseInt(value) },
         });
-        // console.log(existClass);
         if (!existClass) {
           return Promise.reject("Class not found");
         }
@@ -74,10 +67,6 @@ const updateValidator = [
         return Promise.reject("Something went wrong");
       }
     }),
-
-  body("name")
-    .isInt({ min: 1, max: 12 })
-    .withMessage("name must be between 1 and 12"),
   body("monthlyFee")
     .isInt({ min: 0 })
     .withMessage("monthlyFee must be a positive number"),

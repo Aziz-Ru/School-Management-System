@@ -1,12 +1,7 @@
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 const createError = require("http-errors");
+const prisma = require("../prisma/prismaClient");
 const addStudentValidator = [
-  body("roll")
-    .notEmpty()
-    .withMessage("roll must be required")
-    .isString()
-    .withMessage("roll must be string")
-    .trim(),
   body("name")
     .notEmpty()
     .withMessage("name must be required")
@@ -24,7 +19,18 @@ const addStudentValidator = [
     .withMessage(
       "password must be strong and at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, 1 symbol"
     ),
-  body("sex").notEmpty().withMessage("sex must be required").trim(),
+  body("sex")
+    .notEmpty()
+    .withMessage("sex must be required")
+    .trim()
+    .custom((value) => {
+      if (value !== "male" && value !== "female") {
+        throw new Error("sex should be either male or female");
+      } else {
+        return true;
+      }
+    })
+    .withMessage("sex should be either male or female"),
   body("dob")
     .notEmpty()
     .withMessage("date of birth must be required")
@@ -45,15 +51,22 @@ const addStudentValidator = [
     .isString()
     .withMessage("address must be string")
     .trim(),
-  body("classroomId").isInt().withMessage("classId must be integer"),
+  body("classId")
+    .isInt({ min: 1, max: 12 })
+    .withMessage("classId must be between 1 and 12")
+    .custom(async (value) => {
+      try {
+        const existClass = await prisma.classes.findUnique({
+          where: { classId: parseInt(value) },
+        });
+        if (!existClass) {
+          return Promise.reject("class doesn't exists");
+        }
+      } catch (error) {
+        // console.log(error.message);
+        return Promise.reject("Something went wrong");
+      }
+    }),
 ];
 
-const addStudentValidatorHandler = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-};
-
-module.exports = { addStudentValidator, addStudentValidatorHandler };
+module.exports = { addStudentValidator };

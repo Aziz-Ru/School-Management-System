@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Classes` ADD COLUMN `year` VARCHAR(191) NOT NULL DEFAULT '2021';
