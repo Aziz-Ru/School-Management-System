@@ -52,6 +52,7 @@ CREATE TABLE `Students` (
     UNIQUE INDEX `Students_roll_key`(`roll`),
     UNIQUE INDEX `Students_email_key`(`email`),
     UNIQUE INDEX `Students_phone_key`(`phone`),
+    UNIQUE INDEX `Students_phone_email_key`(`phone`, `email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -161,7 +162,7 @@ CREATE TABLE `Issues` (
 ALTER TABLE `Students` ADD CONSTRAINT `Students_enrollClassId_fkey` FOREIGN KEY (`enrollClassId`) REFERENCES `EnrollClasses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `EnrollClasses` ADD CONSTRAINT `EnrollClasses_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Classes`(`classId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `EnrollClasses` ADD CONSTRAINT `EnrollClasses_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Classes`(`classId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Courses` ADD CONSTRAINT `Courses_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Classes`(`classId`) ON DELETE RESTRICT ON UPDATE CASCADE;

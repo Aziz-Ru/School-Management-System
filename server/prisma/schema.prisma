@@ -50,7 +50,7 @@ model Students {
   phone         String              @unique @db.Char(11) 
   enrollClass   EnrollClasses       @relation(fields: [enrollClassId], references: [id])
   enrollClassId String
-  result        Results[]
+  result        Results[] 
   attendence    StudentAttendence[]
   createdAt     DateTime            @default(now())
   @@unique([phone,email])
@@ -74,7 +74,7 @@ model Classes {
 model EnrollClasses {
   id          String     @id @default(uuid())
   students    Students[]
-  class   Classes    @relation(fields: [classId], references: [classId],onDelete: Cascade)
+  class   Classes    @relation(fields: [classId], references: [classId])
   classId Int
   year        String
   createdAt   DateTime   @default(now())
@@ -90,7 +90,6 @@ model Courses {
   classId Int
   enrollCourse EnrollCourses[]
   createdAt DateTime @default(now())
-
 }
 
 model EnrollCourses {

@@ -1,6 +1,25 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const createError = require("http-errors");
 const prisma = require("../prisma/prismaClient");
+
+const getStudentValidator = [
+  param("roll")
+    .notEmpty()
+    .withMessage("roll must be required")
+    .custom(async (roll) => {
+      try {
+        const student = await prisma.students.findUnique({
+          where: { roll: roll },
+        });
+        if (!student) {
+          return Promise.reject("student roll not found");
+        }
+      } catch (error) {
+        return Promise.reject("Something went wrong");
+      }
+    }),
+];
+
 const addStudentValidator = [
   body("name")
     .notEmpty()
@@ -13,7 +32,21 @@ const addStudentValidator = [
     .withMessage("email must be required")
     .trim()
     .isEmail()
-    .withMessage("email must be valid"),
+    .withMessage("email must be valid")
+    .custom(async (email) => {
+      try {
+        const existEmail = await prisma.students.findUnique({
+          where: { email },
+        });
+        if (existEmail) {
+          return Promise.reject("email already exists");
+        } else {
+          return true;
+        }
+      } catch (error) {
+        return Promise.reject("Something went wrong");
+      }
+    }),
   body("password")
     .isStrongPassword()
     .withMessage(
@@ -38,7 +71,20 @@ const addStudentValidator = [
     .withMessage("dob must be valid date"),
   body("phone")
     .isMobilePhone("bn-BD")
-    .withMessage("phone must be valid bangladeshi phone number"),
+    .withMessage("phone must be valid bangladeshi phone number")
+    .custom(async (phone) => {
+      try {
+        const existPhone = await prisma.students.findUnique({
+          where: { phone },
+        });
+        if (existPhone) {
+          return Promise.reject("phone already exists");
+        }
+      } catch (error) {
+        // console.log(error.message);
+        return Promise.reject("Something went wrong");
+      }
+    }),
   body("imageLink")
     .notEmpty()
     .withMessage("imageLink must be required")
@@ -69,4 +115,4 @@ const addStudentValidator = [
     }),
 ];
 
-module.exports = { addStudentValidator };
+module.exports = { addStudentValidator, getStudentValidator };
