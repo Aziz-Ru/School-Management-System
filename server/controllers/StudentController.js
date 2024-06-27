@@ -1,17 +1,60 @@
 const prisma = require("../prisma/prismaClient");
-const { connect } = require("../routes/StudentHandler");
+const bcrypt = require("bcryptjs");
 
 const getStudents = async (req, res) => {
   try {
-    // await prisma.classes.deleteMany();
-    const students = await prisma.students.findMany();
+    const students = await prisma.students.findMany({
+      select: {
+        id: true,
+        roll: true,
+        name: true,
+        email: true,
+        dob: true,
+        address: true,
+        phone: true,
+        imageLink: true,
+        enrollClassId: true,
+        password: false,
+        createdAt: false,
+      },
+    });
     return res.status(200).json({ data: { students } });
   } catch (error) {
+    // console.log(error.message);
     return res.status(500).json({ error: { message: "Something went wrong" } });
   }
 };
 
+const getOneStudent = async (req, res) => {
+  const { roll } = req.params;
+  try {
+    const student = await prisma.students.findUnique({
+      where: {
+        roll: roll,
+      },
+      select: {
+        id: true,
+        roll: true,
+        name: true,
+        email: true,
+        dob: true,
+        address: true,
+        phone: true,
+        imageLink: true,
+        enrollClassId: true,
+        password: false,
+        createdAt: false,
+      },
+    });
+    return res.status(200).json({ data: { student } });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ errosr: { msg: "Something went wrong" } });
+  }
+};
+
 const addStudents = async (req, res) => {
+  // destructuring the request body
   const {
     name,
     email,
@@ -23,7 +66,11 @@ const addStudents = async (req, res) => {
     imageLink,
     classId,
   } = req.body;
+
+  // parsing the classId to integer
   const intClassId = parseInt(classId);
+
+  // calculating the starting roll number
   let startingRoll = (new Date(dob).getFullYear() % 100) * 1000;
   if (intClassId < 10) {
     startingRoll += intClassId * 100;
@@ -32,6 +79,9 @@ const addStudents = async (req, res) => {
   }
 
   try {
+    // hashing the password
+    const hashPassword = await bcrypt.hash(password, 10);
+    // finding the enrolled students in the class
     const enrolledstudents = await prisma.students.findMany({
       where: {
         enrollClass: {
@@ -40,8 +90,9 @@ const addStudents = async (req, res) => {
         },
       },
     });
-
+    // calculating the roll number
     const roll = `${startingRoll + enrolledstudents.length + 1}`;
+    // upserting the enrollClass
     const enrollClass = await prisma.enrollClasses.upsert({
       where: {
         classId_year: {
@@ -55,13 +106,13 @@ const addStudents = async (req, res) => {
         year: String(new Date(dob).getFullYear()),
       },
     });
-
+    // creating the student
     const student = await prisma.students.create({
       data: {
         roll,
         name,
         email,
-        password,
+        password: hashPassword,
         dob,
         sex,
         address,
@@ -73,15 +124,79 @@ const addStudents = async (req, res) => {
           },
         },
       },
+      select: {
+        roll: true,
+        name: true,
+        email: true,
+        dob: true,
+        sex: true,
+        phone: true,
+        enrollClassId: true,
+      },
     });
 
-    res
+    student.className = classId;
+    // sending the response
+
+    return res
       .status(201)
       .json({ data: { student, msg: "Student added successfully" } });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ errors: { msg: "Something went wrong" } });
+    return res.status(500).json({ errors: { msg: "Something went wrong" } });
   }
 };
 
-module.exports = { getStudents, addStudents };
+const updateStudent = async (req, res) => {
+  const { roll } = req.params;
+  try {
+    const student = await prisma.students.update({
+      where: {
+        roll: roll,
+      },
+      data: req.body,
+      select: {
+        id: true,
+        roll: true,
+        name: true,
+        email: true,
+        dob: true,
+        address: true,
+        phone: true,
+        imageLink: true,
+        enrollClassId: true,
+        password: false,
+        createdAt: false,
+      },
+    });
+    return res
+      .status(200)
+      .json({ data: { student, msg: "Student updated successfully" } });
+  } catch (error) {
+    return res.status(500).json({ errors: { msg: "Something went wrong" } });
+  }
+};
+
+const deleteStudent = async (req, res) => {
+  const { roll } = req.params;
+  try {
+    await prisma.students.delete({
+      where: {
+        roll: roll,
+      },
+    });
+    return res
+      .status(200)
+      .json({ data: { msg: "Student deleted successfully" } });
+  } catch (error) {
+    return res.status(500).json({ errors: { msg: "Something went wrong" } });
+  }
+};
+
+module.exports = {
+  getStudents,
+  addStudents,
+  getOneStudent,
+  updateStudent,
+  deleteStudent,
+};
