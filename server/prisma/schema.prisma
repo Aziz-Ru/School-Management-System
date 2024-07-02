@@ -19,7 +19,7 @@ model School {
 
 model Teachers {
   id            String              @id @default(uuid()) //Teacher ID
-  email         String
+  email         String    
   name          String // Teacher name
   password      String // Teacher Password
   imageLink     String?
