@@ -1,5 +1,4 @@
 const { body, param } = require("express-validator");
-const createError = require("http-errors");
 const prisma = require("../prisma/prismaClient");
 
 const getStudentValidator = [
