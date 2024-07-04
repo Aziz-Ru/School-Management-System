@@ -1,24 +1,26 @@
 const router = require("express").Router();
+const {
+  getClass,
+  getClasses,
+} = require("../controllers/get/classGetController");
+
+const addClass = require("../controllers/post/classPostController");
+const updateClass = require("../controllers/update/classUpdateController");
+const deleteClass = require("../controllers/delete/classDeleteController");
 
 const {
-  getClasses,
-  addClass,
-  updateClass,
-  deleteClass,
-  getClass,
-} = require("../controllers/ClassController");
-const {
   addClassValidator,
-  updateValidator,
   getClassValidator,
 } = require("../middlewares/ClassValidator");
 
 const validatorHandler = require("../middlewares/common/validatorHandler");
 
+
 router.get("/", getClasses);
-router.get("/:id", getClassValidator, validatorHandler, getClass);
+router.get("/:classId", getClassValidator, validatorHandler, getClass);
 router.post("/", addClassValidator, validatorHandler, addClass);
-router.put("/:id", updateValidator, validatorHandler, updateClass);
-router.delete("/:id", getClassValidator, validatorHandler, deleteClass);
+router.put("/:classId", getClassValidator, validatorHandler, updateClass);
+router.delete("/:classId", getClassValidator, validatorHandler, deleteClass);
+
 
 module.exports = router;

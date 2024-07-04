@@ -1,21 +1,24 @@
-const { body, validationResult, param } = require("express-validator");
-const createError = require("http-errors");
+const { body, param } = require("express-validator");
 const prisma = require("../prisma/prismaClient");
 
 const getClassValidator = [
-  param("id")
-    .exists()
+  param("classId")
+    .isInt({ min: 1, max: 12 })
     .withMessage("id is required")
     .custom(async (value) => {
+      // console.log(value);
       try {
-        const existClass = await prisma.classes.findUnique({
+        const existClass = await prisma.class.findUnique({
           where: { classId: parseInt(value) },
         });
 
         if (!existClass) {
           return Promise.reject("Class not found");
+        } else {
+          return false;
         }
       } catch (error) {
+        console.log(error.message);
         return Promise.reject("Something went wrong");
       }
     }),
@@ -27,62 +30,33 @@ const addClassValidator = [
     .withMessage("classId must be between 1 and 12")
     .custom(async (value) => {
       try {
-        const existClass = await prisma.classes.findUnique({
+        const existClass = await prisma.class.findUnique({
           where: { classId: parseInt(value) },
         });
         if (existClass) {
           return Promise.reject("class already exists");
+        } else {
+          return true;
         }
       } catch (error) {
         return Promise.reject("Something went wrong");
       }
     }),
   body("monthlyFee")
+    .optional()
     .isInt({ min: 0 })
     .withMessage("monthlyFee must be a positive number"),
   body("totalStudents")
+    .optional()
     .isInt({ min: 0 })
     .withMessage("totalStudents must be a positive number"),
-  body("totalTeachers")
-    .isInt({ min: 0 })
-    .withMessage("totalTeachers must be a positive number"),
   body("totalCourses")
-    .isInt({ min: 0 })
-    .withMessage("totalCourses must be a positive number"),
-];
-
-const updateValidator = [
-  param("id")
-    .isInt({ min: 1, max: 12 })
-    .withMessage("id must be between 1 and 12")
-    .custom(async (value) => {
-      try {
-        const existClass = await prisma.classes.findUnique({
-          where: { classId: parseInt(value) },
-        });
-        if (!existClass) {
-          return Promise.reject("Class not found");
-        }
-      } catch (error) {
-        return Promise.reject("Something went wrong");
-      }
-    }),
-  body("monthlyFee")
-    .isInt({ min: 0 })
-    .withMessage("monthlyFee must be a positive number"),
-  body("totalStudents")
-    .isInt({ min: 0 })
-    .withMessage("totalStudents must be a positive number"),
-  body("totalTeachers")
-    .isInt({ min: 0 })
-    .withMessage("totalTeachers must be a positive number"),
-  body("totalCourses")
+    .optional()
     .isInt({ min: 0 })
     .withMessage("totalCourses must be a positive number"),
 ];
 
 module.exports = {
   addClassValidator,
-  updateValidator,
   getClassValidator,
 };
