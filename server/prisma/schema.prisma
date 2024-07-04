@@ -57,7 +57,7 @@ model Profile{
   sex       String
   imageLink String?
   phone     String @unique
-  user      User @relation(fields: [userId],references: [userId])
+  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
   techerProfile OfficerProfile?
   studentProfile StudentProfile?
   createdAt DateTime @default(now())
@@ -77,7 +77,7 @@ model StudentProfile{
   id        String @id @default(uuid())
   userId    String @unique
   class     String
-  profile   Profile @relation(fields: [userId], references: [userId])
+  profile   Profile @relation(fields: [userId], references: [userId],onDelete: Cascade)
 }
 
 
@@ -100,18 +100,18 @@ model Courses {
   credit       Int       @default(3)
   totalMarks   Int       @default(100)
   classId      Int
-  class        Class   @relation(fields: [classId], references: [classId])
+  class        Class   @relation(fields: [classId], references: [classId],onDelete: Cascade)
   enrollCourse EnrollCourse[]
   createdAt    DateTime @default(now())
 }
 
 model EnrollClass {
-  year        String
   id          String     @id @default(uuid())
+  year        String
   userId      String     @unique
   classId     Int
-  user        User       @relation(fields: [userId], references: [userId])
-  class       Class      @relation(fields: [classId], references: [classId])
+  user        User       @relation(fields: [userId], references: [userId],onDelete: Cascade)
+  class       Class      @relation(fields: [classId], references: [classId],onDelete: Cascade)
   createdAt   DateTime   @default(now())
   @@unique([year,userId])
 }
@@ -123,8 +123,8 @@ model EnrollCourse {
   year      String
   courseId  String  
   userId    String
-  courses   Courses  @relation(fields: [courseId], references: [courseCode])  
-  user      User     @relation(fields: [userId], references: [userId])
+  courses   Courses  @relation(fields: [courseId], references: [courseCode],onDelete: Cascade)  
+  user      User     @relation(fields: [userId], references: [userId],onDelete: Cascade)
   exams     Exam[]
   results   Result[]
   createdAt DateTime @default(now())
@@ -144,7 +144,7 @@ model Exam {
   examId      String    @unique
   description String    @db.Text
   courseId    Int
-  course      EnrollCourse   @relation(fields: [courseId], references: [id])
+  course      EnrollCourse   @relation(fields: [courseId], references: [id],onDelete: Cascade)
   result      Result[]
   type        ExamType @default(Final)
 }
@@ -155,9 +155,9 @@ model Result {
   courseId  Int
   userId    String
   examId    String
-  exam      Exam    @relation(fields: [examId], references: [examId])
-  course    EnrollCourse  @relation(fields: [courseId], references: [id])
-  user      User     @relation(fields: [userId], references: [userId])
+  exam      Exam    @relation(fields: [examId], references: [examId],onDelete: Cascade)
+  course    EnrollCourse  @relation(fields: [courseId], references: [id],onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [userId],onDelete: Cascade)
   marks     Float    @default(33.0)
   grade     String ? @default("A+") // A+ A- B+ B- C+ C- D+ D- F
   createdAt DateTime @default(now())
@@ -170,7 +170,7 @@ model Result {
 model Attendence {
   id        String   @id @default(uuid())
   userId    String
-  user     User @relation(fields: [userId], references: [userId])
+  user     User @relation(fields: [userId], references: [userId],onDelete: Cascade)
   studentId String
   status    Boolean  @default(false)
   date      String
