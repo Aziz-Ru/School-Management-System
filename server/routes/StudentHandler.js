@@ -1,24 +1,25 @@
 const router = require("express").Router();
+const deleteStudent = require("../controllers/delete/studentDelete");
+const { getStudents, getStudent } = require("../controllers/get/studentGetter");
+const addStudent = require("../controllers/post/studentAdd");
 // Import StudentController
-const {
-  getStudents,
-  addStudents,
-  getOneStudent,
-  updateStudent,
-  deleteStudent,
-} = require("../controllers/StudentController");
+
 const addUser = require("../controllers/post/userPostController");
+const updateStudent = require("../controllers/update/studentUpdate");
+const {
+  addStudentValidator,
+  getStudentValidator,
+} = require("../middlewares/StudentValidator");
 
 // Import validatorHandler
 const validatorHandler = require("../middlewares/common/validatorHandler");
-const { addUserValidator } = require("../middlewares/userValidator");
 
 // Handle incoming HTTP requests to /students
 
-// router.get("/", getStudents);
-// router.get("/:userId", getStudentValidator, validatorHandler, getOneStudent);
-router.post("/", addUserValidator, validatorHandler, addUser);
-// router.put("/:userId", getStudentValidator, validatorHandler, updateStudent);
-// router.delete("/:userId", getStudentValidator, validatorHandler, deleteStudent);
+router.get("/", getStudents);
+router.get("/:userId", getStudentValidator, validatorHandler, getStudent);
+router.post("/", addStudentValidator, validatorHandler, addStudent);
+router.put("/:userId", getStudentValidator, validatorHandler, updateStudent);
+router.delete("/:userId", getStudentValidator, validatorHandler, deleteStudent);
 
 module.exports = router;

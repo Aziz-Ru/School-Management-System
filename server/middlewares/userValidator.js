@@ -2,6 +2,7 @@ const { body, param } = require("express-validator");
 const createError = require("http-errors");
 const prisma = require("../prisma/prismaClient");
 
+
 const getUserValidator = [
   param("userId")
     .notEmpty()
@@ -65,15 +66,34 @@ const addUserValidator = [
 
 const profileValidator = [
   body("dob").isDate().withMessage("dob must be valid"),
-  body("address").trim().notEmpty().withMessage("address must be required"),
+  body("address")
+    .optional({ checkFalsy: true })
+    .trim()
+    .notEmpty()
+    .withMessage("address must be required"),
   body("sex")
     .isIn(["Male", "Female"])
-    .withMessage("sex must be Male Or Feamale"),
-  body("phone").isMobilePhone("bn-BD").withMessage("phone must be valid"),
-  body("imageLink").isURL().withMessage("imageLink must be valid"),
-  body("bloodGroup")
-    .optional()
-    .isIn(["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"])
-    .withMessage("bloodGroup must be valid"),
+    .withMessage("sex must be Male Or Female"),
+  body("phone")
+    .isMobilePhone("bn-BD")
+    .withMessage("phone must be valid")
+    .custom(async (phone) => {
+      try {
+        const existPhone = await prisma.user.findUnique({
+          where: { phone },
+        });
+        if (existPhone) {
+          return Promise.reject("phone already exist");
+        }
+        return true;
+      } catch (error) {
+        return Promise.reject("something went wrong");
+      }
+    }),
+  body("imageLink")
+    .optional({ checkFalsy: true })
+    .isURL()
+    .withMessage("imageLink must be valid"),
 ];
-module.exports = { getUserValidator, addUserValidator };
+
+module.exports = { getUserValidator, addUserValidator, profileValidator };

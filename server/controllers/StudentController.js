@@ -1,57 +1,7 @@
 const prisma = require("../prisma/prismaClient");
 const bcrypt = require("bcryptjs");
 
-const getStudents = async (req, res) => {
-  try {
-    const students = await prisma.students.findMany({
-      select: {
-        id: true,
-        roll: true,
-        name: true,
-        email: true,
-        dob: true,
-        address: true,
-        phone: true,
-        imageLink: true,
-        enrollClassId: true,
-        password: false,
-        createdAt: false,
-      },
-    });
-    return res.status(200).json({ data: { students } });
-  } catch (error) {
-    // console.log(error.message);
-    return res.status(500).json({ error: { message: "Something went wrong" } });
-  }
-};
 
-const getOneStudent = async (req, res) => {
-  const { roll } = req.params;
-  try {
-    const student = await prisma.students.findUnique({
-      where: {
-        roll: roll,
-      },
-      select: {
-        id: true,
-        roll: true,
-        name: true,
-        email: true,
-        dob: true,
-        address: true,
-        phone: true,
-        imageLink: true,
-        enrollClassId: true,
-        password: false,
-        createdAt: false,
-      },
-    });
-    return res.status(200).json({ data: { student } });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ errosr: { msg: "Something went wrong" } });
-  }
-};
 
 const addStudents = async (req, res) => {
   // destructuring the request body

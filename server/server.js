@@ -34,7 +34,7 @@ app.use("/admin", require("./routes/AdminHandler"));
 
 // Not Found Handler
 app.use(notFoundHandler);
-// Defaul Error Handler
+// Default Error Handler
 app.use(errorHandler);
 
 // Listening
