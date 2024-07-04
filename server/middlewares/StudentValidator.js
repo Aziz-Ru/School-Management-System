@@ -1,58 +1,10 @@
-const { body, param } = require("express-validator");
-const createError = require("http-errors");
-const prisma = require("../prisma/prismaClient");
 
-const getStudentValidator = [
-  param("roll")
-    .notEmpty()
-    .withMessage("roll must be required")
-    .custom(async (roll) => {
-      try {
-        const student = await prisma.students.findUnique({
-          where: { roll: roll },
-        });
-        if (!student) {
-          return Promise.reject("student roll not found");
-        }
-      } catch (error) {
-        return Promise.reject("Something went wrong");
-      }
-    }),
-];
 
-const addStudentValidator = [
-  body("name")
-    .notEmpty()
-    .withMessage("name must be required")
-    .isString()
-    .withMessage("name must be string")
-    .trim(),
-  body("email")
-    .notEmpty()
-    .withMessage("email must be required")
-    .trim()
-    .isEmail()
-    .withMessage("email must be valid")
-    .custom(async (email) => {
-      try {
-        const existEmail = await prisma.students.findUnique({
-          where: { email },
-        });
-        if (existEmail) {
-          return Promise.reject("email already exists");
-        } else {
-          return true;
-        }
-      } catch (error) {
-        return Promise.reject("Something went wrong");
-      }
-    }),
-  body("password")
-    .isStrongPassword()
-    .withMessage(
-      "password must be strong and at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, 1 symbol"
-    ),
-  body("sex")
+module.exports = { addStudentValidator, getStudentValidator };
+
+
+
+body("sex")
     .notEmpty()
     .withMessage("sex must be required")
     .trim()
@@ -113,6 +65,3 @@ const addStudentValidator = [
         return Promise.reject("Something went wrong");
       }
     }),
-];
-
-module.exports = { addStudentValidator, getStudentValidator };

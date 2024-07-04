@@ -8,6 +8,7 @@ async function getSchool(req, res) {
     return res.status("404").json({ error: error.message });
   }
 }
+
 async function createSchool(req, res) {
   const { id, name, address, email, phone, establishAt } = req.body;
   try {
@@ -37,8 +38,8 @@ async function createSchool(req, res) {
 async function deleteSchool(req, res) {
   try {
     const { id } = req.params;
-    console.log(id);
-    await prisma.school.delete({ where: { id: id } });
+    // console.log(id);
+    await prisma.school.delete({ where: { id: parseInt(id) } });
     return res
       .status(200)
       .json({ data: { message: `${id} id School was deleted` } });
