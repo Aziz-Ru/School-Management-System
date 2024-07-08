@@ -54,9 +54,6 @@ const addTeacherValidator = [
     .withMessage(
       "password must be strong and at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, 1 symbol"
     ),
-  body("admissionYear")
-    .isInt({ max: new Date().getFullYear(), min: 1950 })
-    .withMessage("admissionYear must be valid"),
   body("role")
     .notEmpty()
     .withMessage("role must be required")
@@ -92,9 +89,6 @@ const addTeacherValidator = [
     .optional({ checkFalsy: true })
     .isURL()
     .withMessage("imageLink must be valid"),
-  body("classId")
-    .isInt({ min: 1, max: 12 })
-    .withMessage("classId must be valid"),
 ];
 
-module.exports = { addStudentValidator, getStudentValidator };
+module.exports = { addTeacherValidator, getTeacherValidator };

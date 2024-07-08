@@ -94,7 +94,7 @@ model Class {
 }
 
 model Courses {
-  id           String    @id
+  id           String    @id @default(uuid())
   courseCode   String    @unique
   name         String
   credit       Int       @default(3)
