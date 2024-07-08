@@ -1,7 +1,7 @@
 const { parse } = require("dotenv");
 const prisma = require("../../prisma/prismaClient");
 const bcrypt = require("bcryptjs");
-const { connect } = require("../../routes/ClassHandler");
+const { connect } = require("../../route/ClassHandler");
 const selectedObject = {};
 
 const addStudent = async (req, res) => {
@@ -68,15 +68,12 @@ const addStudent = async (req, res) => {
       },
     });
 
-    return res
-      .status(201)
-      .json({
-        data: {
-          user,
-          msg: `user create successfully and enrolled class ${classId}`,
-        },
-      });
-      
+    return res.status(201).json({
+      data: {
+        user,
+        msg: `user create successfully and enrolled class ${classId}`,
+      },
+    });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ errors: { msg: "something went wrong" } });
