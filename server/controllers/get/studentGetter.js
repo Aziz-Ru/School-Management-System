@@ -14,7 +14,6 @@ const getStudents = async (req, res) => {
   }
 };
 
-
 const getStudent = async (req, res) => {
   const { userId } = req.params;
   try {
@@ -25,7 +24,7 @@ const getStudent = async (req, res) => {
     });
     return res.status(200).json({ data: { student } });
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     return res.status(500).json({ errors: { msg: "Something went wrong" } });
   }
 };
