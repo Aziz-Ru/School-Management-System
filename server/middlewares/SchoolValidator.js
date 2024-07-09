@@ -1,4 +1,4 @@
-const { check, validationResult, param } = require("express-validator");
+const { check, param } = require("express-validator");
 const prisma = require("../prisma/prismaClient");
 
 const addSchoolValidator = [
@@ -59,10 +59,6 @@ const addSchoolValidator = [
     .trim()
     .notEmpty()
     .withMessage("address field must be required"),
-  check("establishAt")
-    .trim()
-    .isDate()
-    .withMessage("establishAt field must be date(year-month-date)"),
 ];
 
 const getSchoolValidator = [
@@ -75,12 +71,12 @@ const getSchoolValidator = [
         const school = await prisma.school.findUnique({
           where: { id: parseInt(value) },
         });
-        console.log(school);
+        // console.log(school);
         if (!school) {
           return Promise.reject("School not found");
         }
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         return Promise.reject("Something Went Wrong");
       }
     }),

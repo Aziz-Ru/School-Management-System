@@ -2,13 +2,13 @@ const { body, param } = require("express-validator");
 const prisma = require("../prisma/prismaClient");
 
 const getStudentValidator = [
-  param("userId")
+  param("id")
     .notEmpty()
-    .withMessage("userId must be required")
-    .custom(async (userId) => {
+    .withMessage("id must be required")
+    .custom(async (id) => {
       try {
         const student = await prisma.user.findUnique({
-          where: { userId: userId },
+          where: { uId: id },
         });
         // console.log(student);
         if (!student) {
@@ -70,23 +70,7 @@ const addStudentValidator = [
   body("sex")
     .isIn(["Male", "Female"])
     .withMessage("sex must be Male Or Female"),
-  body("phone")
-    .isMobilePhone("bn-BD")
-    .withMessage("phone must be valid")
-    .custom(async (phone) => {
-      try {
-        const existPhone = await prisma.profile.findUnique({
-          where: { phone },
-        });
-        if (existPhone) {
-          return Promise.reject("phone already exist");
-        }
-        return true;
-      } catch (error) {
-        console.log(error.message);
-        return Promise.reject("something went wrong");
-      }
-    }),
+  body("phone").isMobilePhone("bn-BD").withMessage("phone must be valid"),
   body("imageLink")
     .optional({ checkFalsy: true })
     .isURL()

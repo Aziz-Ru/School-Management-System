@@ -15,7 +15,7 @@ model School {
   phone         String @unique
   totalTeachers Int    @default(30)
   address       String @db.LongText
-  establishAt   String
+  
 }
 
 enum Role {
@@ -33,11 +33,11 @@ enum Rank {
 
 model User {
   id            String         @id @default(uuid())
-  userId        String         @unique
+  uId        String         @unique
   name          String
   email         String         @unique
   password      String
-  admissionYear Int?
+  admissionYear String
   role          Role           @default(Student)
   profile       Profile?
   enrollCourse  EnrollCourse[]
@@ -46,40 +46,25 @@ model User {
   attendence    Attendence[]
   createdAt     DateTime       @default(now())
 
-  @@unique([userId, name])
+  @@unique([uId, name])
   @@map("users")
 }
 
+
 model Profile {
   id             String          @id @default(uuid())
-  userId         String          @unique
+  uId            String          @unique
   dob            String
   address        String?
   sex            String
   imageLink      String?
-  phone          String          @unique
-  user           User            @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  techerProfile  OfficerProfile?
-  studentProfile StudentProfile?
+  phone          String          
+  user           User            @relation(fields: [uId], references: [uId], onDelete: Cascade)
   createdAt      DateTime        @default(now())
 }
 
-model OfficerProfile {
-  id            String  @id @default(uuid())
-  userId        String  @unique
-  qualification String
-  bio           String
-  rank          Rank    @default(TEACHER)
-  salary        Float   @default(20000.0)
-  profile       Profile @relation(fields: [userId], references: [userId])
-}
 
-model StudentProfile {
-  id      String  @id @default(uuid())
-  userId  String  @unique
-  class   String
-  profile Profile @relation(fields: [userId], references: [userId], onDelete: Cascade)
-}
+
 
 model Class {
   classId         String        @id
@@ -110,27 +95,27 @@ model Courses {
 model EnrollClass {
   id        String   @id @default(uuid())
   year      String
-  userId    String   @unique
+  uId    String   @unique
   classId   String
-  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
   class     Class    @relation(fields: [classId], references: [classId], onDelete: Cascade)
   createdAt DateTime @default(now())
 
-  @@unique([year, userId])
+  @@unique([year, uId])
 }
 
 model EnrollCourse {
   id        Int      @id @default(autoincrement())
   year      String
   courseId  String
-  userId    String
+  uId    String
   courses   Courses  @relation(fields: [courseId], references: [courseCode], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
   exams     Exam[]
   results   Result[]
   createdAt DateTime @default(now())
 
-  @@unique([userId, year])
+  @@unique([uId, year])
 }
 
 enum ExamType {
@@ -153,22 +138,22 @@ model Exam {
 model Result {
   id        String       @id @default(uuid())
   courseId  Int
-  userId    String
+  uId    String
   examId    String
   exam      Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
   course    EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user      User         @relation(fields: [uId], references: [uId], onDelete: Cascade)
   marks     Float        @default(33.0)
   grade     String?      @default("A+") // A+ A- B+ B- C+ C- D+ D- F
   createdAt DateTime     @default(now())
 
-  @@unique([userId, courseId, examId])
+  @@unique([uId, courseId, examId])
 }
 
 model Attendence {
   id        String  @id @default(uuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  uId    String
+  user      User    @relation(fields: [uId], references: [uId], onDelete: Cascade)
   studentId String
   status    Boolean @default(false)
   date      String

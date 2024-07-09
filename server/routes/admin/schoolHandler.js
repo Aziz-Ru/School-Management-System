@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const {
   getSchool,
-  createSchool,
+  addSchool,
   deleteSchool,
 } = require("../../controllers/SchoolController");
 
@@ -12,8 +12,8 @@ const {
 } = require("../../middlewares/SchoolValidator");
 const validatorHandler = require("../../middlewares/common/validatorHandler");
 
-router.get("", getSchool);
-router.post("", addSchoolValidator, validatorHandler, createSchool);
+router.get("/", getSchool);
+router.post("/", addSchoolValidator, validatorHandler, addSchool);
 router.delete("/:id", getSchoolValidator, validatorHandler, deleteSchool);
 
 module.exports = router;
