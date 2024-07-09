@@ -4,14 +4,13 @@ const {
   getSchool,
   createSchool,
   deleteSchool,
-} = require("../controllers/SchoolController");
+} = require("../../controllers/SchoolController");
 
 const {
   addSchoolValidator,
-  deleteSchoolValidator,
   getSchoolValidator,
-} = require("../middlewares/SchoolValidator");
-const validatorHandler = require("../middlewares/common/validatorHandler");
+} = require("../../middlewares/SchoolValidator");
+const validatorHandler = require("../../middlewares/common/validatorHandler");
 
 router.get("", getSchool);
 router.post("", addSchoolValidator, validatorHandler, createSchool);

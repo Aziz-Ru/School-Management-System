@@ -1,7 +1,6 @@
-const { parse } = require("dotenv");
 const prisma = require("../../prisma/prismaClient");
 const bcrypt = require("bcryptjs");
-const { connect } = require("../../route/ClassHandler");
+
 const selectedObject = {};
 
 const addStudent = async (req, res) => {

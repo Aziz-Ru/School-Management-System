@@ -9,178 +9,174 @@ datasource db {
 
 // env("DATABASE_URL")
 model School {
-  id          Int @id @unique
-  name        String
-  email       String @unique
-  phone       String @unique
-  totalTeachers Int             @default(30)
-  address     String @db.LongText
-  establishAt String
+  id            Int    @id @unique
+  name          String
+  email         String @unique
+  phone         String @unique
+  totalTeachers Int    @default(30)
+  address       String @db.LongText
+  establishAt   String
 }
 
-enum Role{
+enum Role {
   Admin
   Teacher
   Student
-
 }
-enum Rank{
+
+enum Rank {
   PRINCIPAL
   VICE_PRINCIPAL
   TEACHER
   STAFF
 }
 
-model User{
-  id        String @id @default(uuid())
-  userId    String @unique
-  name      String
-  email     String @unique
-  password  String
-  admissionYear Int? 
-  role      Role @default(Student)
-  profile   Profile?
-  enrollCourse EnrollCourse[]
-  class     EnrollClass[]
-  results   Result[]
-  attendence Attendence[]
-  createdAt DateTime @default(now())
+model User {
+  id            String         @id @default(uuid())
+  userId        String         @unique
+  name          String
+  email         String         @unique
+  password      String
+  admissionYear Int?
+  role          Role           @default(Student)
+  profile       Profile?
+  enrollCourse  EnrollCourse[]
+  class         EnrollClass[]
+  results       Result[]
+  attendence    Attendence[]
+  createdAt     DateTime       @default(now())
+
+  @@unique([userId, name])
   @@map("users")
-  @@unique([userId,name])
 }
 
-model Profile{
-  id        String @id @default(uuid())
-  userId    String @unique
-  dob       String
-  address   String?
-  sex       String
-  imageLink String?
-  phone     String @unique
-  user      User @relation(fields: [userId],references: [userId],onDelete: Cascade)
-  techerProfile OfficerProfile?
+model Profile {
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  dob            String
+  address        String?
+  sex            String
+  imageLink      String?
+  phone          String          @unique
+  user           User            @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  techerProfile  OfficerProfile?
   studentProfile StudentProfile?
-  createdAt DateTime @default(now())
+  createdAt      DateTime        @default(now())
 }
 
-model OfficerProfile{
-  id        String @id @default(uuid())
-  userId    String @unique
+model OfficerProfile {
+  id            String  @id @default(uuid())
+  userId        String  @unique
   qualification String
-  bio       String
-  rank      Rank @default(TEACHER)
-  salary    Float @default(20000.0)
-  profile   Profile @relation(fields: [userId], references: [userId])
+  bio           String
+  rank          Rank    @default(TEACHER)
+  salary        Float   @default(20000.0)
+  profile       Profile @relation(fields: [userId], references: [userId])
 }
 
-model StudentProfile{
-  id        String @id @default(uuid())
-  userId    String @unique
-  class     String
-  profile   Profile @relation(fields: [userId], references: [userId],onDelete: Cascade)
+model StudentProfile {
+  id      String  @id @default(uuid())
+  userId  String  @unique
+  class   String
+  profile Profile @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
-
 
 model Class {
-  classId       Int             @id
-  monthlyFee    Float           @default(1000.0)
-  totalStudents Int             @default(50)
-  totalCourses  Int             @default(10)
-  courses       Courses[]
-  enrolledClass EnrollClass[]
-  createdAt     DateTime        @default(now())
-  @@map("classes")
+  classId         String        @id
+  monthlyFee      Float         @default(1000.0)
+  totalStudents   Int
+  totalCourses    Int
+  maxStudents Int           @default(100)
+  maxCourses  Int           @default(10)
+  courses         Courses[]
+  enrolledClass   EnrollClass[]
+  createdAt       DateTime      @default(now())
 
+  @@map("classes")
 }
 
 model Courses {
-  id           String    @id @default(uuid())
-  courseCode   String    @unique
+  id           String         @id @default(uuid())
+  courseCode   String         @unique
   name         String
-  credit       Int       @default(3)
-  totalMarks   Int       @default(100)
-  classId      Int
-  class        Class   @relation(fields: [classId], references: [classId],onDelete: Cascade)
+  credit       Int            @default(3)
+  totalMarks   Int            @default(100)
+  classId      String
+  class        Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
   enrollCourse EnrollCourse[]
-  createdAt    DateTime @default(now())
+  createdAt    DateTime       @default(now())
 }
 
 model EnrollClass {
-  id          String     @id @default(uuid())
-  year        String
-  userId      String     @unique
-  classId     Int
-  user        User       @relation(fields: [userId], references: [userId],onDelete: Cascade)
-  class       Class      @relation(fields: [classId], references: [classId],onDelete: Cascade)
-  createdAt   DateTime   @default(now())
-  @@unique([year,userId])
+  id        String   @id @default(uuid())
+  year      String
+  userId    String   @unique
+  classId   String
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  class     Class    @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([year, userId])
 }
 
-
-
 model EnrollCourse {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   year      String
-  courseId  String  
+  courseId  String
   userId    String
-  courses   Courses  @relation(fields: [courseId], references: [courseCode],onDelete: Cascade)  
-  user      User     @relation(fields: [userId], references: [userId],onDelete: Cascade)
+  courses   Courses  @relation(fields: [courseId], references: [courseCode], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
   exams     Exam[]
   results   Result[]
   createdAt DateTime @default(now())
-  @@unique([userId,year])
+
+  @@unique([userId, year])
 }
 
 enum ExamType {
   MidTerm
   Final
-  Quiz
   Assignment
 }
 
-
 model Exam {
-  id          String    @id @default(uuid())
-  examId      String    @unique
-  description String    @db.Text
-  courseId    Int
-  course      EnrollCourse   @relation(fields: [courseId], references: [id],onDelete: Cascade)
-  result      Result[]
-  type        ExamType @default(Final)
+  id       String       @id @default(uuid())
+  courseId Int
+  course   EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  result   Result[]
+  type     ExamType     @default(Final)
+  year     String
+
+  @@unique([year, courseId, type])
 }
 
-
 model Result {
-  id        String   @id @default(uuid())
+  id        String       @id @default(uuid())
   courseId  Int
   userId    String
   examId    String
-  exam      Exam    @relation(fields: [examId], references: [examId],onDelete: Cascade)
-  course    EnrollCourse  @relation(fields: [courseId], references: [id],onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [userId],onDelete: Cascade)
-  marks     Float    @default(33.0)
-  grade     String ? @default("A+") // A+ A- B+ B- C+ C- D+ D- F
-  createdAt DateTime @default(now())
-  @@unique([userId,courseId,examId])
+  exam      Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
+  course    EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user      User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  marks     Float        @default(33.0)
+  grade     String?      @default("A+") // A+ A- B+ B- C+ C- D+ D- F
+  createdAt DateTime     @default(now())
 
+  @@unique([userId, courseId, examId])
 }
 
-
-
 model Attendence {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   userId    String
-  user     User @relation(fields: [userId], references: [userId],onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
   studentId String
-  status    Boolean  @default(false)
+  status    Boolean @default(false)
   date      String
 }
 
-
-
 model Issues {
-  id      String @id @default(uuid())
-  type    String
-  details String @db.LongText
+  id        String   @id @default(uuid())
+  type      String
+  details   String   @db.LongText
   createdAt DateTime @default(now())
 }
