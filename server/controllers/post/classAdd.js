@@ -1,8 +1,10 @@
 const prisma = require("../../prisma/prismaClient");
+const ClassFunction = require("../functions/classfunction").default;
 
 const addClass = async (req, res) => {
+  const obj = await ClassFunction.addClass(req);
+  console.log(obj);
   try {
-    console.log(req.body);
     return res.status(200).json({ data: { class: req.body } });
     // const newClass = await prisma.class.create({
     //   data: classObj,
