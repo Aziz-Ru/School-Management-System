@@ -6,10 +6,11 @@ const router = require("express").Router();
 
 // Handle incoming HTTP requests to /admin
 
-router.use("/class", require("./subroutes/ClassHandler"));
-router.use("/teacher", require("./subroutes/TeacherHandler"));
-router.use("/student", require("./subroutes/StudentHandler"));
-router.use("/course", require("./subroutes/courseHandler"));
-router.use("/school", require("./subroutes/schoolHandler"));
+router.use("/class", require("./admin/ClassHandler"));
+router.use("/teacher", require("./admin/TeacherHandler"));
+router.use("/student", require("./admin/StudentHandler"));
+router.use("/course", require("./admin/courseHandler"));
+router.use("/school", require("./admin/schoolHandler"));
+router.use("/exam", require("./admin/examHandler"));
 
 module.exports = router;

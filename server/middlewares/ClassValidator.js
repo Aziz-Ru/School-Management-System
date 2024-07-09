@@ -6,10 +6,9 @@ const getClassValidator = [
     .isInt({ min: 1, max: 12 })
     .withMessage("id is required")
     .custom(async (value) => {
-      // console.log(value);
       try {
         const existClass = await prisma.class.findUnique({
-          where: { classId: parseInt(value) },
+          where: { classId: value },
         });
 
         if (!existClass) {
@@ -31,7 +30,7 @@ const addClassValidator = [
     .custom(async (value) => {
       try {
         const existClass = await prisma.class.findUnique({
-          where: { classId: parseInt(value) },
+          where: { classId: value },
         });
         if (existClass) {
           return Promise.reject("class already exists");
@@ -43,17 +42,14 @@ const addClassValidator = [
       }
     }),
   body("monthlyFee")
-    .optional()
     .isInt({ min: 0 })
     .withMessage("monthlyFee must be a positive number"),
-  body("totalStudents")
-    .optional()
-    .isInt({ min: 0 })
-    .withMessage("totalStudents must be a positive number"),
-  body("totalCourses")
-    .optional()
-    .isInt({ min: 0 })
-    .withMessage("totalCourses must be a positive number"),
+  body("maxStudents")
+    .isInt({ min: 0, max: 100 })
+    .withMessage("maximum Students must under 100"),
+  body("maxCourses")
+    .isInt({ min: 0, max: 50 })
+    .withMessage("maximum Courses must under 50"),
 ];
 
 module.exports = {

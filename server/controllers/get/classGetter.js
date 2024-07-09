@@ -2,6 +2,7 @@ const prisma = require("../../prisma/prismaClient");
 
 const getClasses = async (req, res) => {
   try {
+    // await prisma.class.deleteMany();
     const classes = await prisma.class.findMany({
       orderBy: { classId: "asc" },
     });
