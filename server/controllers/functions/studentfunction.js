@@ -1,5 +1,6 @@
 const prisma = require("../../prisma/prismaClient");
 const bcrypt = require("bcryptjs");
+const ClassFunction = require("./classfunction");
 class StudentFunction {
   static async getStudents(req) {
     try {
@@ -17,7 +18,7 @@ class StudentFunction {
 
   static async getStudent(req) {
     try {
-      const id = req.params.id;
+      const id = req.params.uId;
       const students = await prisma.user.findUnique({
         where: { uId: id, role: "Student" },
         include: { profile: true },
@@ -31,15 +32,16 @@ class StudentFunction {
   static async addStudent(req) {
     try {
       const { id } = await prisma.school.findFirst();
+      const classStudents = await prisma.enrollClass.count({
+        where: { year: req.body.admissionYear, classId: req.body.classId },
+      });
       req.body.password = await bcrypt.hash(req.body.password, 10);
+      const classId = req.body.classId;
+
       const year = req.body.admissionYear % 100;
-      const userId =
-        (year * 10000 + id) * 1000 +
-        (await prisma.enrollClass.count({
-          where: { year: req.body.admissionYear, classId: req.body.classId },
-        })) +
-        1;
-      console.log(userId);
+      let userId = `${year}${id}${classId}`;
+      userId = parseInt(userId) * 1000 + classStudents + 1;
+
       const user = await prisma.user.create({
         data: {
           uId: userId.toString(),
@@ -71,10 +73,15 @@ class StudentFunction {
           },
           user: {
             connect: {
-              userId: user.uId,
+              uId: user.uId,
             },
           },
         },
+      });
+
+      await ClassFunction.updateClass({
+        params: { classId: req.body.classId },
+        body: {},
       });
 
       return user;
@@ -85,15 +92,13 @@ class StudentFunction {
   static async updateStudent(req) {
     try {
       const { uId } = req.params;
-      // console.log(userId);
       const { name, email, password } = req.body;
       const updateObj = {};
       if (email) {
         const user = await prisma.user.findUnique({
           where: { email: email },
         });
-        //   console.log(user);
-        if (user && user.userId !== uId) {
+        if (user && user.uId !== uId) {
           throw new Error("email already exist");
         }
         updateObj.email = email;
@@ -104,16 +109,17 @@ class StudentFunction {
       if (name) updateObj.name = name;
 
       const student = await prisma.user.update({
-        where: { uId: Id },
+        where: { uId: uId },
         data: updateObj,
       });
 
-      // console.log(student);
       return student;
     } catch (error) {
+      // console.log(error.message);
       throw new Error(error.message);
     }
   }
+
   static async deleteStudent(req) {
     try {
       const { uId } = req.params;

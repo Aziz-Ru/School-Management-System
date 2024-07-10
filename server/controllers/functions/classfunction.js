@@ -63,6 +63,7 @@ class ClassFunction {
         where: { classId: classId, year: new Date().getFullYear().toString() },
       });
       const updateObj = {};
+
       if (monthlyFee) updateObj.monthlyFee = parseInt(monthlyFee);
       if (maxStudents) updateObj.maxStudents = parseInt(maxStudents);
       if (maxCourses) updateObj.maxCourses = parseInt(maxCourses);

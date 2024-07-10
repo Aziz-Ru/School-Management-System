@@ -2,9 +2,9 @@ const { body, param } = require("express-validator");
 const prisma = require("../prisma/prismaClient");
 
 const getStudentValidator = [
-  param("id")
+  param("uId")
     .notEmpty()
-    .withMessage("id must be required")
+    .withMessage("uid must be required")
     .custom(async (id) => {
       try {
         const student = await prisma.user.findUnique({
