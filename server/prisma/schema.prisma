@@ -72,10 +72,11 @@ model Class {
   maxCourses  Int           @default(10)
   courses         Courses[]
   enrolledClass   EnrollClass[]
+  Exam            Exam[]
   createdAt       DateTime      @default(now())
-
   @@map("classes")
 }
+
 
 model Courses {
   id           String         @id @default(uuid())
@@ -125,11 +126,14 @@ model Exam {
   id       String       @id @default(uuid())
   courseId String
   course   EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  classId  String
+  class    Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   result   Result[]
   type     ExamType     @default(Final)
   year     String
-  @@unique([year, courseId, type])
+  @@unique([year, courseId,classId,type])
 }
+
 
 model Result {
   id        String       @id @default(uuid())
