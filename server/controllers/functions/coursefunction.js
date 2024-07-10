@@ -11,6 +11,7 @@ class CourseFunction {
       throw new Error(error.message);
     }
   }
+  
   static async getCoursesByClass(req) {
     try {
       const { classId } = req.params;
