@@ -3,17 +3,17 @@ const createError = require("http-errors");
 const prisma = require("../prisma/prismaClient");
 
 const getTeacherValidator = [
-  param("userId")
+  param("uId")
     .notEmpty()
     .withMessage("userId must be required")
     .custom(async (userId) => {
       try {
         const student = await prisma.user.findUnique({
-          where: { userId: userId },
+          where: { uId: userId },
         });
         // console.log(student);
         if (!student) {
-          return Promise.reject("student not found");
+          return Promise.reject("Teacher not found");
         }
         return true;
       } catch (error) {
@@ -58,7 +58,7 @@ const addTeacherValidator = [
     .notEmpty()
     .withMessage("role must be required")
     .isIn(["Teacher"])
-    .withMessage("role must be either Student, Teacher or Admin"),
+    .withMessage("role must be Teacher"),
   body("dob").isDate().withMessage("dob must be valid"),
   body("address")
     .optional({ checkFalsy: true })
@@ -68,23 +68,7 @@ const addTeacherValidator = [
   body("sex")
     .isIn(["Male", "Female"])
     .withMessage("sex must be Male Or Female"),
-  body("phone")
-    .isMobilePhone("bn-BD")
-    .withMessage("phone must be valid")
-    .custom(async (phone) => {
-      try {
-        const existPhone = await prisma.profile.findUnique({
-          where: { phone },
-        });
-        if (existPhone) {
-          return Promise.reject("phone already exist");
-        }
-        return true;
-      } catch (error) {
-        console.log(error.message);
-        return Promise.reject("something went wrong");
-      }
-    }),
+  body("phone").isMobilePhone("bn-BD").withMessage("phone must be valid"),
   body("imageLink")
     .optional({ checkFalsy: true })
     .isURL()

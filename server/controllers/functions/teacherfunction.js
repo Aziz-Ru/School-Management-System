@@ -1,46 +1,39 @@
 const prisma = require("../../prisma/prismaClient");
 const bcrypt = require("bcryptjs");
-const ClassFunction = require("./classfunction");
-class StudentFunction {
-  static async getStudents(req) {
+
+class TeacherFunction {
+  static async getTeachers(req) {
     try {
-      const students = await prisma.user.findMany({
-        where: { role: "Student" },
-        include: {
-          profile: true,
-        },
+      const teachers = await prisma.user.findMany({
+        where: { role: "Teacher" },
       });
-      return students;
+      return teachers;
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
-  static async getStudent(req) {
+  static async getTeacher(req) {
     try {
       const id = req.params.uId;
-      const students = await prisma.user.findUnique({
-        where: { uId: id, role: "Student" },
+      const teachers = await prisma.user.findUnique({
+        where: { uId: id, role: "Teacher" },
         include: { profile: true },
       });
-      return students;
+      return teachers;
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
-  static async addStudent(req) {
+  static async addTeacher(req) {
     try {
       const { id } = await prisma.school.findFirst();
-      const classStudents = await prisma.enrollClass.count({
-        where: { year: req.body.admissionYear, classId: req.body.classId },
+      const existTeacher = await prisma.user.count({
+        where: { role: "Teacher" },
       });
       req.body.password = await bcrypt.hash(req.body.password, 10);
-      const classId = req.body.classId;
-
-      const year = req.body.admissionYear % 100;
-      let userId = `${year}${id}${classId}`;
-      userId = parseInt(userId) * 1000 + classStudents + 1;
+      let userId = id * 1000 + existTeacher + 1;
 
       const user = await prisma.user.create({
         data: {
@@ -49,7 +42,7 @@ class StudentFunction {
           email: req.body.email,
           password: req.body.password,
           role: req.body.role,
-          admissionYear: req.body.admissionYear,
+          admissionYear: new Date().getFullYear().toString(),
           profile: {
             create: {
               dob: req.body.dob,
@@ -62,34 +55,12 @@ class StudentFunction {
           },
         },
       });
-
-      await prisma.enrollClass.create({
-        data: {
-          year: req.body.admissionYear,
-          class: {
-            connect: {
-              classId: req.body.classId,
-            },
-          },
-          user: {
-            connect: {
-              uId: user.uId,
-            },
-          },
-        },
-      });
-
-      await ClassFunction.updateClass({
-        params: { classId: req.body.classId },
-        body: {},
-      });
-
       return user;
     } catch (error) {
       throw new Error(error.message);
     }
   }
-  static async updateStudent(req) {
+  static async updateTeacher(req) {
     try {
       const { uId } = req.params;
       const { name, email, password } = req.body;
@@ -108,23 +79,23 @@ class StudentFunction {
       }
       if (name) updateObj.name = name;
 
-      const student = await prisma.user.update({
+      const user = await prisma.user.update({
         where: { uId: uId },
         data: updateObj,
       });
 
-      return student;
+      return user;
     } catch (error) {
       // console.log(error.message);
       throw new Error(error.message);
     }
   }
 
-  static async deleteStudent(req) {
+  static async deleteTeacher(req) {
     try {
       const { uId } = req.params;
       const student = await prisma.user.delete({
-        where: { uId: uId, role: "Student" },
+        where: { uId: uId, role: "Teacher" },
       });
       return student;
     } catch (error) {
@@ -133,4 +104,4 @@ class StudentFunction {
   }
 }
 
-module.exports = StudentFunction;
+module.exports = TeacherFunction;
