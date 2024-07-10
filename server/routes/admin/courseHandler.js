@@ -1,15 +1,16 @@
 const router = require("express").Router();
-
-const { getCourses } = require("../../controllers/get/courseGetter");
 const {
   courseAddedValidator,
   getCourseValidator,
 } = require("../../middlewares/courseValidator");
-
 const validatorHandler = require("../../middlewares/common/validatorHandler");
-const addCourse = require("../../controllers/post/courseAdd");
-const updateCourse = require("../../controllers/update/courseUpdate");
-const deleteCourse = require("../../controllers/delete/courseDelete");
+const {
+  getCourses,
+  getCoursesByClass,
+  addCourse,
+  updateCourse,
+  deleteCourse,
+} = require("../../controllers/CourseController");
 
 router.get("/", getCourses);
 router.post("/", courseAddedValidator, validatorHandler, addCourse);

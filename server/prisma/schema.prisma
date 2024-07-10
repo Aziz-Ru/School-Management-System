@@ -95,26 +95,25 @@ model Courses {
 model EnrollClass {
   id        String   @id @default(uuid())
   year      String
-  uId    String   @unique
+  uId       String   
   classId   String
   user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
   class     Class    @relation(fields: [classId], references: [classId], onDelete: Cascade)
   createdAt DateTime @default(now())
-
-  @@unique([year, uId])
+  @@unique([year, uId,classId])
 }
+
 
 model EnrollCourse {
   id        Int      @id @default(autoincrement())
   year      String
   courseId  String
-  uId    String
+  uId       String
   courses   Courses  @relation(fields: [courseId], references: [courseCode], onDelete: Cascade)
   user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
   exams     Exam[]
   results   Result[]
   createdAt DateTime @default(now())
-
   @@unique([uId, year])
 }
 
@@ -131,7 +130,6 @@ model Exam {
   result   Result[]
   type     ExamType     @default(Final)
   year     String
-
   @@unique([year, courseId, type])
 }
 
@@ -144,10 +142,10 @@ model Result {
   course    EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
   user      User         @relation(fields: [uId], references: [uId], onDelete: Cascade)
   marks     Float        @default(33.0)
-  grade     String?      @default("A+") // A+ A- B+ B- C+ C- D+ D- F
+  grade     String?      @default("A+")
   createdAt DateTime     @default(now())
-
   @@unique([uId, courseId, examId])
+  
 }
 
 model Attendence {

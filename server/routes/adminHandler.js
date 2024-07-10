@@ -11,6 +11,6 @@ router.use("/teacher", require("./admin/TeacherHandler"));
 router.use("/student", require("./admin/StudentHandler"));
 router.use("/course", require("./admin/courseHandler"));
 router.use("/school", require("./admin/schoolHandler"));
-router.use("/exam", require("./admin/examHandler"));
+// router.use("/exam", require("./admin/examHandler"));
 
 module.exports = router;
