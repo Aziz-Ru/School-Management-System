@@ -11,14 +11,23 @@ const {
   updateCourse,
   deleteCourse,
 } = require("../../controllers/CourseController");
+const { getClassValidator } = require("../../middlewares/ClassValidator");
 
 router.get("/", getCourses);
+router.get("/:classId", getClassValidator, validatorHandler, getCoursesByClass);
+
 router.post("/", courseAddedValidator, validatorHandler, addCourse);
-router.put("/:courseCode", getCourseValidator, validatorHandler, updateCourse);
+router.put(
+  "/:classId/:courseCode",
+  getClassValidator,
+  getCourseValidator,
+  validatorHandler,
+  updateCourse
+);
 
 router.delete(
-  "/:courseCode",
-  getCourseValidator,
+  "/:classId/:courseCode",
+  getClassValidator,
   validatorHandler,
   deleteCourse
 );

@@ -3,6 +3,7 @@ const prisma = require("../prisma/prismaClient");
 
 const getCourseValidator = [
   param("courseCode")
+    .optional()
     .exists()
     .withMessage("courseCode is required")
     .custom(async (value) => {
@@ -42,7 +43,7 @@ const courseAddedValidator = [
     .withMessage("totalMarks must be a number between 1 and 100"),
   body("credit")
     .optional()
-    .isInt({ max: 3, min: 1 })
+    .isInt({ max: 5, min: 1 })
     .withMessage("credit must be a number between 1 and 3"),
   body("classId")
     .isInt({ max: 12, min: 1 })

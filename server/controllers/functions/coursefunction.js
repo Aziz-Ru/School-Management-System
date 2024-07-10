@@ -1,4 +1,5 @@
 const prisma = require("../../prisma/prismaClient");
+const ClassFunction = require("./classfunction");
 
 class CourseFunction {
   static async getCourses(req) {
@@ -44,6 +45,7 @@ class CourseFunction {
           },
         },
       });
+      await ClassFunction.updateClass({ params: { classId }, body: {} });
       return course;
     } catch (error) {
       //   console.log(error.message);
@@ -52,12 +54,13 @@ class CourseFunction {
   }
   static async updateCourse(req) {
     try {
-      const { courseCode } = req.params;
+      const { classId, courseCode } = req.params;
       const { courseName, totalMarks, credit } = req.body;
 
       const course = await prisma.courses.update({
         where: {
           courseCode: courseCode,
+          classId: classId,
         },
         data: {
           name: courseName,
@@ -73,10 +76,11 @@ class CourseFunction {
   }
   static async deleteCourse(req) {
     try {
-      const { courseCode } = req.params;
+      const { classId, courseCode } = req.params;
       const course = await prisma.courses.delete({
         where: {
           courseCode: courseCode,
+          classId: classId,
         },
       });
       return course;
