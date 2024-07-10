@@ -19,9 +19,9 @@ const validatorHandler = require("../../middlewares/common/validatorHandler");
 // Handle incoming HTTP requests to /students
 
 router.get("/", getStudents);
-router.get("/:id", getStudentValidator, validatorHandler, getStudent);
+router.get("/:uId", getStudentValidator, validatorHandler, getStudent);
 router.post("/", addStudentValidator, validatorHandler, addStudent);
-router.put("/:userId", getStudentValidator, validatorHandler, updateStudent);
-router.delete("/:userId", getStudentValidator, validatorHandler, deleteStudent);
+router.put("/:uId", getStudentValidator, validatorHandler, updateStudent);
+router.delete("/:uId", getStudentValidator, validatorHandler, deleteStudent);
 
 module.exports = router;
