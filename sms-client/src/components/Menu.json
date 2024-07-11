@@ -1,0 +1,130 @@
+[
+  {
+    "title": "Home",
+    "path": "/"
+  },
+  {
+    "title": "CPSC",
+    "children": []
+  },
+  {
+    "title": "Academic",
+    "children": [
+      {
+        "title": "Class Teacher",
+        "path": "ct",
+        "children": [
+          {
+            "title": "primary",
+            "children": [
+              {
+                "title": 1,
+                "path": "1"
+              },
+              {
+                "title": 2,
+                "path": "2"
+              },
+              {
+                "title": 3,
+                "path": "3"
+              },
+              {
+                "title": 4,
+                "path": "4"
+              },
+              {
+                "title": 5,
+                "path": "5"
+              }
+            ]
+          },
+          {
+            "title": "School",
+            "children": [
+              {
+                "title": 6,
+                "path": "6"
+              },
+              {
+                "title": 7,
+                "path": "2"
+              },
+              {
+                "title": 8,
+                "path": "3"
+              },
+              {
+                "title": 9,
+                "path": "4"
+              },
+              {
+                "title": 10,
+                "path": "5"
+              }
+            ]
+          },
+          {
+            "title": "College",
+            "children": [
+              {
+                "title": 11,
+                "path": "1"
+              },
+              {
+                "title": 12,
+                "path": "2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Department",
+        "path": "ct"
+      },
+      {
+        "title": "Syllabus",
+        "path": "ct"
+      },
+      {
+        "title": "Class Routine",
+        "path": "ct"
+      },
+      {
+        "title": "Facilites",
+        "path": "ct"
+      }
+    ]
+  },
+  {
+    "title": "Achivements",
+    "children": [
+      {
+        "title": "Board Result",
+        "path": "Achivements"
+      },
+      {
+        "title": "Academic Result",
+        "path": "Achivements"
+      }
+    ]
+  },
+  {
+    "title": "Gallery",
+    "children": [
+      {
+        "title": "Video",
+        "path": "p"
+      },
+      {
+        "title": "photo",
+        "path": "photo"
+      }
+    ]
+  },
+  {
+    "title": "Login",
+    "path": "/login"
+  }
+]
