@@ -1,79 +1,168 @@
 [
   {
     "title": "Home",
-    "path": "/"
-  },
-  {
-    "title": "CPSC",
+    "path": "/",
+    "id": "a",
     "children": []
   },
   {
+    "title": "School",
+    "id": "b",
+    "path": "",
+    "children": [
+      {
+        "title": "Vice Chancellor",
+        "path": "/school/vc",
+        "id": "ba",
+        "children": []
+      },
+      {
+        "title": "Governing Body",
+        "path": "/school/governing-body",
+        "id": "bb",
+        "children": []
+      },
+      {
+        "title": "Commitee",
+        "path": "/school/commitee",
+        "id": "bc",
+        "children": [
+          {
+            "title": "Academic",
+            "path": "/school/commitee/academic",
+            "id": "bca"
+          },
+
+          {
+            "title": "Exam",
+            "path": "/school/commitee/exam",
+            "id": "bcb"
+          },
+          {
+            "title": "Library",
+            "path": "/school/commitee/library",
+            "id": "bcc"
+          },
+          {
+            "title": "Sports",
+            "path": "/school/commitee/sports",
+            "id": "bcd"
+          },
+
+          {
+            "title": "ICT",
+            "path": "/school/commitee/ict",
+            "id": "bce"
+          }
+        ]
+      },
+      {
+        "title": "Official Staff",
+        "path": "/school/official-staff",
+        "id": "bd",
+        "children": [
+          {
+            "title": "Staff",
+            "path": "/school/official-staff/staff",
+            "id": "bda"
+          },
+          {
+            "title": "Supporting Staff",
+            "path": "/school/official-staff/supporting-staff",
+            "id": "bdb"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "title": "Academic",
+    "id": "c",
+    "path": "",
     "children": [
       {
         "title": "Class Teacher",
-        "path": "ct",
+        "id": "ca",
+        "path": "/academic/class-Teacher",
         "children": [
           {
             "title": "primary",
+            "id": "caa",
+            "path": "/academic/class-Teacher/primary",
             "children": [
               {
-                "title": 1,
-                "path": "1"
+                "title": "One",
+                "path": "/academic/class-Teacher/primary/1",
+                "id": "caaa"
               },
               {
-                "title": 2,
-                "path": "2"
+                "title": "Two",
+                "path": "/academic/class-Teacher/primary/2",
+                "id": "caab"
               },
               {
-                "title": 3,
-                "path": "3"
+                "title": "Three",
+                "path": "/academic/class-Teacher/primary/3",
+                "id": "caac"
               },
               {
-                "title": 4,
-                "path": "4"
+                "title": "Four",
+                "path": "/academic/class-Teacher/primary/4",
+                "id": "caad"
               },
               {
-                "title": 5,
-                "path": "5"
+                "title": "Five",
+                "path": "/academic/class-Teacher/primary/5",
+                "id": "caae"
               }
             ]
           },
           {
             "title": "School",
+            "id": "cab",
+            "path": "/academic/class-Teacher/school",
             "children": [
               {
-                "title": 6,
-                "path": "6"
+                "title": "Six",
+                "path": "/academic/class-Teacher/school/6",
+                "id": "caba"
               },
               {
-                "title": 7,
-                "path": "2"
+                "title": "Seven",
+                "path": "/academic/class-Teacher/school/7",
+                "id": "cabb"
               },
               {
-                "title": 8,
-                "path": "3"
+                "title": "Eight",
+                "path": "/academic/class-Teacher/school/8",
+                "id": "cabc"
               },
               {
-                "title": 9,
-                "path": "4"
+                "title": "Nine",
+                "path": "/academic/class-Teacher/school/9",
+                "id": "cabd"
               },
               {
-                "title": 10,
-                "path": "5"
+                "title": "Ten",
+                "path": "/academic/class-Teacher/school/10",
+                "id": "cabe"
               }
             ]
           },
           {
             "title": "College",
+            "id": "cac",
+            "path": "/academic/class-Teacher/college",
             "children": [
               {
-                "title": 11,
-                "path": "1"
+                "title": "Eleven",
+                "path": "/academic/class-Teacher/college/11",
+                "id": "caca"
               },
               {
-                "title": 12,
-                "path": "2"
+                "title": "Twelve",
+                "path": "/academic/class-Teacher/college/12",
+                "id": "cacb"
               }
             ]
           }
@@ -81,50 +170,215 @@
       },
       {
         "title": "Department",
-        "path": "ct"
+        "id": "cb",
+        "children": [
+          {
+            "title": "Science",
+            "id": "cba",
+            "path": "/academic/department/science",
+            "children": [
+              {
+                "title": "Physics",
+                "path": "/academic/department/science/physics",
+                "id": "cbaa"
+              },
+              {
+                "title": "Chemistry",
+                "path": "/academic/department/science/chemistry",
+                "id": "cbab"
+              },
+              {
+                "title": "Biology",
+                "path": "/academic/department/science/biology",
+                "id": "cbac"
+              },
+              {
+                "title": "Mathematics",
+                "path": "/academic/department/science/mathematics",
+                "id": "cbad"
+              }
+            ]
+          },
+          {
+            "title": "Commerce",
+            "id": "cab",
+            "path": "/academic/department/commerce",
+            "children": [
+              {
+                "title": "Accounting",
+                "path": "/academic/department/commerce/accounting",
+                "id": "caba"
+              },
+              {
+                "title": "Management",
+                "path": "/academic/department/commerce/management",
+                "id": "cabb"
+              },
+              {
+                "title": "Finance",
+                "path": "/academic/department/commerce/finance",
+                "id": "cabc"
+              },
+              {
+                "title": "Economics",
+                "path": "/academic/department/commerce/economics",
+                "id": "cabd"
+              }
+            ]
+          },
+          {
+            "title": "Humanities",
+            "id": "cac",
+            "path": "/academic/department/humanities",
+            "children": [
+              {
+                "title": "History",
+                "path": "/academic/department/commerce/history",
+                "id": "caca"
+              },
+              {
+                "title": "Geography",
+                "path": "/academic/department/commerce/geography",
+                "id": "cacb"
+              },
+              {
+                "title": "Sociology",
+                "path": "/academic/department/commerce/sociology",
+                "id": "cacc"
+              },
+              {
+                "title": "Political Science",
+                "path": "/academic/department/commerce/political-Science",
+                "id": "cacd"
+              }
+            ]
+          }
+        ]
       },
       {
         "title": "Syllabus",
-        "path": "ct"
+        "id": "cc",
+        "path": "",
+        "children": [
+          {
+            "title": "Primary",
+            "path": "syllabus/primary",
+            "id": "cca"
+          },
+          {
+            "title": "School",
+            "path": "syllabus/school",
+            "id": "ccb"
+          },
+          {
+            "title": "College",
+            "path": "syllabus/college",
+            "id": "ccc"
+          }
+        ]
       },
       {
         "title": "Class Routine",
-        "path": "ct"
+        "path": "/class-Routine",
+        "id": "cd",
+        "children": [
+          {
+            "title": "Primary",
+            "path": "class-Routine/Primary",
+            "id": "cda"
+          },
+          {
+            "title": "School",
+            "path": "class-Routine/School",
+            "id": "cdb"
+          },
+          {
+            "title": "College",
+            "path": "class-Routine/College",
+            "id": "cdc"
+          }
+        ]
       },
       {
-        "title": "Facilites",
-        "path": "ct"
+        "title": "Facility",
+        "id": "ce",
+        "path": "",
+        "children": [
+          {
+            "title": "Library",
+            "path": "facility/Library",
+            "id": "cea"
+          },
+          {
+            "title": "Laboratory",
+            "path": "facility/Laboratory",
+            "id": "ceb"
+          },
+          {
+            "title": "ICT",
+            "path": "facility/Computer-Lab",
+            "id": "cec"
+          },
+          {
+            "title": "Sports",
+            "path": "facility/Sports",
+            "id": "ced"
+          }
+        ]
       }
     ]
   },
   {
     "title": "Achivements",
+    "id": "d",
+    "path": "",
     "children": [
       {
         "title": "Board Result",
-        "path": "Achivements"
+        "path": "achivements/board-result",
+        "id": "da",
+        "children": []
       },
       {
         "title": "Academic Result",
-        "path": "Achivements"
+        "path": "achivements/academic-result",
+        "id": "db",
+        "children": []
       }
     ]
   },
   {
     "title": "Gallery",
+    "id": "e",
+    "path": "",
     "children": [
       {
         "title": "Video",
-        "path": "p"
+        "path": "gallery/video",
+        "id": "ea"
       },
       {
         "title": "photo",
-        "path": "photo"
+        "path": "gallery/photo",
+        "id": "eb"
       }
     ]
   },
   {
     "title": "Login",
-    "path": "/login"
+    "id": "f",
+    "path": "",
+    "children": [
+      {
+        "title": "Employee",
+        "path": "Employee",
+        "id": "fb"
+      },
+      {
+        "title": "Student",
+        "path": "student",
+        "id": "fc"
+      }
+    ]
   }
 ]

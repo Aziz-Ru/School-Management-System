@@ -16,7 +16,7 @@ const Hero = () => {
       </div>
       <div>
         <div className="flex flex-col justify-center items-center">
-          <h1 className="text-green-600 ">
+          <h1 className="text-green-600 text-4xl font-bold">
             <div className="flex flex-col justify-center items-center">
               <span>Cantonment Public School & </span>
               <span>College, Rangpur.</span>
