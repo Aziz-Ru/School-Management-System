@@ -27,7 +27,7 @@ const Navbar = () => {
               )}
 
               {isFocused1.id === item1.id && (
-                <ul className="absolute bg-indigo-900 ">
+                <ul className="absolute bg-indigo-900 w-36 ">
                   {item1.children?.map((item2, ind2) => {
                     return (
                       <li
@@ -45,7 +45,7 @@ const Navbar = () => {
                         )}
 
                         {isFocused2.id === item2.id && (
-                          <ul className="absolute bg-indigo-900 ml-28 mt-[-10px] flex flex-col justify-start z-10">
+                          <ul className="absolute bg-indigo-900 w-24 ml-32 mt-[-10px] flex flex-col justify-start z-10">
                             {item2.children?.map((item3, ind3) => {
                               return (
                                 <li
@@ -69,7 +69,7 @@ const Navbar = () => {
                                   )}
 
                                   {isFocused3.id === item3.id && (
-                                    <ul className="absolute bg-indigo-900 mt-[-33px] ml-16 z-50">
+                                    <ul className="absolute bg-indigo-900 mt-[-33px] ml-20 z-50">
                                       {item3.children?.map((item4, ind4) => {
                                         return (
                                           <li
@@ -79,7 +79,7 @@ const Navbar = () => {
                                             {item4.path ? (
                                               <Link
                                                 href={item4.path}
-                                                className="w-full"
+                                                className="font-bold w-full"
                                               >
                                                 {item4.title}
                                               </Link>

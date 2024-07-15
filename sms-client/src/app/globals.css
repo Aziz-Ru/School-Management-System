@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .linkIcon {
+    @apply bg-cyan-900 text-white px-4 py-2 font-semibold rounded-md shadow-md hover:bg-cyan-700;
+  }
+}

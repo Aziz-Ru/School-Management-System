@@ -1,0 +1,39 @@
+{
+  "messages": [
+    {
+      "title": "Message From President",
+      "msg": "Dear Students, I am happy to announce that the college will be reopening on 1st June 2021. Please be prepared to attend the classes. Thank you.",
+      "imgLink": "./person.svg",
+      "path": "/message/1"
+    },
+    {
+      "title": "Message From Principal",
+      "msg": "Dear Students, I am happy to announce that the college will be reopening on 1st June 2021. Please be prepared to attend the classes. Thank you.Dear Students, I am happy to announce that the college will be reopening on 1st June 2021. Please be prepared to attend the classes. Thank you.",
+      "imgLink": "./person.svg",
+      "path": "/message/1"
+    },
+    {
+      "title": "Message From Vice Principal",
+      "msg": "Dear Students, I am happy to announce that the college will be reopening on 1st June 2021. Please be prepared to attend the classes. Thank you.",
+      "imgLink": "./person.svg",
+      "path": "/message/1"
+    }
+  ],
+  "notices": [
+    {
+      "title": "Notice 1",
+      "createdAt": "2021-05-01",
+      "path": "/"
+    },
+    {
+      "title": "Notice 1",
+      "createdAt": "2021-05-01",
+      "path": "/"
+    },
+    {
+      "title": "Notice 1",
+      "createdAt": "2021-05-01",
+      "path": "/"
+    }
+  ]
+}
