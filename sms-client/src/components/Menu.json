@@ -83,36 +83,36 @@
       {
         "title": "Class Teacher",
         "id": "ca",
-        "path": "/academic/class-Teacher",
+        "path": "/academic/class-teacher",
         "children": [
           {
             "title": "primary",
             "id": "caa",
-            "path": "/academic/class-Teacher/primary",
+            "path": "/academic/class-teacher/primary",
             "children": [
               {
                 "title": "One",
-                "path": "/academic/class-Teacher/primary/1",
+                "path": "/academic/class-teacher/primary/1",
                 "id": "caaa"
               },
               {
                 "title": "Two",
-                "path": "/academic/class-Teacher/primary/2",
+                "path": "/academic/class-teacher/primary/2",
                 "id": "caab"
               },
               {
                 "title": "Three",
-                "path": "/academic/class-Teacher/primary/3",
+                "path": "/academic/class-teacher/primary/3",
                 "id": "caac"
               },
               {
                 "title": "Four",
-                "path": "/academic/class-Teacher/primary/4",
+                "path": "/academic/class-teacher/primary/4",
                 "id": "caad"
               },
               {
                 "title": "Five",
-                "path": "/academic/class-Teacher/primary/5",
+                "path": "/academic/class-teacher/primary/5",
                 "id": "caae"
               }
             ]
@@ -120,31 +120,31 @@
           {
             "title": "School",
             "id": "cab",
-            "path": "/academic/class-Teacher/school",
+            "path": "/academic/class-teacher/school",
             "children": [
               {
                 "title": "Six",
-                "path": "/academic/class-Teacher/school/6",
+                "path": "/academic/class-teacher/school/6",
                 "id": "caba"
               },
               {
                 "title": "Seven",
-                "path": "/academic/class-Teacher/school/7",
+                "path": "/academic/class-teacher/school/7",
                 "id": "cabb"
               },
               {
                 "title": "Eight",
-                "path": "/academic/class-Teacher/school/8",
+                "path": "/academic/class-teacher/school/8",
                 "id": "cabc"
               },
               {
                 "title": "Nine",
-                "path": "/academic/class-Teacher/school/9",
+                "path": "/academic/class-teacher/school/9",
                 "id": "cabd"
               },
               {
                 "title": "Ten",
-                "path": "/academic/class-Teacher/school/10",
+                "path": "/academic/class-teacher/school/10",
                 "id": "cabe"
               }
             ]
@@ -165,6 +165,28 @@
                 "id": "cacb"
               }
             ]
+          }
+        ]
+      },
+      {
+        "title": "Class Routine",
+        "path": "/academic/class-routine",
+        "id": "cd",
+        "children": [
+          {
+            "title": "Primary",
+            "path": "/academic/class-routine/Primary",
+            "id": "cda"
+          },
+          {
+            "title": "School",
+            "path": "/academic/class-routine/School",
+            "id": "cdb"
+          },
+          {
+            "title": "College",
+            "path": "/academic/class-routine/College",
+            "id": "cdc"
           }
         ]
       },
@@ -277,28 +299,7 @@
           }
         ]
       },
-      {
-        "title": "Class Routine",
-        "path": "/class-Routine",
-        "id": "cd",
-        "children": [
-          {
-            "title": "Primary",
-            "path": "class-Routine/Primary",
-            "id": "cda"
-          },
-          {
-            "title": "School",
-            "path": "class-Routine/School",
-            "id": "cdb"
-          },
-          {
-            "title": "College",
-            "path": "class-Routine/College",
-            "id": "cdc"
-          }
-        ]
-      },
+
       {
         "title": "Facility",
         "id": "ce",
