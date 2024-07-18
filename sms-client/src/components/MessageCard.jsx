@@ -12,7 +12,7 @@ const MessageCard = ({ title, msg, path, imgLink }) => {
         </div>
         <div className="relative py-2">
           <div>{msg}</div>
-          <div className="absolute right-0 mt-1">
+          <div className="absolute right-0 my-1">
             <Link href={path} className="linkIcon right-0">
               Read More
             </Link>

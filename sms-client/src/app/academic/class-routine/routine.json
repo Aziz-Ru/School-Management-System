@@ -4,33 +4,33 @@
     "name": "Primary",
     "children": [
       {
-        "id": 11,
+        "id": "11",
         "name": "Class One",
         "children": []
       },
       {
-        "id": 12,
+        "id": "12",
         "name": "Class Two",
         "children": []
       },
       {
-        "id": 13,
+        "id": "13",
         "name": "Class Three",
         "children": []
       },
       {
-        "id": 14,
+        "id": "14",
         "name": "Class Four",
         "children": []
       },
       {
-        "id": 15,
+        "id": "15",
         "name": "Class Five",
         "children": []
       }
     ]
   },
-  "School": {
+  "school": {
     "id": 2,
     "name": "School",
     "children": [
@@ -61,7 +61,7 @@
       }
     ]
   },
-  "College": {
+  "college": {
     "id": 3,
     "name": "College",
     "children": [
