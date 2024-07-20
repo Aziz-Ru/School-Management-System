@@ -1,0 +1,142 @@
+[
+  {
+    "className": "Class One",
+    "sections": [
+      {
+        "sectionName": "Padma",
+        "days": [
+          {
+            "dayName": "Saturday",
+            "routine": [
+              {
+                "courseName": "Bangla",
+                "time": "9:30 PM",
+                "teacher": "AKZ"
+              },
+              {
+                "courseName": "English",
+                "time": "10:30 PM",
+                "teacher": "BKZ"
+              },
+              {
+                "courseName": "Math",
+                "time": "11:30 PM",
+                "teacher": "AKZ"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "dayName": "Saturday",
+            "routine": [
+              {
+                "courseName": "Bangla",
+                "teacher": "AKZ"
+              },
+              {
+                "courseName": "English",
+                "teacher": "BKZ"
+              },
+              {
+                "courseName": "Math",
+                "teacher": "AKZ"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "className": "Class Two",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Three",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Four",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Five",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Six",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Seven",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Eight",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Nine",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Ten",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Eleven",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  },
+  {
+    "className": "Class Twelve",
+    "sections": [
+      {
+        "name": "Padma"
+      }
+    ]
+  }
+]

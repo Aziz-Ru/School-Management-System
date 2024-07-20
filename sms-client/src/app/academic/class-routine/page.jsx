@@ -1,3 +1,4 @@
+import Link from "next/link";
 import routine from "./routine.json";
 const page = () => {
   return (
@@ -16,7 +17,9 @@ const page = () => {
               return (
                 <tr className=" " key={level.id}>
                   <td className="border-2 p-2 font-semibold">{level.name}</td>
-                  <td className="border-2 p-2">view</td>
+                  <td className="border-2 p-2">
+                    <Link href={level.path}>view</Link>
+                  </td>
                 </tr>
               );
             })}
@@ -24,7 +27,9 @@ const page = () => {
               return (
                 <tr className=" " key={level.id}>
                   <td className="border-2 p-2 font-semibold">{level.name}</td>
-                  <td className="border-2 p-2">view</td>
+                  <td className="border-2 p-2">
+                    <Link href={level.path}>view</Link>
+                  </td>
                 </tr>
               );
             })}
@@ -32,7 +37,9 @@ const page = () => {
               return (
                 <tr className=" " key={level.id}>
                   <td className="border-2 p-2 font-semibold">{level.name}</td>
-                  <td className="border-2 p-2">view</td>
+                  <td className="border-2 p-2">
+                    <Link href={level.path}>view</Link>
+                  </td>
                 </tr>
               );
             })}

@@ -6,27 +6,27 @@
       {
         "id": "11",
         "name": "Class One",
-        "children": []
+        "path": "/academic/class-routine/1"
       },
       {
         "id": "12",
         "name": "Class Two",
-        "children": []
+        "path": "/academic/class-routine/2"
       },
       {
         "id": "13",
         "name": "Class Three",
-        "children": []
+        "path": "/academic/class-routine/3"
       },
       {
         "id": "14",
         "name": "Class Four",
-        "children": []
+        "path": "/academic/class-routine/4"
       },
       {
         "id": "15",
         "name": "Class Five",
-        "children": []
+        "path": "/academic/class-routine/5"
       }
     ]
   },
@@ -37,43 +37,45 @@
       {
         "id": 21,
         "name": "Class Six",
-        "children": []
+        "path": "/academic/class-routine/6"
       },
       {
         "id": 22,
         "name": "Class Seven",
-        "children": []
+        "path": "/academic/class-routine/7"
       },
       {
         "id": 23,
         "name": "Class Eight",
-        "children": []
+        "path": "/academic/class-routine/8"
       },
       {
         "id": 24,
         "name": "Class Nine",
+        "path": "/academic/class-routine/9",
         "children": []
       },
       {
         "id": 25,
         "name": "Class Ten",
-        "children": []
+        "path": "/academic/class-routine/10"
       }
     ]
   },
   "college": {
     "id": 3,
     "name": "College",
+
     "children": [
       {
         "id": 31,
         "name": "Class Eleven",
-        "children": []
+        "path": "/academic/class-routine/11"
       },
       {
         "id": 32,
         "name": "Class Twelve",
-        "children": []
+        "path": "/academic/class-routine/12"
       }
     ]
   }

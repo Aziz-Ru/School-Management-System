@@ -15,14 +15,14 @@ const Hero = () => {
         </svg>
       </div>
       <div>
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-green-600 text-4xl font-bold">
-            <div className="flex flex-col justify-center items-center">
-              <span>Cantonment Public School & </span>
-              <span>College, Rangpur.</span>
+        <div className="">
+          <h1 className="text-green-600 text-5xl font-extrabold flex items-center justify-center">
+            <div className=" text-center">
+              Cantonment Public
+              <br className="md:hidden" /> School & College Rangpur.
             </div>
           </h1>
-          <div>
+          <div className="flex flex-col items-center my-3">
             <div className="text-xl text-indigo-600 font-semibold flex gap-2">
               <span>Education</span>
               <span>|</span>
