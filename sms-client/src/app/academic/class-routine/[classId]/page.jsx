@@ -1,30 +1,33 @@
-import Routine from "./routine.json";
-
+import AllRoutine from "./routine.json";
 const page = ({ params }) => {
   const { classId } = params;
-  const classID = parseInt(classId) - 1;
-  const routine = Routine[classID];
-  console.log(routine.sections);
+
+  const routine = AllRoutine[parseInt(classId) - 1];
+
   return (
-    <section className="flex flex-col">
-      <div className="my-4">
-        <h1 className="text-4xl font-bold text-center">{routine.className}</h1>
-      </div>
-      <div>
-        {routine.sections.map((section, ind1) => {
-          return (
-            <div key={ind1}>
-              {section.sectionName}
-              <div>
-                {section.days.map((day, ind2) => {
-                  return <div key={ind2}>{day.dayName}</div>;
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
+    <div>
+      {routine.sections.map((section, ind1) => {
+        return (
+          <table key={ind1} className="my-4 mx-6">
+            <span className="text-xl font-bold">{section.sectionName}</span>
+            {section.days.map((day, ind2) => {
+              return (
+                <tr key={ind2}>
+                  <td>{day.name}</td>
+                  {day.courses.map((course, ind3) => {
+                    return (
+                      <td key={ind3} className="px-6 py-2 ">
+                        {course.name}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </table>
+        );
+      })}
+    </div>
   );
 };
 

@@ -1,27 +1,181 @@
 [
   {
-    "className": "Class One",
+    "id": "one",
+    "className": "One",
     "sections": [
       {
         "sectionName": "Padma",
         "days": [
           {
-            "dayName": "Saturday",
-            "routine": [
+            "name": "Saturday",
+            "courses": [
               {
-                "courseName": "Bangla",
-                "time": "9:30 PM",
-                "teacher": "AKZ"
+                "name": "Bangla"
               },
               {
-                "courseName": "English",
-                "time": "10:30 PM",
-                "teacher": "BKZ"
+                "name": "English"
               },
               {
-                "courseName": "Math",
-                "time": "11:30 PM",
-                "teacher": "AKZ"
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
               }
             ]
           }
@@ -31,19 +185,86 @@
         "sectionName": "Meghna",
         "days": [
           {
-            "dayName": "Saturday",
-            "routine": [
+            "name": "Saturday",
+            "courses": [
               {
-                "courseName": "Bangla",
-                "teacher": "AKZ"
+                "name": "English"
               },
               {
-                "courseName": "English",
-                "teacher": "BKZ"
+                "name": "Math"
               },
               {
-                "courseName": "Math",
-                "teacher": "AKZ"
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
               }
             ]
           }
@@ -52,90 +273,3005 @@
     ]
   },
   {
-    "className": "Class Two",
+    "id": "two",
+    "className": "Two",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Three",
+    "id": "three",
+    "className": "Three",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Four",
+    "id": "four",
+    "className": "Four",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Five",
+    "id": "five",
+    "className": "Five",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Six",
+    "id": "six",
+    "className": "Six",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Seven",
+    "id": "seven",
+    "className": "Seven",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Eight",
+    "id": "eight",
+    "className": "Eight",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Nine",
+    "id": "nine",
+    "className": "Nine",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Ten",
+    "id": "ten",
+    "className": "Ten",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Eleven",
+    "id": "eleven",
+    "className": "Eleven",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "className": "Class Twelve",
+    "id": "twelve",
+    "className": "Twelve",
     "sections": [
       {
-        "name": "Padma"
+        "sectionName": "Padma",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Tista",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              },
+              {
+                "name": "English"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sectionName": "Meghna",
+        "days": [
+          {
+            "name": "Saturday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Sunday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Monday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Tuesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Wednesday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          },
+          {
+            "name": "Thursday",
+            "courses": [
+              {
+                "name": "English"
+              },
+              {
+                "name": "Math"
+              },
+              {
+                "name": "Bangla"
+              }
+            ]
+          }
+        ]
       }
     ]
   }
