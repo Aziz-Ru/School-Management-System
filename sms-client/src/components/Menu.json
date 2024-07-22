@@ -175,17 +175,17 @@
         "children": [
           {
             "title": "Primary",
-            "path": "/academic/class-routine/Primary",
+            "path": "/academic/class-routine/1",
             "id": "cda"
           },
           {
             "title": "School",
-            "path": "/academic/class-routine/School",
+            "path": "/academic/class-routine/6",
             "id": "cdb"
           },
           {
             "title": "College",
-            "path": "/academic/class-routine/College",
+            "path": "/academic/class-routine/11",
             "id": "cdc"
           }
         ]
@@ -272,6 +272,28 @@
                 "title": "Political Science",
                 "path": "/academic/department/commerce/political-Science",
                 "id": "cacd"
+              }
+            ]
+          },
+          {
+            "title": "General",
+            "path": "/academic/department/general",
+            "id": "cad",
+            "children": [
+              {
+                "title": "Bangla",
+                "id": "cada",
+                "path": "/academic/department/general/bangla"
+              },
+              {
+                "title": "English",
+                "id": "cadb",
+                "path": "/academic/department/general/english"
+              },
+              {
+                "title": "Ict",
+                "id": "cadc",
+                "path": "/academic/department/general/ict"
               }
             ]
           }
