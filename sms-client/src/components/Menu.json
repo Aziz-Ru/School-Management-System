@@ -197,105 +197,22 @@
           {
             "title": "Science",
             "id": "cba",
-            "path": "/academic/department/science",
-            "children": [
-              {
-                "title": "Physics",
-                "path": "/academic/department/science/physics",
-                "id": "cbaa"
-              },
-              {
-                "title": "Chemistry",
-                "path": "/academic/department/science/chemistry",
-                "id": "cbab"
-              },
-              {
-                "title": "Biology",
-                "path": "/academic/department/science/biology",
-                "id": "cbac"
-              },
-              {
-                "title": "Mathematics",
-                "path": "/academic/department/science/mathematics",
-                "id": "cbad"
-              }
-            ]
+            "path": "/academic/department/science"
           },
           {
             "title": "Commerce",
             "id": "cab",
-            "path": "/academic/department/commerce",
-            "children": [
-              {
-                "title": "Accounting",
-                "path": "/academic/department/commerce/accounting",
-                "id": "caba"
-              },
-              {
-                "title": "Management",
-                "path": "/academic/department/commerce/management",
-                "id": "cabb"
-              },
-              {
-                "title": "Finance",
-                "path": "/academic/department/commerce/finance",
-                "id": "cabc"
-              },
-              {
-                "title": "Economics",
-                "path": "/academic/department/commerce/economics",
-                "id": "cabd"
-              }
-            ]
+            "path": "/academic/department/commerce"
           },
           {
             "title": "Humanities",
             "id": "cac",
-            "path": "/academic/department/humanities",
-            "children": [
-              {
-                "title": "History",
-                "path": "/academic/department/commerce/history",
-                "id": "caca"
-              },
-              {
-                "title": "Geography",
-                "path": "/academic/department/commerce/geography",
-                "id": "cacb"
-              },
-              {
-                "title": "Sociology",
-                "path": "/academic/department/commerce/sociology",
-                "id": "cacc"
-              },
-              {
-                "title": "Political Science",
-                "path": "/academic/department/commerce/political-Science",
-                "id": "cacd"
-              }
-            ]
+            "path": "/academic/department/humanities"
           },
           {
             "title": "General",
             "path": "/academic/department/general",
-            "id": "cad",
-            "children": [
-              {
-                "title": "Bangla",
-                "id": "cada",
-                "path": "/academic/department/general/bangla"
-              },
-              {
-                "title": "English",
-                "id": "cadb",
-                "path": "/academic/department/general/english"
-              },
-              {
-                "title": "Ict",
-                "id": "cadc",
-                "path": "/academic/department/general/ict"
-              }
-            ]
+            "id": "cad"
           }
         ]
       },
@@ -390,18 +307,6 @@
   {
     "title": "Login",
     "id": "f",
-    "path": "",
-    "children": [
-      {
-        "title": "Employee",
-        "path": "Employee",
-        "id": "fb"
-      },
-      {
-        "title": "Student",
-        "path": "student",
-        "id": "fc"
-      }
-    ]
+    "path": "/login"
   }
 ]
