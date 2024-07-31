@@ -1,17 +1,17 @@
 const router = require("express").Router();
-const {
-  courseAddedValidator,
-  getCourseValidator,
-} = require("../../middlewares/courseValidator");
-const validatorHandler = require("../../middlewares/common/validatorHandler");
-const {
+import {
+  addCourse,
+  deleteCourse,
   getCourses,
   getCoursesByClass,
-  addCourse,
   updateCourse,
-  deleteCourse,
-} = require("../../controllers/CourseController");
-const { getClassValidator } = require("../../middlewares/ClassValidator");
+} from "../../controllers/CourseController";
+import { getClassValidator } from "../../middlewares/ClassValidator";
+import validatorHandler from "../../middlewares/common/validatorHandler";
+import {
+  courseAddedValidator,
+  getCourseValidator,
+} from "../../middlewares/courseValidator";
 
 router.get("/", getCourses);
 router.get("/:classId", getClassValidator, validatorHandler, getCoursesByClass);
@@ -32,4 +32,4 @@ router.delete(
   deleteCourse
 );
 
-module.exports = router;
+export default router;

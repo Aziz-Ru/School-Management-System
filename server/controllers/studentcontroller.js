@@ -1,8 +1,8 @@
-const StudentFunction = require("./functions/studentfunction");
+import { getStudents as _getStudents, getStudent as _getStudent, addStudent as _addStudent, updateStudent as _updateStudent, deleteStudent as _deleteStudent } from "./functions/studentfunction";
 
 const getStudents = async (req, res) => {
   try {
-    const students = await StudentFunction.getStudents(req);
+    const students = await _getStudents(req);
     return res.status(200).json({ students });
   } catch (error) {
     // console.log(error.message);
@@ -12,7 +12,7 @@ const getStudents = async (req, res) => {
 
 const getStudent = async (req, res) => {
   try {
-    const student = await StudentFunction.getStudent(req);
+    const student = await _getStudent(req);
     return res.status(200).json({ student });
   } catch (error) {
     // console.log(error.message);
@@ -22,7 +22,7 @@ const getStudent = async (req, res) => {
 
 const addStudent = async (req, res) => {
   try {
-    const student = await StudentFunction.addStudent(req);
+    const student = await _addStudent(req);
     return res.status(200).json({ student });
   } catch (error) {
     console.log(error.message);
@@ -32,7 +32,7 @@ const addStudent = async (req, res) => {
 
 const updateStudent = async (req, res) => {
   try {
-    const student = await StudentFunction.updateStudent(req);
+    const student = await _updateStudent(req);
     return res.status(200).json({ student });
   } catch (error) {
     // console.log(error.message);
@@ -42,7 +42,7 @@ const updateStudent = async (req, res) => {
 
 const deleteStudent = async (req, res) => {
   try {
-    const student = await StudentFunction.deleteStudent(req);
+    const student = await _deleteStudent(req);
     return res.status(200).json({ msg: "student deleted", student });
   } catch (error) {
     // console.log(error.message);
@@ -50,7 +50,7 @@ const deleteStudent = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getStudents,
   addStudent,
   updateStudent,

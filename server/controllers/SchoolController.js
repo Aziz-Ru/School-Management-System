@@ -1,4 +1,4 @@
-const prisma = require("../prisma/prismaClient");
+import prisma from "../prisma/prismaClient";
 
 async function getSchool(req, res) {
   try {
@@ -41,4 +41,4 @@ async function deleteSchool(req, res) {
   }
 }
 
-module.exports = { getSchool, addSchool, deleteSchool };
+export default { getSchool, addSchool, deleteSchool };

@@ -4,4 +4,4 @@ router.get("/", (req, res) => {
   res.send("Student route");
 });
 
-module.exports = router;
+export default router;

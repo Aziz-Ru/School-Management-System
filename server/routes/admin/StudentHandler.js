@@ -1,20 +1,20 @@
 const router = require("express").Router();
 
-const {
+import {
   addStudent,
-  updateStudent,
   deleteStudent,
-  getStudents,
   getStudent,
-} = require("../../controllers/studentcontroller");
+  getStudents,
+  updateStudent,
+} from "../../controllers/studentcontroller";
 
-const {
+import {
   addStudentValidator,
   getStudentValidator,
-} = require("../../middlewares/StudentValidator");
+} from "../../middlewares/StudentValidator";
 
 // Import validatorHandler
-const validatorHandler = require("../../middlewares/common/validatorHandler");
+import validatorHandler from "../../middlewares/common/validatorHandler";
 
 // Handle incoming HTTP requests to /students
 
@@ -24,4 +24,4 @@ router.post("/", addStudentValidator, validatorHandler, addStudent);
 router.put("/:uId", getStudentValidator, validatorHandler, updateStudent);
 router.delete("/:uId", getStudentValidator, validatorHandler, deleteStudent);
 
-module.exports = router;
+export default router;

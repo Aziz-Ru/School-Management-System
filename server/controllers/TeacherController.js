@@ -1,8 +1,14 @@
-const TeacherFunction = require("./functions/teacherfunction");
+import {
+  addTeacher as _addTeacher,
+  deleteTeacher as _deleteTeacher,
+  getTeacher as _getTeacher,
+  getTeachers as _getTeachers,
+  updateTeacher as _updateTeacher,
+} from "./functions/teacherfunction";
 
 const getTeachers = async (req, res) => {
   try {
-    const teacher = await TeacherFunction.getTeachers(req);
+    const teacher = await _getTeachers(req);
     return res.status(200).json({ teacher });
   } catch (error) {
     // console.log(error.message);
@@ -12,7 +18,7 @@ const getTeachers = async (req, res) => {
 
 const getTeacher = async (req, res) => {
   try {
-    const teacher = await TeacherFunction.getTeacher(req);
+    const teacher = await _getTeacher(req);
     return res.status(200).json({ teacher });
   } catch (error) {
     // console.log(error.message);
@@ -22,7 +28,7 @@ const getTeacher = async (req, res) => {
 
 const addTeacher = async (req, res) => {
   try {
-    const teacher = await TeacherFunction.addTeacher(req);
+    const teacher = await _addTeacher(req);
     return res.status(200).json({ teacher });
   } catch (error) {
     console.log(error.message);
@@ -32,7 +38,7 @@ const addTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
   try {
-    const student = await TeacherFunction.updateTeacher(req);
+    const student = await _updateTeacher(req);
     return res.status(200).json({ student });
   } catch (error) {
     // console.log(error.message);
@@ -42,7 +48,7 @@ const updateTeacher = async (req, res) => {
 
 const deleteTeacher = async (req, res) => {
   try {
-    const student = await TeacherFunction.deleteTeacher(req);
+    const student = await _deleteTeacher(req);
     return res
       .status(200)
       .json({ msg: "Teacher Deleted Successfully", student });
@@ -52,7 +58,7 @@ const deleteTeacher = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getTeacher,
   getTeachers,
   addTeacher,

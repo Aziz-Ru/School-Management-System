@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const prisma = require("../../prisma/prismaClient");
+import { exam } from "../../prisma/prismaClient";
 
 router.get("/:classId", async (req, res) => {
-  const exams = await prisma.exam.findMany({ type: "Final" });
+  const exams = await exam.findMany({ type: "Final" });
   return res.status(200).json({ exams });
 });

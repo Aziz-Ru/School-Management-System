@@ -1,37 +1,36 @@
 const router = require("express").Router();
 
-const {
+import {
+  addClass,
+  deleteClass,
   getClass,
   getClasses,
-  addClass,
   updateClass,
-  deleteClass,
-} = require("../../controllers/ClassController");
-const {
+} from "../../controllers/ClassController";
+import {
   addCourse,
+  deleteCourse,
   getCourses,
   updateCourse,
-  deleteCourse,
-} = require("../../controllers/CourseController");
-const {
-  getEnrolledStudents,
+} from "../../controllers/CourseController";
+import {
   addStudentsToClassByClassId,
-} = require("../../controllers/enrolledStuController");
-const { getExams } = require("../../controllers/ExamController");
+  deleteStudentsFromClassById,
+  getEnrolledStudents,
+} from "../../controllers/enrolledStuController";
+import { getExams } from "../../controllers/ExamController";
 
-const {
+import {
   addClassValidator,
   getClassValidator,
-} = require("../../middlewares/ClassValidator");
+} from "../../middlewares/ClassValidator";
 
-const validatorHandler = require("../../middlewares/common/validatorHandler");
-const {
+import validatorHandler from "../../middlewares/common/validatorHandler";
+import {
   courseAddedValidator,
   getCourseValidator,
-} = require("../../middlewares/courseValidator");
-const {
-  enrolledStudentValidator,
-} = require("../../middlewares/enrollesStudValidator");
+} from "../../middlewares/courseValidator";
+import { enrolledStudentValidator } from "../../middlewares/enrollesStudValidator";
 
 router.get("/", getClasses);
 router.get("/:classId", getClassValidator, validatorHandler, getClass);
@@ -54,6 +53,13 @@ router.post(
   enrolledStudentValidator,
   validatorHandler,
   addStudentsToClassByClassId
+);
+
+router.delete(
+  "/:classId/students/:year",
+  getClassValidator,
+  validatorHandler,
+  deleteStudentsFromClassById
 );
 
 // router.post(
@@ -100,4 +106,4 @@ router.delete(
 
 router.get("/:classId/exams/", getExams);
 
-module.exports = router;
+export default router;

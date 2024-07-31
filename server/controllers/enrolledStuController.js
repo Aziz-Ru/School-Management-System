@@ -1,4 +1,4 @@
-const prisma = require("../prisma/prismaClient");
+import prisma from "../prisma/prismaClient";
 
 const getEnrolledStudents = async (req, res) => {
   try {
@@ -7,6 +7,7 @@ const getEnrolledStudents = async (req, res) => {
       where: { year: year, classId: classId },
       orderBy: { uId: "asc" },
     });
+
     return res.status(200).json({ enrolledStudents });
   } catch (error) {
     // console.log("error", error.message);
@@ -34,25 +35,50 @@ const addStudentsToClassByClassId = async (req, res) => {
       });
     }
 
-    const student = await prisma.enrollClass.findMany({
+    const students = await prisma.enrollClass.updateMany({
       where: { classId: prevclassId, year: prevYear },
+      data: { classId: classId, year: year },
     });
-    const updateStudent = student.map((student) => {
-      return {
-        ...student,
-        classId: classId,
-        year: year,
-      };
-    });
-    const enrolledStudents = await prisma.enrollClass.updateMany({
-      where: { classId: prevclassId, year: prevYear },
-      data: updateStudent,
-    });
-    return res.status(200).json({ enrolledStudents });
+
+    return res
+      .status(200)
+      .json({ students, msg: "Students Added Successfully" });
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ errors: { msg: "Something Went Wrong" } });
   }
 };
 
-module.exports = { getEnrolledStudents, addStudentsToClassByClassId };
+const deleteStudentsFromClassById = async (req, res) => {
+  try {
+    const { classId, year } = req.params;
+    const { uId } = req.body;
+    const exstudent = await prisma.enrollClass.findUnique({
+      where: { year_uId_classId: { year: year, uId: uId, classId: classId } },
+    });
+    if (!exstudent) {
+      return res.status(400).json({
+        errors: {
+          msg: "Student is not enrolled in this class",
+        },
+      });
+    }
+
+    const student = await prisma.enrollClass.delete({
+      where: { year_uId_classId: { year: year, uId: uId, classId: classId } },
+    });
+
+    return res
+      .status(200)
+      .json({ student, msg: "Student Deleted Successfully" });
+  } catch (error) {
+    // console.log("error", error.message);
+    return res.status(500).json({ errors: { msg: "Something Went Wrong" } });
+  }
+};
+
+export default {
+  getEnrolledStudents,
+  addStudentsToClassByClassId,
+  deleteStudentsFromClassById,
+};

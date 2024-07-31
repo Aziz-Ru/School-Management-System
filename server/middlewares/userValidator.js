@@ -1,7 +1,6 @@
-const { body, param } = require("express-validator");
-const createError = require("http-errors");
-const prisma = require("../prisma/prismaClient");
-
+import { body, param } from "express-validator";
+import createError from "http-errors";
+import { user } from "../prisma/prismaClient";
 
 const getUserValidator = [
   param("userId")
@@ -9,7 +8,7 @@ const getUserValidator = [
     .withMessage("userId must be required")
     .custom(async (userId) => {
       try {
-        const student = await prisma.user.findUnique({
+        const student = await user.findUnique({
           where: { roll: userId },
         });
         if (!student) {
@@ -35,7 +34,7 @@ const addUserValidator = [
     .withMessage("email must be valid")
     .custom(async (email) => {
       try {
-        const _isExist = await prisma.user.findUnique({
+        const _isExist = await user.findUnique({
           where: { email },
         });
         if (_isExist) {
@@ -79,7 +78,7 @@ const profileValidator = [
     .withMessage("phone must be valid")
     .custom(async (phone) => {
       try {
-        const existPhone = await prisma.user.findUnique({
+        const existPhone = await user.findUnique({
           where: { phone },
         });
         if (existPhone) {
@@ -96,4 +95,4 @@ const profileValidator = [
     .withMessage("imageLink must be valid"),
 ];
 
-module.exports = { getUserValidator, addUserValidator, profileValidator };
+export default { getUserValidator, addUserValidator, profileValidator };

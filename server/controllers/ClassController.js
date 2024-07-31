@@ -1,8 +1,14 @@
-const ClassFunction = require("./functions/classfunction");
+import {
+  addClass as _addClass,
+  deleteClass as _deleteClass,
+  getClass as _getClass,
+  getClasses as _getClasses,
+  updateClass as _updateClass,
+} from "./functions/classfunction";
 
 const getClasses = async (req, res) => {
   try {
-    const classes = await ClassFunction.getClasses(req);
+    const classes = await _getClasses(req);
     // console.log(classes);
     return res.status(200).json({ data: { class: classes } });
   } catch (error) {
@@ -13,7 +19,7 @@ const getClasses = async (req, res) => {
 
 const getClass = async (req, res) => {
   try {
-    const exist = await ClassFunction.getClass(req);
+    const exist = await _getClass(req);
     return res.status(200).json({ data: { class: exist } });
   } catch (error) {
     return res.status(400).json({ errors: { msg: "Something went wrong" } });
@@ -22,7 +28,7 @@ const getClass = async (req, res) => {
 
 const addClass = async (req, res) => {
   try {
-    const newClass = await ClassFunction.addClass(req);
+    const newClass = await _addClass(req);
     return res
       .status(201)
       .json({ data: { class: newClass, msg: "Class added successfully" } });
@@ -33,7 +39,7 @@ const addClass = async (req, res) => {
 
 const updateClass = async (req, res) => {
   try {
-    const updaClass = await ClassFunction.updateClass(req);
+    const updaClass = await _updateClass(req);
     return res
       .status(200)
       .json({ data: { class: updaClass, msg: "Class updated successfully" } });
@@ -45,7 +51,7 @@ const updateClass = async (req, res) => {
 const deleteClass = async (req, res) => {
   try {
     console.log(req.params.classId);
-    const deleteClass = await ClassFunction.deleteClass(req);
+    const deleteClass = await _deleteClass(req);
     return res.status(200).json({
       data: { class: deleteClass, msg: "Class deleted successfully" },
     });
@@ -55,4 +61,4 @@ const deleteClass = async (req, res) => {
   }
 };
 
-module.exports = { getClasses, getClass, addClass, updateClass, deleteClass };
+export default { getClasses, getClass, addClass, updateClass, deleteClass };

@@ -3,8 +3,10 @@ import NoticeCard from "@/components/NoticeCard";
 import Image from "next/image";
 import { TbNotes } from "react-icons/tb";
 import message from "./msg.json";
+
+
 export default function Home() {
-  console.log();
+  
   return (
     <main className="flex flex-col items-center py-2 px-4 my-1">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
@@ -105,6 +107,7 @@ export default function Home() {
             })}
           </div>
         </div>
+        
       </div>
     </main>
   );
