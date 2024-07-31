@@ -1,4 +1,4 @@
-const prisma = require("../../prisma/prismaClient");
+const prisma = require("../../prisma/prismaClient").default;
 const bcrypt = require("bcryptjs");
 
 class TeacherFunction {

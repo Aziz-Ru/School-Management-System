@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isFocused3, setIsFocused3] = useState({ id: "" }); // Add this line
   return (
     <header className="bg-indigo-900 text-white">
-      <ul className="flex gap-8 py-2 font-sans items-center justify-center">
+      <ul className="flex gap-4 md:gap-8 py-2 font-sans items-center justify-center">
         {menu.map((item1, ind1) => {
           return (
             <li

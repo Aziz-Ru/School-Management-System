@@ -1,15 +1,17 @@
 {
   "name": "sms",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "School Management System",
+  "main": "app.js",
+  "private": true,
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon server.js",
-    "prod": "NODE_ENV=production node server.js"
+    "dev": "NODE_ENV=development nodemon app.js",
+    "prod": "NODE_ENV=production node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Abdul Aziz",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.15.1",
@@ -23,5 +25,13 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.10.1",
     "prisma": "^5.15.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aziz-Ru/School-Management-System/"
+  },
+  "bugs": {
+    "url": "https://github.com/Aziz-Ru/School-Management-System/issues"
+  },
+  "homepage": "https://github.com/Aziz-Ru/School-Management-System#readme"
 }

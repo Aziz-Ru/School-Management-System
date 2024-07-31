@@ -1,5 +1,5 @@
-const { body, param } = require("express-validator");
-const prisma = require("../prisma/prismaClient");
+import { body, param } from "express-validator";
+import prisma from "../prisma/prismaClient";
 
 const getCourseValidator = [
   param("id")
@@ -31,4 +31,4 @@ const courseAddedValidator = [
     .withMessage("credit must be a number between 1 and 5"),
 ];
 
-module.exports = { courseAddedValidator, getCourseValidator };
+export default { courseAddedValidator, getCourseValidator };

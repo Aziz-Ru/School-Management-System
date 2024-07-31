@@ -1,4 +1,4 @@
-const prisma = require("../../prisma/prismaClient");
+const prisma = require("../../prisma/prismaClient").default;
 const ClassFunction = require("./classfunction");
 
 class CourseFunction {
@@ -11,7 +11,7 @@ class CourseFunction {
       throw new Error(error.message);
     }
   }
-  
+
   static async getCoursesByClass(req) {
     try {
       const { classId } = req.params;

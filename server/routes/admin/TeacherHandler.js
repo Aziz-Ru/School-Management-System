@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const {
-  getTeachers,
-  getTeacher,
+import {
   addTeacher,
-  updateTeacher,
   deleteTeacher,
-} = require("../../controllers/TeacherController");
-const {
+  getTeacher,
+  getTeachers,
+  updateTeacher,
+} from "../../controllers/TeacherController";
+import {
   addTeacherValidator,
   getTeacherValidator,
-} = require("../../middlewares/TeacherValidator");
-const validatorHandler = require("../../middlewares/common/validatorHandler");
+} from "../../middlewares/TeacherValidator";
+import validatorHandler from "../../middlewares/common/validatorHandler";
 
 router.get("/", getTeachers);
 router.get("/:uId", getTeacherValidator, validatorHandler, getTeacher);
@@ -18,4 +18,4 @@ router.post("/", addTeacherValidator, validatorHandler, addTeacher);
 router.put("/:uId", getTeacherValidator, validatorHandler, updateTeacher);
 router.delete("/:uId", getTeacherValidator, validatorHandler, deleteTeacher);
 
-module.exports = router;
+export default router;

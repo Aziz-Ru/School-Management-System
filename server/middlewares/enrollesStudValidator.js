@@ -1,4 +1,4 @@
-const { check, body } = require("express-validator");
+import { body } from "express-validator";
 
 const enrolledStudentValidator = [
   body("prevclassId")
@@ -9,4 +9,4 @@ const enrolledStudentValidator = [
     .withMessage("Year must be between 2000 and 2050"),
 ];
 
-module.exports = { enrolledStudentValidator };
+export default { enrolledStudentValidator };

@@ -1,4 +1,4 @@
-const prisma = require("../../prisma/prismaClient");
+const prisma = require("../../prisma/prismaClient").default;
 // Initialize ClassFunction
 class ClassFunction {
   static async getClasses(req) {

@@ -1,5 +1,5 @@
-const { check, param } = require("express-validator");
-const prisma = require("../prisma/prismaClient");
+import { check, param } from "express-validator";
+import prisma from "../prisma/prismaClient";
 
 const addSchoolValidator = [
   check("id")
@@ -82,7 +82,7 @@ const getSchoolValidator = [
     }),
 ];
 
-module.exports = {
+export default {
   addSchoolValidator,
   getSchoolValidator,
 };

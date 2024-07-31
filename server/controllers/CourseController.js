@@ -1,5 +1,4 @@
-const prisma = require("../prisma/prismaClient");
-const CourseFunction = require("./functions/coursefunction");
+import prisma from "../prisma/prismaClient";
 
 const getCourses = async (req, res) => {
   try {
@@ -82,7 +81,7 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getCourses,
   addCourse,
   updateCourse,
