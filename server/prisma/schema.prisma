@@ -3,165 +3,129 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
-
-// env("DATABASE_URL")
-model School {
-  id            Int    @id @unique
-  name          String
-  email         String @unique
-  phone         String @unique
-  totalTeachers Int    @default(30)
-  address       String @db.LongText
-  
+model admin {
+  id          String @id @default(cuid())
+  username    String @unique
+  password    String
 }
 
-enum Role {
-  Admin
-  Teacher
-  Student
+model school {
+  id         String  @id @default(cuid())
+  name       String
+  email      String  @unique
+  phone      String  @unique
+  address    String
+  message    String?
+  schoolCode String
+  EIIN       String
+  imageURL   String?
 }
 
-enum Rank {
-  PRINCIPAL
-  VICE_PRINCIPAL
-  TEACHER
-  STAFF
-}
-
-model User {
-  id            String         @id @default(uuid())
-  uId        String         @unique
-  name          String
-  email         String         @unique
-  password      String
-  admissionYear String
-  role          Role           @default(Student)
-  profile       Profile?
-  enrollCourse  EnrollCourse[]
-  class         EnrollClass[]
-  results       Result[]
-  attendence    Attendence[]
-  createdAt     DateTime       @default(now())
-
-  @@unique([uId, name])
-  @@map("users")
-}
-
-
-model Profile {
-  id             String          @id @default(uuid())
-  uId            String          @unique
-  dob            String
-  address        String?
-  sex            String
-  imageLink      String?
-  phone          String          
-  user           User            @relation(fields: [uId], references: [uId], onDelete: Cascade)
-  createdAt      DateTime        @default(now())
-}
-
-model Class {
-  classId         String        @id
-  monthlyFee      Float         @default(1000.0)
-  totalStudents   Int
-  totalCourses    Int
-  maxStudents Int           @default(100)
-  maxCourses  Int           @default(10)
-  courses         Courses[]
-  enrolledClass   EnrollClass[]
-  Exam            Exam[]
-  createdAt       DateTime      @default(now())
-  @@map("classes")
-}
-
-
-model Courses {
-  id           String         @id @default(uuid())
-  courseId     String         @unique
-  name         String
-  credit       Int            @default(3)
-  totalMarks   Int            @default(100)
-  classId      String
-  class        Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  enrollCourse EnrollCourse[]
-  createdAt    DateTime       @default(now())
-  @@unique([courseId, classId])
-}
-
-model EnrollClass {
-  id        String   @id @default(uuid())
-  year      String
-  uId       String   
-  classId   String
-  user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
-  class     Class    @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  @@unique([year, uId,classId])
-}
-
-
-model EnrollCourse {
-  id        String      @id @default(uuid())
-  year      String
-  courseId  String
-  uId       String
-  courses   Courses  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [uId], references: [uId], onDelete: Cascade)
-  exams     Exam[]
-  results   Result[]
-  createdAt DateTime @default(now())
-  @@unique([uId, year])
-}
-
-enum ExamType {
-  MidTerm
-  Final
-  Assignment
-}
-
-model Exam {
-  id       String       @id @default(uuid())
-  courseId String
-  course   EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  classId  String
-  class    Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  result   Result[]
-  type     ExamType     @default(Final)
-  year     String
-  @@unique([year, courseId,classId,type])
-}
-
-
-model Result {
-  id        String       @id @default(uuid())
-  courseId  String
-  uId    String
-  examId    String
-  exam      Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
-  course    EnrollCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User         @relation(fields: [uId], references: [uId], onDelete: Cascade)
-  marks     Float        @default(33.0)
-  grade     String?      @default("A+")
-  createdAt DateTime     @default(now())
-  @@unique([uId, courseId, examId])
-
-}
-
-model Attendence {
-  id        String  @id @default(uuid())
-  uId    String
-  user      User    @relation(fields: [uId], references: [uId], onDelete: Cascade)
-  studentId String
-  status    Boolean @default(false)
+model notice {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
   date      String
-}
-
-model Issues {
-  id        String   @id @default(uuid())
-  type      String
-  details   String   @db.LongText
   createdAt DateTime @default(now())
 }
+
+model holder {
+  id        String  @id @default(cuid())
+  firstName String
+  lastName  String
+  phone     String
+  message   String ?
+  rank      String
+  imageURL  String
+}
+
+model employee {
+  id         String   @id @default(cuid())
+  employeeId String   @unique
+  password   String
+  firstName  String
+  lastName   String
+  rank       String
+  message    String?
+  email      String
+  phone      String
+  sex        String
+  joinDate   String
+  imageURL   String?
+  deptId     String
+  department department @relation(fields: [deptId],references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model student {
+  id        String   @id @default(cuid())
+  studentId String   @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String
+  email     String
+  sex       String
+  dob       String
+  imageURL  String?
+  sectionId String
+  section   section @relation(fields: [sectionId],references: [id])
+  createdAt DateTime @default(now())
+}
+
+
+model faculty {
+  id            String @id @default(cuid())
+  facultyName   String  @unique
+  department    department[]
+}
+
+model department {
+  id            String @id @default(cuid())
+  deptName      String @unique
+  facultyId     String
+  faculty       faculty @relation(fields: [facultyId],references: [id])
+  employee      employee[]
+}
+
+model classRoom {
+  id        String    @id @default(cuid())
+  classId   Int       @unique
+  className String
+  courses   course[]
+  sections  section[]
+}
+
+
+model course {
+  id         String    @id @default(cuid())
+  courseName String   @unique
+  totalMarks Int       @default(100)
+  classId    Int
+  class      classRoom @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  routine    routine[]
+  createdAt  DateTime  @default(now())
+}
+
+
+model section {
+  id          String @id @default(cuid())
+  sectionName String @unique
+  year        String
+  classId     Int
+  class       classRoom @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  student     student[]
+  routine     routine[]
+}
+model routine {
+  id              String @id @default(cuid())
+  sectionName     String 
+  section         section @relation(fields: [sectionName] ,references: [sectionName])
+  courseName      String
+  course          course @relation(fields: [courseName] ,references: [courseName])
+  year            String
+}
+
