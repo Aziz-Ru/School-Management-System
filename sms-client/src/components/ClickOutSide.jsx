@@ -23,7 +23,11 @@ const ClickOutSide = ({ children, exceptionRef, onClick, className }) => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [exceptionRef, onClick]);
-  return <div ref={wrapperRef}>{children}</div>;
+  return (
+    <div ref={wrapperRef} className="duration-500 transition ease-in-out">
+      {children}
+    </div>
+  );
 };
 
 export default ClickOutSide;

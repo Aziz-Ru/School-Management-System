@@ -5,7 +5,7 @@ import { useState } from "react";
 import ClickOutSide from "../ClickOutSide";
 import DownArrow from "../svg/DownArrow";
 
-const DropdownSchool = () => {
+const DropdownCoCurricular = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <ClickOutSide
@@ -21,7 +21,7 @@ const DropdownSchool = () => {
           onClick={() => setIsOpen(!isOpen)}
           className="px-2 py-3 w-full lg:inline-flex flex gap-2 items-center cursor-pointer "
         >
-          School
+          Co-Curricular
           <DownArrow isOpen={isOpen} />
         </button>
         <ul
@@ -30,23 +30,23 @@ const DropdownSchool = () => {
           }`}
         >
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/principal"}>
-              <div className="px-4 py-3">Principal</div>
+            <Link href={"/bncc"}>
+              <div className="px-4 py-3">BNCC</div>
             </Link>
           </li>
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/governing-body"} className="">
-              <div className="px-4 py-3">Governing Body</div>
+            <Link href={"/club"} className="">
+              <div className="px-4 py-3">Rover Scout</div>
             </Link>
           </li>
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/commitee"} className="">
-              <div className="px-4 py-3">Commitee</div>
+            <Link href={"/game-sports"} className="">
+              <div className="px-4 py-3">Game & Sports</div>
             </Link>
           </li>
-          <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200 lg:border-none">
-            <Link href={"/official-staff"} className="">
-              <div className="px-4 py-3">Staff</div>
+          <li className="hover:bg-gray-200 dark:hover:bg-gray-700">
+            <Link href={"/club"} className="">
+              <div className="px-4 py-3">Club</div>
             </Link>
           </li>
         </ul>
@@ -55,4 +55,4 @@ const DropdownSchool = () => {
   );
 };
 
-export default DropdownSchool;
+export default DropdownCoCurricular;

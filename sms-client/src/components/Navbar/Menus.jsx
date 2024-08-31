@@ -4,6 +4,8 @@ import { useState } from "react";
 import ThreeLineSvg from "../svg/ThreeLineSvg";
 import DropdownAcademic from "./DropdownAcademic";
 import DropdownAchivement from "./DropdownAchivement";
+import DropdownAdmission from "./DropdownAdmission";
+import DropdownCoCurricular from "./DropdownCoCurricular";
 import DropdownSchool from "./DropdownSchool";
 const Menus = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,12 +38,13 @@ const Menus = () => {
           isOpen ? "" : "hidden"
         }`}
       >
-        <ul className="flex flex-col mt-4  lg:mt-0 lg:flex-row lg:gap-8 ">
+        <div className="flex flex-col mt-4 lg:mt-0 lg:flex-row lg:gap-8  ">
           <DropdownSchool />
           <DropdownAcademic />
           <DropdownAchivement />
-          <DropdownAchivement />
-        </ul>
+          <DropdownAdmission />
+          <DropdownCoCurricular />
+        </div>
       </div>
     </>
   );

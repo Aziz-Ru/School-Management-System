@@ -5,7 +5,7 @@ import { useState } from "react";
 import ClickOutSide from "../ClickOutSide";
 import DownArrow from "../svg/DownArrow";
 
-const DropdownSchool = () => {
+const DropdownAdmission = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <ClickOutSide
@@ -21,7 +21,7 @@ const DropdownSchool = () => {
           onClick={() => setIsOpen(!isOpen)}
           className="px-2 py-3 w-full lg:inline-flex flex gap-2 items-center cursor-pointer "
         >
-          School
+          Admission
           <DownArrow isOpen={isOpen} />
         </button>
         <ul
@@ -30,23 +30,18 @@ const DropdownSchool = () => {
           }`}
         >
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/principal"}>
-              <div className="px-4 py-3">Principal</div>
+            <Link href={"/primary"}>
+              <div className="px-4 py-3">Primary</div>
             </Link>
           </li>
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/governing-body"} className="">
-              <div className="px-4 py-3">Governing Body</div>
-            </Link>
-          </li>
-          <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
-            <Link href={"/commitee"} className="">
-              <div className="px-4 py-3">Commitee</div>
+            <Link href={"/school"} className="">
+              <div className="px-4 py-3">School</div>
             </Link>
           </li>
           <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200 lg:border-none">
-            <Link href={"/official-staff"} className="">
-              <div className="px-4 py-3">Staff</div>
+            <Link href={"/college"} className="">
+              <div className="px-4 py-3">College</div>
             </Link>
           </li>
         </ul>
@@ -55,4 +50,4 @@ const DropdownSchool = () => {
   );
 };
 
-export default DropdownSchool;
+export default DropdownAdmission;
