@@ -1,6 +1,5 @@
-const { body, param } = require("express-validator");
-const createError = require("http-errors");
-const prisma = require("../prisma/prismaClient");
+import { body, param } from "express-validator";
+import prisma from "../prisma/prismaClient";
 
 const getTeacherValidator = [
   param("uId")
@@ -75,4 +74,4 @@ const addTeacherValidator = [
     .withMessage("imageLink must be valid"),
 ];
 
-module.exports = { addTeacherValidator, getTeacherValidator };
+export default { addTeacherValidator, getTeacherValidator };

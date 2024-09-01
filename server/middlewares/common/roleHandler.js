@@ -1,4 +1,4 @@
-const createError = require("http-errors");
+import createError from "http-errors";
 
 function roleHandler(req, res, next) {
   const { role } = req.params;
@@ -8,4 +8,4 @@ function roleHandler(req, res, next) {
   }
   next();
 }
-module.exports = { roleHandler };
+export default { roleHandler };

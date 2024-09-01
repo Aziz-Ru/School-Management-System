@@ -1,11 +1,9 @@
-const createError = require("http-errors");
+import createError from "http-errors";
 
-function notFoundHandler(req, res, next) {
+export const notFoundHandler = (req, res, next) => {
   next(createError(404, "URL NOT FOUND"));
-}
+};
 
-function errorHandler(err, req, res, next) {
-  return res.status(err.status).json({ errors: { err } });
-}
-
-module.exports = { notFoundHandler, errorHandler };
+export const errorHandler = (err, req, res, next) => {
+  return res.status(err.status).json({ errors: [{ msg: err.message }] });
+};

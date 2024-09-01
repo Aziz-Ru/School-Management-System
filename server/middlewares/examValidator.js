@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+import { body } from "express-validator";
 
 const examValidator = [
   body("classId")
@@ -6,4 +6,4 @@ const examValidator = [
     .withMessage("Class Id must be a number between 1 and 12"),
 ];
 
-module.exports = examValidator;
+export default examValidator;
