@@ -6,4 +6,13 @@
   .linkIcon {
     @apply bg-cyan-900 text-white px-4 py-2 font-semibold rounded-md shadow-md hover:bg-cyan-700;
   }
+  .site-bg {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+  .site-txt {
+    @apply text-gray-800 dark:text-gray-100 selection:bg-indigo-500 selection:text-white;
+  }
+  .site-hover {
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+  }
 }
