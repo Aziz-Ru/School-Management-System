@@ -13,7 +13,7 @@ const DropdownCoCurricular = () => {
       className="relative duration-1000 ease-linear"
     >
       <div
-        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 ${
+        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${
           isOpen && "bg-gray-200 dark:bg-gray-700"
         }`}
       >
@@ -44,7 +44,7 @@ const DropdownCoCurricular = () => {
               <div className="px-4 py-3">Game & Sports</div>
             </Link>
           </li>
-          <li className="hover:bg-gray-200 dark:hover:bg-gray-700">
+          <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
             <Link href={"/club"} className="">
               <div className="px-4 py-3">Club</div>
             </Link>

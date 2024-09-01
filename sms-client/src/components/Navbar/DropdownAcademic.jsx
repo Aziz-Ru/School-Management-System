@@ -8,7 +8,7 @@ const DropdownAcademic = () => {
   return (
     <ClickOutSide onClick={() => setIsOpen(false)} className="relative">
       <div
-        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 ${
+        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${
           isOpen && "bg-gray-200 dark:bg-gray-700"
         }`}
       >
@@ -49,7 +49,7 @@ const DropdownAcademic = () => {
               <div className="px-4 py-3">Co-Ordinator</div>
             </Link>
           </li>
-          <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200 lg:border-none">
+          <li className="hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-200">
             <Link href={"/facilities"} className="">
               <div className="px-4 py-3">Facilities</div>
             </Link>

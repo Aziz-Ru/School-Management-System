@@ -1,9 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Principal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [school, setSchool] = useState({});
+  useEffect(() => {
+    const fetchSchool = async () => {
+      try {
+        const res = await fetch("/api/principal");
+        const data = await res.json();
+        console.log(data);
+        setSchool(data);
+      } catch (error) {
+        console.log("failed to fetch school data");
+      }
+    };
+    fetchSchool();
+  }, []);
   return (
     <div>
       <button
@@ -21,6 +35,7 @@ const Principal = () => {
           Hello How are you
         </p>
       }
+      <div>{school.name}</div>
     </div>
   );
 };

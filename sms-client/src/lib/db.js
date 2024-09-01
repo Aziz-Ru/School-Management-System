@@ -1,15 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+let prisma;
 
-const main = async () => {
-  try {
-    const school = await prisma.school.findMany();
-    console.log(school);
-  } catch (error) {
-    console.error(error);
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
   }
-};
-main();
+  prisma = global.prisma;
+}
 
 export default prisma;

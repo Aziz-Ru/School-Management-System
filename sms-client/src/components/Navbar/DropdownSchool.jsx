@@ -13,7 +13,7 @@ const DropdownSchool = () => {
       className="relative duration-1000 ease-linear"
     >
       <div
-        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 ${
+        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${
           isOpen && "bg-gray-200 dark:bg-gray-700"
         }`}
       >
