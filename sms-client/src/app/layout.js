@@ -9,7 +9,6 @@ export const metadata = {
 
 const roboto = Roboto({
   subsets: ["latin"],
-  style: ["normal", "italic"],
   weight: ["100", "400", "700", "900"],
 });
 
@@ -19,7 +18,6 @@ export default function RootLayout({ children }) {
       <body className={`"${roboto.className} site-bg site-txt"`}>
         <Navbar />
         {children}
-
         <Footer />
       </body>
     </html>

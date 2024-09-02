@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id       String @id
+  username String @unique
+  password String
+}
+
+model classRoom {
+  id        String    @id
+  className String
+  course    course[]
+  section   section[]
+}
+
+model course {
+  id         String     @id
+  courseName String     @unique
+  totalMarks Int        @default(100)
+  classId    String
+  createdAt  DateTime   @default(now())
+  classRoom  classRoom  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  timeslot   timeslot[]
+
+  @@index([classId], map: "course_classId_fkey")
+}
+
+
+
+model department {
+  id        String     @id
+  deptName  String     @unique
+  facultyId String
+  faculty   faculty    @relation(fields: [facultyId], references: [id])
+  employee  employee[]
+
+  @@index([facultyId], map: "department_facultyId_fkey")
+}
+
+model employee {
+  id         String     @id
+  employeeId String     @unique
+  password   String
+  firstName  String
+  lastName   String
+  rank       String
+  message    String?
+  email      String
+  phone      String
+  sex        String
+  joinDate   String
+  imageURL   String?
+  deptId     String
+  createdAt  DateTime   @default(now())
+  department department @relation(fields: [deptId], references: [id])
+
+  @@index([deptId], map: "employee_deptId_fkey")
+}
+
+model faculty {
+  id          String       @id
+  facultyName String       @unique
+  department  department[]
+}
+
+model holder {
+  id        String  @id
+  firstName String
+  lastName  String
+  phone     String
+  message   String?
+  rank      String
+  imageURL  String
+}
+
+model hour {
+  id           String     @id
+  period       String     @unique
+  abbreviation String
+  timeslot     timeslot[]
+}
+model day {
+  id       String     @id
+  dayName  String     @unique
+  timeslot timeslot[]
+  routine  routine[]  @relation("dayToroutine")
+}
+
+model notice {
+  id        String   @id
+  title     String
+  content   String
+  date      String
+  createdAt DateTime @default(now())
+}
+
+model routine {
+  id          String  @id
+  sectionName String
+  year        String
+  section     section @relation(fields: [sectionName], references: [id])
+  day         day[]   @relation("dayToroutine")
+  @@index([sectionName], map: "routine_sectionName_fkey")
+}
+
+model school {
+  id         String  @id
+  name       String
+  email      String  @unique
+  phone      String  @unique
+  address    String
+  message    String?
+  schoolCode String
+  EIIN       String
+  imageURL   String?
+}
+
+model section {
+  id          String    @id @default(cuid())
+  sectionName String    
+  year        String
+  classId     String
+  routine     routine[]
+  classRoom   classRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student     student[]
+  createdAt   DateTime  @default(now())
+  @@unique([sectionName, classId,year])
+}
+
+model student {
+  id        String   @id
+  studentId String   @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String
+  email     String
+  sex       String
+  dob       String
+  imageURL  String?
+  sectionId String
+  createdAt DateTime @default(now())
+  section   section  @relation(fields: [sectionId], references: [id])
+  @@index([sectionId], map: "student_sectionId_fkey")
+}
+
+model timeslot {
+  id           String @id
+  dayName      String
+  periodString String
+  courseName   String
+  course       course @relation(fields: [courseName], references: [courseName])
+  day          day    @relation(fields: [dayName], references: [dayName])
+  hour         hour   @relation(fields: [periodString], references: [period])
+
+  @@unique([dayName, courseName, periodString])
+  @@index([courseName], map: "timeslot_courseName_fkey")
+  @@index([periodString], map: "timeslot_periodString_fkey")
+}
