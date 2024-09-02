@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  
+  .site-bg {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+  .site-txt {
+    @apply text-gray-800 dark:text-gray-100 selection:bg-indigo-500 selection:text-white;
+  }
+  .site-hover {
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+  }
+}
