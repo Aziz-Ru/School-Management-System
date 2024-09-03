@@ -15,7 +15,7 @@ const EachFaculty = ({ initialFaculties }: { initialFaculties: Props[] }) => {
   }, [initialFaculties]);
 
   return (
-    <div className="border h-72 overflow-y-scroll relative">
+    <div className="h-72 overflow-y-scroll relative">
       <div className="w-full mb-2">
         <form
           action={async (formData) => {

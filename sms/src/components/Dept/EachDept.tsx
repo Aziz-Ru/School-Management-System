@@ -15,7 +15,7 @@ const EachDept = ({ initialDept }: { initialDept: Props[] }) => {
   }, [initialDept]);
 
   return (
-    <div className="border h-72 overflow-y-scroll relative">
+    <div className="h-72 overflow-y-scroll relative">
       <div className="w-full mb-2">
         <form className="w-full flex justify-around gap-2">
           <input

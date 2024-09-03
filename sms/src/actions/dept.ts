@@ -32,10 +32,10 @@ export const addDept = async (formdata: FormData): Promise<ReturnProps> => {
       return { error: err, success: "" };
     }
     const existingDept = await prisma.department.findFirst({
-      where: { deptName: resut.data.facultyId as string },
+      where: { deptName: resut.data.deptName as string },
     });
     if (existingDept) {
-      return { error: "Faculty already exists", success: "" };
+      return { error: "Department already exists", success: "" };
     }
 
     await prisma.department.create({
@@ -47,6 +47,7 @@ export const addDept = async (formdata: FormData): Promise<ReturnProps> => {
     revalidatePath("/admin/dept");
     return { error: "", success: "Department added successfully" };
   } catch (error) {
+    console.log(error);
     return { error: "Something went wrong", success: "" };
   }
 };
