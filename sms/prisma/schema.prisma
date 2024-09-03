@@ -35,7 +35,7 @@ model course {
 
 
 model department {
-  id        String     @id
+  id        String     @id @default(cuid())
   deptName  String     @unique
   facultyId String
   faculty   faculty    @relation(fields: [facultyId], references: [id])
@@ -65,7 +65,7 @@ model employee {
 }
 
 model faculty {
-  id          String       @id
+  id          String       @id @default(cuid())
   facultyName String       @unique
   department  department[]
 }
