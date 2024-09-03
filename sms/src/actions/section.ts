@@ -55,11 +55,34 @@ export const addSection = async (formData: FormData): Promise<State> => {
   return { success: "Section added successfully" };
 };
 
+interface Section {
+  id: string;
+  sectionName: string;
+  year: string;
+  classId: string;
+}
 
-
-
-
-
+export const getSection = async (formData: FormData): Promise<Section[]> => {
+  try {
+    const classId = formData.get("classId");
+    const year = formData.get("year");
+    const sectionName = formData.get("sectionName");
+    return await prisma.section.findMany({
+      where: {
+        sectionName: {
+          startsWith: (sectionName as string) || undefined,
+        },
+        year: (year as string) || undefined,
+        classId: (classId as string) || undefined,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (error) {
+    return [];
+  }
+};
 
 type deleteProps = {
   success: string;
@@ -68,6 +91,7 @@ type deleteProps = {
 
 export const deleteSection = async (id: string): Promise<deleteProps> => {
   try {
+    
     const section = await prisma.section.delete({
       where: {
         id,
