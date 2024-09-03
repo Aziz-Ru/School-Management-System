@@ -9,7 +9,7 @@ const GetFaculty = async () => {
         <div className="mb-4">
           <h1 className="text-2xl font-bold text-center">Faculty</h1>
         </div>
-        <EachFaculty initialFaculties={faculties} />;
+        <EachFaculty initialFaculties={faculties} />
       </div>
     </div>
   );

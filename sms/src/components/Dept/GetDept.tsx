@@ -9,7 +9,7 @@ const GetDept = async () => {
         <div className="mb-4">
           <h1 className="text-2xl font-bold text-center">Department</h1>
         </div>
-        <EachDept initialDept={depts} />;
+        <EachDept initialDept={depts} />
       </div>
     </div>
   );
