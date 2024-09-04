@@ -9,11 +9,12 @@ interface ReturnProps {
   success: string;
 }
 
+
 export const getDept = async (formdata: FormData) => {
   try {
-    const facultyName = formdata.get("facultyName") as string;
+    const deptName = formdata.get("deptName") as string;
     const faculties = await prisma.department.findMany({
-      where: { deptName: { startsWith: facultyName } },
+      where: { deptName: { startsWith: deptName } },
     });
     return faculties;
   } catch (error) {

@@ -1,5 +1,5 @@
 "use client";
-import { deleteDept } from "@/actions/dept";
+import { deleteDept, getDept } from "@/actions/dept";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
@@ -17,12 +17,18 @@ const EachDept = ({ initialDept }: { initialDept: Props[] }) => {
   return (
     <div className="h-72 overflow-y-scroll relative">
       <div className="w-full mb-2">
-        <form className="w-full flex justify-around gap-2">
+        <form
+          action={async (formData) => {
+            const res = await getDept(formData);
+            setDepts(res);
+          }}
+          className="w-full flex justify-around gap-2"
+        >
           <input
             className="w-2/3 site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600"
             type="text"
-            name="facultyName"
-            placeholder="Search Faculty"
+            name="deptName"
+            placeholder="Search Department"
           />
           <input
             type="submit"
