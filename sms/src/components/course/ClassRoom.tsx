@@ -1,4 +1,6 @@
 "use client";
+import { useState } from "react";
+import Formsubmitbtn from "../Formsubmitbtn";
 import AddIcon from "../svg/AddIcon";
 
 interface initialProps {
@@ -11,6 +13,8 @@ interface initialProps {
 }
 
 const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
+  const [isCourseOpen, setIsCourseOpen] = useState(false);
+  const [className, setClassName] = useState("");
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="px-6 flex flex-col ">
@@ -39,7 +43,12 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
                   </div>
                   <div className="w-1/3 flex justify-center items-center gap-4">
                     <span>{classroom._count.course}</span>
-                    <button>
+                    <button
+                      onClick={() => {
+                        setClassName(classroom.className);
+                        setIsCourseOpen(true);
+                      }}
+                    >
                       <AddIcon />
                     </button>
                   </div>
@@ -55,18 +64,40 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
           })}
         </div>
       </div>
-      
-      <div className="absolute mx-auto top-1/4 max-w-screen-sm border">
-        <form>
-          <div className="w-full">
-            <input
-              className="w-full"
-              type="text"
-              placeholder="Enter Course Name"
-            />
-          </div>
-        </form>
-      </div>
+
+      {isCourseOpen && (
+        <div className="max-w-screen-xl">
+          <form className="px-6 py-4 flex flex-col">
+            <div className="text-center mb-2">
+              <h1 className="font-bold text-xl">
+                Add Course for class {className}
+              </h1>
+            </div>
+            <div className="w-full flex gap-3 justify-around items-center">
+              <div className="w-1/3">
+                <input
+                  className="site-bg rounded border border-gray-700 dark:border-gray-200 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
+                  type="text"
+                  name="courseName"
+                  placeholder="Enter Course Name"
+                />
+              </div>
+              <div className="w-1/3">
+                <select
+                  className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
+                  name="totalMarks"
+                >
+                  <option value="100">100</option>
+                  <option value="75">75</option>
+                  <option value="50">50</option>
+                  <option value="25">25</option>
+                </select>
+              </div>
+              <Formsubmitbtn Title="Add" LoadingTitle="Adding" width="w-1/3" />
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

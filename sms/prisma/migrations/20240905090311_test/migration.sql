@@ -11,8 +11,10 @@ CREATE TABLE `admin` (
 -- CreateTable
 CREATE TABLE `classRoom` (
     `id` VARCHAR(191) NOT NULL,
+    `classId` INTEGER NOT NULL,
     `className` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `classRoom_classId_key`(`classId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -26,15 +28,6 @@ CREATE TABLE `course` (
 
     UNIQUE INDEX `course_courseName_key`(`courseName`),
     INDEX `course_classId_fkey`(`classId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `day` (
-    `id` VARCHAR(191) NOT NULL,
-    `dayName` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `day_dayName_key`(`dayName`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -104,6 +97,15 @@ CREATE TABLE `hour` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `day` (
+    `id` VARCHAR(191) NOT NULL,
+    `dayName` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `day_dayName_key`(`dayName`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `notice` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
@@ -147,9 +149,9 @@ CREATE TABLE `section` (
     `sectionName` VARCHAR(191) NOT NULL,
     `year` VARCHAR(191) NOT NULL,
     `classId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `section_sectionName_key`(`sectionName`),
-    INDEX `section_classId_fkey`(`classId`),
+    UNIQUE INDEX `section_sectionName_classId_year_key`(`sectionName`, `classId`, `year`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -205,7 +207,7 @@ ALTER TABLE `department` ADD CONSTRAINT `department_facultyId_fkey` FOREIGN KEY 
 ALTER TABLE `employee` ADD CONSTRAINT `employee_deptId_fkey` FOREIGN KEY (`deptId`) REFERENCES `department`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `routine` ADD CONSTRAINT `routine_sectionName_fkey` FOREIGN KEY (`sectionName`) REFERENCES `section`(`sectionName`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `routine` ADD CONSTRAINT `routine_sectionName_fkey` FOREIGN KEY (`sectionName`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `section` ADD CONSTRAINT `section_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `classRoom`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

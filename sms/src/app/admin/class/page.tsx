@@ -1,3 +1,4 @@
+import AddClass from "@/components/class/AddClass";
 import ClassRoom from "@/components/course/ClassRoom";
 import prisma from "@/lib/db";
 
@@ -11,12 +12,14 @@ const page = async () => {
         },
       },
     },
-    orderBy: {},
+    orderBy: {
+      classId: "asc",
+    },
   });
 
   return (
     <div className="w-full site-bg">
-      <ClassRoom classrooms={classrooms} />
+      {classrooms.length ? <ClassRoom classrooms={classrooms} /> : <AddClass />}
     </div>
   );
 };

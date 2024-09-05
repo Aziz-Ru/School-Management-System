@@ -67,3 +67,14 @@ export const deptScheam = z.object({
     })
     .cuid("faculty id must be a valid id"),
 });
+
+export const courseSchema = z.object({
+  courseName: z
+    .string({
+      required_error: "course name must be 3 chracters",
+      invalid_type_error: "course name must be a String",
+    })
+    .min(3, "course name must be a String"),
+  totalMarks: z.number().min(25).max(100),
+  classId: z.string().cuid(),
+});
