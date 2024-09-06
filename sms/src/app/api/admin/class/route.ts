@@ -13,26 +13,22 @@ export const GET = async () => {
 export const POST = async (req: NextRequest) => {
   try {
     await prisma.classRoom.deleteMany();
-    const classObject = [];
-    const classes = [
-      "One",
-      "Two",
-      "Three",
-      "Four",
-      "Five",
-      "Six",
-      "Seven",
-      "Eight",
-      "Nine",
-      "Ten",
-      "Eleven",
-      "Twelve",
-    ];
-    for (let i = 1; i <= 12; i++) {
-      classObject.push({ id: `${i}`, className: classes[i - 1] });
-    }
+
     const classRoom = await prisma.classRoom.createMany({
-      data: classObject,
+      data: [
+        { classId: 1, className: "One" },
+        { classId: 2, className: "Two" },
+        { classId: 3, className: "Three" },
+        { classId: 4, className: "Four" },
+        { classId: 5, className: "Five" },
+        { classId: 6, className: "Six" },
+        { classId: 7, className: "Seven" },
+        { classId: 8, className: "Eight" },
+        { classId: 9, className: "Nine" },
+        { classId: 10, className: "Ten" },
+        { classId: 11, className: "Eleven" },
+        { classId: 12, className: "Twelve" },
+      ],
     });
     return NextResponse.json(classRoom, { status: 201 });
   } catch (error: any) {

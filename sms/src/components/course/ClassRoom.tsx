@@ -1,9 +1,12 @@
 "use client";
+import { addCourse } from "@/actions/course";
+import { addSection } from "@/actions/section";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
 import AddIcon from "../svg/AddIcon";
 
-interface initialProps {
+interface initialClassRoomProps {
   id: string;
   className: string;
   _count: {
@@ -11,10 +14,22 @@ interface initialProps {
     section: number;
   };
 }
+interface initialDeptProp {
+  id: string;
+  deptName: string;
+}
 
-const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
+const ClassRoom = ({
+  classrooms,
+  department,
+}: {
+  classrooms: initialClassRoomProps[];
+  department: initialDeptProp[];
+}) => {
   const [isCourseOpen, setIsCourseOpen] = useState(false);
+  const [isSectionOpen, setIsSectionOpen] = useState(false);
   const [className, setClassName] = useState("");
+  const [classId, setClassId] = useState("");
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="px-6 flex flex-col ">
@@ -47,6 +62,8 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
                       onClick={() => {
                         setClassName(classroom.className);
                         setIsCourseOpen(true);
+                        setIsSectionOpen(false);
+                        setClassId(classroom.id);
                       }}
                     >
                       <AddIcon />
@@ -54,7 +71,14 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
                   </div>
                   <div className="w-1/3 flex justify-center items-center gap-4">
                     <span> {classroom._count.section}</span>
-                    <button>
+                    <button
+                      onClick={() => {
+                        setClassName(classroom.className);
+                        setIsSectionOpen(true);
+                        setIsCourseOpen(false);
+                        setClassId(classroom.id);
+                      }}
+                    >
                       <AddIcon />
                     </button>
                   </div>
@@ -67,22 +91,35 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
 
       {isCourseOpen && (
         <div className="max-w-screen-xl">
-          <form className="px-6 py-4 flex flex-col">
+          <form
+            action={async (formData) => {
+              const { error, success } = await addCourse({
+                formData,
+                classId: classId,
+              });
+              if (error) {
+                toast.error(error);
+              } else {
+                toast.success(success);
+              }
+            }}
+            className="px-6 py-4 flex flex-col"
+          >
             <div className="text-center mb-2">
               <h1 className="font-bold text-xl">
                 Add Course for class {className}
               </h1>
             </div>
-            <div className="w-full flex gap-3 justify-around items-center">
-              <div className="w-1/3">
+            <div className="w-full flex flex-col sm:flex-row gap-3 justify-around items-center">
+              <div className="w-full sm:w-1/4">
                 <input
-                  className="site-bg rounded border border-gray-700 dark:border-gray-200 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
+                  className="w-full site-bg rounded border border-gray-700 dark:border-gray-200 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
                   type="text"
                   name="courseName"
                   placeholder="Enter Course Name"
                 />
               </div>
-              <div className="w-1/3">
+              <div className="w-full sm:w-1/4">
                 <select
                   className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
                   name="totalMarks"
@@ -93,7 +130,63 @@ const ClassRoom = ({ classrooms }: { classrooms: initialProps[] }) => {
                   <option value="25">25</option>
                 </select>
               </div>
-              <Formsubmitbtn Title="Add" LoadingTitle="Adding" width="w-1/3" />
+              <div className="w-full sm:w-1/4">
+                <select
+                  name="deptId"
+                  className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
+                >
+                  {department.map((dept, ind: number) => {
+                    return (
+                      <option key={ind} value={dept.id}>
+                        {dept.deptName} Dept
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <Formsubmitbtn
+                Title="Add"
+                LoadingTitle="Adding"
+                width="w-full sm:w-1/4"
+              />
+            </div>
+          </form>
+        </div>
+      )}
+
+      {isSectionOpen && (
+        <div className="max-w-screen-xl">
+          <form
+            action={async (formData: FormData) => {
+              const { error, success } = await addSection(formData, classId);
+              if (error) {
+                toast.error(error);
+              } else if (success) {
+                toast.success(success);
+              }
+            }}
+            className="px-6 py-4 flex flex-col"
+          >
+            <div className="text-center mb-2">
+              <h1 className="font-bold text-xl">
+                Add Section for class {className}
+              </h1>
+            </div>
+            <div className="w-full flex flex-col sm:flex-row gap-3 justify-around items-center">
+              <div className="w-full sm:w-1/2">
+                <input
+                  className="w-full site-bg rounded border border-gray-700 dark:border-gray-200 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
+                  type="text"
+                  name="sectionName"
+                  placeholder="Enter Section Name"
+                />
+              </div>
+
+              <Formsubmitbtn
+                Title="Add"
+                LoadingTitle="Adding"
+                width="w-full sm:w-1/2"
+              />
             </div>
           </form>
         </div>

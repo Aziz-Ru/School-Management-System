@@ -47,7 +47,7 @@ const AddDeptForm = ({ faculties }: { faculties: Props[] }) => {
           </select>
         </div>
       </div>
-      <Formsubmitbtn Title="Add" LoadingTitle="Adding..." />
+      <Formsubmitbtn width="" Title="Add" LoadingTitle="Adding..." />
     </form>
   );
 };

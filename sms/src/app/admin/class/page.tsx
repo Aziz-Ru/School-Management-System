@@ -16,10 +16,17 @@ const page = async () => {
       classId: "asc",
     },
   });
+  const depts = await prisma.department.findMany({
+    select: { deptName: true, id: true },
+  });
 
   return (
     <div className="w-full site-bg">
-      {classrooms.length ? <ClassRoom classrooms={classrooms} /> : <AddClass />}
+      {classrooms.length ? (
+        <ClassRoom classrooms={classrooms} department={depts} />
+      ) : (
+        <AddClass />
+      )}
     </div>
   );
 };
