@@ -35,11 +35,61 @@ export const sectionSchema = z.object({
     .min(2020, "year must greater than 2020")
     .max(2050),
   classId: z
-    .number({
+    .string({
       required_error: "classId must be required",
-      invalid_type_error: "classId must be a Number",
+      invalid_type_error: "classId must be a String",
     })
-    .int()
-    .min(1, "class id must be in 1 to 12")
-    .max(12, "class id must be in 1 to 12"),
+    .cuid(),
+});
+
+export const facultySchema = z.object({
+  facultyName: z
+    .string({
+      required_error: "faculty name must be 2 chracters",
+      invalid_type_error: "facultyName must be a String",
+    })
+    .min(2, "faculty name must be atleast 2 chracters"),
+});
+
+export const deptScheam = z.object({
+  deptName: z
+    .string({
+      required_error: "department name must be 3 chracters",
+      invalid_type_error: "department must be a String",
+    })
+    .min(3, "faculty name must be atleast 3 chracters"),
+  facultyId: z
+    .string({
+      required_error: "faculty id must be 2 chracters",
+      invalid_type_error: "faculty id must be a String",
+    })
+    .cuid("faculty id must be a valid id"),
+});
+
+export const courseSchema = z.object({
+  courseName: z
+    .string({
+      required_error: "course name must be 3 chracters",
+      invalid_type_error: "course name must be a String",
+    })
+    .min(3, "course name must be a String"),
+  totalMarks: z
+    .number({
+      required_error: "totalMarks must be 25 to 100",
+      invalid_type_error: "totalMarks must be a number",
+    })
+    .min(25)
+    .max(100),
+  classId: z
+    .string({
+      required_error: "classId must be required",
+      invalid_type_error: "classId must be a String",
+    })
+    .cuid(),
+  deptId: z
+    .string({
+      required_error: "deptName must be required",
+      invalid_type_error: "deptName must be a String",
+    })
+    .cuid(),
 });

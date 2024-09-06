@@ -1,30 +1,27 @@
-"use client";
-// import prisma from "@/lib/db";
-// import EachSection from "./eachSection";
-
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import prisma from "@/lib/db";
 import EachSection from "./eachSection";
 
-const GetSection = () => {
-  const searchParams = useSearchParams();
-  const sectionName = searchParams.get("sn");
-  const classId = searchParams.get("cd");
-  const year = searchParams.get("y");
-
-  useEffect(() => {
-    const getSection = async () => {
-      try {
-        const sections = await fetch("/api/admin/section");
-      } catch (error) {}
-    };
-  }, []);
-
-  // const sections = await prisma.section.findMany({ where: {} });
+const GetSection = async () => {
+  const sections = await prisma.section.findMany({
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      sectionName: true,
+      year: true,
+      classRoom: true,
+    },
+  });
+  const classRooms = await prisma.classRoom.findMany({
+    orderBy: { classId: "asc" },
+    select: {
+      id: true,
+      className: true,
+    },
+  });
 
   return (
     <div className="site-txt">
-      <EachSection />
+      <EachSection classes={classRooms} initialSections={sections} />
     </div>
   );
 };

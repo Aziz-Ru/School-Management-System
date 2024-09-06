@@ -4,32 +4,24 @@ import prisma from "@/lib/db";
 import { sectionSchema } from "@/lib/schema/Schema";
 import { revalidatePath } from "next/cache";
 
-type ValidationErrors = {
-  path: string;
-  msg: string;
-}[];
-
-type State = {
-  errors?: ValidationErrors;
+interface ReturnProps {
+  error?: string;
   success?: string;
-};
+}
 
-export const addSection = async (formData: FormData): Promise<State> => {
+export const addSection = async (
+  formData: FormData,
+  classId: string
+): Promise<ReturnProps> => {
   const result = sectionSchema.safeParse({
     sectionName: formData.get("sectionName") as string,
-    year: Number(formData.get("year")),
-    classId: Number(formData.get("classId")),
+    year: new Date().getFullYear(),
+    classId: classId,
   });
 
   if (!result.success) {
-    const errors: ValidationErrors = result.error.issues.map((issue) => {
-      const path = issue.path.join(".");
-      return {
-        path,
-        msg: issue.message,
-      };
-    });
-    return { errors };
+    const error = result.error.issues[0].message;
+    return { error: error };
   }
 
   const existSection = await prisma.section.findFirst({
@@ -41,32 +33,61 @@ export const addSection = async (formData: FormData): Promise<State> => {
   });
 
   if (existSection) {
-    return { errors: [{ path: "section", msg: "Section already exist" }] };
+    return { error: "Section already exists" };
   }
 
   await prisma.section.create({
     data: {
       sectionName: `${result.data.sectionName}`,
       year: `${result.data.year}`,
-      classId: `${result.data.classId}`,
+      classRoom: { connect: { id: result.data.classId } },
     },
   });
   revalidatePath("/admin/section");
+  revalidatePath("/admin/class");
   return { success: "Section added successfully" };
 };
 
+interface Section {
+  id: string;
+  sectionName: string;
+  year: string;
+  classRoom: {
+    id: string;
+    className: string;
+    classId: number;
+  };
+}
 
-
-
-
-
-
-type deleteProps = {
-  success: string;
-  error: string;
+export const getSection = async (formData: FormData): Promise<Section[]> => {
+  try {
+    const classId = formData.get("classId");
+    const year = formData.get("year");
+    const sectionName = formData.get("sectionName");
+    return await prisma.section.findMany({
+      where: {
+        sectionName: {
+          startsWith: (sectionName as string) || undefined,
+        },
+        year: (year as string) || undefined,
+        classId: (classId as string) || undefined,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        sectionName: true,
+        year: true,
+        classRoom: true,
+      },
+    });
+  } catch (error) {
+    return [];
+  }
 };
 
-export const deleteSection = async (id: string): Promise<deleteProps> => {
+export const deleteSection = async (id: string): Promise<ReturnProps> => {
   try {
     const section = await prisma.section.delete({
       where: {
@@ -74,11 +95,11 @@ export const deleteSection = async (id: string): Promise<deleteProps> => {
       },
     });
     revalidatePath("/admin/section");
+    revalidatePath("/admin/class");
     return {
       success: `${section.sectionName} deleted successfully`,
-      error: "",
     };
   } catch (error) {
-    return { error: "Failed to delete", success: "" };
+    return { error: "Failed to delete" };
   }
 };

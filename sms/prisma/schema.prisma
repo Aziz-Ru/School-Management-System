@@ -7,45 +7,75 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model admin {
-  id       String @id
+  id       String @id @default(cuid())
   username String @unique
   password String
 }
+model school {
+  id         String  @id @default(cuid())
+  name       String
+  email      String  @unique
+  phone      String  @unique
+  address    String
+  message    String?
+  schoolCode String
+  EIIN       String
+  imageURL   String?
+}
 
 model classRoom {
-  id        String    @id
+  id        String    @id  @default(cuid())
+  classId   Int   @unique
   className String
   course    course[]
   section   section[]
 }
-
-model course {
-  id         String     @id
-  courseName String     @unique
-  totalMarks Int        @default(100)
-  classId    String
-  createdAt  DateTime   @default(now())
-  classRoom  classRoom  @relation(fields: [classId], references: [id], onDelete: Cascade)
-  timeslot   timeslot[]
-
-  @@index([classId], map: "course_classId_fkey")
+model section {
+  id          String    @id @default(cuid())
+  sectionName String    
+  year        String
+  classId     String
+  routine     routine[]
+  classRoom   classRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student     student[]
+  createdAt   DateTime  @default(now())
+  @@unique([sectionName, classId,year])
 }
 
 
+model faculty {
+  id          String       @id @default(cuid())
+  facultyName String       @unique
+  department  department[]
+}
 
 model department {
-  id        String     @id
+  id        String     @id @default(cuid())
   deptName  String     @unique
   facultyId String
   faculty   faculty    @relation(fields: [facultyId], references: [id])
   employee  employee[]
-
-  @@index([facultyId], map: "department_facultyId_fkey")
+  courses   course[]
 }
 
+model course {
+  id         String     @id  @default(cuid())
+  courseName String     
+  totalMarks Int        @default(100)
+  classId    String
+  classRoom  classRoom  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  deptName  String    
+  department department @relation(fields: [deptName],references: [deptName],onDelete: Cascade)
+  timeslot   timeslot[]
+  createdAt  DateTime   @default(now())
+  @@unique([courseName, classId])
+}
+
+
 model employee {
-  id         String     @id
+  id         String     @id @default(cuid())
   employeeId String     @unique
   password   String
   firstName  String
@@ -60,18 +90,12 @@ model employee {
   deptId     String
   createdAt  DateTime   @default(now())
   department department @relation(fields: [deptId], references: [id])
-
+  timeslot   timeslot[]
   @@index([deptId], map: "employee_deptId_fkey")
 }
 
-model faculty {
-  id          String       @id
-  facultyName String       @unique
-  department  department[]
-}
-
 model holder {
-  id        String  @id
+  id        String  @id @default(cuid())
   firstName String
   lastName  String
   phone     String
@@ -80,62 +104,17 @@ model holder {
   imageURL  String
 }
 
-model hour {
-  id           String     @id
-  period       String     @unique
-  abbreviation String
-  timeslot     timeslot[]
-}
-model day {
-  id       String     @id
-  dayName  String     @unique
-  timeslot timeslot[]
-  routine  routine[]  @relation("dayToroutine")
-}
-
 model notice {
-  id        String   @id
+  id        String   @id @default(cuid())
   title     String
   content   String
   date      String
   createdAt DateTime @default(now())
 }
 
-model routine {
-  id          String  @id
-  sectionName String
-  year        String
-  section     section @relation(fields: [sectionName], references: [id])
-  day         day[]   @relation("dayToroutine")
-  @@index([sectionName], map: "routine_sectionName_fkey")
-}
-
-model school {
-  id         String  @id
-  name       String
-  email      String  @unique
-  phone      String  @unique
-  address    String
-  message    String?
-  schoolCode String
-  EIIN       String
-  imageURL   String?
-}
-
-model section {
-  id          String    @id @default(cuid())
-  sectionName String    
-  year        String
-  classId     String
-  routine     routine[]
-  classRoom   classRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
-  student     student[]
-  createdAt   DateTime  @default(now())
-  @@unique([sectionName, classId,year])
-}
 
 model student {
-  id        String   @id
+  id        String   @id @default(cuid())
   studentId String   @unique
   password  String
   firstName String
@@ -148,19 +127,52 @@ model student {
   sectionId String
   createdAt DateTime @default(now())
   section   section  @relation(fields: [sectionId], references: [id])
-  @@index([sectionId], map: "student_sectionId_fkey")
+  
 }
+
+
 
 model timeslot {
-  id           String @id
-  dayName      String
-  periodString String
-  courseName   String
-  course       course @relation(fields: [courseName], references: [courseName])
-  day          day    @relation(fields: [dayName], references: [dayName])
-  hour         hour   @relation(fields: [periodString], references: [period])
-
-  @@unique([dayName, courseName, periodString])
-  @@index([courseName], map: "timeslot_courseName_fkey")
-  @@index([periodString], map: "timeslot_periodString_fkey")
+  id           String @id @default(cuid())
+  startTime    String
+  endTime      String
+  meridiem     Meridiem   @default(AM)
+  day          Day @default(SATURDAY)
+  courseId     String
+  course       course @relation(fields: [courseId], references: [id]) 
+  employeeId   String
+  employee     employee @relation(fields: [employeeId], references: [id])
+  createdAt    DateTime @default(now())
+  routineId    String 
+  routine      routine @relation(fields: [routineId], references: [id])
+  @@unique([startTime, endTime, day, courseId, employeeId])
 }
+
+model routine {
+  id          String  @id @default(cuid())
+  sectionName String
+  section     section @relation(fields: [sectionName], references: [id])
+  timeslot    timeslot[]
+  
+}
+
+enum Day{
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+}
+
+enum Meridiem{
+  AM
+  PM
+}
+
+
+
+
+
+
+
