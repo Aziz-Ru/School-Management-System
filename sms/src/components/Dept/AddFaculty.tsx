@@ -32,7 +32,11 @@ const AddFaculty = () => {
             placeholder="Faculty Name"
           />
         </div>
-        <Formsubmitbtn Title="Add Faculty" LoadingTitle="Adding Faculty" />
+        <Formsubmitbtn
+          width=""
+          Title="Add Faculty"
+          LoadingTitle="Adding Faculty"
+        />
       </form>
     </div>
   );

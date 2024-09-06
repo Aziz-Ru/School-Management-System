@@ -8,30 +8,32 @@ interface Section {
   id: string;
   sectionName: string;
   year: string;
-  classId: string;
+  classRoom: {
+    id: string;
+    className: string;
+    classId: number;
+  };
+}
+interface ClassProps {
+  id: string;
+  className: string;
 }
 
-const EachSection = ({ initialSections }: { initialSections: Section[] }) => {
+const EachSection = ({
+  initialSections,
+  classes,
+}: {
+  initialSections: Section[];
+  classes: any;
+}) => {
+  const [isClassActive, setIsClassActive] = useState(false);
+  const [isYearActive, setIsYearActive] = useState(false);
   const [sections, setSections] = useState<Section[]>([]);
   useEffect(() => {
     setSections(initialSections);
   }, [initialSections]);
 
   const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
-  const classes = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ];
 
   return (
     <div>
@@ -40,7 +42,7 @@ const EachSection = ({ initialSections }: { initialSections: Section[] }) => {
           const data = await getSection(formData);
           setSections(data);
         }}
-        className="px-2 mb-4"
+        className="px-2 mb-4 flex flex-wrap items-center justify-around"
       >
         <input
           type="text"
@@ -48,30 +50,51 @@ const EachSection = ({ initialSections }: { initialSections: Section[] }) => {
           placeholder="Search Section"
           className="w-32 mx-1 site-bg site-txt rounded py-1.5 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
         />
-        <select
-          className="w-32 mx-1 site-bg site-txt rounded py-2 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
-          name="classId"
-        >
-          {classes.map((classroom) => {
-            return (
-              <option key={classroom} value={classroom}>
-                {classroom}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          name="year"
-          className="w-32 mx-1 site-bg site-txt rounded py-2 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
-        >
-          {years.map((year) => {
-            return (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            );
-          })}
-        </select>
+        <div className="">
+          <input
+            onChange={() => {
+              setIsClassActive(!isClassActive);
+            }}
+            className="w-5 h-5 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
+            type="checkbox"
+          />
+          <select
+            disabled={!isClassActive}
+            className="w-32 mx-1 site-bg site-txt rounded py-2 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
+            name="classId"
+          >
+            {classes.map((classroom: ClassProps) => {
+              return (
+                <option key={classroom.id} value={classroom.id}>
+                  {classroom.className}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <div className="">
+          <input
+            onChange={() => {
+              setIsYearActive(!isYearActive);
+            }}
+            className="w-5 h-5 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
+            type="checkbox"
+          />
+          <select
+            name="year"
+            disabled={!isYearActive}
+            className="w-32 mx-1 site-bg site-txt rounded py-2 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600 border border-gray-200 dark:border-gray-600"
+          >
+            {years.map((year) => {
+              return (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
         <input
           type="submit"
           value="filter"
@@ -118,7 +141,7 @@ const EachSection = ({ initialSections }: { initialSections: Section[] }) => {
                       />
                     </div>
                     <div>
-                      <span>{section.classId}</span>
+                      <span>{section.classRoom.className}</span>
                     </div>
                     <div>
                       <input
