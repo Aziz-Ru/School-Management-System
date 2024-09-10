@@ -93,3 +93,77 @@ export const courseSchema = z.object({
     })
     .cuid(),
 });
+
+export const employeeSchema = z.object({
+  firstName: z
+    .string({
+      required_error: "firstName must be required",
+      invalid_type_error: "firstName must be a string",
+    })
+    .min(3, "firstName must be atleast 4 chracters")
+    .max(20, "firstName must be no more than 20 chracters"),
+  lastName: z
+    .string({
+      required_error: "lastName must be required",
+      invalid_type_error: "lastName must be a string",
+    })
+    .min(3, "lastName must be atleast 4 chracters")
+    .max(20, "lastName must be no more than 20 chracters"),
+  email: z
+    .string({
+      required_error: "email must be required",
+      invalid_type_error: "email must be a string",
+    })
+    .email(),
+  phone: z
+
+    .string({
+      required_error: "phone must be required",
+      invalid_type_error: "phone must be a string",
+    })
+    .regex(/^(\+8801|01)[0-9]\d{8}$/, {
+      message: "Invalid Bangladeshi Phone Number",
+    }),
+  sex: z.enum(["Male", "Female"], {
+    errorMap: () => ({ message: "Sex must be either Male or Female" }),
+  }),
+  role: z.enum(
+    [
+      "Vice_Principal",
+      "Senior_Teacher",
+      "Junior_Teacher",
+      "Assistant_Teacher",
+      "Office_Staff",
+    ],
+    {
+      errorMap: () => ({
+        message:
+          "Role must be either Vice_Principal, Senior_Teacher, Junior_Teacher, Assistant_Teacher or Office_Staff",
+      }),
+    }
+  ),
+  deptId: z
+    .string({
+      required_error: "deptId must be required",
+      invalid_type_error: "deptId must be a string",
+    })
+    .cuid()
+    .optional(),
+  joinDate: z.date({
+    required_error: "joinDate must be required",
+    invalid_type_error: "joinDate must be a date",
+  }),
+  employeeId: z
+    .number({
+      required_error: "employeeId must be required",
+      invalid_type_error: "employeeId must be a number",
+    })
+    .int({ message: "employeeId must be a number" })
+    .min(1000, { message: "employeeId must be greater than 1000" }),
+  password: z
+    .string({
+      required_error: "password must be required",
+      invalid_type_error: "password must be a string",
+    })
+    .min(6, "password must be atleast 6 chracters"),
+});

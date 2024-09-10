@@ -18,6 +18,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <li>
             <Link href={"/admin/dept"}> Department</Link>
           </li>
+          <li>
+            <Link href={"/admin/employee"}>Employee</Link>
+          </li>
         </ul>
       </div>
       <div className="">{children}</div>

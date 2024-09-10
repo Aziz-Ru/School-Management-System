@@ -73,6 +73,14 @@ model course {
   @@unique([courseName, classId])
 }
 
+enum Rank{
+  Vice_Principal
+  Senior_Teacher
+  Junior_Teacher
+  Assistant_Teacher
+  Office_Staff
+}
+
 
 model employee {
   id         String     @id @default(cuid())
@@ -80,18 +88,17 @@ model employee {
   password   String
   firstName  String
   lastName   String
-  rank       String
-  message    String?
+  rank       Rank      @default(Junior_Teacher)
+  message    String ?
   email      String
   phone      String
   sex        String
   joinDate   String
-  imageURL   String?
-  deptId     String
+  imageURL   String ?
+  deptId     String ?
+  department department ? @relation(fields: [deptId], references: [id])
   createdAt  DateTime   @default(now())
-  department department @relation(fields: [deptId], references: [id])
-  timeslot   timeslot[]
-  @@index([deptId], map: "employee_deptId_fkey")
+  
 }
 
 model holder {
@@ -140,12 +147,10 @@ model timeslot {
   day          Day @default(SATURDAY)
   courseId     String
   course       course @relation(fields: [courseId], references: [id]) 
-  employeeId   String
-  employee     employee @relation(fields: [employeeId], references: [id])
   createdAt    DateTime @default(now())
   routineId    String 
   routine      routine @relation(fields: [routineId], references: [id])
-  @@unique([startTime, endTime, day, courseId, employeeId])
+ 
 }
 
 model routine {
