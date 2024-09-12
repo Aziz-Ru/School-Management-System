@@ -15,7 +15,7 @@ const AddEmployee = ({ departments }: { departments: DeptProps[] }) => {
   const [isStaff, setIsStaff] = useState(false);
 
   return (
-    <div className="h-[80vh] flex items-center justify-center">
+    <div className="max-w-screen-sm mx-auto">
       <form
         action={async (formData) => {
           const { error, success } = await addEmployee(formData);
