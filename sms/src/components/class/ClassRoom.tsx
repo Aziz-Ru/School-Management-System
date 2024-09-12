@@ -135,6 +135,7 @@ const ClassRoom = ({
                   name="deptId"
                   className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-4 outline-none transition focus:border-blue-600 active:border-blue-600"
                 >
+                  <option value="Dept_name">Department</option>
                   {department.map((dept, ind: number) => {
                     return (
                       <option key={ind} value={dept.id}>

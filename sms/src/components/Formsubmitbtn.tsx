@@ -14,7 +14,7 @@ const Formsubmitbtn = ({
   return (
     <div className={`my-2 ${width}`}>
       <input
-        className="shadow px-2 text-white w-full py-2.5 bg-blue-700 hover:bg-blue-600  rounded"
+        className="link-btn px-2 py-3 my-1 w-full"
         type="submit"
         aria-disabled={pending}
         value={pending ? LoadingTitle : Title}

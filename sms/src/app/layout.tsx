@@ -6,7 +6,7 @@ import "./globals.css";
 
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["100", "300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className} site-bg site-txt`}>
         <Navbar />
-        <main>{children}</main>
+        <main className="pt-20">{children}</main>
+
         <Toaster position="top-center" />
       </body>
     </html>

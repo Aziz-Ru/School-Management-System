@@ -24,8 +24,8 @@ const AddDeptForm = ({ faculties }: { faculties: Props[] }) => {
         }
       }}
     >
-      <div className="w-full ">
-        <div className="my-4 items-center justify-around flex gap-2">
+      <div className="w-full">
+        <div className="items-center justify-around flex gap-2">
           <input
             className="w-1/2 site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600"
             type="text"
@@ -37,6 +37,7 @@ const AddDeptForm = ({ faculties }: { faculties: Props[] }) => {
             name="facultyId"
             className="w-1/2 site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600"
           >
+            <option value="nothing">Faculty</option>
             {faculties.map((faculty) => {
               return (
                 <option key={faculty.id} value={faculty.id}>
@@ -47,7 +48,7 @@ const AddDeptForm = ({ faculties }: { faculties: Props[] }) => {
           </select>
         </div>
       </div>
-      <Formsubmitbtn width="" Title="Add" LoadingTitle="Adding..." />
+      <Formsubmitbtn width="" Title="Add Department" LoadingTitle="Adding..." />
     </form>
   );
 };

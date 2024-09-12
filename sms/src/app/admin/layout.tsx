@@ -3,8 +3,8 @@ import React from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <section>
-      <div className="max-w-screen-xl mx-auto">
+    <section className="max-w-screen-xl mx-auto overflow-y-auto ">
+      <div className="">
         <ul className="px-6 py-2 flex gap-2">
           <li>
             <Link href={"/admin/class"}> Class</Link>
@@ -16,7 +16,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             <Link href={"/admin/section"}> Section</Link>
           </li>
           <li>
-            <Link href={"/admin/dept"}> Department</Link>
+            <Link href={"/admin/ds"}> Department</Link>
+          </li>
+          <li>
+            <Link href={"/admin/employee"}>Employee</Link>
           </li>
         </ul>
       </div>

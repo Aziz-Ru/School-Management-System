@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  
   .site-bg {
     @apply bg-gray-50 dark:bg-gray-800;
   }
@@ -12,5 +11,17 @@
   }
   .site-hover {
     @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+  }
+  .site-border {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+  .delete-btn {
+    @apply bg-red-700 hover:bg-red-600 shadow rounded text-white font-medium;
+  }
+  .link-btn {
+    @apply bg-blue-700 hover:bg-blue-600 rounded shadow text-white font-medium;
+  }
+  .input {
+    @apply w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600;
   }
 }

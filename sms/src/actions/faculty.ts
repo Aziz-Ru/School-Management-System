@@ -55,7 +55,19 @@ export const deleteFaculty = async (id: string): Promise<ReturnProps> => {
     const { facultyName } = await prisma.faculty.delete({ where: { id: id } });
     revalidatePath("/admin/dept");
     return { error: "", success: `${facultyName} delete successfully` };
-  } catch (err) {
-    return { error: "Something went wrong", success: "" };
+  } catch (err: any) {
+    console.log(err.code);
+    if (err.code === "P2003") {
+      console.log("error");
+      return {
+        error:
+          "This faculty has some department ,so you need to delete those departments ",
+        success: "",
+      };
+    } else {
+      return { error: "Something went wrong", success: "" };
+    }
+
+    // return { error: "Something went wrong", success: "" };
   }
 };

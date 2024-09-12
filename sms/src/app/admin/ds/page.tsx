@@ -6,21 +6,15 @@ import GetFaculty from "@/components/Dept/GetFaculty";
 const Department = () => {
   return (
     <section>
-      <div className="max-w-screen-2xl  mx-auto">
-        <div className="">
-          <div className="grid grid-cols-12">
-            <div className="col-span-12 md:col-span-6 ">
+      <div className="max-w-screen-2xl mx-auto h-[83vh]">
+        <div className="px-4">
+          <div className="grid grid-cols-2 gap-4 h-full">
+            <div className="w-full col-span-2 lg:col-span-1 ">
               <AddFaculty />
-            </div>
-            <div className=" col-span-12 md:col-span-6 ">
               <GetFaculty />
             </div>
-          </div>
-          <div className="grid grid-cols-12">
-            <div className="col-span-12 md:col-span-6 ">
+            <div className="w-full col-span-2 lg:col-span-1 ">
               <AddDept />
-            </div>
-            <div className="col-span-12 md:col-span-6 ">
               <GetDept />
             </div>
           </div>

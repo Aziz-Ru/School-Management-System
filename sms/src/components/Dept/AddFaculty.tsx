@@ -8,9 +8,11 @@ import Formsubmitbtn from "../Formsubmitbtn";
 const AddFaculty = () => {
   const formRef = useRef<HTMLFormElement>(null);
   return (
-    <div className="px-4 my-4">
+    <div>
       <div>
-        <h1 className="text-center text-2xl font-bold my-2">Add Faculty</h1>
+        <h1 className="text-center text-2xl font-medium my-2">
+          Add New Faculty
+        </h1>
       </div>
       <form
         ref={formRef}
@@ -24,19 +26,15 @@ const AddFaculty = () => {
           }
         }}
       >
-        <div className="w-full my-4">
+        <div className="w-full">
           <input
-            className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600"
+            className="input"
             type="text"
             name="facultyName"
             placeholder="Faculty Name"
           />
         </div>
-        <Formsubmitbtn
-          width=""
-          Title="Add Faculty"
-          LoadingTitle="Adding Faculty"
-        />
+        <Formsubmitbtn width="" Title="Add Faculty" LoadingTitle="Adding..." />
       </form>
     </div>
   );
