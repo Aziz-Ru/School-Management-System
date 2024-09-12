@@ -96,7 +96,7 @@ model employee {
   joinDate   String
   imageURL   String ?
   deptId     String ?
-  department department ? @relation(fields: [deptId], references: [id])
+  department department ? @relation(fields: [deptId], references: [id],onDelete: Cascade)
   createdAt  DateTime   @default(now())
   
 }
@@ -133,7 +133,7 @@ model student {
   imageURL  String?
   sectionId String
   createdAt DateTime @default(now())
-  section   section  @relation(fields: [sectionId], references: [id])
+  section   section  @relation(fields: [sectionId], references: [id],onDelete: Cascade)
   
 }
 
@@ -146,17 +146,17 @@ model timeslot {
   meridiem     Meridiem   @default(AM)
   day          Day @default(SATURDAY)
   courseId     String
-  course       course @relation(fields: [courseId], references: [id]) 
+  course       course @relation(fields: [courseId], references: [id],onDelete: Cascade) 
   createdAt    DateTime @default(now())
   routineId    String 
-  routine      routine @relation(fields: [routineId], references: [id])
+  routine      routine @relation(fields: [routineId], references: [id],onDelete: Cascade)
  
 }
 
 model routine {
   id          String  @id @default(cuid())
   sectionName String
-  section     section @relation(fields: [sectionName], references: [id])
+  section     section @relation(fields: [sectionName], references: [id],onDelete: Cascade)
   timeslot    timeslot[]
   
 }

@@ -153,7 +153,7 @@ const EachSection = ({
                     </div>
                     <div className="w-1/5 text-center">
                       <input
-                        className="delete-btn text-md px-2 py-1"
+                        className="delete-btn font-medium px-2 py-1"
                         type="submit"
                         value="Delete"
                       />

@@ -1,8 +1,9 @@
 "use client";
 import { deleteFaculty, getFaculty } from "@/actions/faculty";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
+import DeleteButton from "../DeleteButton";
 
 interface Props {
   id: string;
@@ -15,8 +16,9 @@ const EachFaculty = ({ initialFaculties }: { initialFaculties: Props[] }) => {
   }, [initialFaculties]);
 
   return (
-    <div className="h-72 overflow-y-scroll relative">
+    <div className="relative">
       <div className="w-full mb-2">
+        {/* start search form  */}
         <form
           action={async (formData) => {
             const res = await getFaculty(formData);
@@ -36,56 +38,49 @@ const EachFaculty = ({ initialFaculties }: { initialFaculties: Props[] }) => {
             className="w-1/3 shadow px-2 text-white py-2.5 bg-blue-700 hover:bg-blue-600  rounded"
           />
         </form>
+        {/* end search form  */}
       </div>
-
-      {faculties.map((faculty) => {
-        return (
-          <div
-            key={faculty.id}
-            className="flex items-center justify-around gap-2 px-4 py-1 border border-gray-200 dark:border-gray-600 site-hover"
-          >
-            <form
-              action={async () => {
-                const { error, success } = await deleteFaculty(faculty.id);
-                if (success) {
-                  toast.success(success);
-                } else {
-                  toast.error(error);
-                }
-              }}
-              className="flex w-full flex-wrap justify-around items-center"
+      {/* start indivdual faculty  */}
+      <div className="w-full mb-2">
+        {faculties.map((faculty) => {
+          return (
+            <div
+              key={faculty.id}
+              className="flex items-center justify-around gap-2 px-4 py-1 border border-gray-200 dark:border-gray-600 site-hover"
             >
-              <div className="">
-                <input
-                  type="text"
-                  defaultValue={faculty.facultyName}
-                  name="facultyName"
-                  disabled
-                  className="w-32 mx-1 site-bg site-txt rounded py-1.5 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600"
-                />
-              </div>
-              <DeleteButton />
-            </form>
-          </div>
-        );
-      })}
+              <form
+                action={async () => {
+                  const { error, success } = await deleteFaculty(faculty.id);
+                  if (success) {
+                    toast.success(success);
+                  } else {
+                    toast.error(error);
+                  }
+                }}
+                className="flex w-full flex-wrap justify-around items-center"
+              >
+                <div className="w-1/3 text-start">
+                  <span className="w-32site-bg site-txt ">
+                    {faculty.facultyName}
+                  </span>
+                </div>
+                <div className="w-1/3 text-center">
+                  <Link
+                    className="link-btn px-2 py-1"
+                    href={`/admin/ds/f/${faculty.id}`}
+                  >
+                    Visit
+                  </Link>
+                </div>
+                <DeleteButton />
+              </form>
+              {/* end indivdual faculty  */}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
 
 export default EachFaculty;
-
-const DeleteButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <div>
-      <input
-        className="shadow px-2 py-1.5 bg-black hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded"
-        type="submit"
-        aria-disabled={pending}
-        value={pending ? "Delete..." : "Delete"}
-      />
-    </div>
-  );
-};

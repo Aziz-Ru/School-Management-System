@@ -21,7 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className} site-bg site-txt`}>
         <Navbar />
-        <main>{children}</main>
+        <main className="pt-20">{children}</main>
+
         <Toaster position="top-center" />
       </body>
     </html>

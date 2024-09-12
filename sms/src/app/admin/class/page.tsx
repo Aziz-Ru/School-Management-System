@@ -1,5 +1,6 @@
 import AddClass from "@/components/class/AddClass";
-import ClassRoom from "@/components/course/ClassRoom";
+import ClassRoom from "@/components/class/ClassRoom";
+
 import prisma from "@/lib/db";
 
 const page = async () => {
