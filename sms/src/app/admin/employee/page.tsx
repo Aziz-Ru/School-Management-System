@@ -70,9 +70,9 @@ const Employee = async () => {
                         <div className="w-1/4 py-2 text-center border-r site-border">
                           <Link
                             className="link-btn px-2 py-1"
-                            href={`/admin/employee/${employee.employeeId}`}
+                            href={`/admin/employee/${employee.id}`}
                           >
-                            View
+                            Details
                           </Link>
                         </div>
                       </div>
