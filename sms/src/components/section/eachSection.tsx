@@ -145,10 +145,10 @@ const EachSection = ({
                     </div>
                     <div className="w-1/5 text-center">
                       <Link
-                        className="link-btn text-lg px-3 py-1"
+                        className="link-btn px-3 py-1"
                         href={`/admin/section/${section.id}`}
                       >
-                        Visit
+                        Details
                       </Link>
                     </div>
                     <div className="w-1/5 text-center">

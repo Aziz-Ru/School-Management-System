@@ -9,23 +9,39 @@ const page = async ({ params }: { params: { sectionId: string } }) => {
     include: { classRoom: true },
   });
 
-  return (
-    <div className="site-bg">
-      <div className="max-w-screen-xl mx-auto px-6">
-        <Breadcrumb
-          sectionName={section?.sectionName || "SectionName"}
-          year={section?.year || "Year"}
-          className={section?.classRoom?.className || "ClassName"}
-        />
-        <div className=" mb-4">
-          <h2 className="text-center site-txt text-2xl font-medium">
-            Class Routine
-          </h2>
-        </div>
-        <Routine />
+  if (!section) {
+    return (
+      <div className="mt-10">
+        <h1 className="text-xl font-medium text-center">Not Found</h1>
       </div>
-    </div>
-  );
+    );
+  } else {
+    const courses = await prisma.course.findMany({
+      where: { classId: section.classId },
+      select: {
+        id: true,
+        courseName: true,
+      },
+    });
+
+    return (
+      <div className="site-bg">
+        <div className="max-w-screen-xl mx-auto px-6">
+          <Breadcrumb
+            sectionName={section?.sectionName || "SectionName"}
+            year={section?.year || "Year"}
+            className={section?.classRoom?.className || "ClassName"}
+          />
+          <div className=" mb-4">
+            <h2 className="text-center site-txt text-2xl font-medium">
+              Class Routine
+            </h2>
+          </div>
+          <Routine courses={courses} />
+        </div>
+      </div>
+    );
+  }
 };
 
 export default page;
