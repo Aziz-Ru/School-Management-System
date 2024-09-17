@@ -37,9 +37,9 @@ model section {
   sectionName String    
   year        String
   classId     String
-  routine     routine[]
   classRoom   classRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
   student     student[]
+  routine    days[]
   createdAt   DateTime  @default(now())
   @@unique([sectionName, classId,year])
 }
@@ -144,22 +144,23 @@ model timeslot {
   startTime    String
   endTime      String
   meridiem     Meridiem   @default(AM)
-  day          Day @default(SATURDAY)
+  dayId        String
+  day         days @relation(fields: [dayId],references: [id])
   courseId     String
-  course       course @relation(fields: [courseId], references: [id],onDelete: Cascade) 
+  course       course @relation(fields: [courseId], references: [id],onDelete: Cascade)
   createdAt    DateTime @default(now())
-  routineId    String 
-  routine      routine @relation(fields: [routineId], references: [id],onDelete: Cascade)
- 
+   
 }
 
-model routine {
-  id          String  @id @default(cuid())
-  sectionName String
-  section     section @relation(fields: [sectionName], references: [id],onDelete: Cascade)
-  timeslot    timeslot[]
-  
+model days{
+  id           String @id @default(cuid())
+  day          Day @default(SATURDAY)
+  timeslot     timeslot[]
+  sectionId    String @unique
+  section   section @relation(fields: [sectionId], references: [id],onDelete: Cascade)
+  @@unique([day, sectionId])
 }
+
 
 enum Day{
   SATURDAY

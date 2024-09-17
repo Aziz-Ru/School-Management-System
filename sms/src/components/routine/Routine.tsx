@@ -1,12 +1,57 @@
 "use client";
 
+import { useState } from "react";
+
 interface courseProps {
   id: string;
   courseName: string;
 }
 
 const Routine = ({ courses }: { courses: courseProps[] }) => {
-
+  const routine = [
+    {
+      day: "Saturday",
+      hours: [
+        {
+          startTime: "10:00",
+          endTime: "11:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+        {
+          startTime: "11:00",
+          endTime: "12:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+        {
+          startTime: "12:00",
+          endTime: "01:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+        {
+          startTime: "01:00",
+          endTime: "02:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+        {
+          startTime: "02:00",
+          endTime: "03:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+        {
+          startTime: "03:00",
+          endTime: "04:00",
+          course: "Math",
+          teacher: "Mr. A",
+        },
+      ],
+    },
+  ];
+  const [teacher, setTeacher] = useState([]);
   
   return (
     <div className="w-full rounded shadow site-bg">
@@ -39,8 +84,83 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
           </tr>
         </thead>
         <tbody>
-          {/* <!-- Line 1 --> */}
-          <tr className="grid grid-cols-8 border-b site-border">
+          {routine.map((day, indx1) => {
+            return (
+              <tr className="grid grid-cols-8 border-b site-border" key={indx1}>
+                <td className="ease relative flex justify-center items-center h-20 border-x site-border transition duration-500 md:h-25 xl:h-31">
+                  <span className="font-medium  site-txt xl:hidden">
+                    {day.day.substring(0, 3)}
+                  </span>
+                  <span className="font-medium text-black dark:text-white hidden xl:block">
+                    {day.day}
+                  </span>
+                </td>
+                {day.hours.map((hour, index2) => {
+                  return (
+                    <td
+                      className="ease relative h-24 border-x site-border transition duration-500 md:h-25 xl:h-31"
+                      key={index2}
+                    >
+                      <div className="w-full h-full flex flex-col justify-center items-center">
+                        <form action="">
+                          <input
+                            type="text"
+                            name="startTime"
+                            defaultValue={hour.startTime}
+                            className="hidden"
+                          />
+                          <input
+                            type="text"
+                            name="endTime"
+                            defaultValue={hour.endTime}
+                            className="hidden"
+                          />
+                          <select
+                            defaultValue={"myCourse"}
+                            className="w-full site-bg site-txt mb-1 outline-none transition focus:border-blue-600 active:border-blue-600"
+                            name="courseId"
+                          >
+                            <option value="$">Subject</option>
+                            {courses.map((course, ind) => {
+                              return (
+                                <option key={ind} value={course.id}>
+                                  {course.courseName}
+                                </option>
+                              );
+                            })}
+                          </select>
+                          <select
+                            className="w-full site-bg site-txt mb-1 outline-none transition focus:border-blue-600 active:border-blue-600"
+                            name="employeeId"
+                          >
+                            <option value="$">Teacher</option>
+                          </select>
+                          <input
+                            className="link-btn px-2 py-.5 w-full"
+                            type="submit"
+                            value="Add"
+                          />
+                        </form>
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+
+
+export default Routine;
+
+{
+  /*  
+<tr className="grid grid-cols-8 border-b site-border">
             <td className="ease relative h-20 border-x site-border transition duration-500 md:h-25 md:p-6 xl:h-31">
               <span className="font-medium text-black dark:text-white xl:hidden">
                 SAT
@@ -91,8 +211,8 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
               <span className="font-medium text-black dark:text-white">7</span>
             </td>
           </tr>
-          {/* <!-- Line 1 --> */}
-          {/* <!-- Line 2 --> */}
+        
+          
           <tr className="grid grid-cols-8 border-b site-border">
             <td className="ease relative h-20 border-x site-border p-2 transition duration-500 md:h-25 md:p-6 xl:h-31">
               <span className="font-medium text-black dark:text-white xl:hidden">
@@ -124,8 +244,7 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
               <span className="font-medium text-black dark:text-white">14</span>
             </td>
           </tr>
-          {/* <!-- Line 2 --> */}
-          {/* <!-- Line 3 --> */}
+         
           <tr className="grid grid-cols-8">
             <td className="ease relative site-bg h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
               <span className="font-medium text-black dark:text-white xl:hidden">
@@ -157,8 +276,7 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
               <span className="font-medium text-black dark:text-white">21</span>
             </td>
           </tr>
-          {/* <!-- Line 3 --> */}
-          {/* <!-- Line 4 --> */}
+         
           <tr className="grid grid-cols-8">
             <td className="ease relative site-bg h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
               <span className="font-medium text-black dark:text-white xl:hidden">
@@ -201,8 +319,9 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
               <span className="font-medium text-black dark:text-white">28</span>
             </td>
           </tr>
-          {/* <!-- Line 4 --> */}
-          {/* <!-- Line 5 --> */}
+        
+
+        
           <tr className="grid grid-cols-8">
             <td className="ease relative site-bg h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
               <span className="font-medium text-black dark:text-white xl:hidden">
@@ -265,11 +384,7 @@ const Routine = ({ courses }: { courses: courseProps[] }) => {
               <span className="font-medium text-black dark:text-white">4</span>
             </td>
           </tr>
-          {/* <!-- Line 5 --> */}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+          
 
-export default Routine;
+*/
+}
