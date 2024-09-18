@@ -1,4 +1,6 @@
+import Annoucement from "@/components/Annoucement";
 import EventCalender from "@/components/EventCalender";
+import Events from "@/components/Events";
 import UserCard from "@/components/UserCard";
 
 const page = () => {
@@ -15,6 +17,8 @@ const page = () => {
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
+        <Events />
+        <Annoucement />
       </div>
     </div>
   );
