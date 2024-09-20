@@ -9,7 +9,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const EventCalender = () => {
   const [value, onChange] = useState<Value>(new Date());
   return (
-    <div className="w-full rounded-md p-4 site-bg">
+    <div className="w-full rounded-md p-4">
       <Calendar onChange={onChange} value={value} />
     </div>
   );

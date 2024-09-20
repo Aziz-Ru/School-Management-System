@@ -36,3 +36,13 @@
   background-color: #d0effb !important;
   color: rgb(0, 0, 0) !important;
 }
+
+.rbc-btn-group:first-child {
+  display: none !important;
+}
+.rbc-toolbar-label {
+  text-align: right !important;
+}
+.rbc-today {
+ 
+}

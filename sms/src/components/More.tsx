@@ -17,15 +17,12 @@ const More = () => {
   return (
     <div className="relative">
       <div
-        className={`w-32 flex flex-col bg-white dark:bg-gray-950 shadow  absolute right-6 rounded py-3 ${
+        className={`w-32 flex flex-col bg-white dark:bg-gray-600 shadow  absolute right-6 rounded py-3 ${
           show ? "block" : "hidden"
         }`}
       >
-        <Link href={""} className="hover:bg-sky-50 py-1">
+        <Link href={""} className="hover:bg-sky-50 hover:text-gray-600 py-1">
           <span className="px-4 text-md font-medium">View All</span>
-        </Link>
-        <Link href={""} className="hover:bg-sky-50 py-1">
-          <span className="px-4 text-md font-medium">Add</span>
         </Link>
       </div>
       <button onClick={() => setShow((prev) => !prev)}>

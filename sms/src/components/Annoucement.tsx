@@ -35,7 +35,7 @@ const Annoucement = () => {
         {annoucements.map((annoucement) => (
           <div
             key={annoucement.id}
-            className="odd:bg-sky-50 even:bg-red-50 p-3 rounded shadow"
+            className="site-bg border site-border p-3 rounded-md shadow"
           >
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-medium">{annoucement.title}</h2>

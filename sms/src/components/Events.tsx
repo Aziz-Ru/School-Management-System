@@ -35,7 +35,7 @@ const Events = () => {
         {events.map((event) => (
           <div
             key={event.id}
-            className="odd:bg-sky-50 even:bg-red-50 p-3 rounded shadow"
+            className="site-bg rounded-md  p-3 border site-border shadow"
           >
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-medium">{event.title}</h2>
