@@ -25,3 +25,24 @@
     @apply w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600;
   }
 }
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) !important;
+  font-family: "Inter", sans-serif !important;
+}
+.react-calendar__tile--active {
+  background-color: #d0effb !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.rbc-btn-group:first-child {
+  display: none !important;
+}
+.rbc-toolbar-label {
+  text-align: right !important;
+}
+.rbc-today {
+ 
+}
