@@ -14,18 +14,6 @@ const Pagination = () => {
         <button type="button" className="border-r site-border p-2">
           3
         </button>
-        <button type="button" className="border-r site-border p-2">
-          .
-        </button>
-        <button type="button" className="border-r site-border p-2">
-          .
-        </button>
-        <button type="button" className="border-r site-border p-2">
-          .
-        </button>
-        <button type="button" className="border-r site-border p-2">
-          10
-        </button>
       </div>
       <button className="link-btn px-4 py-1 text-lg">
         <span>Next</span>

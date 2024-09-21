@@ -2,7 +2,6 @@ import { role } from "@/lib/data";
 import Link from "next/link";
 import {
   HiAcademicCap,
-  HiBookmark,
   HiBookOpen,
   HiCalendar,
   HiChartBar,
@@ -12,7 +11,12 @@ import {
   HiUser,
   HiUserGroup,
 } from "react-icons/hi";
-import { HiArrowLeftOnRectangle, HiCog6Tooth } from "react-icons/hi2";
+import {
+  HiArrowLeftOnRectangle,
+  HiBuildingOffice,
+  HiBuildingOffice2,
+  HiCog6Tooth,
+} from "react-icons/hi2";
 const menuItems = [
   {
     title: "MENU",
@@ -36,17 +40,24 @@ const menuItems = [
         visiable: ["admin", "teacher"],
       },
       {
-        icon: HiBookOpen,
+        icon: HiBuildingOffice,
         label: "Classes",
-        href: "/classes",
+        href: "/list/classes",
         visiable: ["admin"],
       },
       {
-        icon: HiBookmark,
+        icon: HiBuildingOffice2,
         label: "Sections",
-        href: "list/sections",
+        href: "/list/sections",
         visiable: ["admin"],
       },
+      {
+        icon: HiBookOpen,
+        label: "Courses",
+        href: "/list/courses",
+        visiable: ["admin"],
+      },
+
       {
         icon: HiSparkles,
         label: "Exams",
