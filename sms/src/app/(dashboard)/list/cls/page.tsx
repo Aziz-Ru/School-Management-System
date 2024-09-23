@@ -1,10 +1,8 @@
-import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
-import { role, studentData } from "@/lib/data";
-import Image from "next/image";
+import { classData } from "@/lib/data";
 import Link from "next/link";
-import { HiEye, HiPlus, HiTrash } from "react-icons/hi";
+import { HiEye, HiPlus } from "react-icons/hi";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
@@ -17,35 +15,28 @@ const columns = [
   },
   {
     header: "Sections",
-    accessor: "studentId",
-    className: "hidden md:table-cell",
+    accessor: "sections",
+    className: "hidden sm:table-cell",
   },
 
   {
     header: "Courses",
-    accessor: "phone",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Adress",
-    accessor: "phone",
-    className: "hidden xl:table-cell",
+    accessor: "courses",
+    className: "hidden sm:table-cell",
   },
 
   {
     header: "Action",
-    accessor: "action",
+    accessor: "actions",
   },
 ];
 
 type Class = {
   id: number;
-  studentId: string;
-  name: string;
   classId: string;
-  photo: string;
-  address: string;
-  phone: string;
+  name: string;
+  sections: number;
+  courses: number;
 };
 
 const ClassListPage = async () => {
@@ -56,28 +47,22 @@ const ClassListPage = async () => {
         className="border-b site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
       >
         <td className="flex items-center gap-4 p-3 ">
-          <Image
-            src={item.photo}
-            alt="profile"
-            width={40}
-            height={40}
-            className="rounded-full md:hidden xl:block w-10 h-10"
-          />
           <div className="flex flex-col">
             <h3 className="font-semibold">{item.name}</h3>
             <span className="text-xs text-gray-500">{item.classId}</span>
           </div>
         </td>
+        <td className="px-2">
+          <span className="hidden sm:block">{item.sections}</span>
+        </td>
+        <td className="px-2">
+          <span className="hidden sm:block">{item.courses}</span>
+        </td>
 
-        <td>
+        <td className="px-2">
           <div className="flex items-center gap-2">
-            {role == "admin" && (
-              <Link href={`/list/teachers/${item.id}`}>
-                <HiEye className="w-5 h-5" />
-              </Link>
-            )}
-            <Link href={`/list/teachers`}>
-              <HiTrash className="w-5 h-5" />
+            <Link href={`/list/cls/${item.id}`}>
+              <HiEye className="w-5 h-5" />
             </Link>
           </div>
         </td>
@@ -89,7 +74,7 @@ const ClassListPage = async () => {
     <div className="site-bg p-4 m-4 mt-0 flex-1">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">All Students</h1>
+        <h1 className="hidden md:block text-lg font-semibold">All Classes</h1>
         <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 md:self-auto self-end ">
@@ -106,11 +91,7 @@ const ClassListPage = async () => {
         </div>
       </div>
       {/* List */}
-      <TableList columns={columns} renderRow={renderRow} data={studentData} />
-      {/* Pagination */}
-      <div className="">
-        <Pagination />
-      </div>
+      <TableList columns={columns} renderRow={renderRow} data={classData} />
     </div>
   );
 };

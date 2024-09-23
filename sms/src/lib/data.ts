@@ -222,3 +222,134 @@ export const studentData = [
     address: "123 Main St, Springfield, IL",
   },
 ];
+
+export const classData = [
+  {
+    id: "aaa",
+    classId: "C-1000",
+    name: "Class 1",
+    sections: 2,
+    courses: 3,
+    students: 20,
+  },
+  {
+    id: "bbb",
+    classId: "C-1001",
+    name: "Class 2",
+    sections: 2,
+    courses: 3,
+    students: 20,
+  },
+  {
+    id: "ccc",
+    classId: "C-1002",
+    name: "Class 3",
+    sections: 2,
+    courses: 4,
+    students: 20,
+  },
+  {
+    id: "ddd",
+    classId: "C-1003",
+    name: "Class 4",
+    sections: 2,
+    courses: 4,
+    students: 20,
+  },
+  {
+    id: "eee",
+    classId: "C-1004",
+    name: "Class 5",
+    sections: 2,
+    courses: 5,
+    students: 20,
+  },
+  {
+    id: "fff",
+    classId: "C-1005",
+    name: "Class 6",
+    sections: 2,
+    courses: 8,
+    students: 20,
+  },
+  {
+    id: "ggg",
+    classId: "C-1006",
+    name: "Class 7",
+    sections: 2,
+    courses: 9,
+    students: 20,
+  },
+  {
+    id: "hhh",
+    classId: "C-1007",
+    name: "Class 8",
+    sections: 2,
+    courses: 10,
+    students: 20,
+  },
+  {
+    id: "iii",
+    classId: "C-1008",
+    name: "Class 9",
+    sections: 2,
+    courses: 11,
+    students: 20,
+  },
+  {
+    id: "jjj",
+    classId: "C-1009",
+    name: "Class 10",
+    sections: 2,
+    courses: 12,
+    students: 20,
+  },
+];
+
+export const sectionData = [
+  {
+    id: "aaa",
+    sectionId: "S-1000",
+    name: "Section A",
+    students: 28,
+    year: 2024,
+    supervisor: "John Doe",
+  },
+  {
+    id: "aab",
+    sectionId: "S-1001",
+    name: "Section B",
+    students: 21,
+    year: 2024,
+    supervisor: "Jane Smith",
+  },
+  {
+    id: "aac",
+    sectionId: "S-1002",
+    name: "Section C",
+    students: 40,
+    year: 2024,
+    supervisor: "Anna Smith",
+  },
+];
+
+export const courseData = [
+  {
+    id: "aaa",
+    courseId: "C-1000",
+    courseName: "Course 1",
+    enrolledTeacher: "John Doe",
+  },
+  {
+    id: "aab",
+    courseId: "C-1001",
+    courseName: "Course 2",
+    enrolledTeacher: "Jane Smith",
+  },
+  {
+    id: "aac",
+    courseId: "C-1002",
+    courseName: "Course 3",
+    enrolledTeacher: "Anna Smith",
+  },
+];

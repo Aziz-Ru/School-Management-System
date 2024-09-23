@@ -42,7 +42,7 @@ const menuItems = [
       {
         icon: HiBuildingOffice,
         label: "Classes",
-        href: "/list/classes",
+        href: "/list/cls",
         visiable: ["admin"],
       },
       {
