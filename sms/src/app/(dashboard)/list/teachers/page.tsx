@@ -1,14 +1,15 @@
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
 import { role, teacherData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import { HiEmojiSad, HiLink, HiPlus } from "react-icons/hi";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
 } from "react-icons/hi2";
+import { IoMdEye } from "react-icons/io";
 
 const columns = [
   {
@@ -79,12 +80,13 @@ const Employee = async () => {
         <td>
           <div className="flex items-center gap-2">
             {role == "admin" && (
-              <Link href={`/list/teachers/${item.id}`}>
-                <HiEmojiSad className="w-5 h-5" />
-              </Link>
+              <FormModal table="teacher" type="delete" id={item.id} />
             )}
-            <Link href={`/list/teachers/${item.id}`}>
-              <HiLink className="w-5 h-5" />
+            <Link
+              className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center"
+              href={`/list/teachers/${item.id}`}
+            >
+              <IoMdEye className="w-4 h-4 site-txt" />
             </Link>
           </div>
         </td>
@@ -106,9 +108,7 @@ const Employee = async () => {
             <button>
               <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
             </button>
-            <button>
-              <HiPlus className="w-5 h-5 site-txt" />
-            </button>
+            <FormModal table="teacher" type="add" />
           </div>
         </div>
       </div>

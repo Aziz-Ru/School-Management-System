@@ -1,34 +1,30 @@
-import { useState } from "react";
-
 const Input = ({
   type,
   name,
-  placeholder,
-  width,
   label,
   required,
 }: {
   type: string;
   name: string;
-  width: string;
-  placeholder: string;
   required: boolean;
   label: string;
 }) => {
-  const [inputType, setInputType] = useState(type);
   return (
-    <div className={`${width}`}>
-      <label htmlFor={label} className="mb-2 block site-txt">
+    <div className="relative">
+      <input
+        type={type}
+        id={label}
+        name={name}
+        required={required}
+        placeholder=""
+        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border-1 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500  focus:ring-0 focus:border-blue-600 peer"
+      />
+      <label
+        htmlFor={label}
+        className="absolute text-sm text-white duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+      >
         {label}
       </label>
-      <input
-        className="w-full mb-3 site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600 "
-        type={inputType}
-        name={name}
-        id={label}
-        placeholder={placeholder}
-        required={required}
-      />
     </div>
   );
 };
