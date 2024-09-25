@@ -1,7 +1,16 @@
+import Link from "next/link";
+import { CiLocationOn } from "react-icons/ci";
+import {
+  FaExternalLinkSquareAlt,
+  FaHandsHelping,
+  FaLocationArrow,
+} from "react-icons/fa";
+import { IoIosPeople } from "react-icons/io";
+
 const Footer = () => {
   return (
     <footer className=" font-sans bg-indigo-900 text-white py-6">
-      {/* <div className="flex flex-col md:flex-row gap-10 justify-around">
+      <div className="flex flex-col md:flex-row gap-10 justify-around">
         <div className="px-4 py-2">
           <div className="flex items-center gap-4">
             <FaLocationArrow />
@@ -54,7 +63,7 @@ const Footer = () => {
         <div>
           <p className="text-center py-2">&reg; 2021 Developed By The Boys.</p>
         </div>
-      </div> */}
+      </div>
     </footer>
   );
 };

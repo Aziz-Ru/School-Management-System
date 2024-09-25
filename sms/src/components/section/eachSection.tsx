@@ -1,7 +1,7 @@
 "use client";
 import { deleteSection, getSection } from "@/actions/section";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
 interface Section {
@@ -37,6 +37,7 @@ const EachSection = ({
 
   return (
     <div>
+      {/* Search Form  start*/}
       <form
         action={async (formData) => {
           const data = await getSection(formData);
@@ -101,22 +102,24 @@ const EachSection = ({
           className="site-txt bg-blue-600 text-white rounded py-1.5 px-5 hover:bg-blue-700 transition"
         />
       </form>
-
+      {/* Search Form  end*/}
+      {/* Table  start*/}
       <div className="px-2">
         <div className="table w-full">
-          <div className="flex justify-around gap-2 px-4 border rounded border-gray-200 dark:border-gray-600 py-2 ">
-            <div className="">Section Name</div>
-            <div className="">Class</div>
-            <div className="">Year</div>
-            <div className="">Delete</div>
+          <div className="flex items-center justify-around gap-2 px-4 border rounded border-gray-200 dark:border-gray-600 py-2 ">
+            <div className="w-1/5 text-center">Name</div>
+            <div className="w-1/5 text-center">Class</div>
+            <div className="w-1/5 text-center">Year</div>
+            <div className="w-1/5 text-center">Visit</div>
+            <div className="w-1/5 text-center">Delete</div>
           </div>
 
-          <div>
+          <div className="w-full">
             {sections.map((section) => {
               return (
                 <div
                   key={section.id}
-                  className="flex items-center justify-around gap-2 px-4 py-1 border border-gray-200 dark:border-gray-600 site-hover"
+                  className="w-full flex items-center justify-around gap-2 "
                 >
                   <form
                     action={async () => {
@@ -129,29 +132,32 @@ const EachSection = ({
                         toast.error("Failed to delete");
                       }
                     }}
-                    className="flex w-full flex-wrap justify-around items-center"
+                    className="flex w-full px-4 gap-2 justify-around items-center py-2 border site-border rounded "
                   >
-                    <div>
-                      <input
-                        type="text"
-                        name="sectionName"
-                        disabled
-                        className="w-32 mx-1 site-bg site-txt rounded py-1.5 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600"
-                        defaultValue={section.sectionName}
-                      />
+                    <div className="w-1/5 text-center">
+                      <span>{section.sectionName}</span>
                     </div>
-                    <div>
+                    <div className="w-1/5 text-center">
                       <span>{section.classRoom.className}</span>
                     </div>
-                    <div>
+                    <div className="w-1/5 text-center">
+                      <span>{section.year}</span>
+                    </div>
+                    <div className="w-1/5 text-center">
+                      <Link
+                        className="link-btn px-3 py-1"
+                        href={`/admin/section/${section.id}`}
+                      >
+                        Details
+                      </Link>
+                    </div>
+                    <div className="w-1/5 text-center">
                       <input
-                        className="w-16 mx-1 site-bg site-txt rounded py-1.5 px-3 outline-none transition focus:border focus:border-blue-600 active:border-blue-600"
-                        name="year"
-                        disabled
-                        defaultValue={section.year}
+                        className="delete-btn font-medium px-2 py-1"
+                        type="submit"
+                        value="Delete"
                       />
                     </div>
-                    <DeleteButton />
                   </form>
                 </div>
               );
@@ -159,23 +165,9 @@ const EachSection = ({
           </div>
         </div>
       </div>
+      {/* Table  end*/}
     </div>
   );
 };
 
 export default EachSection;
-
-const DeleteButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <div>
-      <input
-        className="shadow px-2 py-1.5 bg-black hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded"
-        type="submit"
-        aria-disabled={pending}
-        value={pending ? "Delete..." : "Delete"}
-      />
-    </div>
-  );
-};

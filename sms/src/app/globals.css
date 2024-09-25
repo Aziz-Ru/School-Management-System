@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  
   .site-bg {
     @apply bg-gray-50 dark:bg-gray-800;
   }
@@ -13,4 +12,37 @@
   .site-hover {
     @apply hover:bg-gray-200 dark:hover:bg-gray-700;
   }
+  .site-border {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+  .delete-btn {
+    @apply bg-red-700 hover:bg-red-600 shadow rounded text-white font-medium;
+  }
+  .link-btn {
+    @apply bg-blue-700 hover:bg-blue-600 rounded shadow text-white font-medium;
+  }
+  .input {
+    @apply w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600;
+  }
+}
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) !important;
+  font-family: "Inter", sans-serif !important;
+}
+.react-calendar__tile--active {
+  background-color: #d0effb !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.rbc-btn-group:first-child {
+  display: none !important;
+}
+.rbc-toolbar-label {
+  text-align: right !important;
+}
+.rbc-today {
+ 
 }

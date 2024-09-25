@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar/Navbar";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -6,7 +5,7 @@ import "./globals.css";
 
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["100", "300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -20,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} site-bg site-txt`}>
-        <Navbar />
-        <main>{children}</main>
+        <main className="md:overflow-auto">
+          <section>{children}</section>
+        </main>
+
         <Toaster position="top-center" />
       </body>
     </html>
