@@ -10,7 +10,7 @@ const FormModal = ({
   data,
   id,
 }: {
-  table: "teacher" | "student" | "class" | "subject";
+  table: "teacher" | "student" | "class" | "subject" | "department" | "faculty";
   type: "add" | "edit" | "delete";
   data?: any;
   id?: number;
