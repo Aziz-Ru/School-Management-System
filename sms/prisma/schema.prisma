@@ -34,11 +34,12 @@ model Teacher {
   address    String
   message    String ?
   img        String ?
-  deptId     String 
-  deptName    Department @relation(fields: [deptId],references: [id],onDelete: Cascade)
+  deptId     String ?
+  deptName    Department? @relation(fields: [deptId],references: [id],onDelete: Cascade)
   super String?
   sections Section[]
   rank       Rank      @default(Junior_Teacher)
+  level       Level @default(SCHOOL)
   lesson    Lesson[]
   createdAt  DateTime   @default(now())
   
@@ -60,12 +61,14 @@ model Student {
 }
 
 model Class {
-  id        Int    @id  @default(autoincrement())
+  id        Int    @id 
   className String
+  level     Level @default(PRIMARY)
   sections  Section[]
   course    Course[]
   
 }
+
 
 model Section {
   id          String    @id @default(cuid())
@@ -101,9 +104,9 @@ model Course {
   id         String     @id  @default(cuid())
   courseName String     @unique   
   classId    Int
-  deptId     String 
+  deptId     String ?
   class  Class  @relation(fields: [classId], references: [id], onDelete: Cascade)
-  department Department @relation(fields: [deptId],references: [id],onDelete: Cascade)
+  department Department ? @relation(fields: [deptId],references: [id],onDelete: Cascade)
   lesson     Lesson []
   createdAt  DateTime   @default(now())
   @@unique([courseName, classId])
@@ -162,6 +165,12 @@ enum Rank{
   Assistant_Teacher
   Office_Staff
 }
+
+enum Level{
+  PRIMARY
+  SCHOOL
+  COLLEGE
+}
 enum Day{
   SATURDAY
   SUNDAY
@@ -171,10 +180,7 @@ enum Day{
   THURSDAY
 }
 
-enum Meridiem{
-  AM
-  PM
-}
+
 
 enum UserSex{
   MALE

@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
-import TeacherForm from "./Forms/TeacherForm";
+import ClassForm from "./Forms/ClassForm";
+import CourseForm from "./Forms/CourseForm";
+import DeptForm from "./Forms/DeptForm";
+import FacultyForm from "./Forms/FacultyForm";
 
 const FormModal = ({
   table,
@@ -10,7 +13,15 @@ const FormModal = ({
   data,
   id,
 }: {
-  table: "teacher" | "student" | "class" | "subject" | "department" | "faculty";
+  table:
+    | "teacher"
+    | "student"
+    | "class"
+    | "course"
+    | "department"
+    | "faculty"
+    | "section";
+
   type: "add" | "edit" | "delete";
   data?: any;
   id?: number;
@@ -25,6 +36,9 @@ const FormModal = ({
   const Icon = type == "add" ? MdAdd : type == "edit" ? MdEdit : MdDelete;
 
   const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const Form = () => {
     return type == "delete" && id ? (
       <form action="" className="p-4 flex flex-col gap-4">
@@ -52,10 +66,21 @@ const FormModal = ({
       {showModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-50 dark:bg-white dark:bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-gray-900 dark:bg-gray-900 text-gray-200 rounded-md p-4 relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] ">
-            <TeacherForm />
+            {table === "class" && (
+              <ClassForm updateModal={() => setShowModal(false)} />
+            )}
+            {table === "course" && (
+              <CourseForm updateModal={() => setShowModal(false)} data={data} />
+            )}
+            {table === "faculty" && (
+              <FacultyForm updateModal={() => setShowModal(false)} />
+            )}
+            {table === "department" && (
+              <DeptForm updateModal={() => setShowModal(false)} data={data} />
+            )}
             <button
               className="absolute top-4 right-4 cursor-pointer"
-              onClick={() => setShowModal(false)}
+              onClick={closeModal}
             >
               <MdClose className="w-6 h-6 text-white dark:text-white" />
             </button>

@@ -3,26 +3,179 @@
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export const addClass = async () => {
+interface ResultProp {
+  error?: string;
+  msg?: string;
+}
+
+export const addPrimary = async (): Promise<ResultProp> => {
   try {
-    await prisma.classRoom.createMany({
+    await prisma.class.createMany({
       data: [
-        { classId: 1, className: "One" },
-        { classId: 2, className: "Two" },
-        { classId: 3, className: "Three" },
-        { classId: 4, className: "Four" },
-        { classId: 5, className: "Five" },
-        { classId: 6, className: "Six" },
-        { classId: 7, className: "Seven" },
-        { classId: 8, className: "Eight" },
-        { classId: 9, className: "Nine" },
-        { classId: 10, className: "Ten" },
-        { classId: 11, className: "Eleven" },
-        { classId: 12, className: "Twelve" },
+        {
+          id: 1,
+          className: "One",
+          level: "PRIMARY",
+        },
+        {
+          id: 2,
+          className: "Two",
+          level: "PRIMARY",
+        },
+        {
+          id: 3,
+          className: "Three",
+          level: "PRIMARY",
+        },
+        {
+          id: 4,
+          className: "Four",
+          level: "PRIMARY",
+        },
+        {
+          id: 5,
+          className: "Five",
+          level: "PRIMARY",
+        },
       ],
     });
-    revalidatePath("/admin/class");
+    revalidatePath("/list/cls");
+    return { msg: "Primary classes added" };
   } catch (error) {
-    console.log(error);
+    return { error: "Failed to create" };
+  }
+};
+
+export const addSchool = async (): Promise<ResultProp> => {
+  try {
+    await prisma.class.createMany({
+      data: [
+        {
+          id: 6,
+          className: "Six",
+          level: "SCHOOL",
+        },
+        {
+          id: 7,
+          className: "Seven",
+          level: "SCHOOL",
+        },
+        {
+          id: 8,
+          className: "Eight",
+          level: "SCHOOL",
+        },
+        {
+          id: 9,
+          className: "Nine",
+          level: "SCHOOL",
+        },
+        {
+          id: 10,
+          className: "Ten",
+          level: "SCHOOL",
+        },
+      ],
+    });
+    revalidatePath("/list/cls");
+    return { msg: "School classes added" };
+  } catch (error) {
+    return { error: "Failed to create" };
+  }
+};
+
+export const addAllClass = async (): Promise<ResultProp> => {
+  try {
+    await prisma.class.createMany({
+      data: [
+        {
+          id: 1,
+          className: "One",
+          level: "PRIMARY",
+        },
+        {
+          id: 2,
+          className: "Two",
+          level: "PRIMARY",
+        },
+        {
+          id: 3,
+          className: "Three",
+          level: "PRIMARY",
+        },
+        {
+          id: 4,
+          className: "Four",
+          level: "PRIMARY",
+        },
+        {
+          id: 5,
+          className: "Five",
+          level: "PRIMARY",
+        },
+        {
+          id: 6,
+          className: "Six",
+          level: "SCHOOL",
+        },
+        {
+          id: 7,
+          className: "Seven",
+          level: "SCHOOL",
+        },
+        {
+          id: 8,
+          className: "Eight",
+          level: "SCHOOL",
+        },
+        {
+          id: 9,
+          className: "Nine",
+          level: "SCHOOL",
+        },
+        {
+          id: 10,
+          className: "Ten",
+          level: "SCHOOL",
+        },
+        {
+          id: 11,
+          className: "Eleven",
+          level: "COLLEGE",
+        },
+        {
+          id: 12,
+          className: "Twelve",
+          level: "COLLEGE",
+        },
+      ],
+    });
+    revalidatePath("/list/cls");
+    return { msg: "All classes added" };
+  } catch (error) {
+    return { error: "Failed to create" };
+  }
+};
+
+export const addCollege = async (): Promise<ResultProp> => {
+  try {
+    await prisma.class.createMany({
+      data: [
+        {
+          id: 11,
+          className: "Eleven",
+          level: "COLLEGE",
+        },
+        {
+          id: 12,
+          className: "Twelve",
+          level: "COLLEGE",
+        },
+      ],
+    });
+    revalidatePath("/list/cls");
+    return { msg: "College classes added" };
+  } catch (error) {
+    return { error: "Failed to create" };
   }
 };
