@@ -6,6 +6,7 @@ import ClassForm from "./Forms/ClassForm";
 import CourseForm from "./Forms/CourseForm";
 import DeptForm from "./Forms/DeptForm";
 import FacultyForm from "./Forms/FacultyForm";
+import TeacherForm from "./Forms/TeacherForm";
 
 const FormModal = ({
   table,
@@ -24,7 +25,7 @@ const FormModal = ({
 
   type: "add" | "edit" | "delete";
   data?: any;
-  id?: number;
+  id?: string | number;
 }) => {
   const size = type == "add" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
@@ -78,6 +79,13 @@ const FormModal = ({
             {table === "department" && (
               <DeptForm updateModal={() => setShowModal(false)} data={data} />
             )}
+            {table === "teacher" && (
+              <TeacherForm
+                data={data}
+                updateModal={() => setShowModal(false)}
+              />
+            )}
+
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={closeModal}

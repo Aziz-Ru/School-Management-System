@@ -1,3 +1,5 @@
+import { addDept } from "@/actions/dept";
+import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
 import Input from "../Input";
 
@@ -7,8 +9,20 @@ interface DeptFormProps {
 }
 
 const DeptForm: React.FC<DeptFormProps> = ({ updateModal, data }) => {
+  console.log(data);
   return (
-    <form className="bg-transparent">
+    <form
+      action={async () => {
+        const { error, msg } = await addDept(new FormData(document.forms[0]));
+        if (error) {
+          toast.error(error);
+        } else if (msg) {
+          toast.success(msg);
+          updateModal();
+        }
+      }}
+      className="bg-transparent"
+    >
       <div className="my-2">
         <h2 className="text-center text-2xl font-medium">Add New Department</h2>
       </div>
@@ -23,15 +37,11 @@ const DeptForm: React.FC<DeptFormProps> = ({ updateModal, data }) => {
       <div className="mb-2">
         <select
           className="w-full p-2 border border-gray-300 bg-transparent rounded-md"
-          name="faculty"
+          name="facultyId"
         >
           {data.map((item) => {
             return (
-              <option
-                className="text-black"
-                key={item.id}
-                value={item.facultyName}
-              >
+              <option className="text-black" key={item.id} value={item.id}>
                 {item.facultyName}
               </option>
             );

@@ -94,29 +94,22 @@ export const courseSchema = z.object({
     .cuid(),
 });
 
-export const employeeSchema = z.object({
-  firstName: z
+export const teacherSchema = z.object({
+  fullName: z
     .string({
       required_error: "firstName must be required",
       invalid_type_error: "firstName must be a string",
     })
-    .min(3, "firstName must be atleast 4 chracters")
+    .min(4, "firstName must be atleast 4 chracters")
     .max(20, "firstName must be no more than 20 chracters"),
-  lastName: z
-    .string({
-      required_error: "lastName must be required",
-      invalid_type_error: "lastName must be a string",
-    })
-    .min(3, "lastName must be atleast 4 chracters")
-    .max(20, "lastName must be no more than 20 chracters"),
   email: z
     .string({
       required_error: "email must be required",
       invalid_type_error: "email must be a string",
     })
     .email(),
-  phone: z
 
+  phone: z
     .string({
       required_error: "phone must be required",
       invalid_type_error: "phone must be a string",
@@ -124,24 +117,29 @@ export const employeeSchema = z.object({
     .regex(/^(\+8801|01)[0-9]\d{8}$/, {
       message: "Invalid Bangladeshi Phone Number",
     }),
-  sex: z.enum(["Male", "Female"], {
-    errorMap: () => ({ message: "Sex must be either Male or Female" }),
+
+  sex: z.enum(["MALE", "FEMALE"], {
+    errorMap: () => ({ message: "Sex must be either MALE or FEMALE" }),
   }),
-  role: z.enum(
-    [
-      "Vice_Principal",
-      "Senior_Teacher",
-      "Junior_Teacher",
-      "Assistant_Teacher",
-      "Office_Staff",
-    ],
-    {
-      errorMap: () => ({
-        message:
-          "Role must be either Vice_Principal, Senior_Teacher, Junior_Teacher, Assistant_Teacher or Office_Staff",
-      }),
-    }
-  ),
+  // Change the Zod schema to match the Prisma enum casing (uppercase).
+  rank: z.enum(["SENIOR", "ASSISTANT"], {
+    errorMap: () => ({
+      message: "Rank must be either Senior or Assistant",
+    }),
+  }),
+  level: z.enum(["PRIMARY", "SCHOOL", "COLLEGE"], {
+    errorMap: () => ({
+      message: "Level must be either PRIMARY,SCHOOL or COLLEGE",
+    }),
+  }),
+
+  address: z
+    .string({
+      required_error: "address must be required",
+      invalid_type_error: "address must be a string",
+    })
+    .min(3, "address must be atleast 3 chracters"),
+
   deptId: z
     .string({
       required_error: "deptId must be required",
@@ -149,14 +147,11 @@ export const employeeSchema = z.object({
     })
     .cuid()
     .optional(),
-  joinDate: z.date({
-    required_error: "joinDate must be required",
-    invalid_type_error: "joinDate must be a date",
-  }),
-  employeeId: z
+
+  id: z
     .number({
-      required_error: "employeeId must be required",
-      invalid_type_error: "employeeId must be a number",
+      required_error: "Teacher Id must be required",
+      invalid_type_error: "Teacher Id must be a number",
     })
     .int({ message: "employeeId must be a number" })
     .min(1000, { message: "employeeId must be greater than 1000" }),

@@ -38,7 +38,7 @@ model Teacher {
   deptName    Department? @relation(fields: [deptId],references: [id],onDelete: Cascade)
   super String?
   sections Section[]
-  rank       Rank      @default(Junior_Teacher)
+  rank       Rank      @default(Assistant)
   level       Level @default(SCHOOL)
   lesson    Lesson[]
   createdAt  DateTime   @default(now())
@@ -159,11 +159,8 @@ model annoucement {
 
 
 enum Rank{
-  Vice_Principal
-  Senior_Teacher
-  Junior_Teacher
-  Assistant_Teacher
-  Office_Staff
+  Senior
+  Assistant
 }
 
 enum Level{

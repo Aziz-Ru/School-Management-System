@@ -15,10 +15,16 @@ interface Faculty {
   id: string;
   facultyName: string;
 }
+interface Department {
+  id: string;
+  deptName: string;
+  facultyId: string;
+}
 
 const Department = async () => {
   const facultyData = await prisma.faculty.findMany();
   const deptData = await prisma.department.findMany();
+
   return (
     <div className="">
       {/* Faculty */}
@@ -55,7 +61,7 @@ const Department = async () => {
         {/* List */}
         <TableList
           columns={deptColumns}
-          renderRow={renderFacultyRow}
+          renderRow={renderDeptRow}
           data={deptData}
         />
       </div>
@@ -71,6 +77,25 @@ const renderFacultyRow = (item: Faculty) => {
     >
       <td className="flex items-center gap-4 p-3 ">
         <h3 className="font-semibold">{item.facultyName}</h3>
+      </td>
+      <td>
+        <div className="flex items-center gap-4">
+          <FormModal type="edit" table="faculty" data={item} />
+          <FormModal type="delete" table="faculty" id={parseInt(item.id)} />
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+const renderDeptRow = (item: Department) => {
+  return (
+    <tr
+      key={item.id}
+      className="border-b site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
+    >
+      <td className="flex items-center gap-4 p-3 ">
+        <h3 className="font-semibold">{item.deptName}</h3>
       </td>
       <td>
         <div className="flex items-center gap-4">

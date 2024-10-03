@@ -28,8 +28,8 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
-    header: "Adress",
-    accessor: "phone",
+    header: "Address",
+    accessor: "address",
     className: "hidden xl:table-cell",
   },
 
@@ -38,6 +38,8 @@ const columns = [
     accessor: "action",
   },
 ];
+
+
 type Student = {
   id: number;
   studentId: string;
