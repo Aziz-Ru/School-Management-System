@@ -2,11 +2,16 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
+
 import { role } from "@/lib/data";
 import prisma from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { role, teacherData } from "@/lib/data";
+import Image from "next/image";
+import Link from "next/link";
+
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
@@ -26,6 +31,9 @@ const columns = [
   {
     header: "Level",
     accessor: "level",
+    {
+    header: "Department",
+    accessor: "department",
     className: "hidden md:table-cell",
   },
   {
@@ -55,6 +63,7 @@ type Teacher = {
 };
 
 const Employee = async () => {
+
   
   const teachers = await prisma.teacher.findMany({
     select: {
@@ -70,7 +79,7 @@ const Employee = async () => {
     take: 10,
   });
 
-  
+
   const renderRow = (item: Teacher) => {
     return (
       <tr
@@ -78,6 +87,7 @@ const Employee = async () => {
         className="border-b site-border odd:bg-zinc-100 dark:odd:bg-zinc-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
       >
         <td className="flex items-center gap-4 p-3 ">
+
           {item.img == null ? (
             <Image
               src={`/image/noavatar.png`}
@@ -102,6 +112,11 @@ const Employee = async () => {
         </td>
         <td className="hidden md:table-cell px-1">{item.id}</td>
         <td className="hidden md:table-cell px-1">{item.level}</td>
+          <div className="flex flex-col">
+            <h3 className="font-semibold">{item.name}</h3>
+            <span className="text-xs text-gray-500">{item.email}</span>
+          </div>
+        </td>
         <td className="hidden lg:table-cell px-1">{item.phone}</td>
         <td className="hidden xl:table-cell px-1">{item.address}</td>
         <td>

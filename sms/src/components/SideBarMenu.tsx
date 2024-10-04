@@ -1,6 +1,8 @@
 import { role } from "@/lib/data";
 import Link from "next/link";
+
 import { FaLayerGroup } from "react-icons/fa";
+
 import {
   HiAcademicCap,
   HiBookOpen,
@@ -26,6 +28,7 @@ const menuItems = [
         icon: HiHome,
         label: "Home",
         href: "/admin",
+
         visiable: ["admin", "teacher", "student"],
       },
       {
@@ -59,6 +62,7 @@ const menuItems = [
         visiable: ["admin"],
       },
       {
+
         icon: HiBookOpen,
         label: "Courses",
         href: "/list/courses",

@@ -1,3 +1,4 @@
+
 import FormModal from "@/components/FormModal";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
@@ -15,6 +16,7 @@ const columns = [
     accessor: "info",
   },
   {
+
     header: "Level",
     accessor: "level",
     className: "hidden sm:table-cell",
@@ -34,11 +36,13 @@ const columns = [
   {
     header: "Action",
     accessor: "action",
+
   },
 ];
 
 type Class = {
   id: number;
+
   className: string;
   level: string;
   _count: {
@@ -60,6 +64,7 @@ const ClassListPage = async () => {
       >
         <td className="flex items-center gap-4 p-3 ">
           <div className="flex flex-col">
+
             <h3 className="font-semibold">{item.className}</h3>
             <span className="text-xs text-gray-500">{item.id}</span>
           </div>
@@ -96,11 +101,13 @@ const ClassListPage = async () => {
             <button>
               <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
             </button>
+
             {classList.length != 12 ? (
               <FormModal type="add" table="class" />
             ) : (
               ""
             )}
+
           </div>
         </div>
       </div>

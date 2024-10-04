@@ -39,7 +39,6 @@ const columns = [
   },
 ];
 
-
 type Student = {
   id: number;
   studentId: string;

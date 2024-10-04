@@ -100,8 +100,6 @@ export const teacherSchema = z.object({
       required_error: "firstName must be required",
       invalid_type_error: "firstName must be a string",
     })
-    .min(4, "firstName must be atleast 4 chracters")
-    .max(20, "firstName must be no more than 20 chracters"),
   email: z
     .string({
       required_error: "email must be required",
