@@ -31,15 +31,16 @@ export const sectionSchema = z.object({
       required_error: "year must be required",
       invalid_type_error: "year must be a number",
     })
-    .int()
-    .min(2020, "year must greater than 2020")
-    .max(2050),
+    .int(),
+
   classId: z
-    .string({
+    .number({
       required_error: "classId must be required",
-      invalid_type_error: "classId must be a String",
+      invalid_type_error: "classId must be a Number",
     })
-    .cuid(),
+    .int()
+    .min(1, "class id must be in 1 to 12")
+    .max(12, "class id must be in 1 to 12"),
 });
 
 export const facultySchema = z.object({
@@ -81,12 +82,15 @@ export const courseSchema = z.object({
     .min(25)
     .max(100),
   classId: z
-    .string({
+    .number({
       required_error: "classId must be required",
-      invalid_type_error: "classId must be a String",
+      invalid_type_error: "classId must be a number",
     })
-    .cuid(),
+    .max(12, "classId must be a number between 1 to 12")
+    .min(1, "classId must be a number between 1 to 12"),
+
   deptId: z
+
     .string({
       required_error: "deptName must be required",
       invalid_type_error: "deptName must be a String",

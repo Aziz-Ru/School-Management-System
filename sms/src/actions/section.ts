@@ -6,17 +6,22 @@ import { revalidatePath } from "next/cache";
 
 interface ReturnProps {
   error?: string;
-  success?: string;
+  msg?: string;
 }
 
-export const addSection = async (
-  formData: FormData,
-  classId: string
-): Promise<ReturnProps> => {
+interface inputProps {
+  formData: FormData;
+}
+
+export const addSection = async ({
+  formData,
+}: inputProps): Promise<ReturnProps> => {
+  const currentYear = new Date().getFullYear();
+  console.log(formData.get("id"));
   const result = sectionSchema.safeParse({
     sectionName: formData.get("sectionName") as string,
-    year: new Date().getFullYear(),
-    classId: classId,
+    year: currentYear,
+    classId: parseInt(formData.get("id") as string),
   });
 
   if (!result.success) {
@@ -27,8 +32,8 @@ export const addSection = async (
   const existSection = await prisma.section.findFirst({
     where: {
       sectionName: `${result.data.sectionName}`,
-      year: `${result.data.year}`,
-      classId: `${result.data.classId}`,
+      year: Number(result.data.year),
+      classId: result.data.classId,
     },
   });
 
@@ -39,13 +44,12 @@ export const addSection = async (
   await prisma.section.create({
     data: {
       sectionName: `${result.data.sectionName}`,
-      year: `${result.data.year}`,
-      classRoom: { connect: { id: result.data.classId } },
+      year: Number(result.data.year),
+      classTable: { connect: { id: result.data.classId } },
     },
   });
-  revalidatePath("/admin/section");
-  revalidatePath("/admin/class");
-  return { success: "Section added successfully" };
+  revalidatePath("/list/cls");
+  return { msg: "Section added successfully" };
 };
 
 interface Section {
@@ -59,47 +63,47 @@ interface Section {
   };
 }
 
-export const getSection = async (formData: FormData): Promise<Section[]> => {
-  try {
-    const classId = formData.get("classId");
-    const year = formData.get("year");
-    const sectionName = formData.get("sectionName");
-    return await prisma.section.findMany({
-      where: {
-        sectionName: {
-          startsWith: (sectionName as string) || undefined,
-        },
-        year: (year as string) || undefined,
-        classId: (classId as string) || undefined,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        sectionName: true,
-        year: true,
-        classRoom: true,
-      },
-    });
-  } catch (error) {
-    return [];
-  }
-};
+// export const getSection = async (formData: FormData): Promise<Section[]> => {
+//   try {
+//     const classId = formData.get("classId");
+//     const year = formData.get("year");
+//     const sectionName = formData.get("sectionName");
+//     return await prisma.section.findMany({
+//       where: {
+//         sectionName: {
+//           startsWith: (sectionName as string) || undefined,
+//         },
+//         year: (year as string) || undefined,
+//         classId: (classId as string) || undefined,
+//       },
+//       orderBy: {
+//         createdAt: "desc",
+//       },
+//       select: {
+//         id: true,
+//         sectionName: true,
+//         year: true,
+//         classRoom: true,
+//       },
+//     });
+//   } catch (error) {
+//     return [];
+//   }
+// };
 
-export const deleteSection = async (id: string): Promise<ReturnProps> => {
-  try {
-    const section = await prisma.section.delete({
-      where: {
-        id,
-      },
-    });
-    revalidatePath("/admin/section");
-    revalidatePath("/admin/class");
-    return {
-      success: `${section.sectionName} deleted successfully`,
-    };
-  } catch (error) {
-    return { error: "Failed to delete" };
-  }
-};
+// export const deleteSection = async (id: string): Promise<ReturnProps> => {
+//   try {
+//     const section = await prisma.section.delete({
+//       where: {
+//         id,
+//       },
+//     });
+//     revalidatePath("/admin/section");
+//     revalidatePath("/admin/class");
+//     return {
+//       success: `${section.sectionName} deleted successfully`,
+//     };
+//   } catch (error) {
+//     return { error: "Failed to delete" };
+//   }
+// };
