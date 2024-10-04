@@ -5,47 +5,60 @@ import { courseSchema } from "@/lib/schema/Schema";
 import { revalidatePath } from "next/cache";
 
 interface ReturnProps {
-  error: string;
-  success: string;
+  error?: string;
+  msg?: string;
+}
+
+interface inputProps {
+  formData: FormData;
 }
 
 export const addCourse = async ({
   formData,
-  classId,
-}: {
-  formData: FormData;
-  classId: string;
-}): Promise<ReturnProps> => {
+}: inputProps): Promise<ReturnProps> => {
   try {
-    const res = courseSchema.safeParse({
+    const departmentId =
+      parseInt(formData.get("id") as string) < 6
+        ? "cm1uy4ali0005ya9v9mh0eols"
+        : formData.get("deptId");
+    const validResult = courseSchema.safeParse({
       courseName: formData.get("courseName"),
-      totalMarks: parseInt(formData.get("totalMarks") as string),
-      classId: classId,
-      deptId: formData.get("deptId"),
+      totalMarks: 100,
+      classId: parseInt(formData.get("id") as string),
+      deptId: departmentId,
     });
 
-    if (!res.success) {
-      const err = res.error.issues[0].message;
-      return { error: err, success: "" };
+    console.log(departmentId);
+
+    if (!validResult.success) {
+      console.log(validResult.error.issues[0].path);
+      const err = validResult.error.issues[0].message;
+      return { error: err };
     }
+    console.log(validResult.data.deptId);
 
     const existedCourse = await prisma.course.findFirst({
-      where: { courseName: res.data.courseName, classId: res.data.classId },
-    });
-    if (existedCourse) {
-      return { error: "Course already exists", success: "" };
-    }
-    await prisma.course.create({
-      data: {
-        courseName: res.data.courseName,
-        totalMarks: Number(res.data.totalMarks),
-        classRoom: { connect: { id: res.data.classId } },
-        department: { connect: { id: res.data.deptId } },
+      where: {
+        courseName: validResult.data.courseName,
+        classId: validResult.data.classId,
       },
     });
-    revalidatePath("/admin/class");
-    return { error: "", success: "Course added successfully" };
+
+    if (existedCourse) {
+      return { error: "Course already exists" };
+    }
+
+    await prisma.course.create({
+      data: {
+        courseName: validResult.data.courseName,
+        class: { connect: { id: validResult.data.classId } },
+        department: { connect: { id: validResult.data.deptId } },
+      },
+    });
+
+    revalidatePath("list/cls");
+    return { msg: "Course added successfully" };
   } catch (error) {
-    return { error: "Something went wrong", success: "" };
+    return { error: "Something went wrong" };
   }
 };

@@ -47,10 +47,11 @@ const courseColumns = [
 
 type Section = {
   id: string;
-  sectionId: string;
-  name: string;
-  students: number;
-  supervisor: string;
+  sectionName: string;
+  _count: {
+    students: number;
+  };
+  supervisor: string | null;
   year: number;
 };
 
@@ -67,12 +68,30 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
   // find the class
-  const singleClass = await prisma.class.findFirst({
+  const classData = await prisma.class.findFirst({
     where: { id: pid },
-    include: { sections: true, course: true },
+    include: {
+      sections: {
+        select: {
+          id: true,
+          sectionName: true,
+          year: true,
+          supervisor: {
+            select: {
+              fullName: true,
+            },
+          },
+          _count: { select: { students: true } },
+        },
+        orderBy: {
+          year: "desc",
+        },
+      },
+      course: true,
+    },
   });
   // if not found the class
-  if (!singleClass) {
+  if (!classData) {
     notFound();
   }
   // if admin
@@ -83,25 +102,11 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
       className: "text-center",
     });
   }
-  const level = getLevel(pid);
-  const classData: any = {};
-  if (level === "Primary") {
-    classData["level"] = "Primary";
-  } else if (level === "School") {
-    classData["level"] = "School";
-    classData["department"] = await prisma.department.findMany();
-  } else {
-    classData["level"] = "College";
-    classData["department"] = await prisma.department.findMany();
-  }
-  console.log(classData);
-  const courseData = singleClass.course;
-  const sectionData = singleClass.sections;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2">
+    <div className="grid grid-cols-12">
       {/* Courses */}
-      <div className="site-bg p-4 m-4 mt-0 flex-1">
+      <div className="site-bg p-4 m-4 mt-0  col-span-12 lg:col-span-5">
         {/* TOP */}
         <div className="flex gap-2 items-center justify-between">
           <h1 className="hidden md:block text-lg font-semibold">Courses</h1>
@@ -118,15 +123,17 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </div>
+
         {/* List */}
         <TableList
           columns={courseColumns}
           renderRow={renderCourseRow}
-          data={courseData}
+          data={classData.course}
         />
       </div>
+
       {/* Sections */}
-      <div className="site-bg p-4 m-4 mt-0 flex-1">
+      <div className="site-bg p-4 m-4 mt-0 flex-1 col-span-12 lg:col-span-7 border-red-300">
         {/* TOP */}
         <div className="flex gap-2 items-center  justify-between">
           <h1 className="hidden md:block text-lg font-semibold">Sections</h1>
@@ -139,7 +146,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
               <button>
                 <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
               </button>
-              <FormModal type="add" table="section" />
+              <FormModal type="add" table="section" data={classData} />
             </div>
           </div>
         </div>
@@ -147,7 +154,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
         <TableList
           columns={sectionColumns}
           renderRow={renderSectionRow}
-          data={sectionData}
+          data={classData.sections}
         />
       </div>
     </div>
@@ -161,21 +168,23 @@ const renderSectionRow = (item: Section) => {
       className="border-b site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
     >
       <td className="flex items-center p-3 ">
-        <h3 className="font-semibold">{item.name}</h3>
+        <h3 className="font-semibold">{item.sectionName}</h3>
       </td>
       <td className="px-2">
-        <span className="hidden sm:block">{item.students}</span>
+        <span className="hidden sm:block">{item._count.students}</span>
       </td>
       <td className="px-2">{item.year}</td>
-      <td className="px-2">{item.supervisor}</td>
+      <td className="px-2">
+        {item.supervisor ? item.supervisor : "Not Assigned"}
+      </td>
 
       <td className="px-2">
         <div className="flex items-center gap-2">
-          <Link href={`/list/sections/${item.sectionId}`}>
+          <Link href={`/list/sections/${item.id}`}>
             <HiEye className="w-5 h-5" />
           </Link>
           {role === "admin" && (
-            <Link href={`/list/sections/${item.sectionId}`}>
+            <Link href={`/list/sections/${item.id}`}>
               <HiTrash className="w-5 h-5" />
             </Link>
           )}
@@ -205,12 +214,6 @@ const renderCourseRow = (item: Course) => {
       </td>
     </tr>
   );
-};
-
-const getLevel = (level: number) => {
-  if (level <= 5) return "Primary";
-  if (level <= 10) return "School";
-  if (level <= 12) return "College";
 };
 
 export default SingleClassPage;

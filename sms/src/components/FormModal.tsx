@@ -1,19 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
 import ClassForm from "./Forms/ClassForm";
 import CourseForm from "./Forms/CourseForm";
 import DeptForm from "./Forms/DeptForm";
 import FacultyForm from "./Forms/FacultyForm";
+import SectionForm from "./Forms/SectionForm";
 import TeacherForm from "./Forms/TeacherForm";
 
-const FormModal = ({
-  table,
-  type,
-  data,
-  id,
-}: {
+interface FormModalProps {
   table:
     | "teacher"
     | "student"
@@ -22,11 +18,12 @@ const FormModal = ({
     | "department"
     | "faculty"
     | "section";
-
   type: "add" | "edit" | "delete";
   data?: any;
   id?: string | number;
-}) => {
+}
+
+const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
   const size = type == "add" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type == "add"
@@ -40,21 +37,6 @@ const FormModal = ({
   const closeModal = () => {
     setShowModal(false);
   };
-  const Form = () => {
-    return type == "delete" && id ? (
-      <form action="" className="p-4 flex flex-col gap-4">
-        <span>
-          All data will be lost. Are you sure you want to delete this {table}
-          {"? "}
-        </span>
-        <button className="bg-red-600 rounded-md text-white py-2 px-4 border-none w-max  self-center ">
-          Delete
-        </button>
-      </form>
-    ) : (
-      <></>
-    );
-  };
 
   return (
     <>
@@ -64,6 +46,7 @@ const FormModal = ({
       >
         <Icon className={`${type} site-txt`} />
       </button>
+
       {showModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-50 dark:bg-white dark:bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-gray-900 dark:bg-gray-900 text-gray-200 rounded-md p-4 relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] ">
@@ -72,6 +55,12 @@ const FormModal = ({
             )}
             {table === "course" && (
               <CourseForm updateModal={() => setShowModal(false)} data={data} />
+            )}
+            {table === "section" && (
+              <SectionForm
+                updateModal={() => setShowModal(false)}
+                data={data}
+              />
             )}
             {table === "faculty" && (
               <FacultyForm updateModal={() => setShowModal(false)} />
@@ -96,6 +85,22 @@ const FormModal = ({
         </div>
       )}
     </>
+  );
+};
+
+const Form: React.FC<FormModalProps> = ({ type, id, table }) => {
+  return type == "delete" && id ? (
+    <form action="" className="p-4 flex flex-col gap-4">
+      <span>
+        All data will be lost. Are you sure you want to delete this {table}
+        {"? "}
+      </span>
+      <button className="bg-red-600 rounded-md text-white py-2 px-4 border-none w-max  self-center ">
+        Delete
+      </button>
+    </form>
+  ) : (
+    <></>
   );
 };
 
