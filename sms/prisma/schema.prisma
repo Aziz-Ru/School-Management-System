@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model admin {
   id       String @id 
   password String 
@@ -22,6 +23,21 @@ model School {
   schoolCode String
   EIIN       String
   imageURL   String?
+}
+model events{
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  date      String
+  createdAt DateTime @default(now())
+}
+
+model annoucement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  date      String
+  createdAt DateTime @default(now())
 }
 
 model Teacher {
@@ -86,21 +102,14 @@ model Section {
   @@unique([sectionName, classId,year])
 }
 
-
 model Faculty {
   id          String       @id @default(cuid())
   facultyName String       @unique
   departments  Department[]
 }
 
-model Department {
-  id        String     @id @default(cuid())
-  deptName  String     @unique
-  facultyId String
-  faculty   Faculty    @relation(fields: [facultyId], references: [id])
-  teachers  Teacher[]
-  courses   Course[]
-}
+
+
 
 model Course {
   id         String     @id  @default(cuid())
@@ -110,9 +119,13 @@ model Course {
   class  Class  @relation(fields: [classId], references: [id], onDelete: Cascade)
   department Department ? @relation(fields: [deptId],references: [id],onDelete: Cascade)
   lesson     Lesson []
-  createdAt  DateTime   @default(now())
-  @@unique([courseName, classId])
+  faculty   facultyTable    @relation(fields: [facultyId], references: [id])
+  employees  employeeTable[]
+  courses   courseTable[]
 }
+
+
+
 
 model Lesson {
   id      String   @id @default(cuid())
@@ -178,8 +191,6 @@ enum Day{
   WEDNESDAY
   THURSDAY
 }
-
-
 
 enum UserSex{
   MALE

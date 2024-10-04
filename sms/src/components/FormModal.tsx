@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
+
 import ClassForm from "./Forms/ClassForm";
 import CourseForm from "./Forms/CourseForm";
 import DeptForm from "./Forms/DeptForm";
@@ -21,9 +22,11 @@ interface FormModalProps {
   type: "add" | "edit" | "delete";
   data?: any;
   id?: string | number;
+
 }
 
 const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
+
   const size = type == "add" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type == "add"
@@ -34,6 +37,7 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
   const Icon = type == "add" ? MdAdd : type == "edit" ? MdEdit : MdDelete;
 
   const [showModal, setShowModal] = useState(false);
+
   const closeModal = () => {
     setShowModal(false);
   };
@@ -78,6 +82,12 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={closeModal}
+
+            <TeacherForm />
+            <button
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={() => setShowModal(false)}
+
             >
               <MdClose className="w-6 h-6 text-white dark:text-white" />
             </button>

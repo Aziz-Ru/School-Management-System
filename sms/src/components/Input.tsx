@@ -18,6 +18,7 @@ const Input = ({
         required={required}
         placeholder=""
         className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border site-border appearance-none   dark:focus:border-blue-500  focus:ring-0 focus:border-blue-600 peer"
+
       />
       <label
         htmlFor={label}

@@ -1,3 +1,4 @@
+
 "use client";
 import { addTeacher } from "@/actions/teacher";
 import { useState } from "react";
@@ -149,9 +150,11 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
         </div>
       </div>
 
+
       <Formsubmitbtn LoadingTitle="ADDING..." Title="ADD" width="w-full" />
     </form>
   );
 };
 
 export default TeacherForm;
+
