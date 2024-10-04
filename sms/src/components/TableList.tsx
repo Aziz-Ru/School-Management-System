@@ -1,5 +1,6 @@
+
 import { teacherData } from "@/lib/data";
-import Image from "next/image";
+
 import React from "react";
 
 const TableList = ({
@@ -31,7 +32,9 @@ const TableList = ({
 
 export default TableList;
 
-<div>
+{
+  /* <div>
+
   {teacherData.map((teacher, index) => {
     return (
       <div key={index} className="flex justify-between items-center">
@@ -48,4 +51,6 @@ export default TableList;
       </div>
     );
   })}
-</div>;
+</div>; */
+}
+

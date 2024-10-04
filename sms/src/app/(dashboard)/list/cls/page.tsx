@@ -1,18 +1,27 @@
+
+import FormModal from "@/components/FormModal";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
-import { classData } from "@/lib/data";
+import prisma from "@/lib/db";
 import Link from "next/link";
-import { HiEye, HiPlus } from "react-icons/hi";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
 } from "react-icons/hi2";
+import { MdDetails } from "react-icons/md";
 
 const columns = [
   {
     header: "Info",
     accessor: "info",
   },
+  {
+
+    header: "Level",
+    accessor: "level",
+    className: "hidden sm:table-cell",
+  },
+
   {
     header: "Sections",
     accessor: "sections",
@@ -24,22 +33,29 @@ const columns = [
     accessor: "courses",
     className: "hidden sm:table-cell",
   },
-
   {
     header: "Action",
-    accessor: "actions",
+    accessor: "action",
+
   },
 ];
 
 type Class = {
   id: number;
-  classId: string;
-  name: string;
-  sections: number;
-  courses: number;
+
+  className: string;
+  level: string;
+  _count: {
+    sections: number;
+    course: number;
+  };
 };
 
 const ClassListPage = async () => {
+  const classList = await prisma.class.findMany({
+    include: { _count: { select: { sections: true, course: true } } },
+  });
+
   const renderRow = (item: Class) => {
     return (
       <tr
@@ -48,23 +64,24 @@ const ClassListPage = async () => {
       >
         <td className="flex items-center gap-4 p-3 ">
           <div className="flex flex-col">
-            <h3 className="font-semibold">{item.name}</h3>
-            <span className="text-xs text-gray-500">{item.classId}</span>
-          </div>
-        </td>
-        <td className="px-2">
-          <span className="hidden sm:block">{item.sections}</span>
-        </td>
-        <td className="px-2">
-          <span className="hidden sm:block">{item.courses}</span>
-        </td>
 
-        <td className="px-2">
-          <div className="flex items-center gap-2">
-            <Link href={`/list/cls/${item.id}`}>
-              <HiEye className="w-5 h-5" />
-            </Link>
+            <h3 className="font-semibold">{item.className}</h3>
+            <span className="text-xs text-gray-500">{item.id}</span>
           </div>
+        </td>
+        <td className="px-2">
+          <span className="hidden sm:block">{item.level}</span>
+        </td>
+        <td className="px-2">
+          <span className="hidden sm:block">{item._count.sections}</span>
+        </td>
+        <td className="px-2">
+          <span className="hidden sm:block">{item._count.course}</span>
+        </td>
+        <td className="px-2">
+          <Link href={`/list/cls/${item.id}`}>
+            <MdDetails className="w-6 h-6" />
+          </Link>
         </td>
       </tr>
     );
@@ -84,14 +101,18 @@ const ClassListPage = async () => {
             <button>
               <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
             </button>
-            <button>
-              <HiPlus className="w-5 h-5 site-txt" />
-            </button>
+
+            {classList.length != 12 ? (
+              <FormModal type="add" table="class" />
+            ) : (
+              ""
+            )}
+
           </div>
         </div>
       </div>
       {/* List */}
-      <TableList columns={columns} renderRow={renderRow} data={classData} />
+      <TableList columns={columns} renderRow={renderRow} data={classList} />
     </div>
   );
 };

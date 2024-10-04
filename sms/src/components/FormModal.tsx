@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
+
+import ClassForm from "./Forms/ClassForm";
+import CourseForm from "./Forms/CourseForm";
+import DeptForm from "./Forms/DeptForm";
+import FacultyForm from "./Forms/FacultyForm";
 import TeacherForm from "./Forms/TeacherForm";
 
 const FormModal = ({
@@ -10,10 +15,24 @@ const FormModal = ({
   data,
   id,
 }: {
+
+  table:
+    | "teacher"
+    | "student"
+    | "class"
+    | "course"
+    | "department"
+    | "faculty"
+    | "section";
+
+  type: "add" | "edit" | "delete";
+  data?: any;
+  id?: string | number;
   table: "teacher" | "student" | "class" | "subject";
   type: "add" | "edit" | "delete";
   data?: any;
   id?: number;
+
 }) => {
   const size = type == "add" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
@@ -25,6 +44,10 @@ const FormModal = ({
   const Icon = type == "add" ? MdAdd : type == "edit" ? MdEdit : MdDelete;
 
   const [showModal, setShowModal] = useState(false);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
   const Form = () => {
     return type == "delete" && id ? (
       <form action="" className="p-4 flex flex-col gap-4">
@@ -52,10 +75,34 @@ const FormModal = ({
       {showModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-50 dark:bg-white dark:bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-gray-900 dark:bg-gray-900 text-gray-200 rounded-md p-4 relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] ">
+            {table === "class" && (
+              <ClassForm updateModal={() => setShowModal(false)} />
+            )}
+            {table === "course" && (
+              <CourseForm updateModal={() => setShowModal(false)} data={data} />
+            )}
+            {table === "faculty" && (
+              <FacultyForm updateModal={() => setShowModal(false)} />
+            )}
+            {table === "department" && (
+              <DeptForm updateModal={() => setShowModal(false)} data={data} />
+            )}
+            {table === "teacher" && (
+              <TeacherForm
+                data={data}
+                updateModal={() => setShowModal(false)}
+              />
+            )}
+
+            <button
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={closeModal}
+
             <TeacherForm />
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => setShowModal(false)}
+
             >
               <MdClose className="w-6 h-6 text-white dark:text-white" />
             </button>
