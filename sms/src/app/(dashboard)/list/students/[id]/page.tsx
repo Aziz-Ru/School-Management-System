@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MdBloodtype, MdDateRange, MdEmail, MdPhone } from "react-icons/md";
 
-const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
+const SingleStudentPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex flex-col xl:flex-row">
       <div className="w-full xl:w-2/3">
@@ -88,4 +88,4 @@ const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default SingleTeacherPage;
+export default SingleStudentPage;

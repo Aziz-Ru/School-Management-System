@@ -1,5 +1,5 @@
 "use client";
-import { addEmployee } from "@/actions/employee";
+import { addEmployee } from "@/actions/teacher";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";

@@ -7,13 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model admin {
-  id       String @id @default(cuid())
-  username String @unique
-  password String
+  id       String @id 
+  password String 
 }
-model school {
+
+model School {
   id         String  @id @default(cuid())
   name       String
   email      String  @unique
@@ -25,93 +24,128 @@ model school {
   imageURL   String?
 }
 
-model classRoom {
-  id        String    @id  @default(cuid())
-  classId   Int   @unique
-  className String
-  course    course[]
-  section   section[]
+model Teacher {
+  id         String     @id @unique
+  password   String
+  fullName   String
+  email      String
+  phone      String
+  sex        UserSex  @default(MALE)
+  address    String
+  message    String ?
+  img        String ?
+  deptId     String ?
+  deptName    Department? @relation(fields: [deptId],references: [id],onDelete: Cascade)
+  super String?
+  sections Section[]
+  rank       Rank      @default(Assistant)
+  level       Level @default(SCHOOL)
+  lesson    Lesson[]
+  createdAt  DateTime   @default(now())
+  
 }
-model section {
+
+model Student {
+  id        String   @id @unique
+  password  String
+  fullName  String
+  phone     String ?
+  email     String ?
+  dob       String
+  img       String ?
+  sex       UserSex @default(MALE)
+  sectionId String 
+  section   Section @relation(fields: [sectionId],references: [id])
+  createdAt DateTime @default(now())
+  
+}
+
+model Class {
+  id        Int    @id 
+  className String
+  level     Level @default(PRIMARY)
+  sections  Section[]
+  course    Course[]
+  
+}
+
+
+model Section {
   id          String    @id @default(cuid())
   sectionName String    
   year        String
-  classId     String
-  classRoom   classRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
-  student     student[]
-  routine    days[]
+  supervisorId String
+  students    Student[]
+  lesson      Lesson[]
+  classId     Int
+  supervisor  Teacher @relation(fields: [supervisorId],references: [id],onDelete: Cascade)
+  classTable  Class @relation(fields: [classId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
   @@unique([sectionName, classId,year])
 }
 
 
-model faculty {
+model Faculty {
   id          String       @id @default(cuid())
   facultyName String       @unique
-  department  department[]
+  departments  Department[]
 }
 
-model department {
+model Department {
   id        String     @id @default(cuid())
   deptName  String     @unique
   facultyId String
-  faculty   faculty    @relation(fields: [facultyId], references: [id])
-  employee  employee[]
-  courses   course[]
+  faculty   Faculty    @relation(fields: [facultyId], references: [id])
+  teachers  Teacher[]
+  courses   Course[]
 }
 
-model course {
+model Course {
   id         String     @id  @default(cuid())
-  courseName String     
-  totalMarks Int        @default(100)
-  classId    String
-  classRoom  classRoom  @relation(fields: [classId], references: [id], onDelete: Cascade)
-  deptName  String    
-  department department @relation(fields: [deptName],references: [deptName],onDelete: Cascade)
-  timeslot   timeslot[]
+  courseName String     @unique   
+  classId    Int
+  deptId     String ?
+  class  Class  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  department Department ? @relation(fields: [deptId],references: [id],onDelete: Cascade)
+  lesson     Lesson []
   createdAt  DateTime   @default(now())
   @@unique([courseName, classId])
 }
 
-enum Rank{
-  Vice_Principal
-  Senior_Teacher
-  Junior_Teacher
-  Assistant_Teacher
-  Office_Staff
-}
-
-
-model employee {
-  id         String     @id @default(cuid())
-  employeeId String     @unique
-  password   String
-  firstName  String
-  lastName   String
-  rank       Rank      @default(Junior_Teacher)
-  message    String ?
-  email      String
-  phone      String
-  sex        String
-  joinDate   String
-  imageURL   String ?
-  deptId     String ?
-  department department ? @relation(fields: [deptId], references: [id],onDelete: Cascade)
-  createdAt  DateTime   @default(now())
+model Lesson {
+  id      String   @id @default(cuid())
+  day     Day @default(SUNDAY)
+  startTime String
+  endTime   String
+  sectionId  String
+  section    Section @relation(fields: [sectionId],references: [id])
+  courseId  String
+  course    Course @relation(fields: [courseId],references: [id])
+  teacherId  String
+  teacher    Teacher @relation(fields: [teacherId],references: [id])
   
 }
 
-model holder {
+
+model StakeHolder {
   id        String  @id @default(cuid())
-  firstName String
-  lastName  String
+  fullName String
   phone     String
-  message   String?
+  message   String ?
   rank      String
   imageURL  String
 }
 
-model notice {
+
+model events{
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  date      String
+  createdAt DateTime @default(now())
+}
+
+model annoucement {
   id        String   @id @default(cuid())
   title     String
   content   String
@@ -120,48 +154,20 @@ model notice {
 }
 
 
-model student {
-  id        String   @id @default(cuid())
-  studentId String   @unique
-  password  String
-  firstName String
-  lastName  String
-  phone     String
-  email     String
-  sex       String
-  dob       String
-  imageURL  String?
-  sectionId String
-  createdAt DateTime @default(now())
-  section   section  @relation(fields: [sectionId], references: [id],onDelete: Cascade)
-  
+
+
+
+
+enum Rank{
+  Senior
+  Assistant
 }
 
-
-
-model timeslot {
-  id           String @id @default(cuid())
-  startTime    String
-  endTime      String
-  meridiem     Meridiem   @default(AM)
-  dayId        String
-  day         days @relation(fields: [dayId],references: [id])
-  courseId     String
-  course       course @relation(fields: [courseId], references: [id],onDelete: Cascade)
-  createdAt    DateTime @default(now())
-   
+enum Level{
+  PRIMARY
+  SCHOOL
+  COLLEGE
 }
-
-model days{
-  id           String @id @default(cuid())
-  day          Day @default(SATURDAY)
-  timeslot     timeslot[]
-  sectionId    String @unique
-  section   section @relation(fields: [sectionId], references: [id],onDelete: Cascade)
-  @@unique([day, sectionId])
-}
-
-
 enum Day{
   SATURDAY
   SUNDAY
@@ -171,11 +177,12 @@ enum Day{
   THURSDAY
 }
 
-enum Meridiem{
-  AM
-  PM
-}
 
+
+enum UserSex{
+  MALE
+  FEMALE
+}
 
 
 

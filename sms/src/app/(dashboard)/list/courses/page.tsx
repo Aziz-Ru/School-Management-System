@@ -1,15 +1,14 @@
-import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
-import { role, studentData } from "@/lib/data";
+import { role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { HiEye, HiPlus, HiTrash } from "react-icons/hi";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
 } from "react-icons/hi2";
-import { IoMdEye } from "react-icons/io";
 
 const columns = [
   {
@@ -28,8 +27,8 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
-    header: "Address",
-    accessor: "address",
+    header: "Adress",
+    accessor: "phone",
     className: "hidden xl:table-cell",
   },
 
@@ -39,8 +38,7 @@ const columns = [
   },
 ];
 
-
-type Student = {
+type Class = {
   id: number;
   studentId: string;
   name: string;
@@ -50,8 +48,8 @@ type Student = {
   phone: string;
 };
 
-const StudentsListPage = async () => {
-  const renderRow = (item: Student) => {
+const CourseListPage = async () => {
+  const renderRow = (item: Class) => {
     return (
       <tr
         key={item.id}
@@ -76,13 +74,12 @@ const StudentsListPage = async () => {
         <td>
           <div className="flex items-center gap-2">
             {role == "admin" && (
-              <FormModal table="teacher" type="delete" id={item.id} />
+              <Link href={`/list/teachers/${item.id}`}>
+                <HiEye className="w-5 h-5" />
+              </Link>
             )}
-            <Link
-              className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center"
-              href={`/list/teachers/${item.id}`}
-            >
-              <IoMdEye className="w-4 h-4 site-txt" />
+            <Link href={`/list/teachers`}>
+              <HiTrash className="w-5 h-5" />
             </Link>
           </div>
         </td>
@@ -104,12 +101,14 @@ const StudentsListPage = async () => {
             <button>
               <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
             </button>
-            <FormModal table="student" type="add" />
+            <button>
+              <HiPlus className="w-5 h-5 site-txt" />
+            </button>
           </div>
         </div>
       </div>
       {/* List */}
-      <TableList columns={columns} renderRow={renderRow} data={studentData} />
+      <TableList columns={columns} renderRow={renderRow} data={[]} />
       {/* Pagination */}
       <div className="">
         <Pagination />
@@ -118,4 +117,4 @@ const StudentsListPage = async () => {
   );
 };
 
-export default StudentsListPage;
+export default CourseListPage;
