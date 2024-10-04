@@ -1,43 +1,36 @@
-"use client";
+import prisma from "@/lib/db";
+import Link from "next/link";
 
-import { useState } from "react";
-
-export default function Home() {
-  const [status, setStatus] = useState(true);
-  const [sections, setSections] = useState([]);
-  const [defaultValue, setDefaultValue] = useState("TEST");
-
-  const handleChange = async (e: any) => {
-    if (status) {
-      try {
-        setStatus(false);
-        const data = await fetch("/api/admin/section", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sectionName: e.target.value }),
-        });
-        const res = await data.json();
-        setSections(res);
-        setStatus(true);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+const GeneralPage = async ({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) => {
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const classes = await prisma.class.findMany({
+    skip: (page - 1) * 2,
+    take: 2,
+  });
+  const hasNextpage = (await prisma.class.count()) > page * 2;
 
   return (
-    <main>
-      <h1>HI</h1>
+    <div>
+      <div className="">
+        {classes.map((cls) => {
+          return <div key={cls.id}>{cls.className}</div>;
+        })}
+      </div>
+      <div className="">
+        <Link href={`?page=${page - 1}`} passHref>
+          <button disabled={page == 1}>Previous</button>
+        </Link>
 
-      <input
-        type="text"
-        defaultValue={defaultValue}
-        onClick={() => setDefaultValue("")}
-        onChange={handleChange}
-        className="w-full site-bg site-txt rounded border border-gray-400 dark:border-gray-300 py-3 px-5 outline-none transition focus:border-blue-600 active:border-blue-600"
-      />
-    </main>
+        <Link href={`?page=${page + 1}`} passHref>
+          <button disabled={!hasNextpage}>Next</button>
+        </Link>
+      </div>
+    </div>
   );
-}
+};
+
+export default GeneralPage;

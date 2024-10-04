@@ -40,6 +40,8 @@ const columns = [
   },
 ];
 
+
+
 type Class = {
   id: number;
 

@@ -36,7 +36,7 @@ CREATE TABLE `Teacher` (
     `img` VARCHAR(191) NULL,
     `deptId` VARCHAR(191) NULL,
     `super` VARCHAR(191) NULL,
-    `rank` ENUM('Vice_Principal', 'Senior_Teacher', 'Junior_Teacher', 'Assistant_Teacher', 'Office_Staff') NOT NULL DEFAULT 'Junior_Teacher',
+    `rank` ENUM('Senior', 'Assistant') NOT NULL DEFAULT 'Assistant',
     `level` ENUM('PRIMARY', 'SCHOOL', 'COLLEGE') NOT NULL DEFAULT 'SCHOOL',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -107,7 +107,7 @@ CREATE TABLE `Course` (
     `id` VARCHAR(191) NOT NULL,
     `courseName` VARCHAR(191) NOT NULL,
     `classId` INTEGER NOT NULL,
-    `deptId` VARCHAR(191) NOT NULL,
+    `deptId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Course_courseName_key`(`courseName`),

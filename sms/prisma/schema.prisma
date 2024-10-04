@@ -76,6 +76,8 @@ model Student {
   
 }
 
+
+
 model Class {
   id        Int    @id 
   className String
@@ -89,12 +91,12 @@ model Class {
 model Section {
   id          String    @id @default(cuid())
   sectionName String    
-  year        String
-  supervisorId String
+  year        Int
+  supervisorId String  ?
   students    Student[]
   lesson      Lesson[]
   classId     Int
-  supervisor  Teacher @relation(fields: [supervisorId],references: [id],onDelete: Cascade)
+  supervisor  Teacher ? @relation(fields: [supervisorId],references: [id],onDelete: Cascade)
   classTable  Class @relation(fields: [classId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
   @@unique([sectionName, classId,year])

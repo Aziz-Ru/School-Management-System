@@ -65,6 +65,7 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
       <div className="flex items-center gap-2 mb-2">
         <div className="w-1/2">
           <select
+            multiple={true}
             className="w-full text-white bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
             name="sex"
             id=""
@@ -150,4 +151,10 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
       </div>
 
 
+      <Formsubmitbtn LoadingTitle="ADDING..." Title="ADD" width="w-full" />
+    </form>
+  );
+};
+
+export default TeacherForm;
 
