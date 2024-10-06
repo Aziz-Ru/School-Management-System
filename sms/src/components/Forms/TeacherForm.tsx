@@ -64,7 +64,6 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
       <div className="flex items-center gap-2 mb-2">
         <div className="w-1/2">
           <select
-            multiple={true}
             className="w-full text-white bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
             name="sex"
             id=""
@@ -107,10 +106,10 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
             name="rank"
             id=""
           >
-            <option value="SENIOR" className="text-black">
+            <option value="Senior" className="text-black">
               Senior
             </option>
-            <option value="ASSISTANT" className="text-black ">
+            <option value="Assistant" className="text-black ">
               Assistant
             </option>
           </select>

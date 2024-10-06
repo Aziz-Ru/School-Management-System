@@ -126,7 +126,7 @@ export const teacherSchema = z.object({
     errorMap: () => ({ message: "Sex must be either MALE or FEMALE" }),
   }),
   // Change the Zod schema to match the Prisma enum casing (uppercase).
-  rank: z.enum(["SENIOR", "ASSISTANT"], {
+  rank: z.enum(["Senior", "Assistant"], {
     errorMap: () => ({
       message: "Rank must be either Senior or Assistant",
     }),

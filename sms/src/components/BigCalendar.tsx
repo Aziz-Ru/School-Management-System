@@ -4,7 +4,14 @@ import moment from "moment";
 import { useState } from "react";
 import { Calendar, momentLocalizer, View, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+
+moment.locale("en", {
+  week: {
+    dow: 6,
+  },
+});
 const localizer = momentLocalizer(moment);
+
 const BigCalendar = () => {
   const [view, setView] = useState<View>(Views.WEEK);
   const handleCHangeView = (selectedView: View) => {

@@ -22,6 +22,7 @@ const days = [
   "THURSDAY",
   "FRIDAY",
 ];
+
 const data = [
   {
     day: "SATUREDAY",
@@ -80,12 +81,12 @@ const MyCalendar = ({ role }: { role?: string }) => {
   return (
     <div className="p-4 flex flex-col w-full">
       <div className="flex items-center justify-between">
-        <h1>Schedule</h1>
+        <h1 className="font-medium text-xl">Schedule</h1>
       </div>
       <div className="py-2">
         <table className="w-full">
           <thead>
-            <tr className="grid grid-cols-11 border site-border ">
+            <tr className="hidden lg:grid lg:grid-cols-11 border site-border  ">
               <th></th>
               {hours.map((hour, index) => (
                 <th
@@ -96,6 +97,7 @@ const MyCalendar = ({ role }: { role?: string }) => {
                 </th>
               ))}
             </tr>
+            <tr className=" table-row lg:hidden  border site-border  "></tr>
           </thead>
           <tbody>
             {data.map((day, dayindex) => {

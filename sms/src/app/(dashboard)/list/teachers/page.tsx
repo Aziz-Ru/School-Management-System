@@ -6,7 +6,6 @@ import { role } from "@/lib/data";
 import prisma from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
@@ -55,7 +54,6 @@ type Teacher = {
 };
 
 const Employee = async () => {
-  
   const teachers = await prisma.teacher.findMany({
     select: {
       id: true,
@@ -70,7 +68,6 @@ const Employee = async () => {
     take: 10,
   });
 
-  
   const renderRow = (item: Teacher) => {
     return (
       <tr
@@ -106,15 +103,15 @@ const Employee = async () => {
         <td className="hidden xl:table-cell px-1">{item.address}</td>
         <td>
           <div className="flex items-center gap-2">
-            {role == "admin" && (
-              <FormModal table="teacher" type="delete" id={item.id} />
-            )}
             <Link
               className="w-7 h-7 bg-yellow-500 rounded-full flex items-center justify-center"
               href={`/list/teachers/${item.id}`}
             >
               <IoMdEye className="w-4 h-4 site-txt" />
             </Link>
+            {role == "admin" && (
+              <FormModal table="teacher" type="delete" id={item.id} />
+            )}
           </div>
         </td>
       </tr>

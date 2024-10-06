@@ -51,6 +51,7 @@ type Section = {
   _count: {
     students: number;
   };
+  level: string;
   supervisor: string | null;
   year: number;
 };
@@ -76,6 +77,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           id: true,
           sectionName: true,
           year: true,
+
           supervisor: {
             select: {
               fullName: true,
@@ -87,9 +89,11 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           year: "desc",
         },
       },
+
       course: true,
     },
   });
+  // console.log(classData);
   // if not found the class
   if (!classData) {
     notFound();
@@ -102,6 +106,11 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
       className: "text-center",
     });
   }
+
+  const updateSections = classData.sections.map((section) => ({
+    ...section,
+    level: classData.level,
+  }));
 
   return (
     <div className="grid grid-cols-12">
@@ -154,7 +163,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
         <TableList
           columns={sectionColumns}
           renderRow={renderSectionRow}
-          data={classData.sections}
+          data={updateSections}
         />
       </div>
     </div>
@@ -180,7 +189,7 @@ const renderSectionRow = (item: Section) => {
 
       <td className="px-2">
         <div className="flex items-center gap-2">
-          <Link href={`/list/sections/${item.id}`}>
+          <Link href={`/list/sections/${item.id}?level=${item.level}`}>
             <HiEye className="w-5 h-5" />
           </Link>
           {role === "admin" && (

@@ -17,6 +17,7 @@ interface FormModalProps {
     | "course"
     | "department"
     | "faculty"
+    | "supervisor"
     | "section";
   type: "add" | "edit" | "delete";
   data?: any;
