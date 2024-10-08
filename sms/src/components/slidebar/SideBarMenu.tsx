@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FaLayerGroup } from "react-icons/fa";
 import {
   HiAcademicCap,
-  HiCalendar,
   HiChartBar,
   HiClipboard,
   HiHome,
@@ -29,13 +28,13 @@ const menuItems = [
       {
         icon: HiAcademicCap,
         label: "Teachers",
-        href: "/list/teachers",
+        href: "/list/teachers?page=1",
         visiable: ["admin"],
       },
       {
         icon: HiUserGroup,
         label: "Students",
-        href: "/list/students",
+        href: "/list/students?page=1",
         visiable: ["admin", "teacher"],
       },
       {
@@ -54,25 +53,20 @@ const menuItems = [
       {
         icon: HiSparkles,
         label: "Exams",
-        href: "/exams",
+        href: "/list/exams",
         visiable: ["admin", "teacher", "student"],
       },
       {
         icon: HiChartBar,
         label: "Attendence",
-        href: "/attendance",
+        href: "/list/attendance",
         visiable: ["admin", "teacher", "student"],
       },
-      {
-        icon: HiCalendar,
-        label: "Event",
-        href: "/event",
-        visiable: ["admin", "teacher", "student"],
-      },
+
       {
         icon: HiClipboard,
         label: "Annoucements",
-        href: "/annoucements",
+        href: "/list/annoucements?page=1",
         visiable: ["admin", "teacher", "student"],
       },
     ],

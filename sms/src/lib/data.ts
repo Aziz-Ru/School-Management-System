@@ -1,5 +1,5 @@
 export const role = "admin";
-
+export const ITEM_PAR_PAGE = 10;
 export const calendarEvents = [
   {
     title: "Math",

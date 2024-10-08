@@ -7,12 +7,12 @@ import { revalidatePath } from "next/cache";
 
 interface ReturnProps {
   error?: string;
-  success?: string;
+  msg?: string;
 }
 
 export const addTeacher = async (formData: FormData): Promise<ReturnProps> => {
   try {
-    console.log(formData.get("rank"));
+    // console.log(formData.get("rank"));
     const validateResult = teacherSchema.safeParse({
       fullName: formData.get("fullName"),
       email: formData.get("email"),
@@ -60,9 +60,27 @@ export const addTeacher = async (formData: FormData): Promise<ReturnProps> => {
       },
     });
     revalidatePath("/list/teachers");
-    return { success: "Employee added successfully" };
+    return { msg: "Employee added successfully" };
   } catch (error: any) {
-    console.log(error.message);
+    // console.log(error.message);
     return { error: "Failed to add employee" };
+  }
+};
+
+export const deleteTeacher = async (
+  formData: FormData
+): Promise<ReturnProps> => {
+  const id = formData.get("id") as string | null;
+  // console.log(id);
+  if (!id) {
+    return { error: "Failed to delete" };
+  }
+  try {
+    await prisma.teacher.delete({ where: { id: id } });
+    revalidatePath("/list/teachers");
+    return { msg: "Delete Successfully" };
+  } catch (error: any) {
+    // console.log(error.message);
+    return { error: "Failed to delete" };
   }
 };

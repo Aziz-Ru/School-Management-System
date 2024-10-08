@@ -11,7 +11,7 @@ interface ClassFormProps {
   updateModal: () => void;
 }
 
-const ClassForm: React.FC<ClassFormProps> = ({ updateModal }) => {
+export const AddClassForm: React.FC<ClassFormProps> = ({ updateModal }) => {
   const [nums, setNums] = useState({ primary: 0, school: 0, college: 0 });
   useEffect(() => {
     const getCount = async () => {
@@ -112,4 +112,24 @@ const ClassForm: React.FC<ClassFormProps> = ({ updateModal }) => {
   );
 };
 
-export default ClassForm;
+export const DeleteClassForm = ({
+  table,
+  id,
+}: {
+  table: string;
+  id?: string | number;
+}) => {
+  return (
+    <form action="" className="p-4 flex flex-col gap-4">
+      <span className="text-center">
+        All data will be lost. Are you sure you want to delete this {table}
+        {"? "}
+      </span>
+      <input
+        type="submit"
+        className="bg-red-600  rounded-md text-white py-2 px-4 text-center border-none w-fit self-center  focus:outline-none "
+        value="Delete"
+      />
+    </form>
+  );
+};

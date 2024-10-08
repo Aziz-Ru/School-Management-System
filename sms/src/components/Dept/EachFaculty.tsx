@@ -3,7 +3,7 @@ import { deleteFaculty, getFaculty } from "@/actions/faculty";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import DeleteButton from "../DeleteButton";
+import DeleteButton from "../buttons/DeleteButton";
 
 interface Props {
   id: string;

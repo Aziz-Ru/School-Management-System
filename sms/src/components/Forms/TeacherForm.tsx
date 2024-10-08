@@ -1,5 +1,5 @@
 "use client";
-import { addTeacher } from "@/actions/teacher";
+import { addTeacher, deleteTeacher } from "@/actions/teacher";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
@@ -15,7 +15,7 @@ interface DeptType {
   facultyId: string;
 }
 
-const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
+export const AddTeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   const [deptsData, setDeptsData] = useState<DeptType[]>([]);
   const [isDisabled, setIsDisabled] = useState(true);
   const handleLevel = async (e: any) => {
@@ -36,9 +36,9 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   return (
     <form
       action={async (formData) => {
-        const { error, success } = await addTeacher(formData);
-        if (success) {
-          toast.success(success);
+        const { error, msg } = await addTeacher(formData);
+        if (msg) {
+          toast.success(msg);
           updateModal();
         } else if (error) {
           toast.error(error);
@@ -153,4 +153,35 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   );
 };
 
-export default TeacherForm;
+export const DeleteTeacherForm = ({
+  table,
+  id,
+}: {
+  table: string;
+  id?: string | number;
+}) => {
+  return (
+    <form
+      action={async (formData: FormData) => {
+        const { error, msg } = await deleteTeacher(formData);
+        if (msg) {
+          toast.success(msg);
+        } else if (error) {
+          toast.error(error);
+        }
+      }}
+      className="p-4 flex flex-col gap-4"
+    >
+      <span className="text-center">
+        All data will be lost. Are you sure you want to delete this {table}
+        {"? "}
+      </span>
+      <input name="id" type="text" defaultValue={id} className="hidden" />
+      <input
+        type="submit"
+        className="bg-red-600 cursor-pointer  rounded-md text-white py-2 px-4 text-center border-none w-fit self-center  focus:outline-none "
+        value="Delete"
+      />
+    </form>
+  );
+};
