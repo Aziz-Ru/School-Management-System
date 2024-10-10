@@ -17,25 +17,19 @@ export const addCourse = async ({
   formData,
 }: inputProps): Promise<ReturnProps> => {
   try {
-    const departmentId =
-      parseInt(formData.get("id") as string) < 6
-        ? "cm1uy4ali0005ya9v9mh0eols"
-        : formData.get("deptId");
     const validResult = courseSchema.safeParse({
       courseName: formData.get("courseName"),
       totalMarks: 100,
       classId: parseInt(formData.get("id") as string),
-      deptId: departmentId,
+      deptId: (formData.get("deptId") as string) || undefined,
     });
 
-    console.log(departmentId);
+    // console.log(departmentId);
 
     if (!validResult.success) {
-      console.log(validResult.error.issues[0].path);
       const err = validResult.error.issues[0].message;
       return { error: err };
     }
-    console.log(validResult.data.deptId);
 
     const existedCourse = await prisma.course.findFirst({
       where: {
@@ -47,18 +41,37 @@ export const addCourse = async ({
     if (existedCourse) {
       return { error: "Course already exists" };
     }
-
-    await prisma.course.create({
-      data: {
-        courseName: validResult.data.courseName,
-        class: { connect: { id: validResult.data.classId } },
-        department: { connect: { id: validResult.data.deptId } },
-      },
-    });
+    console.log(existedCourse);
+    if (validResult.data.classId <= 5) {
+      await prisma.course.create({
+        data: {
+          courseName: validResult.data.courseName,
+          class: { connect: { id: validResult.data.classId } },
+        },
+      });
+    }
 
     revalidatePath("list/cls");
     return { msg: "Course added successfully" };
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.message);
+    return { error: "Something went wrong" };
+  }
+};
+
+export const deleteCourse = async (
+  formData: FormData
+): Promise<ReturnProps> => {
+  try {
+    await prisma.course.delete({
+      where: {
+        id: formData.get("id") as string,
+      },
+    });
+    revalidatePath("list/cls");
+    return { msg: "Course deleted successfully" };
+  } catch (error: any) {
+    console.log(error.message);
     return { error: "Something went wrong" };
   }
 };

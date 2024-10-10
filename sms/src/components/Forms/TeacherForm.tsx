@@ -1,6 +1,6 @@
 
 "use client";
-import { addTeacher } from "@/actions/teacher";
+import { addTeacher, deleteTeacher } from "@/actions/teacher";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
@@ -16,7 +16,7 @@ interface DeptType {
   facultyId: string;
 }
 
-const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
+export const AddTeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   const [deptsData, setDeptsData] = useState<DeptType[]>([]);
   const [isDisabled, setIsDisabled] = useState(true);
   const handleLevel = async (e: any) => {
@@ -37,9 +37,9 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   return (
     <form
       action={async (formData) => {
-        const { error, success } = await addTeacher(formData);
-        if (success) {
-          toast.success(success);
+        const { error, msg } = await addTeacher(formData);
+        if (msg) {
+          toast.success(msg);
           updateModal();
         } else if (error) {
           toast.error(error);
@@ -65,7 +65,6 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
       <div className="flex items-center gap-2 mb-2">
         <div className="w-1/2">
           <select
-            multiple={true}
             className="w-full text-white bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
             name="sex"
             id=""
@@ -108,10 +107,10 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
             name="rank"
             id=""
           >
-            <option value="SENIOR" className="text-black">
+            <option value="Senior" className="text-black">
               Senior
             </option>
-            <option value="ASSISTANT" className="text-black ">
+            <option value="Assistant" className="text-black ">
               Assistant
             </option>
           </select>
@@ -156,5 +155,36 @@ const TeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
   );
 };
 
-export default TeacherForm;
+export const DeleteTeacherForm = ({
+  table,
+  id,
+}: {
+  table: string;
+  id?: string | number;
+}) => {
+  return (
+    <form
+      action={async (formData: FormData) => {
+        const { error, msg } = await deleteTeacher(formData);
+        if (msg) {
+          toast.success(msg);
+        } else if (error) {
+          toast.error(error);
+        }
+      }}
+      className="p-4 flex flex-col gap-4"
+    >
+      <span className="text-center">
+        All data will be lost. Are you sure you want to delete this {table}
+        {"? "}
+      </span>
+      <input name="id" type="text" defaultValue={id} className="hidden" />
+      <input
+        type="submit"
+        className="bg-red-600 cursor-pointer  rounded-md text-white py-2 px-4 text-center border-none w-fit self-center  focus:outline-none "
+        value="Delete"
+      />
+    </form>
+  );
+};
 

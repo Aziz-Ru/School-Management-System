@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { MdAdd, MdClose, MdDelete, MdEdit } from "react-icons/md";
-
-import ClassForm from "./Forms/ClassForm";
-import CourseForm from "./Forms/CourseForm";
-import DeptForm from "./Forms/DeptForm";
-import FacultyForm from "./Forms/FacultyForm";
-import SectionForm from "./Forms/SectionForm";
-import TeacherForm from "./Forms/TeacherForm";
+import React, { useMemo, useState } from "react";
+import { MdClose } from "react-icons/md";
+import { AddButton, DeleteButton, EditButton } from "./buttons/Buttons";
+import { AddClassForm } from "./Forms/ClassForm";
+import { AddCourseForm, DeleteCourseForm } from "./Forms/CourseForm";
+import { AddSectionForm } from "./Forms/SectionForm";
+import { AddStudentForm, DeleteStudentForm } from "./Forms/StudentForm";
+import { AddTeacherForm, DeleteTeacherForm } from "./Forms/TeacherForm";
 
 interface FormModalProps {
   table:
@@ -18,12 +17,37 @@ interface FormModalProps {
     | "course"
     | "department"
     | "faculty"
+    | "supervisor"
     | "section";
   type: "add" | "edit" | "delete";
   data?: any;
   id?: string | number;
 
 }
+
+const formComponents: Record<
+  string,
+  Record<string, React.ComponentType<any>>
+> = {
+  student: {
+    add: AddStudentForm,
+    delete: DeleteStudentForm,
+  },
+  teacher: {
+    add: AddTeacherForm as React.ComponentType<any>,
+    delete: DeleteTeacherForm,
+  },
+  class: {
+    add: AddClassForm as React.ComponentType<any>,
+  },
+  section: {
+    add: AddSectionForm as React.ComponentType<any>,
+  },
+  course: {
+    add: AddCourseForm as React.ComponentType<any>,
+    delete: DeleteCourseForm,
+  },
+};
 
 const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
 
@@ -34,7 +58,9 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
       : type == "edit"
       ? "bg-blue-500"
       : "bg-red-500";
-  const Icon = type == "add" ? MdAdd : type == "edit" ? MdEdit : MdDelete;
+
+  const Icon =
+    type == "add" ? AddButton : type == "edit" ? EditButton : DeleteButton;
 
   const [showModal, setShowModal] = useState(false);
 
@@ -42,41 +68,27 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
     setShowModal(false);
   };
 
+  const SelectedForms = useMemo(() => {
+    const tableForms = formComponents[table] || {};
+    return tableForms[type] || null;
+  }, [table, type]);
+
   return (
     <>
-      <button
-        onClick={() => setShowModal(true)}
-        className={`${size} rounded-full flex items-center justify-center ${bgColor}`}
-      >
-        <Icon className={`${type} site-txt`} />
-      </button>
+      <Icon onClick={() => setShowModal(true)} />
 
       {showModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-50 dark:bg-white dark:bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-gray-900 dark:bg-gray-900 text-gray-200 rounded-md p-4 relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] ">
-            {table === "class" && (
-              <ClassForm updateModal={() => setShowModal(false)} />
-            )}
-            {table === "course" && (
-              <CourseForm updateModal={() => setShowModal(false)} data={data} />
-            )}
-            {table === "section" && (
-              <SectionForm
-                updateModal={() => setShowModal(false)}
+            {SelectedForms ? (
+              <SelectedForms
+                updateModal={closeModal}
                 data={data}
+                id={id}
+                table={table}
               />
-            )}
-            {table === "faculty" && (
-              <FacultyForm updateModal={() => setShowModal(false)} />
-            )}
-            {table === "department" && (
-              <DeptForm updateModal={() => setShowModal(false)} data={data} />
-            )}
-            {table === "teacher" && (
-              <TeacherForm
-                data={data}
-                updateModal={() => setShowModal(false)}
-              />
+            ) : (
+              <p>No Form Available</p>
             )}
 
             <button
@@ -98,20 +110,54 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
   );
 };
 
-const Form: React.FC<FormModalProps> = ({ type, id, table }) => {
-  return type == "delete" && id ? (
-    <form action="" className="p-4 flex flex-col gap-4">
-      <span>
-        All data will be lost. Are you sure you want to delete this {table}
-        {"? "}
-      </span>
-      <button className="bg-red-600 rounded-md text-white py-2 px-4 border-none w-max  self-center ">
-        Delete
-      </button>
-    </form>
-  ) : (
-    <></>
-  );
-};
-
 export default FormModal;
+
+{
+  /* {table === "class" && type == "add" ? (
+              <AddClassForm updateModal={() => setShowModal(false)} />
+            ) : type == "delete" ? (
+              <></>
+            ) : (
+              <></>
+            )} */
+}
+
+{
+  /* {table === "course" && (
+              <CourseForm updateModal={() => setShowModal(false)} data={data} />
+            )}
+            {table === "section" && (
+              <SectionForm
+                updateModal={() => setShowModal(false)}
+                data={data}
+              />
+            )}
+            {table === "faculty" && (
+              <FacultyForm updateModal={() => setShowModal(false)} />
+            )}
+            {table === "department" && (
+              <DeptForm updateModal={() => setShowModal(false)} data={data} />
+            )} */
+}
+
+{
+  /* {table === "student" && type == "add" ? (
+              <AddStudentForm />
+            ) : type == "delete" ? (
+              <DeleteStudentForm table={table} id={id} />
+            ) : (
+              <></>
+            )} */
+}
+
+{
+  /* {table === "teacher" && type == "add" ? (
+              <AddTeacherForm
+                data={data}
+                updateModal={() => setShowModal(false)}
+              />
+            ) : (
+              type == "delete" &&
+              id && <DeleteTeacherForm table={table} id={id} />
+            )} */
+}

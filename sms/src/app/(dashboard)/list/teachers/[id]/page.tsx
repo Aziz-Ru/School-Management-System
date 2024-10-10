@@ -1,5 +1,5 @@
 import Annoucement from "@/components/Annoucement";
-import MyCalendar from "@/components/MyCalendar";
+import BigCalendar from "@/components/BigCalendar";
 import Image from "next/image";
 import Link from "next/link";
 import { MdBloodtype, MdDateRange, MdEmail, MdPhone } from "react-icons/md";
@@ -49,7 +49,7 @@ const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
         </div>
         {/* Calendar */}
         <div className="">
-          <MyCalendar role={"teacher"} />
+          <BigCalendar />
         </div>
       </div>
       <div className="w-full xl:w-1/3 px-4">

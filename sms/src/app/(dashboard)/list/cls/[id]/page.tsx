@@ -1,4 +1,4 @@
-
+import { DetailsButton } from "@/components/buttons/Buttons";
 import FormModal from "@/components/FormModal";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
@@ -6,7 +6,6 @@ import { role } from "@/lib/data";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { HiEye, HiTrash } from "react-icons/hi";
 import {
   HiAdjustmentsHorizontal,
   HiAdjustmentsVertical,
@@ -56,6 +55,7 @@ type Section = {
   _count: {
     students: number;
   };
+  level: string;
   supervisor: string | null;
   year: number;
 };
@@ -81,6 +81,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           id: true,
           sectionName: true,
           year: true,
+
           supervisor: {
             select: {
               fullName: true,
@@ -92,21 +93,28 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           year: "desc",
         },
       },
+
       course: true,
     },
   });
+  // console.log(classData);
   // if not found the class
   if (!classData) {
     notFound();
   }
   // if admin
-  if (role === "admin") {
-    courseColumns.push({
-      header: "Action",
-      accessor: "action",
-      className: "text-center",
-    });
-  }
+  // if (role === "admin") {
+  //   courseColumns.push({
+  //     header: "Action",
+  //     accessor: "action",
+  //     className: "text-center",
+  //   });
+  // }
+
+  const updateSections = classData.sections.map((section) => ({
+    ...section,
+    level: classData.level,
+  }));
 
   return (
     <div className="grid grid-cols-12">
@@ -161,7 +169,7 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
         <TableList
           columns={sectionColumns}
           renderRow={renderSectionRow}
-          data={classData.sections}
+          data={updateSections}
         />
       </div>
 
@@ -189,12 +197,10 @@ const renderSectionRow = (item: Section) => {
       <td className="px-2">
         <div className="flex items-center gap-2">
           <Link href={`/list/sections/${item.id}`}>
-            <HiEye className="w-5 h-5" />
+            <DetailsButton />
           </Link>
           {role === "admin" && (
-            <Link href={`/list/sections/${item.id}`}>
-              <HiTrash className="w-5 h-5" />
-            </Link>
+            <FormModal type="delete" table="section" id={item.id} />
           )}
         </div>
       </td>
@@ -206,7 +212,7 @@ const renderCourseRow = (item: Course) => {
   return (
     <tr
       key={item.id}
-      className="border-b site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
+      className="border-b shadow-sm site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
     >
       <td className="flex items-center p-3 ">
         <h3 className="font-semibold">{item.courseName}</h3>
@@ -215,8 +221,8 @@ const renderCourseRow = (item: Course) => {
       <td className="px-2">
         {role === "admin" && (
           <div className="flex gap-4 items-center justify-center ">
-            <FormModal type="edit" table="course" />
-            <FormModal type="delete" table="course" />
+            <FormModal type="edit" table="course" id={item.id} />
+            <FormModal type="delete" table="course" id={item.id} />
           </div>
         )}
       </td>

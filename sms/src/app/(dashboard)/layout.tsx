@@ -1,5 +1,5 @@
 import AdminNavbar from "@/components/AdminNavbar";
-import Menu from "@/components/SideBarMenu";
+import Menu from "@/components/slidebar/SideBarMenu";
 import Image from "next/image";
 import Link from "next/link";
 

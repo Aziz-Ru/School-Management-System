@@ -66,7 +66,7 @@ model Student {
   password  String
   fullName  String
   phone     String ?
-  email     String ?
+  address   String  
   dob       String
   img       String ?
   sex       UserSex @default(MALE)
@@ -113,7 +113,7 @@ model Faculty {
 
 model Course {
   id         String     @id  @default(cuid())
-  courseName String     @unique   
+  courseName String       
   classId    Int
   deptId     String ?
   class  Class  @relation(fields: [classId], references: [id], onDelete: Cascade)

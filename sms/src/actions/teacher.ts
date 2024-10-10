@@ -3,14 +3,16 @@
 import prisma from "@/lib/db";
 import { teacherSchema } from "@/lib/schema/Schema";
 import brcypt from "bcrypt";
+import { revalidatePath } from "next/cache";
 
 interface ReturnProps {
   error?: string;
-  success?: string;
+  msg?: string;
 }
 
 export const addTeacher = async (formData: FormData): Promise<ReturnProps> => {
   try {
+    // console.log(formData.get("rank"));
     const validateResult = teacherSchema.safeParse({
       fullName: formData.get("fullName"),
       email: formData.get("email"),
@@ -23,6 +25,7 @@ export const addTeacher = async (formData: FormData): Promise<ReturnProps> => {
       id: parseInt(formData.get("id") as string),
       password: formData.get("password"),
     });
+
     if (!validateResult.success) {
       return { error: validateResult.error.errors[0].message };
     }
@@ -56,10 +59,28 @@ export const addTeacher = async (formData: FormData): Promise<ReturnProps> => {
         password: hashedPassword,
       },
     });
-
-    return { success: "Employee added successfully" };
+    revalidatePath("/list/teachers");
+    return { msg: "Employee added successfully" };
   } catch (error: any) {
-    console.log(error.message);
+    // console.log(error.message);
     return { error: "Failed to add employee" };
+  }
+};
+
+export const deleteTeacher = async (
+  formData: FormData
+): Promise<ReturnProps> => {
+  const id = formData.get("id") as string | null;
+  // console.log(id);
+  if (!id) {
+    return { error: "Failed to delete" };
+  }
+  try {
+    await prisma.teacher.delete({ where: { id: id } });
+    revalidatePath("/list/teachers");
+    return { msg: "Delete Successfully" };
+  } catch (error: any) {
+    // console.log(error.message);
+    return { error: "Failed to delete" };
   }
 };

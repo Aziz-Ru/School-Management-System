@@ -50,7 +50,7 @@ CREATE TABLE `Student` (
     `password` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NULL,
-    `email` VARCHAR(191) NULL,
+    `address` VARCHAR(191) NULL,
     `dob` VARCHAR(191) NOT NULL,
     `img` VARCHAR(191) NULL,
     `sex` ENUM('MALE', 'FEMALE') NOT NULL DEFAULT 'MALE',
@@ -74,8 +74,8 @@ CREATE TABLE `Class` (
 CREATE TABLE `Section` (
     `id` VARCHAR(191) NOT NULL,
     `sectionName` VARCHAR(191) NOT NULL,
-    `year` VARCHAR(191) NOT NULL,
-    `supervisorId` VARCHAR(191) NOT NULL,
+    `year` INTEGER NOT NULL,
+    `supervisorId` VARCHAR(191) NULL,
     `classId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -110,7 +110,6 @@ CREATE TABLE `Course` (
     `deptId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `Course_courseName_key`(`courseName`),
     UNIQUE INDEX `Course_courseName_classId_key`(`courseName`, `classId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
