@@ -1,3 +1,4 @@
+
 "use client";
 import { addTeacher, deleteTeacher } from "@/actions/teacher";
 import { useState } from "react";
@@ -148,6 +149,7 @@ export const AddTeacherForm: React.FC<DeptFormProps> = ({ updateModal }) => {
         </div>
       </div>
 
+
       <Formsubmitbtn LoadingTitle="ADDING..." Title="ADD" width="w-full" />
     </form>
   );
@@ -185,3 +187,4 @@ export const DeleteTeacherForm = ({
     </form>
   );
 };
+

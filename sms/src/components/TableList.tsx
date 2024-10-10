@@ -1,3 +1,6 @@
+
+import { teacherData } from "@/lib/data";
+
 import React from "react";
 
 const TableList = ({
@@ -31,6 +34,7 @@ export default TableList;
 
 {
   /* <div>
+
   {teacherData.map((teacher, index) => {
     return (
       <div key={index} className="flex justify-between items-center">
@@ -49,3 +53,4 @@ export default TableList;
   })}
 </div>; */
 }
+

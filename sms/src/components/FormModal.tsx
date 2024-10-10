@@ -22,6 +22,7 @@ interface FormModalProps {
   type: "add" | "edit" | "delete";
   data?: any;
   id?: string | number;
+
 }
 
 const formComponents: Record<
@@ -49,6 +50,7 @@ const formComponents: Record<
 };
 
 const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
+
   const size = type == "add" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type == "add"
@@ -61,6 +63,7 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
     type == "add" ? AddButton : type == "edit" ? EditButton : DeleteButton;
 
   const [showModal, setShowModal] = useState(false);
+
   const closeModal = () => {
     setShowModal(false);
   };
@@ -91,6 +94,12 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={closeModal}
+
+            <TeacherForm />
+            <button
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={() => setShowModal(false)}
+
             >
               <MdClose className="w-6 h-6 text-white dark:text-white" />
             </button>
