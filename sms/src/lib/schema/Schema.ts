@@ -90,12 +90,12 @@ export const courseSchema = z.object({
     .min(1, "classId must be a number between 1 to 12"),
 
   deptId: z
-
     .string({
       required_error: "deptName must be required",
       invalid_type_error: "deptName must be a String",
     })
-    .cuid(),
+    .cuid()
+    .optional(),
 });
 
 export const teacherSchema = z.object({
@@ -104,6 +104,7 @@ export const teacherSchema = z.object({
       required_error: "firstName must be required",
       invalid_type_error: "firstName must be a string",
     })
+    .trim()
     .min(4, "firstName must be atleast 4 chracters")
     .max(20, "firstName must be no more than 20 chracters"),
   email: z
@@ -142,6 +143,7 @@ export const teacherSchema = z.object({
       required_error: "address must be required",
       invalid_type_error: "address must be a string",
     })
+    .trim()
     .min(3, "address must be atleast 3 chracters"),
 
   deptId: z
@@ -159,6 +161,68 @@ export const teacherSchema = z.object({
     })
     .int({ message: "employeeId must be a number" })
     .min(1000, { message: "employeeId must be greater than 1000" }),
+  password: z
+    .string({
+      required_error: "password must be required",
+      invalid_type_error: "password must be a string",
+    })
+    .min(6, "password must be atleast 6 chracters"),
+});
+
+export const studentSchema = z.object({
+  fullName: z
+    .string({
+      required_error: "fullName must be required",
+      invalid_type_error: "fullName must be a string",
+    })
+    .min(4, "fullName must be atleast 4 chracters")
+    .max(20, "fullName must be no more than 20 chracters"),
+  phone: z
+    .string({
+      required_error: "phone must be required",
+      invalid_type_error: "phone must be a string",
+    })
+    .regex(/^(\+8801|01)[0-9]\d{8}$/, {
+      message: "Invalid Bangladeshi Phone Number",
+    }),
+  sex: z.enum(["MALE", "FEMALE"], {
+    errorMap: () => ({ message: "Sex must be either MALE or FEMALE" }),
+  }),
+
+  dob: z.date().refine(
+    (dob) => {
+      const today = new Date();
+      const fiverYearsAgo = new Date(
+        today.getFullYear() - 5,
+        today.getMonth(),
+        today.getDate()
+      );
+      return dob < fiverYearsAgo;
+    },
+    { message: "Date of birth must be 5 years ago" }
+  ),
+  sectionId: z
+    .string({
+      required_error: "sectionId must be required",
+      invalid_type_error: "sectionId must be a string",
+    })
+    .cuid(),
+  address: z
+    .string({
+      required_error: "address must be required",
+      invalid_type_error: "address must be a string",
+    })
+    .trim()
+    .min(3, "address must be atleast 3 chracters"),
+
+  studentId: z
+    .number({
+      required_error: "studentId must be required",
+      invalid_type_error: "studentId must be a number",
+    })
+    .int()
+    .min(200000, "studentId must be greater than 200000"),
+
   password: z
     .string({
       required_error: "password must be required",

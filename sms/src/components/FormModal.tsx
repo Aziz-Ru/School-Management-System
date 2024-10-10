@@ -3,6 +3,9 @@
 import React, { useMemo, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { AddButton, DeleteButton, EditButton } from "./buttons/Buttons";
+import { AddClassForm } from "./Forms/ClassForm";
+import { AddCourseForm, DeleteCourseForm } from "./Forms/CourseForm";
+import { AddSectionForm } from "./Forms/SectionForm";
 import { AddStudentForm, DeleteStudentForm } from "./Forms/StudentForm";
 import { AddTeacherForm, DeleteTeacherForm } from "./Forms/TeacherForm";
 
@@ -30,8 +33,18 @@ const formComponents: Record<
     delete: DeleteStudentForm,
   },
   teacher: {
-    add: (props) => <AddTeacherForm {...props} />,
+    add: AddTeacherForm as React.ComponentType<any>,
     delete: DeleteTeacherForm,
+  },
+  class: {
+    add: AddClassForm as React.ComponentType<any>,
+  },
+  section: {
+    add: AddSectionForm as React.ComponentType<any>,
+  },
+  course: {
+    add: AddCourseForm as React.ComponentType<any>,
+    delete: DeleteCourseForm,
   },
 };
 

@@ -1,17 +1,28 @@
+import { addStudent, deleteStudent } from "@/actions/student";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
 import Input from "../Input";
 
-export const AddStudentForm = () => {
+export const AddStudentForm = ({
+  updateModal,
+  data,
+}: {
+  updateModal: () => void;
+  data: any;
+}) => {
+  const [selectedSection, setSelectedSection] = useState(data[0].sections);
+
   return (
     <form
       action={async (formData) => {
-        // const { error, msg } = await addTeacher(formData);
-        // if (msg) {
-        //   toast.success(msg);
-        //   updateModal();
-        // } else if (error) {
-        //   toast.error(error);
-        // }
+        const { error, msg } = await addStudent(formData);
+        if (msg) {
+          toast.success(msg);
+          updateModal();
+        } else if (error) {
+          toast.error(error);
+        }
       }}
       className="bg-transparent"
     >
@@ -25,14 +36,8 @@ export const AddStudentForm = () => {
       </div>
       <div className="flex items-center gap-2 mb-2">
         <div className="w-1/2">
-          <Input type="email" label="Email" name="email" required={true} />
+          <Input type="phone" label="Phone" name="phone" required={false} />
         </div>
-        <div className="w-1/2">
-          <Input type="phone" label="Phone" name="phone" required={true} />
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2 mb-2">
         <div className="w-1/2">
           <select
             className="w-full text-white bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
@@ -47,6 +52,12 @@ export const AddStudentForm = () => {
             </option>
           </select>
         </div>
+      </div>
+
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-1/2">
+          <Input type="date" label="Date of Birth" name="dob" required={true} />
+        </div>
         <div className="w-1/2">
           <Input type="text" label="Address" name="address" required={true} />
         </div>
@@ -56,52 +67,37 @@ export const AddStudentForm = () => {
         <div className="w-1/2 text-white ">
           <select
             className="w-full text-white  bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
-            name="level"
-            id=""
+            onChange={(e) => {
+              setSelectedSection(data[e.target.value].sections);
+            }}
           >
-            <option value="PRIMARY" className="text-black ">
-              PRIMARY
-            </option>
-            <option value="SCHOOL" className="text-black">
-              SCHOOL
-            </option>
-            <option value="COLLEGE" className="text-black">
-              COLLEGE
-            </option>
+            {data.map((classData: any, index: number) => {
+              return (
+                <option className="text-black" key={classData.id} value={index}>
+                  {classData.className}
+                </option>
+              );
+            })}
           </select>
         </div>
         <div className="w-1/2">
           <select
             className="w-full text-white bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
-            name="rank"
-            id=""
+            name="sectionId"
           >
-            <option value="Senior" className="text-black">
-              Senior
-            </option>
-            <option value="Assistant" className="text-black ">
-              Assistant
-            </option>
+            {selectedSection.map((section: any) => {
+              return (
+                <option
+                  className="text-black"
+                  key={section.id}
+                  value={section.id}
+                >
+                  {section.sectionName}
+                </option>
+              );
+            })}
           </select>
         </div>
-      </div>
-
-      <div className="flex items-center gap-2 mb-2">
-        {/* <select
-      className="w-full text-white  bg-transparent text-sm px-2.5 pb-2.5 pt-4 rounded-lg site-txt border site-border focus:border-gray-200"
-      name="department"
-      id=""
-      disabled={isDisabled}
-    >
-      <option value="" className="text-black ">
-        Departement
-      </option>
-      {deptsData.map((dept) => (
-        <option key={dept.id} value={dept.id} className="text-black">
-          {dept.deptName}
-        </option>
-      ))}
-    </select> */}
       </div>
 
       <div className="flex items-center gap-2 mb-2">
@@ -134,12 +130,12 @@ export const DeleteStudentForm = ({
   return (
     <form
       action={async (formData: FormData) => {
-        //   const { error, msg } = await deleteTeacher(formData);
-        //   if (msg) {
-        //     toast.success(msg);
-        //   } else if (error) {
-        //     toast.error(error);
-        //   }
+        const { error, msg } = await deleteStudent(formData);
+        if (msg) {
+          toast.success(msg);
+        } else if (error) {
+          toast.error(error);
+        }
       }}
       className="p-4 flex flex-col gap-4"
     >

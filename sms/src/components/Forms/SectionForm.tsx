@@ -8,7 +8,7 @@ interface SectionFormProps {
   data: any;
 }
 
-const SectionForm: React.FC<SectionFormProps> = ({ updateModal, data }) => {
+export const AddSectionForm: React.FC<SectionFormProps> = ({ updateModal, data }) => {
   return (
     <div>
       <h1 className="text-xl text-center font-semibold mb-2">
@@ -45,4 +45,3 @@ const SectionForm: React.FC<SectionFormProps> = ({ updateModal, data }) => {
   );
 };
 
-export default SectionForm;

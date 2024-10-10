@@ -76,8 +76,6 @@ const Teacher = async ({
     prisma.teacher.count(),
   ]);
 
-  // console.log(teachers);
-
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">
       {/* TOP */}
