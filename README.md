@@ -1,3 +1,6 @@
-# School Management System
+## School Management System
 
-School Management system with ExpressJs, NextJs, MySQL.
+### Features
+
+- Role Based Login
+- Admin can manage student ,teacher,stackholder,class,course,section,routine,exam,result,annoucement ,events
