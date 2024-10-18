@@ -1,5 +1,5 @@
 "use client";
-import { addTeacher, deleteTeacher } from "@/actions/teacher";
+import { addTeacher, deleteTeacher } from "@/features/teachers/actions/teacher";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";

@@ -18,7 +18,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} site-bg site-txt`}>
+      <body className={`${roboto.className}`}>
         <main className="md:overflow-auto">
           <section>{children}</section>
         </main>

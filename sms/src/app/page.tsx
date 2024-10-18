@@ -7,6 +7,15 @@ import ShadcnAlertDialog from "@/components/shadcn/AlertDialog";
 import ImageAvatar from "@/components/shadcn/ImageAvatar";
 import ShCalendar from "@/components/shadcn/ShCalendar";
 import { DialogDemo } from "@/components/shadcn/ShDialog";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const GeneralPage = async ({
   searchParams,
@@ -54,6 +63,26 @@ const GeneralPage = async ({
       <div className="p-4">
         <BigCalendar />
       </div>
+
+      <Table>
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell>Paid</TableCell>
+            <TableCell>Credit Card</TableCell>
+            <TableCell className="text-right">$250.00</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </div>
   );
 };
