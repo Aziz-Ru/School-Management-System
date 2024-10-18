@@ -3,7 +3,7 @@ import {
   addCollege,
   addPrimary,
   addSchool,
-} from "@/actions/class";
+} from "@/features/classes/actions/class";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 

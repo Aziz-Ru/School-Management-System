@@ -3,8 +3,8 @@ import { addCourse } from "@/actions/course";
 import { addSection } from "@/actions/section";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Formsubmitbtn from "../Formsubmitbtn";
-import AddIcon from "../svg/AddIcon";
+import Formsubmitbtn from "../../../components/Formsubmitbtn";
+import AddIcon from "../../../components/svg/AddIcon";
 
 interface initialClassRoomProps {
   id: string;
@@ -93,14 +93,13 @@ const ClassRoom = ({
         <div className="max-w-screen-xl">
           <form
             action={async (formData) => {
-              const { error, success } = await addCourse({
+              const { error, msg } = await addCourse({
                 formData,
-                classId: classId,
               });
               if (error) {
                 toast.error(error);
-              } else {
-                toast.success(success);
+              } else if (msg) {
+                toast.success(msg);
               }
             }}
             className="px-6 py-4 flex flex-col"
@@ -159,11 +158,11 @@ const ClassRoom = ({
         <div className="max-w-screen-xl">
           <form
             action={async (formData: FormData) => {
-              const { error, success } = await addSection(formData, classId);
+              const { error, msg } = await addSection({ formData });
               if (error) {
                 toast.error(error);
-              } else if (success) {
-                toast.success(success);
+              } else if (msg) {
+                toast.success(msg);
               }
             }}
             className="px-6 py-4 flex flex-col"

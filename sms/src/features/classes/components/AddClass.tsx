@@ -1,4 +1,4 @@
-import { addClass } from "@/actions/class";
+import { addClass } from "@/features/classes/actions/class";
 
 const AddClass = () => {
   return (

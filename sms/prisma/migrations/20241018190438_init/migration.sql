@@ -50,7 +50,7 @@ CREATE TABLE `Student` (
     `password` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NULL,
-    `address` VARCHAR(191) NULL,
+    `address` VARCHAR(191) NOT NULL,
     `dob` VARCHAR(191) NOT NULL,
     `img` VARCHAR(191) NULL,
     `sex` ENUM('MALE', 'FEMALE') NOT NULL DEFAULT 'MALE',
