@@ -59,13 +59,11 @@ export const addCourse = async ({
   }
 };
 
-export const deleteCourse = async (
-  formData: FormData
-): Promise<ReturnProps> => {
+export const deleteCourseAction = async (id: string): Promise<ReturnProps> => {
   try {
     await prisma.course.delete({
       where: {
-        id: formData.get("id") as string,
+        id: id,
       },
     });
     revalidatePath("list/cls");

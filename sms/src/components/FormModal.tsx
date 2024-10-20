@@ -70,6 +70,8 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
     return tableForms[type] || null;
   }, [table, type]);
 
+  
+
   return (
     <>
       <Icon onClick={() => setShowModal(true)} />
@@ -103,52 +105,4 @@ const FormModal: React.FC<FormModalProps> = ({ table, type, data, id }) => {
 
 export default FormModal;
 
-{
-  /* {table === "class" && type == "add" ? (
-              <AddClassForm updateModal={() => setShowModal(false)} />
-            ) : type == "delete" ? (
-              <></>
-            ) : (
-              <></>
-            )} */
-}
 
-{
-  /* {table === "course" && (
-              <CourseForm updateModal={() => setShowModal(false)} data={data} />
-            )}
-            {table === "section" && (
-              <SectionForm
-                updateModal={() => setShowModal(false)}
-                data={data}
-              />
-            )}
-            {table === "faculty" && (
-              <FacultyForm updateModal={() => setShowModal(false)} />
-            )}
-            {table === "department" && (
-              <DeptForm updateModal={() => setShowModal(false)} data={data} />
-            )} */
-}
-
-{
-  /* {table === "student" && type == "add" ? (
-              <AddStudentForm />
-            ) : type == "delete" ? (
-              <DeleteStudentForm table={table} id={id} />
-            ) : (
-              <></>
-            )} */
-}
-
-{
-  /* {table === "teacher" && type == "add" ? (
-              <AddTeacherForm
-                data={data}
-                updateModal={() => setShowModal(false)}
-              />
-            ) : (
-              type == "delete" &&
-              id && <DeleteTeacherForm table={table} id={id} />
-            )} */
-}

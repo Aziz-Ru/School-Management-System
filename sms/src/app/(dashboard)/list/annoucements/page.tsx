@@ -1,5 +1,5 @@
-const page = () => {
-  return <div>page</div>;
+const git = () => {
+  return <div>git</div>;
 };
 
-export default page;
+export default git;

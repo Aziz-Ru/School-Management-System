@@ -1,15 +1,13 @@
 import { DetailsButton } from "@/components/buttons/Buttons";
+import DeleteModal from "@/components/DeleteModal";
 import FormModal from "@/components/FormModal";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
+import { TableCell, TableRow } from "@/components/ui/table";
 import { role } from "@/lib/data";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  HiAdjustmentsHorizontal,
-  HiAdjustmentsVertical,
-} from "react-icons/hi2";
 
 const sectionColumns = [
   {
@@ -35,6 +33,7 @@ const sectionColumns = [
   {
     header: "Action",
     accessor: "actions",
+    className: "text-center",
   },
 ];
 const courseColumns = [
@@ -42,6 +41,11 @@ const courseColumns = [
     header: "Info",
     accessor: "info",
     className: "px-2",
+  },
+  {
+    header: "Action",
+    accessor: "action",
+    className: "text-center",
   },
 ];
 
@@ -77,7 +81,6 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           id: true,
           sectionName: true,
           year: true,
-
           supervisor: {
             select: {
               fullName: true,
@@ -89,82 +92,54 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
           year: "desc",
         },
       },
-
       course: true,
     },
   });
-  // console.log(classData);
-  // if not found the class
+
   if (!classData) {
     notFound();
   }
-  // if admin
-  // if (role === "admin") {
-  //   courseColumns.push({
-  //     header: "Action",
-  //     accessor: "action",
-  //     className: "text-center",
-  //   });
-  // }
-
-  const updateSections = classData.sections.map((section) => ({
-    ...section,
-    level: classData.level,
-  }));
 
   return (
     <div className="grid grid-cols-12">
       {/* Courses */}
-      <div className="site-bg p-4 m-4 mt-0  col-span-12 lg:col-span-5">
-        {/* TOP */}
-        <div className="flex gap-2 items-center justify-between">
-          <h1 className="hidden md:block text-lg font-semibold">Courses</h1>
-          <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
+      <div className=" col-span-12 xl:col-span-6">
+        <div className="site-bg p-4 m-4 mt-0  col-span-12 lg:col-span-5">
+          {/* TOP */}
+          <div className="flex gap-2 items-center justify-between">
             <TableSearch />
-            <div className="flex items-center gap-4 md:self-auto self-end ">
-              <button>
-                <HiAdjustmentsHorizontal className="w-5 h-5 site-txt" />
-              </button>
-              <button>
-                <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
-              </button>
-              <FormModal type="add" table="course" data={classData} />
-            </div>
+            <FormModal type="add" table="course" data={classData} />
           </div>
-        </div>
 
-        {/* List */}
-        <TableList
-          columns={courseColumns}
-          renderRow={renderCourseRow}
-          data={classData.course}
-        />
+          {/* List */}
+          {classData.course.length > 0 && (
+            <TableList
+              columns={courseColumns}
+              renderRow={renderCourseRow}
+              data={classData.course}
+            />
+          )}
+        </div>
       </div>
 
       {/* Sections */}
-      <div className="site-bg p-4 m-4 mt-0 flex-1 col-span-12 lg:col-span-7 border-red-300">
-        {/* TOP */}
-        <div className="flex gap-2 items-center  justify-between">
-          <h1 className="hidden md:block text-lg font-semibold">Sections</h1>
-          <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
+      <div className=" col-span-12 xl:col-span-6">
+        <div className="site-bg p-4 m-4 mt-0  col-span-12 lg:col-span-5">
+          {/* TOP */}
+          <div className="flex gap-2 items-center justify-between">
             <TableSearch />
-            <div className="flex items-center gap-4 md:self-auto self-end ">
-              <button>
-                <HiAdjustmentsHorizontal className="w-5 h-5 site-txt" />
-              </button>
-              <button>
-                <HiAdjustmentsVertical className="w-5 h-5 site-txt" />
-              </button>
-              <FormModal type="add" table="section" data={classData} />
-            </div>
+            <FormModal type="add" table="section" data={classData} />
           </div>
+
+          {/* List */}
+          {classData.sections.length > 0 && (
+            <TableList
+              columns={sectionColumns}
+              renderRow={renderSectionRow}
+              data={classData.sections}
+            />
+          )}
         </div>
-        {/* List */}
-        <TableList
-          columns={sectionColumns}
-          renderRow={renderSectionRow}
-          data={updateSections}
-        />
       </div>
     </div>
   );
@@ -172,54 +147,59 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
 
 const renderSectionRow = (item: Section) => {
   return (
-    <tr
+    <TableRow
       key={item.id}
       className="border-b site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
     >
-      <td className="flex items-center p-3 ">
+      <TableCell className="flex items-center p-3 ">
         <h3 className="font-semibold">{item.sectionName}</h3>
-      </td>
-      <td className="px-2">
+      </TableCell>
+      <TableCell className="px-2">
         <span className="hidden sm:block">{item._count.students}</span>
-      </td>
-      <td className="px-2">{item.year}</td>
-      <td className="px-2">
-        {item.supervisor ? item.supervisor : "Not Assigned"}
-      </td>
+      </TableCell>
+      <TableCell className="px-2">
+        <span className="hidden sm:block">{item.year}</span>
+      </TableCell>
+      <TableCell className="px-2">
+        <span className="hidden sm:block">
+          {item.supervisor ? item.supervisor : "Not Assigned"}
+        </span>
+      </TableCell>
 
-      <td className="px-2">
+      <TableCell className="px-2">
         <div className="flex items-center gap-2">
           <Link href={`/list/sections/${item.id}`}>
             <DetailsButton />
           </Link>
           {role === "admin" && (
-            <FormModal type="delete" table="section" id={item.id} />
+            <DeleteModal
+              table={"section"}
+              name={item.sectionName}
+              id={item.id}
+            />
           )}
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
 const renderCourseRow = (item: Course) => {
   return (
-    <tr
-      key={item.id}
-      className="border-b shadow-sm site-border odd:bg-zinc-100 dark:odd:bg-slate-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
-    >
-      <td className="flex items-center p-3 ">
+    <TableRow key={item.id}>
+      <TableCell className="flex items-center p-3 ">
         <h3 className="font-semibold">{item.courseName}</h3>
-      </td>
+      </TableCell>
 
-      <td className="px-2">
+      <TableCell className="px-2">
         {role === "admin" && (
           <div className="flex gap-4 items-center justify-center ">
-            <FormModal type="edit" table="course" id={item.id} />
-            <FormModal type="delete" table="course" id={item.id} />
+            {/* <FormModal type="edit" table="course" id={item.id} /> */}
+            <DeleteModal table={"course"} name={item.courseName} id={item.id} />
           </div>
         )}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

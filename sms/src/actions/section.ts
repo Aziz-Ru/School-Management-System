@@ -107,3 +107,17 @@ interface Section {
 //     return { error: "Failed to delete" };
 //   }
 // };
+
+export const deleteSectionAction = async (id: string): Promise<ReturnProps> => {
+  try {
+    await prisma.section.delete({
+      where: {
+        id: id,
+      },
+    });
+    revalidatePath("/list/cls");
+    return { msg: "Deleted successfully" };
+  } catch (error) {
+    return { error: "Failed to delete" };
+  }
+};

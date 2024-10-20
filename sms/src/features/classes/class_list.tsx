@@ -55,19 +55,14 @@ const ClassList = async () => {
     <>
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
-          <TableSearch />
-          <div className="flex items-center gap-4 md:self-auto self-end ">
-            {classList.length != 12 ? (
-              <FormModal type="add" table="class" />
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
+        <TableSearch />
+
+        {classList.length != 12 ? <FormModal type="add" table="class" /> : ""}
       </div>
       {/* TABLE */}
-      <TableList columns={columns} renderRow={renderRow} data={classList} />
+      {classList.length > 0 && (
+        <TableList columns={columns} renderRow={renderRow} data={classList} />
+      )}
     </>
   );
 };

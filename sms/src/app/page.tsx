@@ -1,90 +1,96 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
-import prisma from "@/lib/db";
-import Link from "next/link";
-
-import BigCalendar from "@/components/BigCalendar";
-import ShadcnAlertDialog from "@/components/shadcn/AlertDialog";
-import ImageAvatar from "@/components/shadcn/ImageAvatar";
-import ShCalendar from "@/components/shadcn/ShCalendar";
-import { DialogDemo } from "@/components/shadcn/ShDialog";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-const GeneralPage = async ({
-  searchParams,
-}: {
-  searchParams: { page?: string };
-}) => {
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const classes = await prisma.class.findMany({
-    skip: (page - 1) * 2,
-    take: 2,
+const FormSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+});
+
+export function InputForm() {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      username: "",
+    },
   });
-  const hasNextpage = (await prisma.class.count()) > page * 2;
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      console.log(json);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
-    <div>
-      <div className="">
-        {classes.map((cls) => {
-          return <div key={cls.id}>{cls.className}</div>;
-        })}
-      </div>
-      <div className="">
-        <Link href={`?page=${page - 1}`} passHref>
-          <button disabled={page == 1}>Previous</button>
-        </Link>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="Username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="Password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+}
 
-        <Link href={`?page=${page + 1}`} passHref>
-          <button disabled={!hasNextpage}>Next</button>
-        </Link>
-      </div>
-
-      <div className="">
-        <h1>Shadcn</h1>
-
-        <div className="flex">
-          <span>Button:</span>
-          <Button>Click me</Button>
-          <ImageAvatar />
-        </div>
-        <div className="">
-          <ShCalendar />
-          <ShadcnAlertDialog />
-          <DialogDemo />
-        </div>
-      </div>
-      <div className="p-4">
-        <BigCalendar />
-      </div>
-
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+export default function Page() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <InputForm />
     </div>
   );
-};
-
-export default GeneralPage;
+}
