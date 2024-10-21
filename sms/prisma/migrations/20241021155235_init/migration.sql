@@ -34,9 +34,8 @@ CREATE TABLE `Teacher` (
     `address` VARCHAR(191) NOT NULL,
     `message` VARCHAR(191) NULL,
     `img` VARCHAR(191) NULL,
-    `deptId` VARCHAR(191) NULL,
-    `super` VARCHAR(191) NULL,
-    `rank` ENUM('Senior', 'Assistant') NOT NULL DEFAULT 'Assistant',
+    `sectionSuper` VARCHAR(191) NULL,
+    `rank` ENUM('SENIOR', 'ASSISTANT') NOT NULL DEFAULT 'ASSISTANT',
     `level` ENUM('PRIMARY', 'SCHOOL', 'COLLEGE') NOT NULL DEFAULT 'SCHOOL',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -75,7 +74,7 @@ CREATE TABLE `Section` (
     `id` VARCHAR(191) NOT NULL,
     `sectionName` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL,
-    `supervisorId` VARCHAR(191) NULL,
+    `sectionSuper` VARCHAR(191) NULL,
     `classId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -84,30 +83,10 @@ CREATE TABLE `Section` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Faculty` (
-    `id` VARCHAR(191) NOT NULL,
-    `facultyName` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Faculty_facultyName_key`(`facultyName`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Department` (
-    `id` VARCHAR(191) NOT NULL,
-    `deptName` VARCHAR(191) NOT NULL,
-    `facultyId` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Department_deptName_key`(`deptName`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Course` (
     `id` VARCHAR(191) NOT NULL,
     `courseName` VARCHAR(191) NOT NULL,
     `classId` INTEGER NOT NULL,
-    `deptId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Course_courseName_classId_key`(`courseName`, `classId`),
@@ -140,17 +119,6 @@ CREATE TABLE `StakeHolder` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `events` (
-    `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
-    `date` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `annoucement` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
@@ -161,26 +129,26 @@ CREATE TABLE `annoucement` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `Teacher` ADD CONSTRAINT `Teacher_deptId_fkey` FOREIGN KEY (`deptId`) REFERENCES `Department`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `_CourseToTeacher` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_CourseToTeacher_AB_unique`(`A`, `B`),
+    INDEX `_CourseToTeacher_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `Student` ADD CONSTRAINT `Student_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `Section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Section` ADD CONSTRAINT `Section_supervisorId_fkey` FOREIGN KEY (`supervisorId`) REFERENCES `Teacher`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Section` ADD CONSTRAINT `Section_sectionSuper_fkey` FOREIGN KEY (`sectionSuper`) REFERENCES `Teacher`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Section` ADD CONSTRAINT `Section_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Class`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Department` ADD CONSTRAINT `Department_facultyId_fkey` FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Course` ADD CONSTRAINT `Course_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Class`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Course` ADD CONSTRAINT `Course_deptId_fkey` FOREIGN KEY (`deptId`) REFERENCES `Department`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Lesson` ADD CONSTRAINT `Lesson_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `Section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -190,3 +158,9 @@ ALTER TABLE `Lesson` ADD CONSTRAINT `Lesson_courseId_fkey` FOREIGN KEY (`courseI
 
 -- AddForeignKey
 ALTER TABLE `Lesson` ADD CONSTRAINT `Lesson_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `Teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_CourseToTeacher` ADD CONSTRAINT `_CourseToTeacher_A_fkey` FOREIGN KEY (`A`) REFERENCES `Course`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_CourseToTeacher` ADD CONSTRAINT `_CourseToTeacher_B_fkey` FOREIGN KEY (`B`) REFERENCES `Teacher`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

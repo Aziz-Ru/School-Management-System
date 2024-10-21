@@ -26,6 +26,7 @@ model School {
 }
 
 model Teacher {
+  
   id         String     @id @unique
   password   String
   fullName   String
@@ -38,7 +39,7 @@ model Teacher {
   courses    Course[]
   sectionSuper String?
   sections    Section[]
-  rank       RANK      @default(Assistant)
+  rank       RANK      @default(ASSISTANT)
   level       LEVEL  @default(SCHOOL)
   lesson    Lesson[]
   createdAt  DateTime   @default(now())
@@ -126,8 +127,8 @@ model annoucement {
 }
 
 enum RANK{
-  Senior
-  Assistant
+  SENIOR
+  ASSISTANT
 }
 
 enum LEVEL{

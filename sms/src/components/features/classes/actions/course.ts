@@ -13,18 +13,15 @@ interface inputProps {
   formData: FormData;
 }
 
-export const addCourse = async ({
-  formData,
-}: inputProps): Promise<ReturnProps> => {
+export const addCourseAction = async (
+  formData: FormData
+): Promise<ReturnProps> => {
   try {
     const validResult = courseSchema.safeParse({
       courseName: formData.get("courseName"),
       totalMarks: 100,
       classId: parseInt(formData.get("id") as string),
-      deptId: (formData.get("deptId") as string) || undefined,
     });
-
-    // console.log(departmentId);
 
     if (!validResult.success) {
       const err = validResult.error.issues[0].message;

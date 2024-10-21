@@ -1,12 +1,15 @@
 import { DetailsButton } from "@/components/buttons/Buttons";
-import FormModal from "@/components/FormModal";
+import DeleteModal from "@/components/DeleteModal";
+
 import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
+import { TableCell, TableRow } from "@/components/ui/table";
 import { ITEM_PAR_PAGE } from "@/lib/data";
 import prisma from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
+import AddTeacherForm from "./components/TeacherForm";
 
 const columns = [
   {
@@ -82,7 +85,7 @@ const TeacherList = async ({
       <div className="flex items-center justify-between">
         <TableSearch />
         <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
-          <FormModal type="add" table="teacher" />
+          <AddTeacherForm />
         </div>
       </div>
 
@@ -102,11 +105,8 @@ const TeacherList = async ({
 
 const renderRow = (item: Teacher) => {
   return (
-    <tr
-      key={item.id}
-      className="border-b site-border odd:bg-zinc-100 dark:odd:bg-zinc-700 even:bg-gray-200 dark:even:bg-gray-700 hover:bg-purple-200 dark:hover:bg-gray-600"
-    >
-      <td className="flex items-center gap-4 p-3 ">
+    <TableRow key={item.id}>
+      <TableCell className="flex items-center gap-4 p-3 ">
         {item.img == null ? (
           <Image
             src={`/image/noavatar.png`}
@@ -128,22 +128,22 @@ const renderRow = (item: Teacher) => {
           <h3 className="font-semibold">{item.fullName}</h3>
           <span className="text-xs text-gray-500">{item.email}</span>
         </div>
-      </td>
-      <td className="hidden md:table-cell px-1">{item.id}</td>
-      <td className="hidden md:table-cell px-1">{item.level}</td>
-      <td className="hidden lg:table-cell px-1">{item.phone}</td>
-      <td className="hidden xl:table-cell px-1">{item.address}</td>
-      <td>
+      </TableCell>
+      <TableCell className="hidden md:table-cell px-1">{item.id}</TableCell>
+      <TableCell className="hidden md:table-cell px-1">{item.level}</TableCell>
+      <TableCell className="hidden lg:table-cell px-1">{item.phone}</TableCell>
+      <TableCell className="hidden xl:table-cell px-1">
+        {item.address}
+      </TableCell>
+      <TableCell>
         <div className="flex justify-center items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
             <DetailsButton />
           </Link>
-          <div className="">
-            <FormModal type="delete" table="teacher" id={item.id} />
-          </div>
+          <DeleteModal table="teacher" id={item.id} name={item.fullName} />
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -1,5 +1,5 @@
 "use server";
-import FormModal from "@/components/FormModal";
+
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/db";
 
@@ -7,6 +7,7 @@ import { DetailsButton } from "@/components/buttons/Buttons";
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Link from "next/link";
+import AddClassForm from "./components/AddClassForm";
 
 const columns = [
   {
@@ -46,18 +47,19 @@ type Class = {
   };
 };
 
+
 const ClassList = async () => {
   const classList = await prisma.class.findMany({
     include: { _count: { select: { sections: true, course: true } } },
   });
+  console.log(classList.length);
 
   return (
     <>
       {/* TOP */}
       <div className="flex items-center justify-between">
         <TableSearch />
-
-        {classList.length != 12 ? <FormModal type="add" table="class" /> : ""}
+        {classList.length === 0 && <AddClassForm />}
       </div>
       {/* TABLE */}
       {classList.length > 0 && (

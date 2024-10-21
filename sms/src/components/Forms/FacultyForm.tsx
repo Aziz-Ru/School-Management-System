@@ -1,7 +1,7 @@
 import { addFaculty } from "@/actions/faculty";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
-import Input from "../Input";
+import Input from "./FormInput";
 
 interface FacultyFormProps {
   updateModal: () => void;

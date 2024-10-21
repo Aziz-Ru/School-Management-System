@@ -1,4 +1,4 @@
-import TeacherList from "@/features/teachers/teacher_list";
+import TeacherList from "@/components/features/teachers/teacher_list";
 
 const columns = [
   {

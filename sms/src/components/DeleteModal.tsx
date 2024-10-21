@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteCourseAction } from "@/actions/course";
 import { deleteSectionAction } from "@/actions/section";
+import { deleteCourseAction } from "@/components/features/classes/actions/course";
 import {
   AlertDialog,
   AlertDialogAction,

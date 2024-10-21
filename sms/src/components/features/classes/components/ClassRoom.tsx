@@ -1,6 +1,6 @@
 "use client";
-import { addCourse } from "@/actions/course";
 import { addSection } from "@/actions/section";
+import { addCourse } from "@/components/features/classes/actions/course";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../../../components/Formsubmitbtn";

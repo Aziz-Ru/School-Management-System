@@ -1,7 +1,7 @@
 import { addDept } from "@/actions/dept";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
-import Input from "../Input";
+import Input from "./FormInput";
 
 interface DeptFormProps {
   updateModal: () => void;

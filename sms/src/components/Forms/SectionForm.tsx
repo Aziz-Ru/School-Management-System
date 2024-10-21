@@ -1,14 +1,17 @@
 import { addSection } from "@/actions/section";
 import toast from "react-hot-toast";
 import Formsubmitbtn from "../Formsubmitbtn";
-import Input from "../Input";
+import FormInput from "./FormInput";
 
 interface SectionFormProps {
   updateModal: () => void;
   data: any;
 }
 
-export const AddSectionForm: React.FC<SectionFormProps> = ({ updateModal, data }) => {
+export const AddSectionForm: React.FC<SectionFormProps> = ({
+  updateModal,
+  data,
+}) => {
   return (
     <div>
       <h1 className="text-xl text-center font-semibold mb-2">
@@ -26,7 +29,7 @@ export const AddSectionForm: React.FC<SectionFormProps> = ({ updateModal, data }
           }
         }}
       >
-        <Input
+        <FormInput
           label="Section Name"
           name="sectionName"
           type="text"
@@ -44,4 +47,3 @@ export const AddSectionForm: React.FC<SectionFormProps> = ({ updateModal, data }
     </div>
   );
 };
-

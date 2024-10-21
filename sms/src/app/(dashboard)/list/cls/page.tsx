@@ -1,4 +1,4 @@
-import ClassList from "@/features/classes/class_list";
+import ClassList from "@/components/features/classes/class_list";
 
 const ClassListPage = async () => {
   return (
