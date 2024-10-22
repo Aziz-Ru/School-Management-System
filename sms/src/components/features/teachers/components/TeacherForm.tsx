@@ -1,27 +1,39 @@
 "use client";
+
 import FormInput from "@/components/Forms/FormInput";
 import FormModal from "@/components/Forms/FormModal";
 import FormSelect from "@/components/Forms/FormSelect";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { useRef, useState } from "react";
 import { MultiSelect } from "react-multi-select-component";
 import { addTeacherAction } from "../actions/teacher";
-export default function AddTeacherForm() {
+
+export default function AddTeacherForm({
+  courses,
+}: {
+  courses: { courseName: string; id: string }[];
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const [selected, setSelected] = useState([]);
-  const options = [
-    { label: "Grapes 🍇", value: "grapes" },
-    { label: "Mango 🥭", value: "mango" },
-    { label: "Strawberry 🍓", value: "strawberry" },
-  ];
-
+  const options = courses.map((course) => ({
+    label: course.courseName,
+    value: course.id,
+  }));
 
   return (
     <FormModal table={"Teacher"}>
       <form
         ref={formRef}
         action={async (formData: FormData) => {
+          if (selected.length == 0) {
+            toast({
+              title: "Select a Course",
+              description: "Please Select a Course For This Teacher",
+            });
+            return;
+          }
           const { error, msg } = await addTeacherAction(formData);
           if (error) {
             toast({ title: error, description: "Failed to added New Teacher" });
@@ -60,12 +72,15 @@ export default function AddTeacherForm() {
             required={true}
           />
         </div>
-        <MultiSelect
-          value={selected}
-          onChange={setSelected}
-          options={options}
-          labelledBy="Select"
-        />
+        <div className="mb-3">
+          <Label>Select Course</Label>
+          <MultiSelect
+            value={selected}
+            onChange={setSelected}
+            options={options}
+            labelledBy="Select"
+          />
+        </div>
 
         <div className="flex gap-4">
           <div className="w-1/2">
@@ -110,5 +125,4 @@ export default function AddTeacherForm() {
       </form>
     </FormModal>
   );
-  
 }

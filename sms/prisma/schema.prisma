@@ -65,7 +65,7 @@ model Class {
   className String
   level     LEVEL @default(PRIMARY)
   sections  Section[]
-  course    Course[]
+  course    ClassCourse[]
   
 }
 
@@ -85,13 +85,23 @@ model Section {
 
 model Course {
   id         String     @id  @default(cuid())
-  courseName String       
-  classId    Int
+  courseName String     @unique    
+  mark        Int      @default(100)
+  enrolls    ClassCourse[]
   teachers  Teacher[]
-  class  Class  @relation(fields: [classId], references: [id], onDelete: Cascade)
-  lesson     Lesson []
   createdAt  DateTime   @default(now())
-  @@unique([courseName, classId])
+}
+
+model ClassCourse{
+  
+  id         String     @id  @default(cuid())
+  classId    Int
+  courseId   String
+  course     Course @relation(fields: [courseId],references: [id])
+  class      Class  @relation(fields: [classId], references: [id], onDelete: Cascade)
+  lesson     Lesson []
+  syllabus   String
+  @@unique([courseId, classId])
 }
 
 model Lesson {
@@ -102,7 +112,7 @@ model Lesson {
   sectionId  String
   section    Section @relation(fields: [sectionId],references: [id])
   courseId  String
-  course    Course @relation(fields: [courseId],references: [id])
+  course    ClassCourse @relation(fields: [courseId],references: [id])
   teacherId  String
   teacher    Teacher @relation(fields: [teacherId],references: [id])
   

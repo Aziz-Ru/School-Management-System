@@ -77,7 +77,6 @@ const ClassPage = async ({ classId }: { classId: number }) => {
   // find the class
   const [classData, teachers] = await prisma.$transaction([
     prisma.class.findFirst({
-      where: { id: classId },
       include: {
         sections: {
           select: {
@@ -106,7 +105,7 @@ const ClassPage = async ({ classId }: { classId: number }) => {
       },
     }),
   ]);
-  
+
   if (!classData) {
     notFound();
   }

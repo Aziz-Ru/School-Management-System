@@ -62,7 +62,7 @@ const TeacherList = async ({
 
   const p = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;
 
-  const [teachers, count] = await prisma.$transaction([
+  const [teachers, count,courses] = await prisma.$transaction([
     prisma.teacher.findMany({
       select: {
         id: true,
@@ -77,6 +77,7 @@ const TeacherList = async ({
       take: ITEM_PAR_PAGE,
     }),
     prisma.teacher.count(),
+    prisma.course.findMany({ select: { courseName: true, id: true } }),
   ]);
 
   return (
@@ -84,9 +85,7 @@ const TeacherList = async ({
       {/* TOP */}
       <div className="flex items-center justify-between">
         <TableSearch />
-        <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-auto">
-          <AddTeacherForm />
-        </div>
+        <AddTeacherForm courses={courses}/>
       </div>
 
       {/* List */}
@@ -126,7 +125,9 @@ const renderRow = (item: Teacher) => {
         )}
         <div className="flex flex-col">
           <h3 className="font-semibold">{item.fullName}</h3>
-          <span className="text-xs text-gray-500">{item.email}</span>
+          <span className="text-xs text-gray-500 hidden sm:block">
+            {item.email}
+          </span>
         </div>
       </TableCell>
       <TableCell className="hidden md:table-cell px-1">{item.id}</TableCell>

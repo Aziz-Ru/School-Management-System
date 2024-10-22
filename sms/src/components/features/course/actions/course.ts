@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { courseSchema } from "@/lib/schema/Schema";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 interface ReturnProps {
   error?: string;
@@ -13,45 +13,53 @@ interface inputProps {
   formData: FormData;
 }
 
+const courseSchema = z.object({
+  courseName: z
+    .string({
+      required_error: "course name must be 3 chracters",
+      invalid_type_error: "course name must be a String",
+    })
+    .min(3, "course name must be a String"),
+  mark: z.enum(["100", "50"], {
+    errorMap: () => ({ message: "Mark must be either 100 or 50" }),
+  }),
+});
+
 export const addCourseAction = async (
   formData: FormData
 ): Promise<ReturnProps> => {
   try {
     const validResult = courseSchema.safeParse({
       courseName: formData.get("courseName"),
-      totalMarks: 100,
-      classId: parseInt(formData.get("id") as string),
+      mark: formData.get("mark"),
     });
 
     if (!validResult.success) {
       const err = validResult.error.issues[0].message;
       return { error: err };
     }
-
     const existedCourse = await prisma.course.findFirst({
       where: {
         courseName: validResult.data.courseName,
-        // classId: validResult.data.classId,
       },
     });
 
     if (existedCourse) {
-      return { error: "Course already exists" };
-    }
-    console.log(existedCourse);
-    if (validResult.data.classId <= 5) {
-      await prisma.course.create({
-        data: {
-          courseName: validResult.data.courseName,
-          // class: { connect: { id: validResult.data.classId } },
-        },
-      });
+      return { error: "Course Already Exists" };
     }
 
+    await prisma.course.create({
+      data: {
+        courseName: validResult.data.courseName,
+        mark: parseInt(validResult.data.mark),
+      },
+    });
+
+    revalidatePath("/list/course");
     revalidatePath("list/cls");
     return { msg: "Course added successfully" };
   } catch (error: any) {
-    console.log(error.message);
+    // console.log(error.message);
     return { error: "Something went wrong" };
   }
 };

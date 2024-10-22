@@ -2,6 +2,7 @@ import { role } from "@/lib/data";
 import Link from "next/link";
 import {
   HiAcademicCap,
+  HiBookOpen,
   HiChartBar,
   HiClipboard,
   HiHome,
@@ -23,6 +24,12 @@ const menuItems = [
         label: "Home",
         href: "/admin",
         visiable: ["admin", "teacher", "student"],
+      },
+      {
+        icon: HiBookOpen,
+        label: "Course",
+        href: "/list/course?page=1",
+        visiable: ["admin"],
       },
       {
         icon: HiAcademicCap,
