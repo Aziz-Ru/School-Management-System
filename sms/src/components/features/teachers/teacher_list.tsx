@@ -1,5 +1,4 @@
 import { DetailsButton } from "@/components/buttons/Buttons";
-import DeleteModal from "@/components/DeleteModal";
 
 import Pagination from "@/components/Pagination";
 import TableList from "@/components/TableList";
@@ -9,7 +8,8 @@ import { ITEM_PAR_PAGE } from "@/lib/data";
 import prisma from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
-import AddTeacherForm from "./components/TeacherForm";
+import AddTeacherForm from "./components/AddTeacherForm";
+import DeleteTeacherForm from "./components/DeleteTeacherForm";
 
 const columns = [
   {
@@ -62,7 +62,7 @@ const TeacherList = async ({
 
   const p = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;
 
-  const [teachers, count,courses] = await prisma.$transaction([
+  const [teachers, count, courses] = await prisma.$transaction([
     prisma.teacher.findMany({
       select: {
         id: true,
@@ -85,7 +85,7 @@ const TeacherList = async ({
       {/* TOP */}
       <div className="flex items-center justify-between">
         <TableSearch />
-        <AddTeacherForm courses={courses}/>
+        <AddTeacherForm courses={courses} />
       </div>
 
       {/* List */}
@@ -141,7 +141,7 @@ const renderRow = (item: Teacher) => {
           <Link href={`/list/teachers/${item.id}`}>
             <DetailsButton />
           </Link>
-          <DeleteModal table="teacher" id={item.id} name={item.fullName} />
+          <DeleteTeacherForm id={item.id} />
         </div>
       </TableCell>
     </TableRow>

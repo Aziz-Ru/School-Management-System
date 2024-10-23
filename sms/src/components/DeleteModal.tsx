@@ -35,9 +35,7 @@ const DeleteModal: React.FC<DeleteFormProps> = ({ name, id, table }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          {table == "teacher"
-            ? deleteTeacherForm(id)
-            : table == "course"
+          {table == "course"
             ? deleteCourseForm(id)
             : table == "student"
             ? deleteStudentForm(id)
@@ -49,14 +47,6 @@ const DeleteModal: React.FC<DeleteFormProps> = ({ name, id, table }) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
-
-const deleteTeacherForm = (id: string | number) => {
-  return (
-    <form action={async (formData: FormData) => {}}>
-      <AlertDialogAction type="submit">Continue</AlertDialogAction>
-    </form>
   );
 };
 

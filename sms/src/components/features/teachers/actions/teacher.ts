@@ -128,20 +128,16 @@ export const addTeacherAction = async (
   }
 };
 
-export const deleteTeacher = async (
-  formData: FormData
-): Promise<ReturnProps> => {
-  const id = formData.get("id") as string | null;
-  // console.log(id);
+export const deleteTeacherAction = async (id: string): Promise<ReturnProps> => {
   if (!id) {
     return { error: "Failed to delete" };
   }
   try {
     await prisma.teacher.delete({ where: { id: id } });
     revalidatePath("/list/teachers");
-    return { msg: "Delete Successfully" };
+    return { msg: "Delete Successfully from Teacher List" };
   } catch (error: any) {
     // console.log(error.message);
-    return { error: "Failed to delete" };
+    return { error: "Failed to Delete" };
   }
 };
