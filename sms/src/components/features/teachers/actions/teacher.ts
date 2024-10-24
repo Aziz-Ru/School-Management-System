@@ -78,6 +78,13 @@ export const addTeacherAction = async (
   formData: FormData
 ): Promise<ReturnProps> => {
   try {
+    const course = formData.get("course");
+    if (!course) {
+      return { error: "Please Select Course" };
+    }
+    // Split the course string into an array.
+    const courses = course.toString().split(",");
+    // Validate the form data.
     const validateResult = teacherSchema.safeParse({
       fullName: formData.get("fullName"),
       email: formData.get("email"),
@@ -118,9 +125,14 @@ export const addTeacherAction = async (
         address: validateResult.data.address,
         rank: validateResult.data.rank,
         password: hashedPassword,
+        courses: {
+          connect: courses.map((cn) => ({ courseName: cn })),
+        },
       },
     });
+
     revalidatePath("/list/teachers");
+    revalidatePath("/list/course");
     return { msg: "Employee added successfully" };
   } catch (error: any) {
     // console.log(error.message);
@@ -135,6 +147,7 @@ export const deleteTeacherAction = async (id: string): Promise<ReturnProps> => {
   try {
     await prisma.teacher.delete({ where: { id: id } });
     revalidatePath("/list/teachers");
+    revalidatePath("/list/cls");
     return { msg: "Delete Successfully from Teacher List" };
   } catch (error: any) {
     // console.log(error.message);

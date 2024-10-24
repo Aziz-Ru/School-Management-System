@@ -1,5 +1,5 @@
-import BigCalendar from "@/components/BigCalendar";
-import { role } from "@/lib/data";
+import DayCard from "@/components/features/section/components/DayCard";
+import { Card } from "@/components/ui/card";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 
@@ -12,6 +12,12 @@ const SingleSection = async ({
 }) => {
   const sectionData = await prisma.section.findFirst({
     where: { id: params.id },
+    select: {
+      sectionName: true,
+      sectionTeacher: {
+        select: { fullName: true },
+      },
+    },
   });
 
   if (!sectionData) {
@@ -19,16 +25,22 @@ const SingleSection = async ({
   }
 
   return (
-    <div>
-      <div className="p-4">
-        <div className="flex gap-4 items-center">
-          <h2 className="text-xl font-bold">Super Visor:{}</h2>
-          {role === "admin" && <button>Edit</button>}
+    <div className="p-4 grid grid-cols-12 gap-2">
+      {/* Name */}
+      <div className="col-span-12 xl:col-span-8 border rounded">
+        <div className="p-3">
+          <h1 className="font-bold text-xl">Class Routine</h1>
+          <DayCard />
+          <DayCard />
+          <DayCard />
+          <DayCard />
+          <DayCard />
+          <DayCard />
         </div>
-        <div className=""></div>
       </div>
-      <div className="routine-container">
-        <BigCalendar />
+      {/* Annoucement */}
+      <div className="col-span-12 xl:col-span-4">
+        <Card>h1</Card>
       </div>
     </div>
   );

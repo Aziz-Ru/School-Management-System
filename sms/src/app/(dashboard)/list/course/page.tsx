@@ -3,7 +3,6 @@ import AddCourseForm from "@/components/features/course/components/AddCourseForm
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { role } from "@/lib/data";
 import prisma from "@/lib/db";
 
 const columns = [
@@ -29,7 +28,6 @@ const columns = [
 ];
 
 type Course = {
-  id: string;
   courseName: string;
   mark: number;
   _count: { teachers: number };
@@ -38,7 +36,6 @@ type Course = {
 const CourseListPage = async () => {
   const course = await prisma.course.findMany({
     select: {
-      id: true,
       courseName: true,
       mark: true,
       _count: {
@@ -65,7 +62,7 @@ const CourseListPage = async () => {
 
 const renderRow = (item: Course) => {
   return (
-    <TableRow key={item.id}>
+    <TableRow key={item.courseName}>
       <TableCell className="table-cell px-1">{item.courseName}</TableCell>
       <TableCell className="table-cell px-1">{item.mark}</TableCell>
       <TableCell className="hidden sm:table-cell px-1">
@@ -73,7 +70,7 @@ const renderRow = (item: Course) => {
       </TableCell>
       <TableCell>
         <div className="flex justify-center gap-2">
-          {role == "admin" && <EditButton />}
+          <EditButton />
           <DeleteButton />
         </div>
       </TableCell>

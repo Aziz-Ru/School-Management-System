@@ -1,13 +1,11 @@
 "use server";
 
 import TableSearch from "@/components/TableSearch";
-import prisma from "@/lib/db";
 
-import { DetailsButton } from "@/components/buttons/Buttons";
+import DetailsLink from "@/components/buttons/DetailsLink";
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
-import Link from "next/link";
-import AddClassForm from "./components/AddClassForm";
+import AddClassForm from "./AddClassForm";
 
 const columns = [
   {
@@ -47,13 +45,7 @@ type Class = {
   };
 };
 
-
-const ClassList = async () => {
-  const classList = await prisma.class.findMany({
-    include: { _count: { select: { sections: true, course: true } } },
-  });
-  console.log(classList.length);
-
+const ClassList = ({ classList }: { classList: any }) => {
   return (
     <>
       {/* TOP */}
@@ -63,13 +55,17 @@ const ClassList = async () => {
       </div>
       {/* TABLE */}
       {classList.length > 0 && (
-        <TableList columns={columns} renderRow={renderRow} data={classList} />
+        <TableList
+          columns={columns}
+          renderRow={renderClassTableRow}
+          data={classList}
+        />
       )}
     </>
   );
 };
 
-const renderRow = (item: Class) => {
+const renderClassTableRow = (item: Class) => {
   return (
     <TableRow key={item.id}>
       <TableCell className="flex items-center gap-4 p-3">
@@ -90,9 +86,7 @@ const renderRow = (item: Class) => {
         <span className="hidden sm:block">{item._count.course}</span>
       </TableCell>
       <TableCell className="px-2">
-        <Link href={`/list/cls/${item.id}`}>
-          <DetailsButton />
-        </Link>
+        <DetailsLink href={`/list/cls/${item.id}`} />
       </TableCell>
     </TableRow>
   );

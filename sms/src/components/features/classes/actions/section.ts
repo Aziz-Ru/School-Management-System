@@ -13,11 +13,11 @@ interface inputProps {
   formData: FormData;
 }
 
-export const addSection = async ({
-  formData,
-}: inputProps): Promise<ReturnProps> => {
+export const addSectionAction = async (
+  formData: FormData
+): Promise<ReturnProps> => {
   const currentYear = new Date().getFullYear();
-  console.log(formData.get("id"));
+  const teacherId = formData.get("teacherId");
   const result = sectionSchema.safeParse({
     sectionName: formData.get("sectionName") as string,
     year: currentYear,
@@ -28,17 +28,27 @@ export const addSection = async ({
     const error = result.error.issues[0].message;
     return { error: error };
   }
-
-  const existSection = await prisma.section.findFirst({
-    where: {
-      sectionName: `${result.data.sectionName}`,
-      year: Number(result.data.year),
-      classId: result.data.classId,
-    },
-  });
+  const [existSection, isTeacherEnrolled] = await prisma.$transaction([
+    prisma.section.findFirst({
+      where: {
+        sectionName: `${result.data.sectionName}`,
+        year: Number(result.data.year),
+        classId: result.data.classId,
+      },
+    }),
+    prisma.section.findFirst({
+      where: { sectionTeacherId: teacherId as string, year: currentYear },
+    }),
+  ]);
 
   if (existSection) {
-    return { error: "Section already exists" };
+    return {
+      error:
+        "Either Section Name Already Exists or Teacher Already Enrolled A Section ",
+    };
+  }
+  if (isTeacherEnrolled) {
+    return { error: "Teacher Already Enrolled A Section" };
   }
 
   await prisma.section.create({
@@ -46,6 +56,11 @@ export const addSection = async ({
       sectionName: `${result.data.sectionName}`,
       year: Number(result.data.year),
       classTable: { connect: { id: result.data.classId } },
+      sectionTeacher: {
+        connect: {
+          id: teacherId as string,
+        },
+      },
     },
   });
   revalidatePath("/list/cls");

@@ -32,22 +32,23 @@ const menuItems = [
         visiable: ["admin"],
       },
       {
+        icon: HiBuildingOffice,
+        label: "Classes",
+        href: "/list/cls",
+        visiable: ["admin"],
+      },
+      {
         icon: HiAcademicCap,
         label: "Teachers",
         href: "/list/teachers?page=1",
         visiable: ["admin"],
       },
+
       {
         icon: HiUserGroup,
         label: "Students",
         href: "/list/students?page=1",
         visiable: ["admin", "teacher"],
-      },
-      {
-        icon: HiBuildingOffice,
-        label: "Classes",
-        href: "/list/cls",
-        visiable: ["admin"],
       },
 
       {

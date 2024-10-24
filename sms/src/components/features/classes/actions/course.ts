@@ -1,8 +1,7 @@
 "use server";
-
 import prisma from "@/lib/db";
-import { courseSchema } from "@/lib/schema/Schema";
 import { revalidatePath } from "next/cache";
+import { v4 as uuidv4 } from "uuid";
 
 interface ReturnProps {
   error?: string;
@@ -13,40 +12,37 @@ interface inputProps {
   formData: FormData;
 }
 
-export const addCourseAction = async (
+export const selectCourseAction = async (
   formData: FormData
 ): Promise<ReturnProps> => {
   try {
-    const validResult = courseSchema.safeParse({
-      courseName: formData.get("courseName"),
-      totalMarks: 100,
-      classId: parseInt(formData.get("id") as string),
-    });
-
-    if (!validResult.success) {
-      const err = validResult.error.issues[0].message;
-      return { error: err };
+    const subject = formData.get("course");
+    const Id = formData.get("classId");
+    if (!subject || !Id) {
+      return { error: "Please Select Course" };
     }
-
-    const existedCourse = await prisma.course.findFirst({
+    const subjects = subject!.toString().split(",");
+    const classId = parseInt(Id as string);
+    // Check if course already exist
+    const existingCourse = await prisma.subject.findMany({
       where: {
-        courseName: validResult.data.courseName,
-        // classId: validResult.data.classId,
+        classId: classId,
+        id: { in: subjects.map((CID) => CID) },
       },
     });
+    if (existingCourse.length > 0) {
+      return { error: "Course already exist" };
+    }
+    // Add course to database
+    const subjectData = subjects.map((CID) => ({
+      id: uuidv4(),
+      classId: classId,
+      courseName: CID,
+    }));
 
-    if (existedCourse) {
-      return { error: "Course already exists" };
-    }
-    console.log(existedCourse);
-    if (validResult.data.classId <= 5) {
-      await prisma.course.create({
-        data: {
-          courseName: validResult.data.courseName,
-          // class: { connect: { id: validResult.data.classId } },
-        },
-      });
-    }
+    await prisma.subject.createMany({
+      data: subjectData,
+    });
 
     revalidatePath("list/cls");
     return { msg: "Course added successfully" };
@@ -60,7 +56,7 @@ export const deleteCourseAction = async (id: string): Promise<ReturnProps> => {
   try {
     await prisma.course.delete({
       where: {
-        id: id,
+        courseName: id,
       },
     });
     revalidatePath("list/cls");

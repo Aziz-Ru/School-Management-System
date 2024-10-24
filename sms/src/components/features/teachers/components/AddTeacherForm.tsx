@@ -11,16 +11,14 @@ import { MultiSelect } from "react-multi-select-component";
 import { addTeacherAction } from "../actions/teacher";
 
 export default function AddTeacherForm({
-  courses,
+  courseOption,
 }: {
-  courses: { courseName: string; id: string }[];
+  courseOption: { label: string; value: string }[];
 }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [selected, setSelected] = useState([]);
-  const options = courses.map((course) => ({
-    label: course.courseName,
-    value: course.id,
-  }));
+  const [selected, setSelected] = useState<{ label: string; value: string }[]>(
+    []
+  );
 
   return (
     <FormModal table={"Teacher"}>
@@ -34,11 +32,17 @@ export default function AddTeacherForm({
             });
             return;
           }
+          formData.append(
+            "course",
+            selected.map((course) => course.value).join(",")
+          );
+
           const { error, msg } = await addTeacherAction(formData);
           if (error) {
             toast({ title: error, description: "Failed to added New Teacher" });
           } else if (msg) {
             const today = new Date();
+            setSelected([]);
             toast({ title: msg, description: `A Teacher Added at ${today}` });
 
             formRef.current!.reset();
@@ -77,7 +81,7 @@ export default function AddTeacherForm({
           <MultiSelect
             value={selected}
             onChange={setSelected}
-            options={options}
+            options={courseOption}
             labelledBy="Select"
           />
         </div>
