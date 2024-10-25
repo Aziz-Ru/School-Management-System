@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { HiEllipsisVertical } from "react-icons/hi2";
 
 const More = () => {
   const [show, setShow] = useState(false);
@@ -26,7 +25,7 @@ const More = () => {
         </Link>
       </div>
       <button onClick={() => setShow((prev) => !prev)}>
-        <HiEllipsisVertical className="h-5 w-5" />
+        {/* <HiEllipsisVertical className="h-5 w-5" /> */}
       </button>
     </div>
   );

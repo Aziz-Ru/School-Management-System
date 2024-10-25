@@ -113,7 +113,7 @@ const renderRow = (item: Teacher) => {
       <TableCell className="hidden xl:table-cell">{item.address}</TableCell>
 
       <TableCell className="text-center">
-        <DetailsLink href={`/list/teachers/${item.id}`} />
+        <DetailsLink href={`/dashboard/list/teachers/${item.id}`} />
       </TableCell>
     </TableRow>
   );

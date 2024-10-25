@@ -93,7 +93,7 @@ const renderSectionRow = (item: Section) => {
       </TableCell>
 
       <TableCell className="px-2">
-        <DetailsLink href={`/list/sections/${item.id}`} />
+        <DetailsLink href={`/dashboard/list/sections/${item.id}`} />
       </TableCell>
     </TableRow>
   );

@@ -86,7 +86,7 @@ const renderClassTableRow = (item: Class) => {
         <span className="hidden sm:block">{item._count.course}</span>
       </TableCell>
       <TableCell className="px-2">
-        <DetailsLink href={`/list/cls/${item.id}`} />
+        <DetailsLink href={`/dashboard/list/cls/${item.id}`} />
       </TableCell>
     </TableRow>
   );

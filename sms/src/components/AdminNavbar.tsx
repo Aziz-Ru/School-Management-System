@@ -1,12 +1,11 @@
 import Image from "next/image";
-import { HiSearch } from "react-icons/hi";
 
 const AdminNavbar = () => {
   return (
     <div className="flex items-center justify-around p-4 shadow">
       {/* Search Bar */}
       <div className="flex justify-center items-center gap-2 site-border border rounded-full p-2">
-        <HiSearch />
+        
         <input
           className=" outline-none site-bg  "
           type="text"
