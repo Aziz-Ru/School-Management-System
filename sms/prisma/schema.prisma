@@ -48,7 +48,7 @@ model student {
   id        String   @id @unique
   password  String
   fullName  String
-  phone     String ?
+  phone     String 
   address   String  
   dob       String
   img       String ?
@@ -94,6 +94,7 @@ model section {
   year        Int
   sectionTeacherId String  ?
   students    student[]
+  attendence  attendence[]
   lesson      lesson[]
   exam        exam[]
   subjects    sectionSubject[]
@@ -180,6 +181,17 @@ model annoucement {
   createdAt DateTime @default(now())
 }
 
+model attendence{
+  id   Int @id @default(autoincrement())
+  studentId  String
+  present    Boolean @default(false)
+  sectionId  String
+  section    section @relation(fields: [sectionId],references: [id])
+  day       Int
+  month     MONTH
+  date     DateTime
+}
+
 enum RANK{
   SENIOR
   ASSISTANT
@@ -197,6 +209,21 @@ enum DAY{
   TUESDAY
   WEDNESDAY
   THURSDAY
+}
+
+enum MONTH {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
 }
 
 

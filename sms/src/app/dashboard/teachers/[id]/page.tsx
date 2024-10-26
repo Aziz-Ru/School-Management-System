@@ -1,8 +1,8 @@
 import Annoucement from "@/components/Annoucement";
 import BigCalendar from "@/components/BigCalendar";
+import Icon from "@/components/LucidIcon";
 import Image from "next/image";
 import Link from "next/link";
-import { MdBloodtype, MdDateRange, MdEmail, MdPhone } from "react-icons/md";
 
 const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
   return (
@@ -28,19 +28,19 @@ const SingleTeacherPage = async ({ params }: { params: { id: string } }) => {
               </p>
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs  font-medium">
                 <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <MdBloodtype className="site-txt w-6 h-6" />
+                  <Icon name="HeartPulse" size={18} />
                   <span className="site-txt">Blood Type</span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <MdEmail className="site-txt w-6 h-6" />
+                  <Icon name="Mail" size={18} />
                   <span className="site-txt">Email</span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <MdDateRange className="site-txt w-6 h-6" />
+                  <Icon name="Calendar" size={18} />
                   <span className="site-txt">Date</span>
                 </div>
                 <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <MdPhone className="site-txt w-6 h-6" />
+                  <Icon name="Phone" size={18} />
                   <span className="site-txt">Phone</span>
                 </div>
               </div>
