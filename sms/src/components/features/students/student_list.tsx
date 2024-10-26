@@ -119,7 +119,7 @@ const renderRow = (item: Student) => {
       <td className="hidden xl:table-cell px-1">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link className="border-2" href={`/list/students/${item.id}`}>
+          <Link className="border-2" href={`dashboard/students/${item.id}`}>
             <DetailsButton />
           </Link>
           <DeleteButton />

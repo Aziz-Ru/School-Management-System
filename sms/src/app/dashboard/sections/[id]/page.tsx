@@ -1,7 +1,5 @@
 import Annoucement from "@/components/Annoucement";
-import DayCard from "@/components/features/section/components/DayCard";
-import AddStudentForm from "@/components/features/students/components/StudentForm";
-import TableSearch from "@/components/TableSearch";
+import SectionTab from "@/components/features/section/components/SectionTab";
 import { Card } from "@/components/ui/card";
 import prisma from "@/lib/db";
 import Image from "next/image";
@@ -32,25 +30,7 @@ const SingleSection = async ({
     <div className="p-4 grid grid-cols-12 gap-2">
       {/* Name */}
       <div className="col-span-12 xl:col-span-8">
-        <Card className="p-3 mb-4">
-          <h1 className="font-bold text-xl mb-4">Class Routine</h1>
-          <DayCard />
-          <DayCard />
-          <DayCard />
-          <DayCard />
-          <DayCard />
-          <DayCard />
-        </Card>
-        <Card className="p-3">
-          <h1 className="font-bold text-xl mb-2">Students</h1>
-          <div>
-            <div className="flex justify-between">
-              <TableSearch />
-              <AddStudentForm />
-            </div>
-            <div></div>
-          </div>
-        </Card>
+        <SectionTab />
       </div>
       {/* Annoucement */}
       <div className="col-span-12 xl:col-span-4">

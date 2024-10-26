@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Icon from "./LucidIcon";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -12,7 +13,10 @@ const TableSearch = () => {
         placeholder="Search..."
       />
       <Link href={""}>
-        <Button>Search</Button>
+        <Button className="bg-sky-400 hover:bg-sky-300 text-black">
+          <Icon name="Search" size={18} />
+          Search
+        </Button>
       </Link>
     </div>
   );
