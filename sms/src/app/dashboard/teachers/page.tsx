@@ -1,6 +1,6 @@
-import TeacherView from "@/components/features/teachers/components/TeacherView";
 import { ITEM_PAR_PAGE } from "@/lib/data";
 import prisma from "@/lib/db";
+import TeacherView from "./components/TeacherView";
 
 const Teacher = async ({
   searchParams,

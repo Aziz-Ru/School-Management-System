@@ -45,7 +45,7 @@ model teacher {
 }
 
 model student {
-  id        String   @id @unique
+  id        Int   @id @unique
   password  String
   fullName  String
   phone     String 
@@ -56,6 +56,7 @@ model student {
   sex       GENDER @default(MALE)
   sectionId String 
   section   section @relation(fields: [sectionId],references: [id])
+  attendenceList attendence[]
   createdAt DateTime @default(now())
   
 }
@@ -90,7 +91,8 @@ model subject{
 model section {
   id          String    @id @default(uuid())
   sectionName String  
-  classId     Int  
+  classId     Int
+  index       Int @default(1)  
   year        Int
   sectionTeacherId String  ?
   students    student[]
@@ -139,7 +141,7 @@ model examSubject{
 
 model result {
   id        String   @id @default(uuid())
-  studentId String
+  studentId Int
   subjectId String
   mark      Int
   grade     String
@@ -182,14 +184,14 @@ model annoucement {
 }
 
 model attendence{
-  id   Int @id @default(autoincrement())
-  studentId  String
+  id   String @id @default(uuid())
+  studentId  Int
   present    Boolean @default(false)
   sectionId  String
   section    section @relation(fields: [sectionId],references: [id])
-  day       Int
-  month     MONTH
+  student    student @relation(fields: [studentId],references: [id])
   date     DateTime
+  
 }
 
 enum RANK{

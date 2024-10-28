@@ -1,8 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { createSession } from "./session";
+import { createSession, deleteSession } from "./session";
 
 const userSchema = z.object({
   uid: z
@@ -57,7 +58,7 @@ export async function login(formData: FormData): Promise<ReturnProps> {
   if (validResult.data.role === "STUDENT") {
     user = await prisma.student.findUnique({
       where: {
-        id: validResult.data.uid.toString(),
+        id: validResult.data.uid,
       },
     });
   }
@@ -69,6 +70,11 @@ export async function login(formData: FormData): Promise<ReturnProps> {
   if (user.password !== validResult.data.password) {
     return { error: "Invalid Credentials" };
   }
-  await createSession(user.id, validResult.data.role);
+  await createSession(user.id.toString(), validResult.data.role);
   return { msg: "Logged In" };
+}
+
+export async function logout() {
+  deleteSession();
+  redirect("/home");
 }

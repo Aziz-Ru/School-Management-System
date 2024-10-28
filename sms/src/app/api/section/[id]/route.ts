@@ -16,6 +16,7 @@ export const GET = async (
             _count: true,
           },
         },
+        index: true,
         classId: true,
       },
     });
@@ -24,10 +25,12 @@ export const GET = async (
     const completeSchool = currentYear + (10 - section!.classId) + 1;
     const currenStudents = section!.students.length + 1;
     const mStudent = 100 + currenStudents;
-    const studentID = `${currentYear}${completeSchool}${mStudent}`;
+
+    const studentID = `${currentYear}${completeSchool}${section?.index}${mStudent}`;
 
     return NextResponse.json({ id: studentID }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.message);
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 };
