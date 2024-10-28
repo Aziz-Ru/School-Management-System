@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `section` ADD COLUMN `index` INTEGER NOT NULL DEFAULT 1;

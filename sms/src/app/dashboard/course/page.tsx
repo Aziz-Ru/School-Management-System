@@ -1,9 +1,10 @@
 import { DeleteButton, EditButton } from "@/components/buttons/Buttons";
-import AddCourseForm from "@/components/features/course/components/AddCourseForm";
+
 import TableList from "@/components/TableList";
 import TableSearch from "@/components/TableSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
 import prisma from "@/lib/db";
+import AddCourseForm from "./_components/AddCourseForm";
 
 const columns = [
   {

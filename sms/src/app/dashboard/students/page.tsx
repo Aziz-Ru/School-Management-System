@@ -1,11 +1,30 @@
-import AddStudentForm from "@/components/features/students/components/StudentForm";
 import TableSearch from "@/components/TableSearch";
-
-const StudenListPage = ({
+import prisma from "@/lib/db";
+import { AddStudentForm } from "./_components/StudentForm";
+import StudentsList from "./_components/StudentList";
+const StudenListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  const { page, ...queryParams } = searchParams;
+  const currentPage = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;
+  const students = await prisma.student.findMany({
+    select: {
+      id: true,
+      fullName: true,
+      section: {
+        select: {
+          sectionName: true,
+          classId: true,
+        },
+      },
+      address: true,
+      img: true,
+      phone: true,
+    },
+  });
+
   return (
     <div>
       <div className="site-bg p-4 m-4 mt-0 flex-1">
@@ -15,12 +34,8 @@ const StudenListPage = ({
           <AddStudentForm />
         </div>
         {/* List */}
-        {/* <TableList
-          columns={columns}
-          renderRow={renderRow}
-          data={studentsData}
-        /> */}
-        {/* Pagination */}
+
+        <StudentsList students={students} />
       </div>
     </div>
   );

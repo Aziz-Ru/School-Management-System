@@ -1,4 +1,5 @@
 import { role } from "@/lib/data";
+import LogoutForm from "../Forms/LogoutForm";
 import SlideBarLink from "./SlidebarLink";
 
 const menuItems = [
@@ -6,7 +7,7 @@ const menuItems = [
     title: "MENU",
     items: [
       {
-        icon: "Home",
+        icon: "LayoutDashboard",
         label: "Dashboard",
         href: "/dashboard",
         visiable: ["admin", "teacher", "student"],
@@ -21,7 +22,7 @@ const menuItems = [
       {
         icon: "School",
         label: "Class",
-        href: "/dashboard/cls",
+        href: "/dashboard/class",
         visiable: ["admin"],
       },
       {
@@ -46,6 +47,13 @@ const menuItems = [
       },
 
       {
+        icon: "BookCheck",
+        label: "Result",
+        href: "/dashboard/results",
+        visiable: ["admin", "teacher", "student"],
+      },
+
+      {
         icon: "Calendar",
         label: "Attendence",
         href: "/dashboard/attendance",
@@ -66,17 +74,6 @@ const menuItems = [
       },
     ],
   },
-  {
-    title: "OTHER",
-    items: [
-      {
-        icon: "LogOut",
-        label: "Logout",
-        href: "/logout",
-        visiable: ["admin", "teacher", "student"],
-      },
-    ],
-  },
 ];
 
 const Menu = () => {
@@ -87,6 +84,7 @@ const Menu = () => {
           <span className="hidden lg:block text-gray-400 font-light my-4">
             {menu.title}
           </span>
+
           {menu.items.map((item) => {
             if (item.visiable.includes(role)) {
               return (
@@ -101,6 +99,12 @@ const Menu = () => {
           })}
         </div>
       ))}
+      <div className="">
+        <span className="hidden lg:block text-gray-400 font-light my-4">
+          OTHERS
+        </span>
+        <LogoutForm />
+      </div>
     </div>
   );
 };

@@ -2,12 +2,14 @@
 
 import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 
 const SignInForm = () => {
+  const router = useRouter();
   const [isLogged, setIsLogged] = useState("");
   return (
     <form
@@ -18,7 +20,14 @@ const SignInForm = () => {
           setIsLogged(error);
           toast({ title: "Error", description: error });
         } else if (msg) {
-          setIsLogged(msg);
+          if (formData.get("role") === "ADMIN") {
+            router.push("/dashboard");
+          } else if (formData.get("role") === "TEACHER") {
+            router.push("/teacher");
+          } else if (formData.get("role") === "STUDENT") {
+            router.push("/student");
+          }
+
           toast({ title: "Logged In", description: "Welcome" });
         }
       }}
@@ -44,7 +53,11 @@ const SignInForm = () => {
         />
       </div>
       <div className="p-2">
-        <FormSelect name="role" label="Role" options={["ADMIN"]} />
+        <FormSelect
+          name="role"
+          label="Role"
+          options={["ADMIN", "TEACHER", "STUDENT"]}
+        />
       </div>
       <Button className="p-2" type="submit">
         Sign In
