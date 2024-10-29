@@ -1,6 +1,6 @@
 import { ITEM_PAR_PAGE } from "@/lib/data";
 import prisma from "@/lib/db";
-import TeacherView from "./components/TeacherView";
+import TeacherList from "./_components/TeacherList";
 
 const Teacher = async ({
   searchParams,
@@ -37,7 +37,7 @@ const Teacher = async ({
 
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">
-      <TeacherView
+      <TeacherList
         teachers={teachers}
         courses={courseOption}
         currentPage={currentPage}

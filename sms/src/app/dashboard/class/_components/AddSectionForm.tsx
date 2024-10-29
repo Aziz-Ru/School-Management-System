@@ -1,18 +1,10 @@
 "use client";
+
 import FormInput from "@/components/Forms/FormInput";
 import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { toast } from "@/hooks/use-toast";
-import { SelectTrigger } from "@radix-ui/react-select";
 import { useRef, useState } from "react";
 import { addSectionAction } from "../_actions/section";
 
@@ -24,23 +16,19 @@ const AddSectionForm = ({
   classTeacher: { id: string; fullName: string }[];
 }) => {
   const formRef = useRef<HTMLFormElement>(null);
-  const [selectedTeacher, setSelectedTeacher] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedTeacher, setSelectedTeacher] = useState("");
   return (
     <FormModal table="Section">
       <form
-        ref={formRef}
         action={async (formData: FormData) => {
           formData.append("id", classId.toString());
-          formData.append("teacherId", selectedTeacher!);
           const { error, msg } = await addSectionAction(formData);
           if (error) {
-            toast({ title: error, description: "Failed to added New Course" });
+            toast({ title: error, description: "Failed to added New Section" });
           }
           if (msg) {
-            setSelectedTeacher(undefined);
             formRef.current!.reset();
+            setSelectedTeacher("");
             const today = new Date();
             toast({
               title: msg,
@@ -48,6 +36,7 @@ const AddSectionForm = ({
             });
           }
         }}
+        ref={formRef}
       >
         <FormInput
           type="text"
@@ -56,34 +45,26 @@ const AddSectionForm = ({
           required={true}
           width="w-full"
         />
-        <div className="w-full mb-4">
-          <Label>Class Teacher</Label>
-          <div className="border rounded-md p-1">
-            <Select
-              value={selectedTeacher}
-              onValueChange={setSelectedTeacher}
-              name="teacherId"
-              required={true}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Class Teacher" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {classTeacher.map((teacher) => (
-                    <SelectItem
-                      className="py-4"
-                      key={teacher.id}
-                      value={teacher.id}
-                    >
-                      {`${teacher.fullName}(${teacher.id})`}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="flex flex-col gap-3 mb-4">
+          <Label>Level</Label>
+          <select
+            value={selectedTeacher}
+            onChange={(e) => setSelectedTeacher(e.target.value)}
+            required
+            name="teacherId"
+            className="outline-none px-4 py-2 rounded bg-transparent border border-gray-300"
+          >
+            <option value="" disabled selected>
+              Please Choose...
+            </option>
+            {classTeacher.map((teacher) => (
+              <option key={teacher.id} value={teacher.id}>
+                {teacher.fullName}
+              </option>
+            ))}
+          </select>
         </div>
+
         <Button type="submit" className="w-full">
           Add Section
         </Button>

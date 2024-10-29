@@ -1,59 +1,39 @@
 import Annoucement from "@/components/Annoucement";
-import BigCalendar from "@/components/BigCalendar";
-import Icon from "@/components/LucidIcon";
-import Image from "next/image";
+import prisma from "@/lib/db";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import ProfileCard from "../_components/ProfileCard";
+import StudentRoutine from "../_components/Routine";
 
-const SingleStudentPage = async ({ params }: { params: { id: string } }) => {
+const Student = async ({ params }: { params: { id: string } }) => {
+  const [student] = await prisma.$transaction([
+    prisma.student.findUnique({
+      where: {
+        id: parseInt(params.id),
+      },
+    }),
+  ]);
+
+  if (!student) {
+    notFound();
+  }
+
   return (
     <div className="flex flex-col xl:flex-row">
       <div className="w-full xl:w-2/3">
         {/* TOP */}
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4 p-4">
           {/* User INFO */}
-          <div className="bg-sky-200 dark:bg-sky-900 py-6 px-4 rounded-md flex-1 flex gap-4">
-            <div className="w-1/3">
-              <Image
-                className="rounded-full w-36 h-36 object-cover"
-                src={"/image/noavatar.png"}
-                width={144}
-                height={144}
-                alt="Avatar"
-              />
-            </div>
-            <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold site-txt">Name:Jhon Doe</h1>
-              <p className="text-sm text-gray-400 dark:text-gray-500">
-                Lorem ipsum dolor sit amet,
-              </p>
-              <div className="flex items-center justify-between gap-2 flex-wrap text-xs  font-medium">
-                <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <Icon name="Heart" size={18} />
-                  <span className="site-txt">Blood Type</span>
-                </div>
-                <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <Icon name="Mail" size={18} />
-                  <span className="site-txt">Email</span>
-                </div>
-                <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <Icon name="Calendar" size={18} />
-                  <span className="site-txt">Date</span>
-                </div>
-                <div className="w-full md:w-1/3 flex items-center gap-2">
-                  <Icon name="Phone" size={18} />
-                  <span className="site-txt">Phone</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProfileCard student={student} />
         </div>
-        {/* Calendar */}
-        <div className="">
-          <BigCalendar />
+        {/* Routine */}
+        <div className="p-4">
+          <h1 className="text-xl font-semibold mb-2">Routine</h1>
+          <StudentRoutine />
         </div>
       </div>
-      <div className="w-full xl:w-1/3 px-4">
-        <div className="site-bg p-4 rounded-md border site-border shadow-sm">
+      <div className="w-full xl:w-1/3 px-4 pt-4">
+        <div className="site-bg p-4 rounded-md border site-border shadow-sm ">
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex flex-wrap text-xs gap-4">
             <Link
@@ -88,4 +68,4 @@ const SingleStudentPage = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default SingleStudentPage;
+export default Student;

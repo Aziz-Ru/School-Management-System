@@ -12,10 +12,12 @@ export default function FormSelect({
   name,
   label,
   options,
+  onChange,
 }: {
   name: string;
   label: string;
   options: string[];
+  onChange?: (value: string) => void;
 }) {
   return (
     <div className="flex flex-col gap-3 mb-4">

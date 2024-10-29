@@ -2,11 +2,12 @@
 
 import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
+
 
 const SignInForm = () => {
   const router = useRouter();

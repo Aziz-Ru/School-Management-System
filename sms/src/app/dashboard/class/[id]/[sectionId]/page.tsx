@@ -6,21 +6,42 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import SectionTab from "../_components/SectionTab";
 
+interface StudentAttendanceData {
+  Id: string;
+  Name: string;
+  [key: string]: boolean | string;
+}
+
+interface StudentGridColDefs {
+  headerName: string;
+  field: string;
+  width: number;
+  editable: boolean;
+}
+
 const SectionPage = async ({
   params,
   searchParams,
 }: {
-  params: { sectionId: string };
+  params: { sectionId: string; id: string };
   searchParams: { [key: string]: string };
 }) => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = searchParams.month
-    ? parseInt(searchParams.month)
-    : new Date().getMonth() + 1;
-  
-  const [sectionData, students] = await prisma.$transaction([
-    prisma.section.findUnique({
-      where: { id: params.sectionId },
+  const id = parseInt(params.id);
+  if (isNaN(id) || id < 1 || id > 10) {
+    notFound();
+  }
+  const level = id < 6 ? "PRIMARY" : "SCHOOL";
+  const date = new Date(searchParams.date).getDate()
+    ? new Date(searchParams.date)
+    : new Date();
+  const day = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  const days = Array.from({ length: day }, (_, i) => i + 1);
+
+  const [sectionData, students, subjects, teacher] = await prisma.$transaction([
+    prisma.section.findFirst({
+      where: {
+        id: params.sectionId,
+      },
       select: {
         sectionTeacher: {
           select: {
@@ -35,6 +56,14 @@ const SectionPage = async ({
         id: true,
         fullName: true,
         attendenceList: {
+          where: {
+            year: date.getFullYear(),
+            date: {
+              gte: new Date(date.getFullYear(), date.getMonth(), 1),
+              lte: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+            },
+          },
+
           select: {
             id: true,
             date: true,
@@ -44,20 +73,68 @@ const SectionPage = async ({
         },
       },
     }),
+    prisma.subject.findMany({ where: { classId: parseInt(params.id) } }),
+    prisma.teacher.findMany({
+      where: {
+        level: level,
+      },
+    }),
   ]);
 
   if (!sectionData) {
     notFound();
   }
 
+  const getPresent = (attendence: any[], day: number): boolean => {
+    const res = attendence.find((d) => d.date.getDate() === day);
+    if (res) return true;
+    return false;
+  };
+
+  const studentAttendence = students.map((stutdent) => {
+    const studentData: StudentAttendanceData = {
+      Id: stutdent.id.toString(),
+      Name: stutdent.fullName,
+    };
+    days.forEach((day) => {
+      studentData[`${day}`] = getPresent(stutdent.attendenceList, day);
+    });
+    return studentData;
+  });
+
+  const attendenceCol = days.map((day) => {
+    return {
+      headerName: `${day}`,
+      field: `${day}`,
+      width: 50,
+      editable: day === date.getDate(),
+    };
+  });
+  const AttendenceColDefs = [
+    {
+      headerName: "ID",
+      field: "Id",
+      width: 100,
+      editable: false,
+      resizable: false,
+      pinned: "left",
+    },
+    {
+      field: "Name",
+      width: 150,
+      editable: false,
+    },
+    ...attendenceCol,
+  ];
+
   return (
     <div className="p-4 grid grid-cols-12 gap-2">
       {/* Name */}
       <div className="col-span-12 xl:col-span-8">
         <SectionTab
-          students={students}
-          currentMonth={currentMonth}
-          currentYear={currentYear}
+          sectionId={params.sectionId}
+          studentAttendenceList={studentAttendence}
+          AttendenceColDefs={AttendenceColDefs}
         />
       </div>
       {/* Annoucement */}
@@ -88,43 +165,3 @@ const SectionPage = async ({
 
 export default SectionPage;
 
-// {
-
-// Sample data for class routine
-// const routineData = [
-//   {
-//     day: "Monday",
-//     classes: [
-//       {
-//         subject: "Math",
-//         startTime: "9:00 AM",
-//         endTime: "10:00 AM",
-//         teacher: "Mr. A",
-//       },
-//       {
-//         subject: "Physics",
-//         startTime: "10:00 AM",
-//         endTime: "11:00 AM",
-//         teacher: "Ms. B",
-//       },
-//     ],
-//   },
-//   {
-//     day: "Tuesday",
-//     classes: [
-//       {
-//         subject: "English",
-//         startTime: "9:00 AM",
-//         endTime: "10:00 AM",
-//         teacher: "Mr. C",
-//       },
-//       {
-//         subject: "Biology",
-//         startTime: "10:00 AM",
-//         endTime: "11:00 AM",
-//         teacher: "Ms. D",
-//       },
-//     ],
-//   },
-//   // Add more days and classes here
-// ];
