@@ -1,8 +1,7 @@
-import { DeleteButton, DetailsButton } from "@/components/buttons/Buttons";
+import DetailsLink from "@/components/buttons/DetailsLink";
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
 import Image from "next/image";
-import Link from "next/link";
 
 const columns = [
   {
@@ -54,6 +53,7 @@ const StudentsList = ({ students }: { students: any }) => {
   return <TableList columns={columns} renderRow={renderRow} data={students} />;
 };
 
+
 const renderRow = (item: Student) => {
   return (
     <TableRow key={item.id}>
@@ -80,15 +80,11 @@ const renderRow = (item: Student) => {
         {item.address}
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <Link className="border-2" href={`dashboard/students/${item.id}`}>
-            <DetailsButton />
-          </Link>
-          <DeleteButton />
-        </div>
+        <DetailsLink href={`/dashboard/students/${item.id}`} />
       </TableCell>
     </TableRow>
   );
 };
+
 
 export default StudentsList;

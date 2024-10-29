@@ -1,16 +1,23 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AttendenceList from "./AttendencList";
+import Routine from "./Routine";
 import SearchAttendence from "./SearchAttendence";
 
+interface StudentAttendanceData {
+  Id: string;
+  Name: string;
+  [key: string]: boolean | string;
+}
+
 const SectionTab = ({
-  students,
-  currentMonth,
-  currentYear,
+  sectionId,
+  studentAttendenceList,
+  AttendenceColDefs,
 }: {
-  students: any;
-  currentMonth: number;
-  currentYear: number;
+  sectionId: string;
+  studentAttendenceList: StudentAttendanceData[];
+  AttendenceColDefs: any[];
 }) => {
   return (
     <div>
@@ -29,12 +36,14 @@ const SectionTab = ({
         <TabsContent value="attendance">
           <SearchAttendence />
           <AttendenceList
-            students={students}
-            currentYear={currentYear}
-            currentMonth={currentMonth}
+            sectionId={sectionId}
+            studentAttendenceList={studentAttendenceList}
+            AttendenceColDefs={AttendenceColDefs}
           />
         </TabsContent>
-        <TabsContent value="class-routine">ClassRoutine</TabsContent>
+        <TabsContent value="class-routine">
+          <Routine sectionId={sectionId} />
+        </TabsContent>
         <TabsContent value="students">Students</TabsContent>
       </Tabs>
     </div>

@@ -43,11 +43,30 @@ export const selectCourseAction = async (
     await prisma.subject.createMany({
       data: subjectData,
     });
+    const section = await prisma.section.findMany({
+      where: { classId: classId },
+      select: {
+        id: true,
+        subjects: { select: { id: true } },
+      },
+    });
 
-    revalidatePath("list/cls");
+    if (section.length > 0) {
+      const sectionSubjects = section.map((sect) => {
+        return subjectData.map((sub) => ({
+          id: uuidv4(),
+          sectionId: sect.id,
+          subjectId: sub.id,
+        }));
+      });
+      await prisma.sectionSubject.createMany({
+        data: sectionSubjects.flat(),
+      });
+    }
+
+    revalidatePath("/dashboard");
     return { msg: "Course added successfully" };
   } catch (error: any) {
-    console.log(error.message);
     return { error: "Something went wrong" };
   }
 };
@@ -62,7 +81,6 @@ export const deleteCourseAction = async (id: string): Promise<ReturnProps> => {
     revalidatePath("list/cls");
     return { msg: "Course deleted successfully" };
   } catch (error: any) {
-    console.log(error.message);
     return { error: "Something went wrong" };
   }
 };

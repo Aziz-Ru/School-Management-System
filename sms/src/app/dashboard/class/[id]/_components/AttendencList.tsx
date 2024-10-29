@@ -1,74 +1,107 @@
+import { toast } from "@/hooks/use-toast";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
+
+interface StudentAttendanceData {
+  Id: string;
+  Name: string;
+  [key: string]: boolean | string;
+}
 
 const AttendenceList = ({
-  students,
-  currentYear,
-  currentMonth,
+  sectionId,
+  studentAttendenceList,
+  AttendenceColDefs,
 }: {
-  students: any;
-  currentMonth: number;
-  currentYear: number;
+  sectionId: string;
+  studentAttendenceList: StudentAttendanceData[];
+  AttendenceColDefs: any[];
 }) => {
-  const days = new Date(currentYear, currentMonth, 0).getDate();
+  const [loading, setLoading] = useState(false);
+  const gridHeight = studentAttendenceList.length * 50 + 150;
 
-  const dayArray = useMemo(() => {
-    return Array.from({ length: days }, (_, i) => i + 1);
-  }, [days]);
-
-  const [rowData, setRowData] = useState<any[]>([]);
-  useEffect(() => {
-    if (students) {
-      const data = students.map((student: any, index: number) => {
-        const studentData: any = { ID: student.id, Name: student.fullName };
-        dayArray.forEach((day) => {
-          studentData[`${day}`] = false;
+  const onMarkPresent = async (
+    day: string | undefined,
+    id: string,
+    value: boolean
+  ) => {
+    if (value) {
+      try {
+        setLoading(true);
+        const currentDate = new Date();
+        currentDate.setUTCHours(0, 0, 0, 0);
+        const currentDay = new Date(currentDate).toISOString();
+        const response = await fetch(`/api/attendence`, {
+          method: "POST",
+          body: JSON.stringify({
+            studentId: id,
+            date: currentDay,
+            present: value,
+            sectionId: sectionId,
+          }),
         });
-        return studentData;
-      });
-      setRowData(data);
+        const data = await response.json();
+
+        if (data.error) {
+          toast({
+            title: "Failed to mark attendance",
+          });
+        } else {
+          toast({
+            title: `Attendance marked for ${id}`,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Failed to mark attendance",
+          description: "Please try again",
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        setLoading(true);
+        const currentDate = new Date();
+        currentDate.setUTCHours(0, 0, 0, 0);
+        const currentDay = new Date(currentDate).toISOString();
+        const response = await fetch(
+          `/api/attendence?date=${currentDay}&studentId=${id}&sectionId=${sectionId}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const data = await response.json();
+        if (data.error) {
+          toast({
+            title: "Failed to unmark attendance",
+          });
+        } else {
+          toast({
+            title: `${id} unmarked`,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Failed to delete attendance",
+          description: "Please try again",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [students, dayArray]);
-
-  const rowHeight = 45;
-  const gridHeight = useMemo(
-    () => rowData.length * rowHeight + 100,
-    [rowData.length, rowHeight]
-  );
-
-  const [columnDefs, setColDefs] = useState<
-    { field: string; width: number; pinned?: string; editable: boolean }[]
-  >([
-    { field: "ID", width: 100, pinned: "left", editable: false },
-    { field: "Name", width: 150, editable: false },
-  ]);
-
-  useEffect(() => {
-    if (columnDefs.length == 2) {
-      const dayColumns = dayArray.map((day) => {
-        return {
-          field: `${day}`,
-          width: 50,
-          editable: new Date().getDate() === day,
-        };
-      });
-      setColDefs([...columnDefs, ...dayColumns]);
-    }
-  }, [columnDefs, dayArray]); // Run only once
-
-  const getPresent = (attdence: any[], day: number): boolean => {
-    return false;
   };
   return (
     <div className="ag-theme-quartz" style={{ height: `${gridHeight}px` }}>
       <AgGridReact
         suppressMovableColumns={true}
-        rowData={rowData}
-        columnDefs={columnDefs}
+        defaultColDef={{ resizable: false }}
+        rowData={studentAttendenceList}
+        columnDefs={AttendenceColDefs}
         onCellValueChanged={(e) => {
-          console.log(e.colDef.field, e.data.ID, e.data.Name, e.value);
+          onMarkPresent(e.colDef.field, e.data.Id, e.newValue);
         }}
       />
     </div>

@@ -25,7 +25,7 @@ CREATE TABLE `school` (
 
 -- CreateTable
 CREATE TABLE `teacher` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
@@ -45,10 +45,10 @@ CREATE TABLE `teacher` (
 
 -- CreateTable
 CREATE TABLE `student` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
-    `phone` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
     `dob` VARCHAR(191) NOT NULL,
     `img` VARCHAR(191) NULL,
@@ -95,8 +95,9 @@ CREATE TABLE `section` (
     `id` VARCHAR(191) NOT NULL,
     `sectionName` VARCHAR(191) NOT NULL,
     `classId` INTEGER NOT NULL,
+    `index` INTEGER NOT NULL DEFAULT 1,
     `year` INTEGER NOT NULL,
-    `sectionTeacherId` VARCHAR(191) NULL,
+    `sectionTeacherId` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `section_sectionName_classId_year_key`(`sectionName`, `classId`, `year`),
@@ -108,7 +109,7 @@ CREATE TABLE `sectionSubject` (
     `id` VARCHAR(191) NOT NULL,
     `sectionId` VARCHAR(191) NOT NULL,
     `subjectId` VARCHAR(191) NOT NULL,
-    `teacherId` VARCHAR(191) NOT NULL,
+    `teacherId` INTEGER NOT NULL,
 
     UNIQUE INDEX `sectionSubject_sectionId_subjectId_key`(`sectionId`, `subjectId`),
     PRIMARY KEY (`id`)
@@ -138,7 +139,7 @@ CREATE TABLE `examSubject` (
 -- CreateTable
 CREATE TABLE `result` (
     `id` VARCHAR(191) NOT NULL,
-    `studentId` VARCHAR(191) NOT NULL,
+    `studentId` INTEGER NOT NULL,
     `subjectId` VARCHAR(191) NOT NULL,
     `mark` INTEGER NOT NULL,
     `grade` VARCHAR(191) NOT NULL,
@@ -155,7 +156,7 @@ CREATE TABLE `lesson` (
     `endTime` VARCHAR(191) NOT NULL,
     `sectionId` VARCHAR(191) NOT NULL,
     `courseId` VARCHAR(191) NOT NULL,
-    `teacherId` VARCHAR(191) NOT NULL,
+    `teacherId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -184,9 +185,34 @@ CREATE TABLE `annoucement` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `attendence` (
+    `id` VARCHAR(191) NOT NULL,
+    `year` INTEGER NOT NULL DEFAULT 2024,
+    `studentId` INTEGER NOT NULL,
+    `present` BOOLEAN NOT NULL DEFAULT false,
+    `sectionId` VARCHAR(191) NOT NULL,
+    `date` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `attendence_studentId_sectionId_date_key`(`studentId`, `sectionId`, `date`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `teacherAttendence` (
+    `id` VARCHAR(191) NOT NULL,
+    `year` INTEGER NOT NULL DEFAULT 2024,
+    `teacherId` INTEGER NOT NULL,
+    `present` BOOLEAN NOT NULL DEFAULT false,
+    `date` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `teacherAttendence_teacherId_date_key`(`teacherId`, `date`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_courseToteacher` (
     `A` VARCHAR(191) NOT NULL,
-    `B` VARCHAR(191) NOT NULL,
+    `B` INTEGER NOT NULL,
 
     UNIQUE INDEX `_courseToteacher_AB_unique`(`A`, `B`),
     INDEX `_courseToteacher_B_index`(`B`)
@@ -239,6 +265,15 @@ ALTER TABLE `lesson` ADD CONSTRAINT `lesson_courseId_fkey` FOREIGN KEY (`courseI
 
 -- AddForeignKey
 ALTER TABLE `lesson` ADD CONSTRAINT `lesson_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `attendence` ADD CONSTRAINT `attendence_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `attendence` ADD CONSTRAINT `attendence_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `student`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `teacherAttendence` ADD CONSTRAINT `teacherAttendence_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_courseToteacher` ADD CONSTRAINT `_courseToteacher_A_fkey` FOREIGN KEY (`A`) REFERENCES `course`(`courseName`) ON DELETE CASCADE ON UPDATE CASCADE;
