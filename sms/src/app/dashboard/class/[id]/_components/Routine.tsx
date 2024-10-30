@@ -1,10 +1,12 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const times = [
   {
@@ -16,15 +18,22 @@ const times = [
   {
     time: "12:00 - 1:00 PM",
   },
-  {
-    time: "1:00 - 2:00 PM",
-  },
+
   {
     time: "2:00 - 3:00 PM",
   },
   {
     time: "3:00 - 4:00 PM",
   },
+];
+
+const daysOfWeek = [
+  "Saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
 ];
 
 const Routine = ({
@@ -43,17 +52,9 @@ const Routine = ({
   const [subjectTeacher, setSubjectTeacher] = useState<
     { id: number; fullName: string }[]
   >([]);
+  const dataFetchedRef = useRef(false);
 
-  useEffect(() => {
-    const getData = async () => {
-      const resData = await fetch(`/api/class/${classID}/${sectionId}`);
-      const res = await resData.json();
-      setSubjects(res.data.subjects);
-      setTeachers(res.data.teachers);
-    };
-    getData();
-  }, [classID, sectionId]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterTeacher = (subjectName: string) => {
     const teacher = teachers.filter((t) =>
       t.courses.some((c) => c.courseName === subjectName)
@@ -61,27 +62,65 @@ const Routine = ({
     setSubjectTeacher(teacher);
   };
 
-  // Define time slots and columns for weekdays
-  const rowData = [
-    {
-      time: "10:00 - 11:00 AM",
-    },
-    {
-      time: "11:00 - 12:00 PM",
-    },
-    {
-      time: "12:00 - 1:00 PM",
-    },
-    {
-      time: "1:00 - 2:00 PM",
-    },
-    {
-      time: "2:00 - 3:00 PM",
-    },
-    {
-      time: "3:00 - 4:00 PM",
-    },
-  ];
+  const [rowData, setRowData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!dataFetchedRef.current) {
+      const getData = async () => {
+        try {
+          const resData = await fetch(
+            `/api/routine?sectionId=${sectionId}&classId=${classID}&admin=true`
+          );
+          const res = await resData.json();
+          if (res.data) {
+            setRowData(res.data.routine);
+            setSubjects(res.data.subjects);
+            setTeachers(res.data.teachers);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      dataFetchedRef.current = true;
+      getData();
+    }
+  }, [classID, sectionId]);
+
+  useEffect(() => {
+    if (subjects.length > 0) {
+      filterTeacher(subjects[0].courseName);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subjects]);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const subjectId = (e.currentTarget.elements[0] as HTMLSelectElement).value;
+    const teacherId = (e.currentTarget.elements[1] as HTMLSelectElement).value;
+    const startEnd = (e.currentTarget.elements[2] as HTMLSelectElement).value;
+    try {
+      const res = await fetch("/api/routine", {
+        method: "POST",
+        body: JSON.stringify({
+          subjectId,
+          teacherId,
+          startEnd,
+          sectionId,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        toast({ title: data.error });
+      }
+      if (data.msg) {
+        toast({ title: data.msg });
+      }
+    } catch (error) {
+      toast({ title: "Failed to added" });
+    }
+  };
+
   // Define columns for time slots and weekdays
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     {
@@ -90,13 +129,11 @@ const Routine = ({
       pinned: "left",
       cellStyle: { fontWeight: "bold" },
     },
-
-    { field: "Saturday", width: 150 },
-    { field: "Sunday", width: 150 },
-    { field: "Monday", width: 150 },
-    { field: "Tuesday", width: 150 },
-    { field: "Wednesday", width: 150 },
-    { field: "Thursday", width: 150 },
+    ...daysOfWeek.map((day) => ({
+      field: day,
+      width: 150,
+      cellStyle: { whiteSpace: "normal" },
+    })),
   ]);
 
   return (
@@ -109,7 +146,6 @@ const Routine = ({
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={{
-            resizable: false, // Disable column resizing
             editable: false,
           }}
           suppressMovableColumns={true} // Disable column dragging
@@ -120,9 +156,14 @@ const Routine = ({
           <div className="w-[400px] ">
             <h1 className="text-2xl font-bold text-center">Manage Schedule</h1>
             <div className="mt-2 w-full ">
-              <form className="flex flex-col w-full gap-3 px-3">
+              <form
+                onSubmit={handleFormSubmit}
+                className="flex flex-col w-full gap-3 px-3"
+              >
                 <div className="flex flex-col">
-                  <label htmlFor="subjectId">Subject</label>
+                  <label className="font-bold" htmlFor="subjectId">
+                    Subject
+                  </label>
                   <select
                     onChange={(e) =>
                       filterTeacher(
@@ -144,7 +185,9 @@ const Routine = ({
                   </select>
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="teacherId">Teacher</label>
+                  <label className="font-bold" htmlFor="teacherId">
+                    Teacher
+                  </label>
                   <select
                     name="teacherId"
                     id="teacherId"
@@ -161,7 +204,9 @@ const Routine = ({
                   </select>
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="startEnd">Schedule</label>
+                  <label className="font-bold" htmlFor="startEnd">
+                    Schedule
+                  </label>
                   <select
                     name="startEnd"
                     id="startEnd"
@@ -177,7 +222,7 @@ const Routine = ({
                     ))}
                   </select>
                 </div>
-                <input type="submit" value="Submit" />
+                <Button type="submit">Submit</Button>
               </form>
             </div>
           </div>
