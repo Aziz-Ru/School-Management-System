@@ -25,10 +25,7 @@ export async function middleware(req: NextRequest) {
 
     // Check routes based on user role
     if (user.role === "ADMIN") {
-      // For admin routes, check if the current path starts with /dashboard
-      if (!path.startsWith("/dashboard")) {
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-      }
+      return NextResponse.next();
     } else if (user.role === "TEACHER") {
       if (!path.startsWith("/teacher")) {
         return NextResponse.redirect(new URL("/teacher", req.url));
