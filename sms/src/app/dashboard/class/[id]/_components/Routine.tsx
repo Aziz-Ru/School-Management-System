@@ -5,12 +5,62 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { AgGridReact } from "ag-grid-react";
 import { useEffect, useState } from "react";
-const Routine = ({ sectionId }: { sectionId: string }) => {
+
+const times = [
+  {
+    time: "10:00 - 11:00 AM",
+  },
+  {
+    time: "11:00 - 12:00 PM",
+  },
+  {
+    time: "12:00 - 1:00 PM",
+  },
+  {
+    time: "1:00 - 2:00 PM",
+  },
+  {
+    time: "2:00 - 3:00 PM",
+  },
+  {
+    time: "3:00 - 4:00 PM",
+  },
+];
+
+const Routine = ({
+  classID,
+  sectionId,
+}: {
+  classID: number;
+  sectionId: string;
+}) => {
+  const [teachers, setTeachers] = useState<
+    { id: number; fullName: string; courses: { courseName: string }[] }[]
+  >([]);
+  const [subjects, setSubjects] = useState<
+    { id: string; courseName: string }[]
+  >([]);
+  const [subjectTeacher, setSubjectTeacher] = useState<
+    { id: number; fullName: string }[]
+  >([]);
+
   useEffect(() => {
     const getData = async () => {
-      const resData = await fetch(`/api/class/`);
+      const resData = await fetch(`/api/class/${classID}/${sectionId}`);
+      const res = await resData.json();
+      setSubjects(res.data.subjects);
+      setTeachers(res.data.teachers);
     };
-  }, []);
+    getData();
+  }, [classID, sectionId]);
+
+  const filterTeacher = (subjectName: string) => {
+    const teacher = teachers.filter((t) =>
+      t.courses.some((c) => c.courseName === subjectName)
+    );
+    setSubjectTeacher(teacher);
+  };
+
   // Define time slots and columns for weekdays
   const rowData = [
     {
@@ -32,7 +82,6 @@ const Routine = ({ sectionId }: { sectionId: string }) => {
       time: "3:00 - 4:00 PM",
     },
   ];
-
   // Define columns for time slots and weekdays
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     {
@@ -52,7 +101,10 @@ const Routine = ({ sectionId }: { sectionId: string }) => {
 
   return (
     <>
-      <div className="ag-theme-alpine" style={{ height: 350, width: "100%" }}>
+      <div
+        className="ag-theme-alpine mb-3"
+        style={{ height: 350, width: "100%" }}
+      >
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
@@ -64,58 +116,71 @@ const Routine = ({ sectionId }: { sectionId: string }) => {
         />
       </div>
       <Card>
-        <div className="my-4">
-          <form>
+        <div className="my-4  justify-center items-center flex">
+          <div className="w-[400px] ">
             <h1 className="text-2xl font-bold text-center">Manage Schedule</h1>
-            <div className="mt-2">
-              <form>
-                <div className="flex w-full gap-3 px-3">
-                  <div className="w-1/3 flex flex-col">
-                    <label htmlFor="subjectId">Subject</label>
-                    <select
-                      name="subjectId"
-                      id="subjectId"
-                      className="w-full px-4 py-2 rounded outline-none border border-gray-300 shadow-sm"
-                    >
-                      <option value="" disabled>
-                        Choose Subject
+            <div className="mt-2 w-full ">
+              <form className="flex flex-col w-full gap-3 px-3">
+                <div className="flex flex-col">
+                  <label htmlFor="subjectId">Subject</label>
+                  <select
+                    onChange={(e) =>
+                      filterTeacher(
+                        e.target.options[e.target.selectedIndex].text
+                      )
+                    }
+                    name="subjectId"
+                    id="subjectId"
+                    className="w-full px-4 py-2 rounded bg-transparent outline-none border border-gray-300 shadow-sm"
+                  >
+                    <option value="" disabled>
+                      Choose Subject
+                    </option>
+                    {subjects.map((sub) => (
+                      <option key={sub.id} value={sub.id}>
+                        {sub.courseName}
                       </option>
-                      <option value="">1</option>
-                      <option value="">2</option>
-                    </select>
-                  </div>
-                  <div className="w-1/3 flex flex-col">
-                    <label htmlFor="teacherId">Teacher</label>
-                    <select
-                      name="teacherId"
-                      id="teacherId"
-                      className="w-full px-4 py-2 rounded outline-none border border-gray-300 shadow-sm"
-                    >
-                      <option value="" disabled>
-                        Choose Teacher
-                      </option>
-                      <option value="">1</option>
-                      <option value="">2</option>
-                    </select>
-                  </div>
-                  <div className="w-1/3 flex flex-col">
-                    <label htmlFor="startEnd">Schedule</label>
-                    <select
-                      name="startEnd"
-                      id="startEnd"
-                      className="w-full px-4 py-2 rounded outline-none border border-gray-300 shadow-sm"
-                    >
-                      <option value="" disabled>
-                        Choose Time
-                      </option>
-                      <option value="">1</option>
-                      <option value="">2</option>
-                    </select>
-                  </div>
+                    ))}
+                  </select>
                 </div>
+                <div className="flex flex-col">
+                  <label htmlFor="teacherId">Teacher</label>
+                  <select
+                    name="teacherId"
+                    id="teacherId"
+                    className="w-full px-4 py-2 rounded outline-none bg-transparent border border-gray-300 shadow-sm"
+                  >
+                    <option value="" disabled>
+                      Choose Teacher
+                    </option>
+                    {subjectTeacher.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.fullName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="startEnd">Schedule</label>
+                  <select
+                    name="startEnd"
+                    id="startEnd"
+                    className="w-full px-4 py-2 rounded outline-none border bg-transparent border-gray-300 shadow-sm"
+                  >
+                    <option value="" disabled>
+                      Choose Time
+                    </option>
+                    {times.map((t) => (
+                      <option key={t.time} value={t.time}>
+                        {t.time}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <input type="submit" value="Submit" />
               </form>
             </div>
-          </form>
+          </div>
         </div>
       </Card>
     </>

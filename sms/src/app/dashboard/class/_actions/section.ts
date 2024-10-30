@@ -62,7 +62,7 @@ export const addSectionAction = async (
     const error = validResult.error.issues[0].message;
     return { error: error };
   }
-  const [existSection, isTeacherEnrolled, numOfSection, subjects] =
+  const [existSection, isTeacherEnrolled, numOfSection] =
     await prisma.$transaction([
       prisma.section.findFirst({
         where: {
@@ -78,10 +78,6 @@ export const addSectionAction = async (
         },
       }),
       prisma.section.count(),
-      prisma.subject.findMany({
-        where: { classId: validResult.data.classId },
-        select: { id: true },
-      }),
     ]);
 
   if (existSection) {
@@ -106,13 +102,7 @@ export const addSectionAction = async (
       },
     },
   });
-  await prisma.sectionSubject.createMany({
-    data: subjects.map((sub) => ({
-      id: sub.id,
-      sectionId: newSection.id,
-      subjectId: sub.id,
-    })),
-  });
+
   revalidatePath("/dashboard");
   return { msg: "Section added successfully" };
 };

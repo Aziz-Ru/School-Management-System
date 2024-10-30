@@ -132,6 +132,7 @@ const SectionPage = async ({
       {/* Name */}
       <div className="col-span-12 xl:col-span-8">
         <SectionTab
+          classID={id}
           sectionId={params.sectionId}
           studentAttendenceList={studentAttendence}
           AttendenceColDefs={AttendenceColDefs}
@@ -164,4 +165,3 @@ const SectionPage = async ({
 };
 
 export default SectionPage;
-

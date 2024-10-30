@@ -11,11 +11,13 @@ interface StudentAttendanceData {
 }
 
 const SectionTab = ({
+  classID,
   sectionId,
   studentAttendenceList,
   AttendenceColDefs,
 }: {
   sectionId: string;
+  classID: number;
   studentAttendenceList: StudentAttendanceData[];
   AttendenceColDefs: any[];
 }) => {
@@ -42,7 +44,7 @@ const SectionTab = ({
           />
         </TabsContent>
         <TabsContent value="class-routine">
-          <Routine sectionId={sectionId} />
+          <Routine classID={classID} sectionId={sectionId} />
         </TabsContent>
         <TabsContent value="students">Students</TabsContent>
       </Tabs>

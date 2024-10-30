@@ -35,7 +35,6 @@ model teacher {
   img            String?
   courses        course[]
   sectionSuper   String?
-  enrolledCourse sectionSubject[]
   section        section[]
   schedule       schedule[]
   attendence     teacherAttendence[]
@@ -54,6 +53,7 @@ model student {
   dob            String
   img            String?
   result         result[]
+  enrolledSubject enrolledSubject[]
   sex            GENDER       @default(MALE)
   sectionId      String
   section        section      @relation(fields: [sectionId], references: [id])
@@ -84,8 +84,8 @@ model subject {
   course     course           @relation(fields: [courseName], references: [courseName], onDelete: Cascade)
   class      Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
   syllabus   String?
-  section    sectionSubject[]
-
+  enrolledSubjects enrolledSubject[]
+  schedules schedule[]
   @@unique([courseName, classId])
 }
 
@@ -100,26 +100,21 @@ model section {
   attendence       attendence[]
   schedule          schedule[]
   exam             exam[]
-  subjects         sectionSubject[]
   sectionTeacher   teacher?         @relation(fields: [sectionTeacherId], references: [id], onDelete: Cascade)
   classTable       Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
   createdAt        DateTime         @default(now())
-
   @@unique([sectionName, classId, year])
 }
 
-model sectionSubject {
+model enrolledSubject {
   id        String        @id @default(uuid())
-  sectionId String
   subjectId String
-  teacherId Int  ?
-  schedule    schedule[]
+  studentId Int
   exam      examSubject[]
-  section   section       @relation(fields: [sectionId], references: [id])
+  student   student       @relation(fields: [studentId], references: [id])
   subject   subject       @relation(fields: [subjectId], references: [id])
-  teacher   teacher ?      @relation(fields: [teacherId], references: [id])
-
-  @@unique([sectionId, subjectId])
+  
+  @@unique([subjectId])
 }
 
 model exam {
@@ -137,7 +132,7 @@ model examSubject {
   examId    String
   subjectId String
   exam      exam           @relation(fields: [examId], references: [id])
-  subject   sectionSubject @relation(fields: [subjectId], references: [id])
+  subject   enrolledSubject @relation(fields: [subjectId], references: [id])
   result    result[]
 }
 
@@ -157,8 +152,8 @@ model schedule {
   startEnd String
   sectionId String
   section   section        @relation(fields: [sectionId], references: [id])
-  courseId  String?
-  subject   sectionSubject? @relation(fields: [courseId], references: [id])
+  subjectId  String?
+  subject   subject? @relation(fields: [subjectId], references: [id])
   teacherId Int
   teacher   teacher        @relation(fields: [teacherId], references: [id])
   @@unique([teacherId,startEnd])
