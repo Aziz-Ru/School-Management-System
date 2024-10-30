@@ -50,7 +50,7 @@ export async function login(formData: FormData): Promise<ReturnProps> {
   if (validResult.data.role === "TEACHER") {
     user = await prisma.teacher.findUnique({
       where: {
-        id: validResult.data.uid.toString(),
+        id: validResult.data.uid,
       },
     });
   }

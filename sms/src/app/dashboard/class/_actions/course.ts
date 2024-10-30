@@ -43,26 +43,9 @@ export const selectCourseAction = async (
     await prisma.subject.createMany({
       data: subjectData,
     });
-    const section = await prisma.section.findMany({
-      where: { classId: classId },
-      select: {
-        id: true,
-        subjects: { select: { id: true } },
-      },
-    });
+    
 
-    if (section.length > 0) {
-      const sectionSubjects = section.map((sect) => {
-        return subjectData.map((sub) => ({
-          id: uuidv4(),
-          sectionId: sect.id,
-          subjectId: sub.id,
-        }));
-      });
-      await prisma.sectionSubject.createMany({
-        data: sectionSubjects.flat(),
-      });
-    }
+   
 
     revalidatePath("/dashboard");
     return { msg: "Course added successfully" };

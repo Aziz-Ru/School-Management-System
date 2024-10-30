@@ -10,6 +10,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -31,7 +32,7 @@ const classData = [
 ];
 
 export function AddStudentForm() {
-  const [selectedClass, setSelectedClass] = useState(classData[0].value);
+  const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [studentId, setStudentId] = useState("");
   const [sections, setSections] = useState<
@@ -41,14 +42,16 @@ export function AddStudentForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    const getSection = async () => {
-      try {
-        const response = await fetch(`/api/class/${selectedClass}`);
-        const res = await response.json();
-        setSections(res.sections);
-      } catch (error) {}
-    };
-    getSection();
+    if (selectedClass) {
+      const getSection = async () => {
+        try {
+          const response = await fetch(`/api/class/${selectedClass}`);
+          const res = await response.json();
+          setSections(res.sections);
+        } catch (error) {}
+      };
+      getSection();
+    }
   }, [selectedClass]);
 
   useEffect(() => {
@@ -76,6 +79,8 @@ export function AddStudentForm() {
           if (msg) {
             formRef.current?.reset();
             setStudentId("");
+            setSelectedClass("");
+            setSelectedSection("");
             toast({ title: "Add Student Successfully", description: msg });
           }
           if (error) {
@@ -99,6 +104,7 @@ export function AddStudentForm() {
           <div className="flex flex-col gap-3 mb-4 w-1/2">
             <Label>Class</Label>
             <Select
+              value={selectedClass}
               onValueChange={(e) => {
                 setSelectedClass(e);
               }}
@@ -110,6 +116,7 @@ export function AddStudentForm() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  <SelectLabel>Class</SelectLabel>
                   {classData.map((cls) => {
                     return (
                       <SelectItem key={cls.label} value={cls.value}>
@@ -126,6 +133,7 @@ export function AddStudentForm() {
           <div className="flex flex-col gap-3 mb-4 w-1/2">
             <Label>Section</Label>
             <Select
+              value={selectedSection}
               onValueChange={(e) => {
                 setSelectedSection(e);
               }}
@@ -137,6 +145,7 @@ export function AddStudentForm() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  <SelectLabel>Section</SelectLabel>
                   {sections.map((section) => {
                     return (
                       <SelectItem key={section.sectionName} value={section.id}>
