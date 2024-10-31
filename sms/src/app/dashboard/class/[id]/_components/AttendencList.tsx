@@ -27,6 +27,7 @@ const AttendenceList = ({
     id: string,
     value: boolean
   ) => {
+    console.log(value);
     if (value) {
       try {
         setLoading(true);
@@ -38,7 +39,6 @@ const AttendenceList = ({
           body: JSON.stringify({
             studentId: id,
             date: currentDay,
-            present: value,
             sectionId: sectionId,
           }),
         });

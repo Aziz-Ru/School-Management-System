@@ -9,21 +9,30 @@ const StudenListPage = async ({
 }) => {
   const { page, ...queryParams } = searchParams;
   const currentPage = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;
-  const students = await prisma.student.findMany({
-    select: {
-      id: true,
-      fullName: true,
-      section: {
-        select: {
-          sectionName: true,
-          classId: true,
+  const [students, classes] = await prisma.$transaction([
+    prisma.student.findMany({
+      select: {
+        id: true,
+        fullName: true,
+        section: {
+          select: {
+            sectionName: true,
+            classId: true,
+          },
         },
+        address: true,
+        img: true,
+        phone: true,
       },
-      address: true,
-      img: true,
-      phone: true,
-    },
-  });
+    }),
+    prisma.class.findMany({
+      select: {
+        id: true,
+        className: true,
+        sections: { select: { id: true, sectionName: true } },
+      },
+    }),
+  ]);
 
   return (
     <div>
@@ -31,7 +40,7 @@ const StudenListPage = async ({
         {/* TOP */}
         <div className="flex items-center justify-between">
           <TableSearch />
-          <AddStudentForm />
+          <AddStudentForm classData={classes} />
         </div>
         {/* List */}
 

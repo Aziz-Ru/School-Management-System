@@ -3,8 +3,8 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { date, studentId, value, sectionId } = await req.json();
-
+  const { date, studentId, sectionId } = await req.json();
+  console.log(date, studentId);
   try {
     await prisma.attendence.create({
       data: {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
             id: parseInt(studentId),
           },
         },
-        present: value?.valueOf(),
+        present: true,
         section: {
           connect: {
             id: sectionId,
@@ -43,9 +43,8 @@ export async function DELETE(req: NextRequest) {
 
     await prisma.attendence.delete({
       where: {
-        studentId_sectionId_date: {
+        studentId_date: {
           studentId: parseInt(studentId),
-          sectionId: sectionId,
           date: new Date(date),
         },
       },

@@ -18,20 +18,13 @@ import { toast } from "@/hooks/use-toast";
 import { useEffect, useRef, useState } from "react";
 import { addStudentAction } from "../_actions/addstudentAction";
 
-const classData = [
-  { label: "One", value: "1" },
-  { label: "Two", value: "2" },
-  { label: "Three", value: "3" },
-  { label: "Four", value: "4" },
-  { label: "Five", value: "5" },
-  { label: "Six", value: "6" },
-  { label: "Seven", value: "7" },
-  { label: "Eight", value: "8" },
-  { label: "Nine", value: "9" },
-  { label: "Ten", value: "10" },
-];
+interface ClassData {
+  id: number;
+  className: string;
+  sections: { id: string; sectionName: string }[];
+}
 
-export function AddStudentForm() {
+export function AddStudentForm({ classData }: { classData: ClassData[] }) {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -40,19 +33,6 @@ export function AddStudentForm() {
   >([]);
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (selectedClass) {
-      const getSection = async () => {
-        try {
-          const response = await fetch(`/api/class/${selectedClass}`);
-          const res = await response.json();
-          setSections(res.sections);
-        } catch (error) {}
-      };
-      getSection();
-    }
-  }, [selectedClass]);
 
   useEffect(() => {
     if (selectedSection) {
@@ -107,6 +87,7 @@ export function AddStudentForm() {
               value={selectedClass}
               onValueChange={(e) => {
                 setSelectedClass(e);
+                setSections(classData[parseInt(e) - 1].sections);
               }}
               name={"classId"}
               required={true}
@@ -119,8 +100,8 @@ export function AddStudentForm() {
                   <SelectLabel>Class</SelectLabel>
                   {classData.map((cls) => {
                     return (
-                      <SelectItem key={cls.label} value={cls.value}>
-                        {cls.label}
+                      <SelectItem key={cls.id} value={cls.id.toString()}>
+                        {cls.className}
                       </SelectItem>
                     );
                   })}

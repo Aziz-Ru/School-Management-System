@@ -1,25 +1,46 @@
 "use client";
+import { toast } from "@/hooks/use-toast";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useEffect, useMemo, useState } from "react";
-const TeacherAttendenceList = ({ teachers }: { teachers: any }) => {
-  const days = new Date(2024, 10, 0).getDate();
+
+interface AttendanceRecord {
+  id: string;
+  present: boolean;
+  date: Date;
+  year: number;
+}
+interface TeacherData {
+  id: number;
+  fullName: string;
+  attendence: AttendanceRecord[] | [];
+}
+
+const TeacherAttendenceList = ({ teachers }: { teachers: TeacherData[] }) => {
+  const days = new Date().getDate();
 
   const dayArray = useMemo(() => {
     return Array.from({ length: days }, (_, i) => i + 1);
   }, [days]);
 
   const [rowData, setRowData] = useState<any[]>([]);
+  const getPresent = (attendence: AttendanceRecord[], day: number): boolean => {
+    const res = attendence.find((att) => att.date.getDate() == day);
+    return res ? true : false;
+  };
   useEffect(() => {
     if (teachers) {
       const data = teachers.map((teacher: any, index: number) => {
-        const studentData: any = { ID: teacher.id, Name: teacher.fullName };
+        const teacherData: any = {
+          ID: teacher.id,
+          Name: teacher.fullName,
+        };
         dayArray.forEach((day) => {
-          studentData[`${day}`] = false;
+          teacherData[`${day}`] = getPresent(teacher.attendence, day);
         });
-        return studentData;
+        return teacherData;
       });
       setRowData(data);
     }
@@ -49,18 +70,48 @@ const TeacherAttendenceList = ({ teachers }: { teachers: any }) => {
     }
   }, [columnDefs, dayArray]); // Run only once
 
-  const getPresent = (attdence: any[], day: number): boolean => {
-    return false;
+  const onMark = async (teacherId: number, value: boolean) => {
+    try {
+      if (value) {
+        const response = await fetch("/api/tattendence", {
+          method: "POST",
+          body: JSON.stringify({
+            teacherId,
+          }),
+        });
+        const res = await response.json();
+        if (res.data) {
+          toast({ title: res.data.msg });
+        } else {
+          toast({ title: "Failed to Marked" });
+        }
+      } else {
+        const response = await fetch(
+          `/api/tattendence?teacherId=${teacherId}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const res = await response.json();
+        if (res.data) {
+          toast({ title: res.data.msg });
+        } else {
+          toast({ title: "Failed to Unmarked" });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
-    // style={{ height: `${gridHeight}px` }}
     <div className="ag-theme-quartz" style={{ height: `${gridHeight}px` }}>
       <AgGridReact
         suppressMovableColumns={true}
         rowData={rowData}
         columnDefs={columnDefs}
         onCellValueChanged={(e) => {
-          console.log(e.colDef.field, e.data.ID, e.data.Name, e.value);
+          onMark(e.data.ID, e.value);
         }}
       />
     </div>

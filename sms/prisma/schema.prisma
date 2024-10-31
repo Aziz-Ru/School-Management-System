@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model admin {
   id       String @id
   password String
@@ -112,7 +111,7 @@ model section {
   classTable       Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
   @@unique([sectionName, classId, year])
 }
-  createdAt        DateTime         @default(now())
+
 model enrolledSubject {
   id        String        @id @default(uuid())
   subjectId String
@@ -185,23 +184,25 @@ model annoucement {
 model attendence {
   id        String   @id @default(uuid())
   year      Int   @default(2024)
+  month     Int
   studentId Int
   present   Boolean  @default(false)
   sectionId String
   section   section  @relation(fields: [sectionId], references: [id])
   student   student  @relation(fields: [studentId], references: [id])
   date      DateTime
-  @@unique([studentId,sectionId,date])
+  @@unique([studentId,date,month])
 }
 
 model teacherAttendence {
   id        String  @id @default(uuid())
   year      Int   @default(2024)
+  month     Int
   teacherId Int
   present   Boolean @default(false)
   date      DateTime
   teacher   teacher @relation(fields: [teacherId], references: [id])
-   @@unique([teacherId,date])
+   @@unique([teacherId,date,month])
 }
 
 enum RANK {

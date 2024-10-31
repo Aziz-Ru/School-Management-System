@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import TeacherAttendenceList from "./_components/AttendencList";
 
 const AttendanceList = async () => {
+  const current = new Date();
   const [teachers] = await prisma.$transaction([
     prisma.teacher.findMany({
       select: {
@@ -10,7 +11,8 @@ const AttendanceList = async () => {
         fullName: true,
         attendence: {
           where: {
-            year: new Date().getFullYear(),
+            year: current.getFullYear(),
+            month: current.getMonth() + 1,
           },
           select: {
             id: true,
@@ -22,6 +24,7 @@ const AttendanceList = async () => {
       },
     }),
   ]);
+  // console.log(teachers[0].attendence);
 
   return (
     <div className="p-4">

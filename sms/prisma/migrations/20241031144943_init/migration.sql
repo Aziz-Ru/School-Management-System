@@ -24,6 +24,17 @@ CREATE TABLE `school` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `events` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `date` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `teacher` (
     `id` INTEGER NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -98,20 +109,18 @@ CREATE TABLE `section` (
     `index` INTEGER NOT NULL DEFAULT 1,
     `year` INTEGER NOT NULL,
     `sectionTeacherId` INTEGER NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `section_sectionName_classId_year_key`(`sectionName`, `classId`, `year`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `sectionSubject` (
+CREATE TABLE `enrolledSubject` (
     `id` VARCHAR(191) NOT NULL,
-    `sectionId` VARCHAR(191) NOT NULL,
     `subjectId` VARCHAR(191) NOT NULL,
-    `teacherId` INTEGER NOT NULL,
+    `studentId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `sectionSubject_sectionId_subjectId_key`(`sectionId`, `subjectId`),
+    UNIQUE INDEX `enrolledSubject_subjectId_key`(`subjectId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -149,15 +158,14 @@ CREATE TABLE `result` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `lesson` (
+CREATE TABLE `schedule` (
     `id` VARCHAR(191) NOT NULL,
-    `day` ENUM('SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY') NOT NULL DEFAULT 'SUNDAY',
-    `startTime` VARCHAR(191) NOT NULL,
-    `endTime` VARCHAR(191) NOT NULL,
+    `startEnd` VARCHAR(191) NOT NULL,
     `sectionId` VARCHAR(191) NOT NULL,
-    `courseId` VARCHAR(191) NOT NULL,
+    `subjectId` VARCHAR(191) NULL,
     `teacherId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `schedule_teacherId_startEnd_key`(`teacherId`, `startEnd`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -188,12 +196,13 @@ CREATE TABLE `annoucement` (
 CREATE TABLE `attendence` (
     `id` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL DEFAULT 2024,
+    `month` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
     `present` BOOLEAN NOT NULL DEFAULT false,
     `sectionId` VARCHAR(191) NOT NULL,
     `date` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `attendence_studentId_sectionId_date_key`(`studentId`, `sectionId`, `date`),
+    UNIQUE INDEX `attendence_studentId_date_month_key`(`studentId`, `date`, `month`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -201,11 +210,12 @@ CREATE TABLE `attendence` (
 CREATE TABLE `teacherAttendence` (
     `id` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL DEFAULT 2024,
+    `month` INTEGER NOT NULL,
     `teacherId` INTEGER NOT NULL,
     `present` BOOLEAN NOT NULL DEFAULT false,
     `date` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `teacherAttendence_teacherId_date_key`(`teacherId`, `date`),
+    UNIQUE INDEX `teacherAttendence_teacherId_date_month_key`(`teacherId`, `date`, `month`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -234,22 +244,19 @@ ALTER TABLE `section` ADD CONSTRAINT `section_sectionTeacherId_fkey` FOREIGN KEY
 ALTER TABLE `section` ADD CONSTRAINT `section_classId_fkey` FOREIGN KEY (`classId`) REFERENCES `Class`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `sectionSubject` ADD CONSTRAINT `sectionSubject_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `enrolledSubject` ADD CONSTRAINT `enrolledSubject_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `student`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `sectionSubject` ADD CONSTRAINT `sectionSubject_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `sectionSubject` ADD CONSTRAINT `sectionSubject_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `enrolledSubject` ADD CONSTRAINT `enrolledSubject_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `exam` ADD CONSTRAINT `exam_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `examSubject` ADD CONSTRAINT `examSubject_examId_fkey` FOREIGN KEY (`examId`) REFERENCES `exam`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `examSubject` ADD CONSTRAINT `examSubject_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `enrolledSubject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `examSubject` ADD CONSTRAINT `examSubject_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `sectionSubject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `examSubject` ADD CONSTRAINT `examSubject_examId_fkey` FOREIGN KEY (`examId`) REFERENCES `exam`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `result` ADD CONSTRAINT `result_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `student`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -258,13 +265,13 @@ ALTER TABLE `result` ADD CONSTRAINT `result_studentId_fkey` FOREIGN KEY (`studen
 ALTER TABLE `result` ADD CONSTRAINT `result_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `examSubject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `lesson` ADD CONSTRAINT `lesson_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `lesson` ADD CONSTRAINT `lesson_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `sectionSubject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `lesson` ADD CONSTRAINT `lesson_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `attendence` ADD CONSTRAINT `attendence_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
