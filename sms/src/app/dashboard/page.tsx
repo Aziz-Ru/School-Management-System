@@ -19,13 +19,13 @@ const Page = () => {
         </div>
         <div className="ag-theme-quartz h-screen"></div>
       </div>
-
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
         <Events />
         <Annoucement />
       </div>
+
       {/* Suggest */}
     </div>
   );

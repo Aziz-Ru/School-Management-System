@@ -1,3 +1,6 @@
+
+import { teacherData } from "@/lib/data";
+
 import React from "react";
 import { Table, TableHead, TableHeader, TableRow } from "./ui/table";
 

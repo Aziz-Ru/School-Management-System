@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model admin {
   id       String @id
   password String
@@ -22,6 +23,13 @@ model school {
   schoolCode String
   EIIN       String
   imageURL   String?
+}
+model events{
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  date      String
+  createdAt DateTime @default(now())
 }
 
 model teacher {
@@ -102,18 +110,15 @@ model section {
   exam             exam[]
   sectionTeacher   teacher?         @relation(fields: [sectionTeacherId], references: [id], onDelete: Cascade)
   classTable       Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
-  createdAt        DateTime         @default(now())
   @@unique([sectionName, classId, year])
 }
-
-model enrolledSubject {
+  createdAt        DateTime         @default(now())
   id        String        @id @default(uuid())
   subjectId String
   studentId Int
   exam      examSubject[]
   student   student       @relation(fields: [studentId], references: [id])
   subject   subject       @relation(fields: [subjectId], references: [id])
-  
   @@unique([subjectId])
 }
 
@@ -131,8 +136,8 @@ model examSubject {
   question  String?
   examId    String
   subjectId String
-  exam      exam           @relation(fields: [examId], references: [id])
   subject   enrolledSubject @relation(fields: [subjectId], references: [id])
+  exam      exam           @relation(fields: [examId], references: [id])
   result    result[]
 }
 
@@ -232,7 +237,6 @@ enum MONTH {
   NOVEMBER
   DECEMBER
 }
-
 enum GENDER {
   MALE
   FEMALE
