@@ -1,11 +1,5 @@
 import Link from "next/link";
-import { CiLocationOn } from "react-icons/ci";
-import {
-  FaExternalLinkSquareAlt,
-  FaHandsHelping,
-  FaLocationArrow,
-} from "react-icons/fa";
-import { IoIosPeople } from "react-icons/io";
+import Icon from "./LucidIcon";
 
 const Footer = () => {
   return (
@@ -13,22 +7,21 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row gap-10 justify-around">
         <div className="px-4 py-2">
           <div className="flex items-center gap-4">
-            <FaLocationArrow />
             <h1 className="text-2xl font-semibold">Important Links</h1>
           </div>
           <hr className="py-2" />
           <div className="flex flex-col gap-3">
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <FaExternalLinkSquareAlt />
+              <Icon name="ExternalLink" size={18} />
               <span>Education Board Result</span>
             </Link>
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <FaExternalLinkSquareAlt />
+              <Icon name="ExternalLink" size={18} />
               <span>Ministry of Education</span>
             </Link>
 
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <FaExternalLinkSquareAlt />
+              <Icon name="ExternalLink" size={18} />
               <span>Directorate of Secondary & Higher Education</span>
             </Link>
           </div>
@@ -40,15 +33,15 @@ const Footer = () => {
           <hr className="py-2" />
           <div className="flex flex-col gap-3">
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <IoIosPeople />
+              <Icon name="User" size={18} />
               <span>About School</span>
             </Link>
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <FaHandsHelping />
+              <Icon name="HandHelping" size={18} />
               <span>HelpLine</span>
             </Link>
             <Link href={"/"} className="flex items-center gap-2 border-b">
-              <CiLocationOn />
+              <Icon name="MapPin" size={18} />
               <span>Location</span>
             </Link>
           </div>

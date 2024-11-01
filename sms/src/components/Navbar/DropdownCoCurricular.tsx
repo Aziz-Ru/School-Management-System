@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClickoutSide from "../ClickoutSide";
 import DownArrow from "../svg/DownArrow";
 import NavLink from "./NavLink";
 
 const DropdownCoCurricular = () => {
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 3000);
+    }
+  }, [isOpen]);
+
   return (
     <ClickoutSide
       onClick={() => setIsOpen(false)}
       className="relative duration-1000 ease-linear"
     >
       <div
-        className={`relative hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${
-          isOpen && "bg-gray-200 dark:bg-gray-700"
+        className={`relative hover:bg-indigo-600 rounded ${
+          isOpen && "bg-indigo-700"
         }`}
       >
         <button
@@ -25,7 +33,7 @@ const DropdownCoCurricular = () => {
           <DownArrow isOpen={isOpen} />
         </button>
         <ul
-          className={`mt-0 lg:mt-4 flex flex-col lg:absolute lg:shadow-lg w-full lg:w-40 site-bg lg:rounded ${
+          className={`mt-0 lg:mt-4 flex flex-col lg:absolute lg:shadow-lg w-full lg:w-40 bg-indigo-800 lg:rounded ${
             isOpen ? "" : "hidden"
           }`}
         >

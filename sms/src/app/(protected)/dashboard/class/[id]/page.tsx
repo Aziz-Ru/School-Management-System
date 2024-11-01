@@ -1,0 +1,107 @@
+import prisma from "@/lib/db";
+import { decrypt } from "@/session";
+import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
+import CourseView from "../_components/CourseView";
+import SectionView from "../_components/SectionView";
+
+const SingleClassPage = async ({ params }: { params: { id: string } }) => {
+  const cookieStore = cookies();
+  const session = cookieStore.get("__session");
+  const { user } = await decrypt(session!.value);
+
+  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+    notFound();
+  }
+
+  const classId = parseInt(params.id);
+  // Check is it number or not
+  if (isNaN(classId)) {
+    notFound();
+  }
+  const level = classId < 6 ? "PRIMARY" : "SCHOOL";
+
+  const [classData, courses, teachers] = await prisma.$transaction([
+    prisma.class.findFirst({
+      where: { id: classId },
+      include: {
+        sections: {
+          select: {
+            id: true,
+            sectionName: true,
+            year: true,
+            sectionTeacher: {
+              select: {
+                fullName: true,
+              },
+            },
+            _count: { select: { students: true } },
+          },
+          orderBy: {
+            year: "desc",
+          },
+        },
+      },
+    }),
+    prisma.subject.findMany({
+      where: { classId: classId },
+      select: { course: { select: { courseName: true } } },
+    }),
+    prisma.teacher.findMany({
+      where: { level },
+      select: {
+        id: true,
+        fullName: true,
+      },
+    }),
+  ]);
+
+  if (!classData) {
+    notFound();
+  }
+
+  const existingCourse = courses.map((data, index) => ({
+    courseName: data.course.courseName,
+  }));
+
+  const notExistCourses = await prisma.course.findMany({
+    where: {
+      NOT: {
+        courseName: { in: existingCourse.map((data) => data.courseName) },
+      },
+    },
+  });
+
+  const courseOption = notExistCourses.map((course) => ({
+    label: course.courseName,
+    value: course.courseName,
+  }));
+  
+
+  return (
+    <div className="grid grid-cols-12">
+      {/* Courses */}
+      <div className="col-span-12 xl:col-span-6 m-2 rounded border p-4">
+        <CourseView
+          courses={existingCourse}
+          classId={classId}
+          courseOption={courseOption}
+          role={user.role}
+        />
+      </div>
+
+      {/* Sections */}
+      <div className=" col-span-12 xl:col-span-6 border p-4 m-2 rounded">
+        <SectionView
+          classId={classId}
+          sections={classData.sections}
+          teachers={teachers}
+          hasSection={classData.sections.length > 0}
+          role={user.role}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SingleClassPage;

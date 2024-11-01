@@ -1,6 +1,3 @@
-
-import { teacherData } from "@/lib/data";
-
 import React from "react";
 import { Table, TableHead, TableHeader, TableRow } from "./ui/table";
 
@@ -12,7 +9,6 @@ const TableList = ({
   renderRow: (item: any) => React.ReactNode;
   data: any[];
   columns: { header: string; accessor: string; className?: string }[];
-  
 }) => {
   return (
     <Table className="mt-4 w-full">

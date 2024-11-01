@@ -1,4 +1,3 @@
-import { role } from "@/lib/data";
 import LogoutForm from "../Forms/LogoutForm";
 import SlideBarLink from "./SlidebarLink";
 
@@ -10,73 +9,79 @@ const menuItems = [
         icon: "LayoutDashboard",
         label: "Dashboard",
         href: "/dashboard",
-        visiable: ["admin", "teacher", "student"],
+        visiable: ["ADMIN"],
+      },
+      {
+        icon: "User",
+        label: "Profile",
+        href: "/profile",
+        visiable: ["TEACHER", "STUDENT"],
       },
 
       {
         icon: "Book",
         label: "Course",
         href: "/dashboard/course",
-        visiable: ["admin"],
+        visiable: ["ADMIN", "TEACHER"],
       },
       {
         icon: "School",
         label: "Class",
         href: "/dashboard/class",
-        visiable: ["admin"],
+        visiable: ["ADMIN"],
       },
       {
         icon: "User",
         label: "Teachers",
         href: "/dashboard/teachers?page=1",
-        visiable: ["admin"],
+        visiable: ["ADMIN", "TEACHER"],
       },
 
       {
         icon: "Users",
         label: "Students",
         href: "/dashboard/students?page=1",
-        visiable: ["admin", "teacher"],
+        visiable: ["ADMIN", "TEACHER"],
       },
 
       {
         icon: "BookCheck",
         label: "Exams",
         href: "/dashboard/exams",
-        visiable: ["admin", "teacher", "student"],
+        visiable: ["ADMIN", "TEACHER", "STUDENT"],
       },
 
       {
         icon: "BookCheck",
         label: "Result",
         href: "/dashboard/results",
-        visiable: ["admin", "teacher", "student"],
+        visiable: ["ADMIN", "TEACHER", "STUDENT"],
       },
 
       {
         icon: "Calendar",
         label: "Attendence",
         href: "/dashboard/attendance",
-        visiable: ["admin", "teacher", "student"],
+        visiable: ["ADMIN"],
       },
 
       {
         icon: "MessageSquare",
         label: "Annoucements",
         href: "/dashboard/annoucements?page=1",
-        visiable: ["admin", "teacher", "student"],
+        visiable: ["ADMIN", "TEACHER", "STUDENT"],
       },
       {
         icon: "Hexagon",
         label: "Authority",
-        href: "/dashboard/authority?page=1",
-        visiable: ["admin", "teacher", "student"],
+        href: "/home/authority",
+        visiable: ["ADMIN", "TEACHER", "STUDENT"],
       },
     ],
   },
 ];
 
-const Menu = () => {
+const Menu = ({ role }: { role: string }) => {
   return (
     <div className="mt-4 text-sm site-tsx">
       {menuItems.map((menu) => (

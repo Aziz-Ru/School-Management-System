@@ -19,7 +19,7 @@ const FormModal = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-sky-400 hover:bg-sky-300 text-black">
+        <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
           <Icon name="Plus" size={18} />
           Add {table}
         </Button>

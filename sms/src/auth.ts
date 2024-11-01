@@ -1,5 +1,6 @@
 "use server";
 
+import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import prisma from "./lib/db";
@@ -44,6 +45,10 @@ export async function login(formData: FormData): Promise<ReturnProps> {
       where: {
         id: validResult.data.uid.toString(),
       },
+      select: {
+        id: true,
+        password: true,
+      },
     });
   }
 
@@ -51,6 +56,10 @@ export async function login(formData: FormData): Promise<ReturnProps> {
     user = await prisma.teacher.findUnique({
       where: {
         id: validResult.data.uid,
+      },
+      select: {
+        id: true,
+        password: true,
       },
     });
   }
@@ -60,17 +69,27 @@ export async function login(formData: FormData): Promise<ReturnProps> {
       where: {
         id: validResult.data.uid,
       },
+      select: {
+        id: true,
+        password: true,
+      },
     });
   }
 
   if (!user) {
     return { error: "Invalid Credentials" };
   }
-
-  if (user.password !== validResult.data.password) {
+  const isMatchPassword = await bcrypt.compare(
+    validResult.data.password,
+    user.password
+  );
+  console.log(isMatchPassword);
+  if (!isMatchPassword) {
     return { error: "Invalid Credentials" };
   }
+
   await createSession(user.id.toString(), validResult.data.role);
+
   return { msg: "Logged In" };
 }
 

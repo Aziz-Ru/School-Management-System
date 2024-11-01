@@ -9,7 +9,7 @@ interface Props {
 const NavLink = ({ path, title, isLast }: Props) => {
   return (
     <li
-      className={`hover:bg-gray-200 dark:hover:bg-gray-700 border-b border-gray-400 dark:border-gray-600 ${
+      className={`hover:bg-indigo-500  border-b border-indigo-200 ${
         isLast && "lg:border-none"
       }`}
     >

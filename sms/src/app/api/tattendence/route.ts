@@ -9,8 +9,15 @@ export async function POST(req: NextRequest) {
     if (!teacherId || (teacherId && isNaN(teacherId))) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
+
     const current = new Date();
     current.setUTCHours(0, 0, 0, 0);
+    if (current.toDateString().split(" ")[0] === "Fri") {
+      return NextResponse.json(
+        { error: "You can't mark attendance on Friday" },
+        { status: 400 }
+      );
+    }
     await prisma.teacherAttendence.create({
       data: {
         teacherId: parseInt(teacherId),

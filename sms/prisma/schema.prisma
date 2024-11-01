@@ -157,8 +157,8 @@ model schedule {
   startEnd String
   sectionId String
   section   section        @relation(fields: [sectionId], references: [id])
-  subjectId  String?
-  subject   subject? @relation(fields: [subjectId], references: [id])
+  subjectId  String
+  subject   subject @relation(fields: [subjectId], references: [id])
   teacherId Int
   teacher   teacher        @relation(fields: [teacherId], references: [id])
   @@unique([teacherId,startEnd])

@@ -3,12 +3,19 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { date, studentId, sectionId } = await req.json();
-  console.log(date, studentId);
+  const { studentId, sectionId } = await req.json();
+  const currentDate = new Date();
+  currentDate.setUTCHours(0, 0, 0, 0);
+  if (currentDate.toDateString().split(" ")[0] === "Fri") {
+    return NextResponse.json(
+      { error: "You can't mark attendance on Friday" },
+      { status: 400 }
+    );
+  }
   try {
     await prisma.attendence.create({
       data: {
-        date: date,
+        date: currentDate.toISOString(),
         student: {
           connect: {
             id: parseInt(studentId),
@@ -20,6 +27,7 @@ export async function POST(req: NextRequest) {
             id: sectionId,
           },
         },
+        month: currentDate.getMonth() + 1,
       },
     });
     revalidatePath("/dashboard");
@@ -43,9 +51,10 @@ export async function DELETE(req: NextRequest) {
 
     await prisma.attendence.delete({
       where: {
-        studentId_date: {
+        studentId_date_month: {
           studentId: parseInt(studentId),
           date: new Date(date),
+          month: new Date(date).getMonth() + 1,
         },
       },
     });

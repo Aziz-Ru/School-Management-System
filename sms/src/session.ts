@@ -29,10 +29,18 @@ export async function createSession(userId: string, role: string) {
   const session = await encrypt({ user, expiresAt });
   cookies().set("__session", session, {
     expires: expiresAt,
-    httpOnly: true,
     secure: true,
     sameSite: "strict",
   });
+  if (user.role !== "ADMIN") {
+    cookies().set("__u_id", user.uid, {
+      expires: expiresAt,
+      httpOnly: true,
+      secure: true,
+
+      sameSite: "strict",
+    });
+  }
 }
 
 // export async function updateSession() {
@@ -43,4 +51,5 @@ export async function createSession(userId: string, role: string) {
 
 export async function deleteSession() {
   cookies().delete("__session");
+  cookies().delete("__u_id");
 }
