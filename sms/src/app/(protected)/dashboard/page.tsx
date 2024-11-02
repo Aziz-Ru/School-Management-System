@@ -8,6 +8,8 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 const Page = () => {
+
+  
   return (
     <div className="p-4 gap-4 flex flex-col lg:flex-row">
       <div className="w-full lg:w-2/3">

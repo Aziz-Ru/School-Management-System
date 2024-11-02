@@ -20,7 +20,7 @@ const SlideBarLink = ({
   return (
     <Link
       key={label}
-      className={`text-lg flex justify-center items-center lg:justify-start gap-2 py-2 md:px-2 rounded-md hover:site-hover ${style}`}
+      className={`text-lg text-black flex justify-center items-center lg:justify-start gap-2 py-2 md:px-2 rounded-md hover:site-hover ${style}`}
       href={href}
     >
       <Icon name={icon} size={18} />

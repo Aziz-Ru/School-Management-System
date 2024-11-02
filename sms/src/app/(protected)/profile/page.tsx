@@ -12,6 +12,7 @@ import TeacherRoutine from "./_components/Troutine";
 const ProfilePage = async () => {
   const date = new Date();
   const { status, tAttendence, tSchedule, tProfile } = await getProfileData();
+  console.log(status);
   if (status !== 200) {
     notFound();
   }

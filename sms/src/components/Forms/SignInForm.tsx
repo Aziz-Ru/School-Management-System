@@ -4,7 +4,6 @@ import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -17,7 +16,6 @@ import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 const SignInForm = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
   return (
     <Dialog>
@@ -43,7 +41,6 @@ const SignInForm = () => {
               } else if (formData.get("role") === "STUDENT") {
                 router.replace("/profile");
               }
-
               toast({ title: "Logged In", description: "Welcome To SMS" });
             }
           }}
