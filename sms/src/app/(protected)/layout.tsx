@@ -1,4 +1,4 @@
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminNavbar from "@/components/Navbar/AdminNavbar";
 import Menu from "@/components/slidebar/AdminSideBar";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
@@ -29,7 +29,7 @@ export default async function DashboardLayout({
       </div>
       {/* Right */}
       <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] site-bg overflow-scroll">
-        <AdminNavbar />
+        <AdminNavbar user={user} />
         {children}
       </div>
     </section>

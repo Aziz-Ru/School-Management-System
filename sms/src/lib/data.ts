@@ -21,7 +21,8 @@ export const SCHOOL_CODE = "123456";
 export const SCHOOL_EIIN = "EN23456";
 export const SCHOOL_MESSAGE = "A School of Creative Learning";
 export const SCHOOL_LOGO = "/image/logo.png";
-
+export const GENEREL_SESSION =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.q2-bjp-bIbC1KcsegBorKoJvi6BU7tJOGfaLqLVIeT0";
 export const MonthNames = [
   "January",
   "February",

@@ -5,7 +5,9 @@ import Link from "next/link";
 import Menus from "./Menus";
 
 const Navbar = async () => {
-  const session = cookies().get("__session")?.value;
+  const cookieStore = cookies();
+  const session = cookieStore.get("__session")?.value;
+  // const session = loginSession ? loginSession : GENEREL_SESSION;
   const { user } = await decrypt(session);
 
   return (
@@ -41,7 +43,7 @@ const Navbar = async () => {
               </Link>
             )}
           </div>
-          <Menus />
+          <Menus isLoggedIn={user ? true : false} />
         </div>
       </nav>
     </header>

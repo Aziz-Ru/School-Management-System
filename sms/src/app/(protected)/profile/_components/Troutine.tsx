@@ -33,6 +33,7 @@ const TeacherRoutine = ({ rowData }: { rowData: any[] }) => {
           columnDefs={columnDefs}
           defaultColDef={{
             editable: false,
+            resizable: false,
           }}
           suppressMovableColumns={true} // Disable column dragging
         />

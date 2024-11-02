@@ -39,9 +39,9 @@ export async function login(formData: FormData): Promise<ReturnProps> {
   if (validResult.error) {
     return { error: validResult.error.errors[0].message };
   }
-  let user;
+
   if (validResult.data.role === "ADMIN") {
-    user = await prisma.admin.findUnique({
+    const admin = await prisma.admin.findUnique({
       where: {
         id: validResult.data.uid.toString(),
       },
@@ -50,47 +50,104 @@ export async function login(formData: FormData): Promise<ReturnProps> {
         password: true,
       },
     });
+
+    if (!admin) {
+      return { error: "Invalid Credentials" };
+    }
+    const isMatchPassword = await bcrypt.compare(
+      validResult.data.password,
+      admin.password
+    );
+    if (!isMatchPassword) {
+      return { error: "Invalid Credentials" };
+    }
+    await createSession({
+      user: {
+        id: admin.id.toString(),
+        role: validResult.data.role,
+        fullName: "ADMIN",
+      },
+    });
+    return { msg: "Admin Login Successully" };
   }
 
   if (validResult.data.role === "TEACHER") {
-    user = await prisma.teacher.findUnique({
+    const teacher = await prisma.teacher.findUnique({
       where: {
         id: validResult.data.uid,
       },
       select: {
         id: true,
         password: true,
+        fullName: true,
+        img: true,
+        createdAt: true,
       },
     });
+    if (!teacher) {
+      return { error: "Invalid Credentials" };
+    }
+    const isMatchPassword = await bcrypt.compare(
+      validResult.data.password,
+      teacher.password
+    );
+
+    if (!isMatchPassword) {
+      return { error: "Invalid Credentials" };
+    }
+    await createSession({
+      user: {
+        id: teacher.id.toString(),
+        img: teacher.img as string,
+        role: validResult.data.role,
+        fullName: teacher.fullName,
+        createdAt: teacher.createdAt.toDateString(),
+      },
+    });
+
+    return { msg: `${teacher.id} Login Successfully` };
   }
 
   if (validResult.data.role === "STUDENT") {
-    user = await prisma.student.findUnique({
+    const student = await prisma.student.findUnique({
       where: {
         id: validResult.data.uid,
       },
       select: {
         id: true,
         password: true,
+        fullName: true,
+        sectionId: true,
+        img: true,
+        createdAt: true,
       },
     });
+    if (!student) {
+      return { error: "Invalid Credential" };
+    }
+    const isMatchPassword = await bcrypt.compare(
+      validResult.data.password,
+      student.password
+    );
+
+    if (!isMatchPassword) {
+      return { error: "Invalid Credentials" };
+    }
+
+    await createSession({
+      user: {
+        id: student.id.toString(),
+        role: validResult.data.role,
+        fullName: student.fullName,
+        sectionId: student.sectionId,
+        createdAt: student.createdAt.toDateString(),
+        img: student.img as string,
+      },
+    });
+    return { msg: `${student.id} Login Successfully` };
   }
 
-  if (!user) {
-    return { error: "Invalid Credentials" };
-  }
-  const isMatchPassword = await bcrypt.compare(
-    validResult.data.password,
-    user.password
-  );
-  console.log(isMatchPassword);
-  if (!isMatchPassword) {
-    return { error: "Invalid Credentials" };
-  }
-
-  await createSession(user.id.toString(), validResult.data.role);
-
-  return { msg: "Logged In" };
+  return { msg: "Invalid Credential" };
 }
 
 export async function logout() {

@@ -23,13 +23,7 @@ model school {
   EIIN       String
   imageURL   String?
 }
-model events{
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  date      String
-  createdAt DateTime @default(now())
-}
+
 
 model teacher {
   id             Int              @id @unique
@@ -168,9 +162,18 @@ model authority {
   id       String  @id @default(uuid())
   fullName String
   phone    String
-  message  String?
+  message  message[]
   rank     String
   imageURL String
+}
+
+model message{
+  id     String  @id
+  title  String
+  message  String
+  authorId   String
+  author     authority @relation(fields: [authorId],references: [id])
+  createdAt DateTime
 }
 
 model annoucement {

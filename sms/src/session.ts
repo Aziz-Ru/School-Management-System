@@ -13,18 +13,27 @@ export async function encrypt(payload: any) {
 }
 
 export async function decrypt(token: string | undefined = ""): Promise<any> {
-  const { payload } = await jwtVerify(token, key, {
-    algorithms: ["HS256"],
-  });
-  // console.log(payload);
-  return payload;
+  // console.log(token);
+  try {
+    const { payload } = await jwtVerify(token, key, {
+      algorithms: ["HS256"],
+    });
+    return payload;
+  } catch (error) {
+    return { user: null };
+  }
 }
 
-export async function createSession(userId: string, role: string) {
-  const user = {
-    uid: userId,
-    role: role,
-  };
+interface UserProps {
+  id: string;
+  role: string;
+  fullName?: string;
+  sectionId?: string;
+  img?: string;
+  createdAt?: string;
+}
+
+export async function createSession({ user }: { user: UserProps }) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session = await encrypt({ user, expiresAt });
   cookies().set("__session", session, {
@@ -32,12 +41,12 @@ export async function createSession(userId: string, role: string) {
     secure: true,
     sameSite: "strict",
   });
+
   if (user.role !== "ADMIN") {
-    cookies().set("__u_id", user.uid, {
+    cookies().set("__u_id", user.id, {
       expires: expiresAt,
       httpOnly: true,
       secure: true,
-
       sameSite: "strict",
     });
   }

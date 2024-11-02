@@ -9,7 +9,7 @@ import DropdownAdmission from "./DropdownAdmission";
 import DropdownCoCurricular from "./DropdownCoCurricular";
 import DropdownSchool from "./DropdownSchool";
 
-const Menus = () => {
+const Menus = ({isLoggedIn}:{isLoggedIn:boolean}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Menus = () => {
           <DropdownAchivement />
           <DropdownAdmission />
           <DropdownCoCurricular />
-          {1 == 1 && <SignInForm />}
+          {!isLoggedIn && <SignInForm />}
         </div>
       </div>
     </>

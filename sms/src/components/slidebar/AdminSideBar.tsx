@@ -104,11 +104,13 @@ const Menu = ({ role }: { role: string }) => {
           })}
         </div>
       ))}
-      <div className="">
+      <div className="flex flex-col">
         <span className="hidden lg:block text-gray-400 font-light my-4">
           OTHERS
         </span>
-        <LogoutForm />
+        <div className=" flex justify-center items-center lg:justify-start">
+          <LogoutForm />
+        </div>
       </div>
     </div>
   );
