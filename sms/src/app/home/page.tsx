@@ -1,10 +1,13 @@
-import Annoucement from "@/components/Annoucement";
+import NoticeCards from "@/components/NoticeCard";
 import ReadMore from "@/components/buttons/ReadMore";
 import { Card } from "@/components/ui/card";
 import { SCHOOL_INTRO, SCHOOL_NAME } from "@/lib/data";
+import { get_notice } from "@/lib/utils/get_latest_notice";
 import Link from "next/link";
 
-const page = () => {
+const page = async () => {
+  const { notices, status } = await get_notice(3);
+
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="grid grid-cols-12">
@@ -36,8 +39,8 @@ const page = () => {
             </div>
           </Card>
         </div>
-        <div className="col-span-12 md:col-span-5">
-          <Annoucement />
+        <div className="col-span-12 md:col-span-5 my-4">
+          <NoticeCards notices={notices} />
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ const Navbar = async () => {
         <div className="max-w-screen-xl mx-auto  flex flex-wrap items-center justify-between">
           <div className="flex items-center gap-2">
             {user ? (
-              <Link href={"/profile"}>
+              <Link href={user.role == "ADMIN" ? "/dashboard" : "/profile"}>
                 <div className="flex gap-4 px-4 py-3.5">
                   <Image
                     src={"/image/noavatar.png"}
@@ -25,9 +25,10 @@ const Navbar = async () => {
                     className="rounded-full"
                     alt="Avatar"
                   />
+
                   <div className="flex flex-col">
                     <span className="text-xs leading-3 font-medium">
-                      Jhon Doe
+                      {user.fullName}
                     </span>
                     <span className="text-[10px] text-right text-gray-200">
                       {user.role}

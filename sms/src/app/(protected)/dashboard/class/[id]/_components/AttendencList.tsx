@@ -20,7 +20,7 @@ const AttendenceList = ({
   AttendenceColDefs: any[];
 }) => {
   const [loading, setLoading] = useState(false);
-  const gridHeight = studentAttendenceList.length * 50 + 150;
+  const gridHeight = studentAttendenceList.length * 50 + 80;
 
   const onMarkPresent = async (
     day: string | undefined,
@@ -91,11 +91,14 @@ const AttendenceList = ({
       }
     }
   };
+
   return (
     <div className="ag-theme-quartz" style={{ height: `${gridHeight}px` }}>
       <AgGridReact
         suppressMovableColumns={true}
-        defaultColDef={{ resizable: false }}
+        defaultColDef={{
+          resizable: false,
+        }}
         rowData={studentAttendenceList}
         columnDefs={AttendenceColDefs}
         onCellValueChanged={(e) => {

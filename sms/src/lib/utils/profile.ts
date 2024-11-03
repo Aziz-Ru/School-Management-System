@@ -108,7 +108,7 @@ export const getProfileData = async (): Promise<ProfileDataResponse> => {
         },
       }),
     ]);
-    console.log(stSchedule);
+    return { status: Status.OK };
   }
   return { status: Status.UNAUTHORIZED };
 };

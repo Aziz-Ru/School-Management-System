@@ -12,6 +12,8 @@ export interface TeacherProfile {
   phone: string;
   img: string | null;
   email: string;
+  level?: string;
+  rank?: string;
 }
 
 export interface TSchedule {
@@ -49,5 +51,53 @@ export interface StudentProfileProps {
 export interface MonthlyAttendance {
   Month: string;
   [day: number]: boolean;
+}
+
+enum GENDER {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+}
+
+export interface StudentType {
+  id: number;
+  fullName: string;
+  phone?: string;
+  address?: string;
+  dob?: string;
+  img?: string;
+  result?: Result[];
+  enrolledSubject?: EnrolledSubject[];
+  sex?: GENDER;
+  sectionId?: string;
+  attendenceList?: StudentAttendence[];
+  createdAt?: Date;
+}
+
+export interface Result {
+  // Define the properties for Result based on the actual model
+}
+
+export interface EnrolledSubject {
+  // Define the properties for EnrolledSubject based on the actual model
+}
+
+export interface Section {
+  id: string;
+  // Define additional properties for Section as needed
+}
+export interface StudentAttendence {
+  id: string;
+  year?: number;
+  month?: number;
+  date: Date;
+  present: boolean;
+  sectionId?: string;
+}
+
+export interface Notice {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
 }
 

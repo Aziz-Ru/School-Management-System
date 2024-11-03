@@ -10,7 +10,7 @@ export default function RootLayout({
         <Hero />
       </div>
       <div className="overflow-auto">
-        <section className="h-[80vh]">{children}</section>
+        <section className="">{children}</section>
         <Footer />
       </div>
     </div>

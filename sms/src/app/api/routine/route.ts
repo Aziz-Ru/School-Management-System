@@ -1,34 +1,7 @@
+import { DaysOfWeek, Times } from "@/lib/data";
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-
-const times = [
-  {
-    time: "10:00 - 11:00 AM",
-  },
-  {
-    time: "11:00 - 12:00 PM",
-  },
-  {
-    time: "12:00 - 1:00 PM",
-  },
-  {
-    time: "1:00 - 2:00 PM",
-  },
-  {
-    time: "2:00 - 3:00 PM",
-  },
-  {
-    time: "3:00 - 4:00 PM",
-  },
-];
-const daysOfWeek = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-];
 
 export async function GET(req: NextRequest) {
   const searchParams = new URL(req.url).searchParams;
@@ -82,9 +55,9 @@ export async function GET(req: NextRequest) {
       }),
     ]);
 
-    const routine = times.map((t) => {
+    const routine = Times.map((t) => {
       const obj: any = { time: t.time };
-      const days = daysOfWeek.map((day) => {
+      const days = DaysOfWeek.map((day) => {
         const daySchedule = schedule.find((s) => s.startEnd === t.time);
         if (daySchedule) {
           obj[day] = `${daySchedule.subject!.courseName}`;
@@ -130,6 +103,8 @@ export async function POST(req: NextRequest) {
         subjectId: subjectId,
       },
     });
+    
+    revalidatePath("/dashboard");
     return NextResponse.json(
       { msg: "Schedule Added Successfully" },
       { status: 201 }

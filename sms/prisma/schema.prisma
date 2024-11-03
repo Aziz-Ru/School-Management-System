@@ -52,6 +52,7 @@ model student {
   phone          String
   address        String
   dob            String
+  lastExamStatus Boolean @default(false)
   img            String?
   result         result[]
   enrolledSubject enrolledSubject[]
@@ -176,11 +177,10 @@ model message{
   createdAt DateTime
 }
 
-model annoucement {
+model notice {
   id        String   @id @default(uuid())
   title     String
-  content   String
-  date      String
+  content   String @db.Text
   createdAt DateTime @default(now())
 }
 

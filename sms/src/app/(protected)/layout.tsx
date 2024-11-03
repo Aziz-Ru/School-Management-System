@@ -5,6 +5,7 @@ import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
@@ -14,6 +15,9 @@ export default async function DashboardLayout({
   const cookieStore = cookies();
   const session = cookieStore.get("__session");
   const { user } = await decrypt(session!.value);
+  if (session === undefined || user == null || user == undefined) {
+    redirect("/home");
+  }
 
   return (
     <section className="h-screen flex">

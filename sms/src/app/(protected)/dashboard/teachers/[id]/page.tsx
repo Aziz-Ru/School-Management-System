@@ -1,5 +1,6 @@
-import Annoucement from "@/components/Annoucement";
+import NoticeCards from "@/components/NoticeCard";
 import prisma from "@/lib/db";
+import { get_notice } from "@/lib/utils/get_latest_notice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProfileCard from "../_components/ProfileCard";
@@ -51,7 +52,7 @@ const TeacherPage = async ({
       where: { teacherId: parseInt(params.id), year: date.getFullYear() },
     }),
   ]);
-
+  const { notices } = await get_notice(3);
   if (!teacher) {
     notFound();
   }
@@ -145,7 +146,7 @@ const TeacherPage = async ({
             </Link>
           </div>
         </div>
-        <Annoucement />
+        <NoticeCards notices={notices} />
       </div>
     </div>
   );

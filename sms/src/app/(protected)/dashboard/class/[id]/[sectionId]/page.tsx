@@ -1,4 +1,4 @@
-import Annoucement from "@/components/Annoucement";
+import Annoucement from "@/components/NoticeCard";
 
 import { Card } from "@/components/ui/card";
 import prisma from "@/lib/db";
@@ -63,7 +63,6 @@ const SectionPage = async ({
               lte: new Date(date.getFullYear(), date.getMonth() + 1, 0),
             },
           },
-
           select: {
             id: true,
             date: true,
@@ -71,6 +70,7 @@ const SectionPage = async ({
             sectionId: true,
           },
         },
+        sectionId: true,
       },
     }),
     prisma.subject.findMany({ where: { classId: parseInt(params.id) } }),
@@ -136,6 +136,7 @@ const SectionPage = async ({
           sectionId={params.sectionId}
           studentAttendenceList={studentAttendence}
           AttendenceColDefs={AttendenceColDefs}
+          students={students}
         />
       </div>
       {/* Annoucement */}

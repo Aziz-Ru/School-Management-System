@@ -1,4 +1,5 @@
 export const role = "admin";
+export const NO_AVATAR_URL = "/image/noavatar.png";
 export const ITEM_PAR_PAGE = 10;
 export const SITE_NAME = "School Management System";
 export const SITE_URL = "http://localhost:3000";
@@ -142,8 +143,8 @@ export const MenuItems = [
 
       {
         icon: "MessageSquare",
-        label: "Annoucements",
-        href: "/dashboard/annoucements?page=1",
+        label: "Notices",
+        href: "/dashboard/notices",
         visiable: ["ADMIN"],
       },
     ],

@@ -13,8 +13,8 @@ const TableSearch = () => {
         placeholder="Search..."
       />
       <Link href={""}>
-        <Button className="bg-sky-400 hover:bg-sky-300 text-black">
-          <Icon name="Search" size={18} />
+        <Button className="bg-sky-400 hover:bg-sky-300 text-white">
+          <Icon name="Search" size={18} color="#FFFFFF" />
           Search
         </Button>
       </Link>

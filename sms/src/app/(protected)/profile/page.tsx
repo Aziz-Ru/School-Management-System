@@ -1,6 +1,7 @@
-import Annoucement from "@/components/Annoucement";
+import NoticeCards from "@/components/NoticeCard";
 import { DaysOfWeek, Times } from "@/lib/data";
 import { getAttendencCalendar } from "@/lib/utils";
+import { get_notice } from "@/lib/utils/get_latest_notice";
 import { getProfileData } from "@/lib/utils/profile";
 import { MonthlyAttendance } from "@/lib/utils/types";
 import Link from "next/link";
@@ -12,6 +13,7 @@ import TeacherRoutine from "./_components/Troutine";
 const ProfilePage = async () => {
   const date = new Date();
   const { status, tAttendence, tSchedule, tProfile } = await getProfileData();
+  const { notices } = await get_notice(3);
   console.log(status);
   if (status !== 200) {
     notFound();
@@ -81,7 +83,7 @@ const ProfilePage = async () => {
             </Link>
           </div>
         </div>
-        <Annoucement />
+        <NoticeCards notices={notices} />
       </div>
     </div>
   );

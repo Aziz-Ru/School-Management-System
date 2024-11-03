@@ -1,15 +1,11 @@
-"use client";
-import Annoucement from "@/components/Annoucement";
 import EventCalender from "@/components/EventCalender";
-import Events from "@/components/Events";
+import NoticeCards from "@/components/NoticeCard";
 import UserCard from "@/components/UserCard";
+import { get_notice } from "@/lib/utils/get_latest_notice";
 
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
-import "ag-grid-community/styles/ag-theme-quartz.css";
+const Page = async () => {
+  const { notices } = await get_notice();
 
-const Page = () => {
-
-  
   return (
     <div className="p-4 gap-4 flex flex-col lg:flex-row">
       <div className="w-full lg:w-2/3">
@@ -19,16 +15,12 @@ const Page = () => {
           <UserCard type="Student" />
           <UserCard type="Staff" />
         </div>
-        <div className="ag-theme-quartz h-screen"></div>
       </div>
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
-        <Events />
-        <Annoucement />
+        <NoticeCards notices={notices} />
       </div>
-
-      {/* Suggest */}
     </div>
   );
 };

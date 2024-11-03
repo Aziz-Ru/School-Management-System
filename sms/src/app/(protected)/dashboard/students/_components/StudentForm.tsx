@@ -18,11 +18,13 @@ import { toast } from "@/hooks/use-toast";
 import { useEffect, useRef, useState } from "react";
 import { addStudentAction } from "../_actions/addstudentAction";
 
+
 interface ClassData {
   id: number;
   className: string;
   sections: { id: string; sectionName: string }[];
 }
+
 
 export function AddStudentForm({ classData }: { classData: ClassData[] }) {
   const [selectedClass, setSelectedClass] = useState("");

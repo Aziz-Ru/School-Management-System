@@ -1,5 +1,6 @@
-import Annoucement from "@/components/Annoucement";
+import NoticeCards from "@/components/NoticeCard";
 import prisma from "@/lib/db";
+import { get_notice } from "@/lib/utils/get_latest_notice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProfileCard from "../_components/ProfileCard";
@@ -13,6 +14,7 @@ const Student = async ({ params }: { params: { id: string } }) => {
       },
     }),
   ]);
+  const { notices } = await get_notice(3);
 
   if (!student) {
     notFound();
@@ -62,7 +64,7 @@ const Student = async ({ params }: { params: { id: string } }) => {
             </Link>
           </div>
         </div>
-        <Annoucement />
+        <NoticeCards notices={notices} />
       </div>
     </div>
   );
