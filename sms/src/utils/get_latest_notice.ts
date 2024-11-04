@@ -1,4 +1,4 @@
-import prisma from "../db";
+import prisma from "../lib/db";
 import { Notice, Status } from "./types";
 
 interface NoticeReturnProps {
@@ -35,7 +35,7 @@ export async function get_notice_by_id(id: string): Promise<Notice | null> {
 
     return notice;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 }

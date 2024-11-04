@@ -1,6 +1,6 @@
 import Icon from "@/components/LucidIcon";
-import { TeacherProfile } from "@/lib/utils/types";
 import Image from "next/image";
+import { TeacherProfile } from "../../../../utils/types";
 
 const TeacherProfileCard = ({ teacher }: { teacher: TeacherProfile }) => {
   return (

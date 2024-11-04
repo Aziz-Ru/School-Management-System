@@ -1,5 +1,5 @@
-import { get_notice_by_id } from "@/lib/utils/get_latest_notice";
 import { notFound } from "next/navigation";
+import { get_notice_by_id } from "../../../../utils/get_latest_notice";
 
 const NoticePage = async ({ params }: { params: { id: string } }) => {
   const notice = await get_notice_by_id(params.id);

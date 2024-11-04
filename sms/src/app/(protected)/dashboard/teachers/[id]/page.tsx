@@ -1,8 +1,8 @@
 import NoticeCards from "@/components/NoticeCard";
 import prisma from "@/lib/db";
-import { get_notice } from "@/lib/utils/get_latest_notice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { get_notice } from "../../../../../utils/get_latest_notice";
 import ProfileCard from "../_components/ProfileCard";
 import Routine from "../_components/Routine";
 import AttendenceList from "../_components/TeacherAttendence";

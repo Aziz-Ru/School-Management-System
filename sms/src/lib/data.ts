@@ -150,3 +150,45 @@ export const MenuItems = [
     ],
   },
 ];
+
+export const Infrastructures = [
+  {
+    title: "Academic",
+    items: [
+      {
+        content:
+          "1×2 storied Main building (Classrooms 14, Teachers room 03 & Others 21, Total-38)",
+      },
+      {
+        content:
+          "1×4 storied Hons building -01 (Classrooms 11, Teachers room 02 & Others 08, Total-21)",
+      },
+      {
+        content:
+          "1×6 storied College building (Classrooms 29, Teachers room 13 & Others 11, Total-53)",
+      },
+      {
+        content:
+          "1×5 storied School building (Classrooms 29, Teachers room 04 & Others 12, Total-45)",
+      },
+      {
+        content:
+          "1×1 storied Nursery building (Classrooms 06, Teachers room 00 & Others 04, Total-10)",
+      },
+    ],
+  },
+  {
+    title: "Residential",
+    items: [
+      {
+        content: "1×2 Storied Principal’s Quarter (Duplex)",
+      },
+      {
+        content: "1×1 Storied Teachers’ Quarter (2 Flats)",
+      },
+      {
+        content: "1×2 Storied Teachers’ Quarter (4 Flats)",
+      },
+    ],
+  },
+];

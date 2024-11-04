@@ -1,38 +1,60 @@
 import { toast } from "@/hooks/use-toast";
+import { Student } from "@/utils/types";
+import { getDaysOfCurrentMonth, getPresent } from "@/utils/utilities";
+import { CellStyle, ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useState } from "react";
 
-interface StudentAttendanceData {
-  Id: string;
-  Name: string;
-  [key: string]: boolean | string;
-}
-
 const AttendenceList = ({
   sectionId,
-  studentAttendenceList,
-  AttendenceColDefs,
+  students,
 }: {
   sectionId: string;
-  studentAttendenceList: StudentAttendanceData[];
-  AttendenceColDefs: any[];
+  students: Student[];
 }) => {
   const [loading, setLoading] = useState(false);
-  const gridHeight = studentAttendenceList.length * 50 + 80;
+  const gridHeight = students.length * 50 + 80;
+  const { days } = getDaysOfCurrentMonth();
 
-  const onMarkPresent = async (
-    day: string | undefined,
-    id: string,
-    value: boolean
-  ) => {
-    if (value) {
-      try {
-        setLoading(true);
-        const currentDate = new Date();
-        currentDate.setUTCHours(0, 0, 0, 0);
-        const currentDay = new Date(currentDate).toISOString();
+  const [rowData, setRowData] = useState<any[]>([
+    ...students.map((student) => {
+      const stu: any = { Id: student.id.toString(), Name: student.fullName };
+      days.forEach((day) => {
+        stu[`${day}`] = getPresent(
+          student!.attendenceList!,
+          day,
+          new Date().getMonth() + 1
+        );
+      });
+      return stu;
+    }),
+  ]);
+
+  const [columnDefs, setColDefs] = useState<ColDef[]>([
+    { field: "Id", width: 100, editable: false, pinned: "left" },
+    { field: "Name", width: 150, editable: false },
+    ...days.map((day) => {
+      return {
+        headerName: `${day}`,
+        field: `${day}`,
+        width: 50,
+        editable: day === new Date().getDate(),
+        cellStyle: (params: any): CellStyle => {
+          return params.value ? { backgroundColor: "#cef9ff" } : {};
+        },
+      };
+    }),
+  ]);
+
+  const onMarkPresent = async (id: string, value: boolean) => {
+    try {
+      const currentDate = new Date();
+      currentDate.setUTCHours(0, 0, 0, 0);
+      const currentDay = new Date(currentDate).toISOString();
+      setLoading(true);
+      if (value) {
         const response = await fetch(`/api/attendence`, {
           method: "POST",
           body: JSON.stringify({
@@ -51,20 +73,7 @@ const AttendenceList = ({
             title: `Attendance marked for ${id}`,
           });
         }
-      } catch (error) {
-        toast({
-          title: "Failed to mark attendance",
-          description: "Please try again",
-        });
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      try {
-        setLoading(true);
-        const currentDate = new Date();
-        currentDate.setUTCHours(0, 0, 0, 0);
-        const currentDay = new Date(currentDate).toISOString();
+      } else {
         const response = await fetch(
           `/api/attendence?date=${currentDay}&studentId=${id}&sectionId=${sectionId}`,
           {
@@ -81,14 +90,14 @@ const AttendenceList = ({
             title: `${id} unmarked`,
           });
         }
-      } catch (error) {
-        toast({
-          title: "Failed to delete attendance",
-          description: "Please try again",
-        });
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      toast({
+        title: "Failed to mark attendance",
+        description: "Please try again",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,10 +108,10 @@ const AttendenceList = ({
         defaultColDef={{
           resizable: false,
         }}
-        rowData={studentAttendenceList}
-        columnDefs={AttendenceColDefs}
+        rowData={rowData}
+        columnDefs={columnDefs}
         onCellValueChanged={(e) => {
-          onMarkPresent(e.colDef.field, e.data.Id, e.newValue);
+          onMarkPresent(e.data.Id, e.newValue);
         }}
       />
     </div>

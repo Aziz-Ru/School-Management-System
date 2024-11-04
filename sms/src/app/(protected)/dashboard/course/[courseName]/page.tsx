@@ -1,5 +1,5 @@
-import { get_teacher_by_course } from "@/lib/utils/get_teacher_by_course";
-import { Status } from "@/lib/utils/types";
+import { get_teacher_by_course } from "../../../../../utils/get_teacher_by_course";
+import { Status } from "../../../../../utils/types";
 import Teacher_card from "../_components/teacher_card";
 
 const Course = async ({ params }: { params: { courseName: string } }) => {

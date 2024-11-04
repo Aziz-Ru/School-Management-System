@@ -1,18 +1,17 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Attendence, MonthlyAttendance } from "../utils/types";
 import { MonthNames } from "./data";
-import { MonthlyAttendance, TAttendence } from "./utils/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function getAttendencCalendar(
-  attendence: TAttendence[]
+  attendence: Attendence[]
 ): MonthlyAttendance[] {
   let calendar: MonthlyAttendance[] = [];
   const date = new Date();
-
   const getPresent = (
     attendence: any[],
     day: number,
@@ -27,7 +26,6 @@ export function getAttendencCalendar(
     }
     return false;
   };
-
   for (let month = 0; month < 12; month++) {
     const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
     let monthData: any = { Month: MonthNames[month] };

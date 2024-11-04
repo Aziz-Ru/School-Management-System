@@ -1,12 +1,9 @@
 import Icon from "@/components/LucidIcon";
-import { StudentProfileProps } from "@/lib/utils/types";
+import { Student } from "../../../../utils/types";
+
 import Image from "next/image";
 
-
-
-const ProfileCard = ({ student }: { student: StudentProfileProps }) => {
-
-    
+const StudentProfileCard = ({ student }: { student: Student }) => {
   return (
     <div className="bg-sky-50  py-6 px-4 rounded-md flex-1 flex gap-4 border border-gray-200">
       <div className="w-1/3">
@@ -60,7 +57,7 @@ const ProfileCard = ({ student }: { student: StudentProfileProps }) => {
             <Icon name="Calendar" size={18} />
             <span className="site-txt flex gap-2">
               <span className="font-bold">DOB:</span>
-              <span>{new Date(student.dob).toLocaleDateString()}</span>
+              {/* <span>{new Date(student.dob).toLocaleDateString()}</span> */}
             </span>
           </div>
         </div>
@@ -69,4 +66,4 @@ const ProfileCard = ({ student }: { student: StudentProfileProps }) => {
   );
 };
 
-export default ProfileCard;
+export default StudentProfileCard;

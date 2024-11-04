@@ -1,4 +1,4 @@
-import { Notice } from "@/lib/utils/types";
+import { Notice } from "../utils/types";
 import ReadMore from "./buttons/ReadMore";
 import {
   Card,

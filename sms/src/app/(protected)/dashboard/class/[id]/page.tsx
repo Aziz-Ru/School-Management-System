@@ -1,5 +1,6 @@
-import prisma from "@/lib/db";
 import { decrypt } from "@/session";
+import { getClassData } from "@/utils/get_classData";
+import { Status } from "@/utils/types";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CourseView from "../_components/CourseView";
@@ -20,70 +21,24 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
   const level = classId < 6 ? "PRIMARY" : "SCHOOL";
-
-  const [classData, courses, teachers] = await prisma.$transaction([
-    prisma.class.findFirst({
-      where: { id: classId },
-      include: {
-        sections: {
-          select: {
-            id: true,
-            sectionName: true,
-            year: true,
-            sectionTeacher: {
-              select: {
-                fullName: true,
-              },
-            },
-            _count: { select: { students: true } },
-          },
-          orderBy: {
-            year: "desc",
-          },
-        },
-      },
-    }),
-    prisma.subject.findMany({
-      where: { classId: classId },
-      select: { course: { select: { courseName: true } } },
-    }),
-    prisma.teacher.findMany({
-      where: { level },
-      select: {
-        id: true,
-        fullName: true,
-      },
-    }),
-  ]);
-
-  if (!classData) {
+  const { classdata, teachers, subjects, courses, status } = await getClassData(
+    classId
+  );
+  if (status !== Status.OK) {
     notFound();
   }
 
-  const existingCourse = courses.map((data, index) => ({
-    courseName: data.course.courseName,
-  }));
-
-  const notExistCourses = await prisma.course.findMany({
-    where: {
-      NOT: {
-        courseName: { in: existingCourse.map((data) => data.courseName) },
-      },
-    },
-  });
-
-  const courseOption = notExistCourses.map((course) => ({
+  const courseOption = courses!.map((course) => ({
     label: course.courseName,
     value: course.courseName,
   }));
-  
 
   return (
     <div className="grid grid-cols-12">
       {/* Courses */}
       <div className="col-span-12 xl:col-span-6 m-2 rounded border p-4">
         <CourseView
-          courses={existingCourse}
+          courses={subjects}
           classId={classId}
           courseOption={courseOption}
           role={user.role}
@@ -94,9 +49,9 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
       <div className=" col-span-12 xl:col-span-6 border p-4 m-2 rounded">
         <SectionView
           classId={classId}
-          sections={classData.sections}
+          sections={classdata!.sections}
           teachers={teachers}
-          hasSection={classData.sections.length > 0}
+          hasSection={classdata!.sections!.length > 0}
           role={user.role}
         />
       </div>

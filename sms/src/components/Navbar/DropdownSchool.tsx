@@ -40,12 +40,20 @@ const DropdownSchool = () => {
         >
           <NavLink path={"/principal"} title={"Principal"} isLast={false} />
           <NavLink
-            path={"/governing-body"}
-            title={"Governing Body"}
+            path={"/home/details/history"}
+            title={"Institution History"}
             isLast={false}
           />
-          <NavLink path={"/commitee"} title={"Commitee"} isLast={false} />
-          <NavLink path={"/official-staff"} title={"Staff"} isLast={true} />
+          <NavLink
+            path={"/home/details/infrastructure"}
+            title={"Infrasturcture"}
+            isLast={false}
+          />
+          <NavLink
+            path={"/home/details/mission-and-vission"}
+            title={"Mission & Vission"}
+            isLast={true}
+          />
         </ul>
       </div>
     </ClickoutSide>

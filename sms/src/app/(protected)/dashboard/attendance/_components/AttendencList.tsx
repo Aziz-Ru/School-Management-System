@@ -35,6 +35,7 @@ const TeacherAttendenceList = ({ teachers }: { teachers: TeacherData[] }) => {
     const res = attendence.find((att) => att.date.getDate() == day);
     return res ? true : false;
   };
+  
   useEffect(() => {
     if (teachers) {
       const data = teachers.map((teacher: any, index: number) => {

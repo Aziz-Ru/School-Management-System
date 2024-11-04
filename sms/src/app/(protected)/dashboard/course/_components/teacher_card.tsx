@@ -6,8 +6,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { NO_AVATAR_URL } from "@/lib/data";
-import { TeacherProfile } from "@/lib/utils/types";
 import Image from "next/image";
+import { TeacherProfile } from "../../../../../utils/types";
 
 const Teacher_card = ({ profile }: { profile: TeacherProfile }) => {
   return (

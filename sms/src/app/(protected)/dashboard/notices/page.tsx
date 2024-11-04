@@ -6,11 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { get_notice } from "@/lib/utils/get_latest_notice";
-import { Status } from "@/lib/utils/types";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { get_notice } from "../../../../utils/get_latest_notice";
+import { Status } from "../../../../utils/types";
 import NoticeCreateForm from "./_components/NoticeCreateForm";
 
 const git = async () => {

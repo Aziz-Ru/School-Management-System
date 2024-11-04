@@ -1,7 +1,7 @@
 import EventCalender from "@/components/EventCalender";
 import NoticeCards from "@/components/NoticeCard";
 import UserCard from "@/components/UserCard";
-import { get_notice } from "@/lib/utils/get_latest_notice";
+import { get_notice } from "../../../utils/get_latest_notice";
 
 const Page = async () => {
   const { notices } = await get_notice();

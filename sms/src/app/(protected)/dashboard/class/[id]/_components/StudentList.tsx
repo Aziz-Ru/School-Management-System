@@ -1,13 +1,13 @@
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { StudentType } from "@/lib/utils/types";
+import { Student } from "../../../../../../utils/types";
 import MigrateStudentForm from "./MigrateStudentForm";
 
 const StudentList = ({
   students,
   classId,
 }: {
-  students: StudentType[];
+  students: Student[];
   classId: number;
 }) => {
   const columns = [
@@ -26,7 +26,7 @@ const StudentList = ({
     },
   ];
 
-  const renderRow = (student: StudentType) => {
+  const renderRow = (student: Student) => {
     return (
       <TableRow key={student.id}>
         <TableCell>

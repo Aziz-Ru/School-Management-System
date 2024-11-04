@@ -2,8 +2,8 @@ import NoticeCards from "@/components/NoticeCard";
 import ReadMore from "@/components/buttons/ReadMore";
 import { Card } from "@/components/ui/card";
 import { SCHOOL_INTRO, SCHOOL_NAME } from "@/lib/data";
-import { get_notice } from "@/lib/utils/get_latest_notice";
 import Link from "next/link";
+import { get_notice } from "../../utils/get_latest_notice";
 
 const page = async () => {
   const { notices, status } = await get_notice(3);

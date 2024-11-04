@@ -7,7 +7,13 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useEffect, useRef, useState } from "react";
 
-const AttendenceList = ({ rowData }: { rowData: any[] }) => {
+const AttendenceList = ({
+  rowData,
+  editable,
+}: {
+  rowData: any[];
+  editable: boolean;
+}) => {
   const [loading, setLoading] = useState(false);
   const didMountRef = useRef(false);
   const [attendenceCol, setAttendenceCol] = useState<ColDef[]>([
@@ -52,7 +58,6 @@ const AttendenceList = ({ rowData }: { rowData: any[] }) => {
         if (response.ok) {
           toast({ title: data.msg });
         } else {
-          
           toast({ title: data.error.msg });
         }
       }
@@ -73,7 +78,8 @@ const AttendenceList = ({ rowData }: { rowData: any[] }) => {
             resizable: false,
             editable: (params) =>
               params.data.Month == MonthNames[currentMonth] &&
-              params.colDef.field == currentDay.toString(),
+              params.colDef.field == currentDay.toString() &&
+              editable,
           }}
           rowData={rowData}
           columnDefs={attendenceCol}

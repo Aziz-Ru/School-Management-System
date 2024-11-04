@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
+  console.log(studentId, sectionId);
+  if (isNaN(parseInt(studentId))) {
+    return NextResponse.json({ error: "Invalid Student ID" }, { status: 400 });
+  }
+
   try {
     await prisma.attendence.create({
       data: {

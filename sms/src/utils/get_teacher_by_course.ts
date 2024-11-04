@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "../db";
+import prisma from "../lib/db";
 import { Status, TeacherProfile } from "./types";
 
 interface ReturnProps {

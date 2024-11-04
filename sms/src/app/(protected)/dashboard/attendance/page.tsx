@@ -1,6 +1,6 @@
 import TableSearch from "@/components/TableSearch";
-import prisma from "@/lib/db";
 import { decrypt } from "@/session";
+import { getTeacherAttendance } from "@/utils/get_teachers_attendanc";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import TeacherAttendenceList from "./_components/AttendencList";
@@ -13,29 +13,8 @@ const AttendanceList = async () => {
   if (user.role !== "ADMIN") {
     notFound();
   }
-  
-  const current = new Date();
-  const [teachers] = await prisma.$transaction([
-    prisma.teacher.findMany({
-      select: {
-        id: true,
-        fullName: true,
-        attendence: {
-          where: {
-            year: current.getFullYear(),
-            month: current.getMonth() + 1,
-          },
-          select: {
-            id: true,
-            present: true,
-            date: true,
-            year: true,
-          },
-        },
-      },
-    }),
-  ]);
-  // console.log(teachers[0].attendence);
+
+  const teachers = await getTeacherAttendance();
 
   return (
     <div className="p-4">

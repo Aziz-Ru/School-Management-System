@@ -5,9 +5,11 @@ import { notFound } from "next/navigation";
 import ClassList from "./_components/ClassList";
 
 const ClassListPage = async () => {
+
   const classList = await prisma.class.findMany({
     include: { _count: { select: { sections: true, course: true } } },
   });
+  
   const cookieStore = cookies();
   const session = cookieStore.get("__session");
   const { user } = await decrypt(session!.value);
