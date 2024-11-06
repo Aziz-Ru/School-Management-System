@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ["/login", "/signup", "/home"];
+const publicRoutes = [
+  "hom/details/infrastructure",
+  "/details/code-of-conduct",
+  "/details/mission-vision",
+  "/home",
+];
 const adminRoutes = ["/dashboard"];
 const teacherRoutes = ["/teacher"];
 const studentRoutes = ["/student"];
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname; // Get the pathname instead of full URL
-
+  const regex = new RegExp(/home*/);
   // Check if it's a public route
-  if (publicRoutes.includes(path)) {
+  if (regex.test(path)) {
     return NextResponse.next();
   }
 
@@ -23,14 +28,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|images|favicon.ico).*)"],
 };
