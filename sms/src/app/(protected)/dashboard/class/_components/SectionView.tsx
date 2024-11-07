@@ -86,8 +86,6 @@ const SectionView = ({
   );
 };
 
-
-
 const renderSectionRow = (item: Section) => {
   return (
     <TableRow key={item.id}>
@@ -108,7 +106,7 @@ const renderSectionRow = (item: Section) => {
 
       <TableCell className="px-2">
         <DetailsLink
-          href={`/dashboard/class/${item.classId}/${
+          href={`/dashboard/sections/${
             item.id
           }?date=${new Date().toLocaleDateString()}`}
         />
@@ -116,6 +114,5 @@ const renderSectionRow = (item: Section) => {
     </TableRow>
   );
 };
-
 
 export default SectionView;

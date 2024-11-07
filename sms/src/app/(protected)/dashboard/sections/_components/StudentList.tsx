@@ -1,6 +1,6 @@
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Student } from "../../../../../../utils/types";
+import { Student } from "../../../../../utils/types";
 import MigrateStudentForm from "./MigrateStudentForm";
 
 const StudentList = ({

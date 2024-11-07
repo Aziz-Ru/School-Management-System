@@ -103,7 +103,6 @@ export async function POST(req: NextRequest) {
         subjectId: subjectId,
       },
     });
-    
     revalidatePath("/dashboard");
     return NextResponse.json(
       { msg: "Schedule Added Successfully" },

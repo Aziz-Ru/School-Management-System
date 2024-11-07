@@ -2,93 +2,79 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { DaysOfWeek, Times } from "@/lib/data";
+import { Schedule, Subject, Teacher } from "@/utils/types";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useRef, useState } from "react";
-
-const times = [
-  {
-    time: "10:00 - 11:00 AM",
-  },
-  {
-    time: "11:00 - 12:00 PM",
-  },
-  {
-    time: "12:00 - 1:00 PM",
-  },
-
-  {
-    time: "2:00 - 3:00 PM",
-  },
-  {
-    time: "3:00 - 4:00 PM",
-  },
-];
-
-const daysOfWeek = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-];
+import { useEffect, useState } from "react";
+import { createRoutine } from "../_actions/routine";
 
 const Routine = ({
   classID,
   sectionId,
+  schedules,
+  teachers,
+  subjects,
 }: {
   classID: number;
   sectionId: string;
+  schedules: Schedule[];
+  teachers: Teacher[];
+  subjects: Subject[];
 }) => {
-  const [teachers, setTeachers] = useState<
-    { id: number; fullName: string; courses: { courseName: string }[] }[]
-  >([]);
-  const [subjects, setSubjects] = useState<
-    { id: string; courseName: string }[]
-  >([]);
   const [subjectTeacher, setSubjectTeacher] = useState<
     { id: number; fullName: string }[]
   >([]);
-  const dataFetchedRef = useRef(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterTeacher = (subjectName: string) => {
     const teacher = teachers.filter((t) =>
-      t.courses.some((c) => c.courseName === subjectName)
+      t.courses!.some((c) => c.courseName === subjectName)
     );
     setSubjectTeacher(teacher);
   };
+  const buttonRenderer = (params: any) => {
+    return <form></form>;
+  };
 
-  const [rowData, setRowData] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (!dataFetchedRef.current) {
-      const getData = async () => {
-        try {
-          const resData = await fetch(
-            `/api/routine?sectionId=${sectionId}&classId=${classID}&admin=true`
-          );
-          const res = await resData.json();
-          if (res.data) {
-            setRowData(res.data.routine);
-            setSubjects(res.data.subjects);
-            setTeachers(res.data.teachers);
-          }
-        } catch (error) {
-          console.log(error);
+  const [rowData, setRowData] = useState<Schedule[]>([
+    ...Times.map((t) => {
+      const obj: any = { time: t.time };
+      const days = DaysOfWeek.map((day) => {
+        const daySchedule = schedules.find((s) => s.startEnd === t.time);
+        if (daySchedule) {
+          obj[day] = `${daySchedule.subject!.courseName}`;
+        } else {
+          obj[day] = "";
         }
-      };
-      dataFetchedRef.current = true;
-      getData();
-    }
-  }, [classID, sectionId]);
+      });
+      return { ...obj, ...days };
+    }),
+  ]);
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+    {
+      field: "time",
+      width: 150,
+      pinned: "left",
+      cellStyle: { fontWeight: "bold" },
+    },
+    {
+      field: "Modify",
+      width: 100,
+      cellRenderer: buttonRenderer,
+    },
+    ...DaysOfWeek.map((day) => ({
+      field: day,
+      width: 150,
+      cellStyle: { whiteSpace: "normal" },
+    })),
+  ]);
 
   useEffect(() => {
     if (subjects.length > 0) {
-      filterTeacher(subjects[0].courseName);
+      filterTeacher(subjects[0].courseName!);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjects]);
@@ -122,19 +108,6 @@ const Routine = ({
   };
 
   // Define columns for time slots and weekdays
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    {
-      field: "time",
-      width: 150,
-      pinned: "left",
-      cellStyle: { fontWeight: "bold" },
-    },
-    ...daysOfWeek.map((day) => ({
-      field: day,
-      width: 150,
-      cellStyle: { whiteSpace: "normal" },
-    })),
-  ]);
 
   return (
     <>
@@ -151,13 +124,23 @@ const Routine = ({
           suppressMovableColumns={true} // Disable column dragging
         />
       </div>
+
       <Card>
         <div className="my-4  justify-center items-center flex">
           <div className="w-[400px] ">
             <h1 className="text-2xl font-bold text-center">Manage Schedule</h1>
             <div className="mt-2 w-full ">
               <form
-                onSubmit={handleFormSubmit}
+                action={async (formData: FormData) => {
+                  formData.append("sectionId", sectionId);
+                  const { msg, error } = await createRoutine(formData);
+                  if (error) {
+                    toast({ title: error });
+                  }
+                  if (msg) {
+                    toast({ title: msg });
+                  }
+                }}
                 className="flex flex-col w-full gap-3 px-3"
               >
                 <div className="flex flex-col">
@@ -215,7 +198,7 @@ const Routine = ({
                     <option value="" disabled>
                       Choose Time
                     </option>
-                    {times.map((t) => (
+                    {Times.map((t) => (
                       <option key={t.time} value={t.time}>
                         {t.time}
                       </option>
@@ -232,21 +215,4 @@ const Routine = ({
   );
 };
 
-const RoutineForm = () => {
-  return (
-    <form className="flex flex-col  p-1">
-      <div className="">
-        <select name="" id="" className="w-20 px-4 py-1">
-          <option value="">1</option>
-          <option value="">2</option>
-        </select>
-        <select name="" id="" className="w-20 px-4 py-1">
-          <option value="">A</option>
-          <option value="">B</option>
-        </select>
-      </div>
-      <input type="submit" value="Add" className="text-black border" />
-    </form>
-  );
-};
 export default Routine;

@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { getSectionData } from "@/utils/get_sectionData";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import SectionTab from "../_components/SectionTab";
 
 const SectionPage = async ({
   params,
@@ -20,11 +19,9 @@ const SectionPage = async ({
     ? new Date(searchParams.date)
     : new Date();
 
-  const { section, students, subjects, teachers } = await getSectionData(
-    id,
-    params.sectionId,
-    date
-  );
+  const { section, students, subjects, teachers, schedules } =
+    await getSectionData(id, params.sectionId, date);
+  console.log(section);
   if (!section) {
     notFound();
   }
@@ -33,13 +30,7 @@ const SectionPage = async ({
     <div className="p-4 grid grid-cols-12 gap-2">
       {/* Name */}
 
-      <div className="col-span-12 xl:col-span-8">
-        <SectionTab
-          classID={id}
-          sectionId={params.sectionId}
-          students={students!}
-        />
-      </div>
+      <div className="col-span-12 xl:col-span-8"></div>
 
       {/* Annoucement */}
       <div className="col-span-12 xl:col-span-4">

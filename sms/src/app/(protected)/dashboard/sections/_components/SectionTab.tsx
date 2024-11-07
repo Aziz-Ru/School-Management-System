@@ -1,25 +1,25 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Student } from "../../../../../../utils/types";
+import { Schedule, Subject, Teacher } from "@/utils/types";
+import { Student } from "../../../../../utils/types";
 import AttendenceList from "./AttendencList";
 import Routine from "./Routine";
 import SearchAttendence from "./SearchAttendence";
 import StudentList from "./StudentList";
-
-interface StudentAttendanceData {
-  Id: string;
-  Name: string;
-  [key: string]: boolean | string;
-}
-
 const SectionTab = ({
   classID,
   sectionId,
   students,
+  schedules,
+  teachers,
+  subjects,
 }: {
   sectionId: string;
   classID: number;
   students: Student[];
+  schedules: Schedule[];
+  teachers: Teacher[];
+  subjects: Subject[];
 }) => {
   return (
     <div>
@@ -37,13 +37,16 @@ const SectionTab = ({
         </TabsList>
         <TabsContent value="attendance">
           <SearchAttendence />
-          <AttendenceList
-            sectionId={sectionId}
-            students={students}
-          />
+          <AttendenceList sectionId={sectionId} students={students} />
         </TabsContent>
         <TabsContent value="class-routine">
-          <Routine classID={classID} sectionId={sectionId} />
+          <Routine
+            teachers={teachers}
+            schedules={schedules}
+            classID={classID}
+            sectionId={sectionId}
+            subjects={subjects}
+          />
         </TabsContent>
         <TabsContent value="students">
           <StudentList students={students} classId={classID} />
