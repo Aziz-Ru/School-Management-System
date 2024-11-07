@@ -1,14 +1,16 @@
 import { courses } from "@/components/routine/data";
+import { DaysOfWeek } from "@/lib/data";
 import { Schedule } from "@/utils/types";
 import RoutineBadge from "./RoutineBadge";
 
 const Routine = ({ schedules }: { schedules: Schedule[] }) => {
-  const routine = schedules.map((schedule) => {
+  const routine = DaysOfWeek.map((day) => {
     return {
-      day: schedule.day,
+      day: day,
+      hours: schedules.filter((schedule) => schedule.day === day),
     };
   });
-  console.log(routine);
+
   return (
     <div className="">
       {courses.map((course, index) => {
