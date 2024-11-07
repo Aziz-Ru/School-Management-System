@@ -105,11 +105,7 @@ const renderSectionRow = (item: Section) => {
       </TableCell>
 
       <TableCell className="px-2">
-        <DetailsLink
-          href={`/dashboard/sections/${
-            item.id
-          }?date=${new Date().toLocaleDateString()}`}
-        />
+        <DetailsLink href={`/dashboard/sections/${item.id}`} />
       </TableCell>
     </TableRow>
   );

@@ -43,7 +43,7 @@
     "react-hook-form": "^7.53.1",
     "react-multi-select-component": "^4.3.4",
     "react-quill": "^0.0.2",
-    "recharts": "^2.12.7",
+    "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",

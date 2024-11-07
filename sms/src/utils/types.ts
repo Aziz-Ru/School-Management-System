@@ -50,7 +50,7 @@ export interface Teacher {
   email?: string;
   level?: string;
   rank?: string;
-  courses?:Course[]
+  courses?: Course[];
 }
 
 export interface Schedule {
@@ -67,6 +67,7 @@ export interface Schedule {
     id: number;
     fullName: string;
   };
+  day?: string;
 }
 
 export interface Attendence {

@@ -1,3 +1,4 @@
+"use client";
 import { toast } from "@/hooks/use-toast";
 import { Student } from "@/utils/types";
 import { getDaysOfCurrentMonth, getPresent } from "@/utils/utilities";
@@ -101,8 +102,10 @@ const AttendenceList = ({
     }
   };
 
+
   return (
     <div className="ag-theme-quartz" style={{ height: `${gridHeight}px` }}>
+      
       <AgGridReact
         suppressMovableColumns={true}
         defaultColDef={{

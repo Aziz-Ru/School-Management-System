@@ -1,3 +1,4 @@
+"use client";
 import FormModal from "@/components/Forms/FormModal";
 import { useEffect, useState } from "react";
 import { MultiSelect } from "react-multi-select-component";

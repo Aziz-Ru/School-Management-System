@@ -12,13 +12,11 @@ import { useEffect, useState } from "react";
 import { createRoutine } from "../_actions/routine";
 
 const Routine = ({
-  classID,
   sectionId,
   schedules,
   teachers,
   subjects,
 }: {
-  classID: number;
   sectionId: string;
   schedules: Schedule[];
   teachers: Teacher[];
@@ -43,16 +41,21 @@ const Routine = ({
     ...Times.map((t) => {
       const obj: any = { time: t.time };
       const days = DaysOfWeek.map((day) => {
+
         const daySchedule = schedules.find((s) => s.startEnd === t.time);
+
         if (daySchedule) {
           obj[day] = `${daySchedule.subject!.courseName}`;
         } else {
           obj[day] = "";
         }
+
       });
+      
       return { ...obj, ...days };
     }),
   ]);
+  console.log(rowData);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     {
       field: "time",

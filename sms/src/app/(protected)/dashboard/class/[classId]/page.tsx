@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import CourseView from "../_components/CourseView";
 import SectionView from "../_components/SectionView";
 
-const SingleClassPage = async ({ params }: { params: { id: string } }) => {
+const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
   const cookieStore = cookies();
   const session = cookieStore.get("__session");
   const { user } = await decrypt(session!.value);
@@ -15,12 +15,12 @@ const SingleClassPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
-  const classId = parseInt(params.id);
+  const classId = parseInt(params.classId);
   // Check is it number or not
   if (isNaN(classId)) {
     notFound();
   }
-  const level = classId < 6 ? "PRIMARY" : "SCHOOL";
+
   const { classdata, teachers, subjects, courses, status } = await getClassData(
     classId
   );
