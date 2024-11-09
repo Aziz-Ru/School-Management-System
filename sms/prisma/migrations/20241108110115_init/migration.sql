@@ -24,17 +24,6 @@ CREATE TABLE `school` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `events` (
-    `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
-    `date` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `teacher` (
     `id` INTEGER NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -62,6 +51,7 @@ CREATE TABLE `student` (
     `phone` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
     `dob` VARCHAR(191) NOT NULL,
+    `lastExamStatus` BOOLEAN NOT NULL DEFAULT false,
     `img` VARCHAR(191) NULL,
     `sex` ENUM('MALE', 'FEMALE') NOT NULL DEFAULT 'MALE',
     `sectionId` VARCHAR(191) NOT NULL,
@@ -162,10 +152,11 @@ CREATE TABLE `schedule` (
     `id` VARCHAR(191) NOT NULL,
     `startEnd` VARCHAR(191) NOT NULL,
     `sectionId` VARCHAR(191) NOT NULL,
-    `subjectId` VARCHAR(191) NULL,
     `teacherId` INTEGER NOT NULL,
+    `subjectId` VARCHAR(191) NOT NULL,
+    `day` ENUM('SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY') NOT NULL,
 
-    UNIQUE INDEX `schedule_teacherId_startEnd_key`(`teacherId`, `startEnd`),
+    UNIQUE INDEX `schedule_teacherId_startEnd_day_sectionId_key`(`teacherId`, `startEnd`, `day`, `sectionId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -174,7 +165,6 @@ CREATE TABLE `authority` (
     `id` VARCHAR(191) NOT NULL,
     `fullName` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
-    `message` VARCHAR(191) NULL,
     `rank` VARCHAR(191) NOT NULL,
     `imageURL` VARCHAR(191) NOT NULL,
 
@@ -182,11 +172,21 @@ CREATE TABLE `authority` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `annoucement` (
+CREATE TABLE `message` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
-    `date` VARCHAR(191) NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
+    `authorId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `notice` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `content` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -268,10 +268,13 @@ ALTER TABLE `result` ADD CONSTRAINT `result_subjectId_fkey` FOREIGN KEY (`subjec
 ALTER TABLE `schedule` ADD CONSTRAINT `schedule_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `schedule` ADD CONSTRAINT `schedule_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `schedule` ADD CONSTRAINT `schedule_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `teacher`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `message` ADD CONSTRAINT `message_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `authority`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `attendence` ADD CONSTRAINT `attendence_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

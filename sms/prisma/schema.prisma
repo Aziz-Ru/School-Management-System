@@ -55,7 +55,6 @@ model student {
   lastExamStatus Boolean @default(false)
   img            String?
   result         result[]
-  enrolledSubject enrolledSubject[]
   sex            GENDER       @default(MALE)
   sectionId      String
   section        section      @relation(fields: [sectionId], references: [id])
@@ -87,8 +86,8 @@ model subject {
   course     course           @relation(fields: [courseName], references: [courseName], onDelete: Cascade)
   class      Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
   syllabus   String?
-  enrolledSubjects enrolledSubject[]
   schedules schedule[]
+  result     result[]
   @@unique([courseName, classId])
 }
 
@@ -108,43 +107,28 @@ model section {
   @@unique([sectionName, classId, year])
 }
 
-model enrolledSubject {
-  id        String        @id @default(uuid())
-  subjectId String
-  studentId Int
-  exam      examSubject[]
-  student   student       @relation(fields: [studentId], references: [id])
-  subject   subject       @relation(fields: [subjectId], references: [id])
-  @@unique([subjectId])
-}
+
 
 model exam {
   id          String        @id @default(uuid())
   sectionId   String        @unique
   section     section       @relation(fields: [sectionId], references: [id])
-  examSubject examSubject[]
+  result      result[]
   createdAt   DateTime      @default(now())
 }
 
-model examSubject {
-  id        String         @id @default(uuid())
-  date      String?
-  question  String?
-  examId    String
-  subjectId String
-  subject   enrolledSubject @relation(fields: [subjectId], references: [id])
-  exam      exam           @relation(fields: [examId], references: [id])
-  result    result[]
-}
+
 
 model result {
   id        String      @id @default(uuid())
   studentId Int
   subjectId String
+  examId    String
   mark      Int
   grade     String
   student   student     @relation(fields: [studentId], references: [id])
-  subject   examSubject @relation(fields: [subjectId], references: [id])
+  subject   subject     @relation(fields: [subjectId], references: [id])
+  exam      exam        @relation(fields: [examId], references: [id])
   createdAt DateTime    @default(now())
 }
 
@@ -158,7 +142,7 @@ model schedule {
   section   section        @relation(fields: [sectionId], references: [id])
   subject   subject @relation(fields: [subjectId], references: [id])
   teacher   teacher        @relation(fields: [teacherId], references: [id])
-  @@unique([teacherId,startEnd])
+  @@unique([teacherId,startEnd,day,sectionId])
 }
 
 model authority {

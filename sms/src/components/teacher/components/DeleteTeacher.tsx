@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { deleteTeacherAction } from "../_actions/teacher";
+import { deleteTeacherAction } from "../actions/teacher";
 
 const DeleteTeacherForm = ({ id }: { id: string }) => {
   return (

@@ -3,8 +3,8 @@ import prisma from "@/lib/db";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { AddStudentForm } from "./_components/StudentForm";
-import StudentsList from "./_components/StudentList";
+import { AddStudentForm } from "../../../../components/student/components/StudentForm";
+import StudentsList from "../../../../components/student/components/StudentList";
 
 const StudenListPage = async ({
   searchParams,

@@ -1,45 +1,79 @@
-import { courses } from "@/components/routine/data";
-import { DaysOfWeek } from "@/lib/data";
-import { Schedule } from "@/utils/types";
-import RoutineBadge from "./RoutineBadge";
+"use client";
+import { DaysOfWeek, Times } from "@/lib/data";
+import { Schedule, Subject, Teacher } from "@/utils/types";
+import { ColDef } from "ag-grid-community";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import { AgGridReact } from "ag-grid-react";
+import { useState } from "react";
+import RoutineEditForm from "./RoutineEditForm";
 
-const Routine = ({ schedules }: { schedules: Schedule[] }) => {
-  const routine = DaysOfWeek.map((day) => {
-    return {
-      day: day,
-      hours: schedules.filter((schedule) => schedule.day === day),
-    };
-  });
+const Routine = ({
+  schedules,
+  teachers,
+  subjects,
+  sectionId,
+}: {
+  schedules: Schedule[];
+  teachers: Teacher[];
+  subjects: Subject[];
+  sectionId: string;
+}) => {
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+    {
+      field: "day",
+      width: 150,
+      pinned: "left",
+      cellStyle: { fontWeight: "bold" },
+    },
+    ...Times.map((day) => ({
+      field: day.time,
+      width: 150,
+      cellRenderer: (params: any) => {
+        const schedule = schedules.find(
+          (schedule) =>
+            schedule.day === params.data.day.toUpperCase() &&
+            schedule.startEnd === params.colDef.field
+        );
+
+        return params.value ? (
+          <RoutineEditForm
+            teachers={teachers}
+            sectionId={sectionId}
+            subjects={subjects}
+            activeSchedule={schedule!}
+          />
+        ) : (
+          ""
+        );
+      },
+    })),
+  ]);
+
+  const [rowData, setRowData] = useState([
+    ...DaysOfWeek.map((day) => {
+      let obj: any = { day: day };
+      Times.map((t) => {
+        obj[t.time] = schedules.find(
+          (schedule) =>
+            schedule.day === day.toUpperCase() && schedule.startEnd === t.time
+        )?.subject?.courseName;
+      });
+      return obj;
+    }),
+  ]);
 
   return (
-    <div className="">
-      {courses.map((course, index) => {
-        return (
-          <div
-            key={index}
-            className="flex gap-2 border border-gray-600 shadow-sm rounded my-2"
-          >
-            <div className="border-r border-gray-200 ">
-              <div className=" p-4 flex items-center justify-center font-medium text-md">
-                <span className="md:block hidden">{course.day}</span>
-                <span className="md:hidden block">{course.day}</span>
-              </div>
-            </div>
-            <div className="flex items-center flex-wrap gap-2 p-2">
-              {course.hours.map((hour, index) => {
-                return (
-                  <RoutineBadge
-                    key={index}
-                    time={hour.startTime}
-                    subjectName={hour.course}
-                    teacherShortName={hour.teacher}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
+    <div className="ag-theme-quartz" style={{ height: 300, width: "100%" }}>
+      <AgGridReact
+        defaultColDef={{
+          sortable: false,
+          filter: false,
+          resizable: false,
+        }}
+        columnDefs={columnDefs}
+        rowData={rowData}
+      />
     </div>
   );
 };

@@ -1,52 +1,26 @@
 "use client";
+import { Times } from "@/lib/data";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { AgGridReact } from "ag-grid-react";
 import { useState } from "react";
 
-const times = [
-  {
-    time: "10:00 - 11:00 AM",
-  },
-  {
-    time: "11:00 - 12:00 PM",
-  },
-  {
-    time: "12:00 - 1:00 PM",
-  },
-
-  {
-    time: "2:00 - 3:00 PM",
-  },
-  {
-    time: "3:00 - 4:00 PM",
-  },
-];
-const daysOfWeek = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-];
-
 const Routine = ({ rowData }: { rowData: any[] }) => {
   // Define columns for time slots and weekdays
+
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     {
-      field: "time",
+      field: "Day",
       width: 145,
       pinned: "left",
       cellStyle: { fontWeight: "bold" },
     },
-    ...daysOfWeek.map((day) => ({
-      field: day,
-      width: 150,
-      cellStyle: { whiteSpace: "normal" },
-    })),
+    ...Times.map((time) => {
+      return { field: time.time, width: 150 };
+    }),
   ]);
+  console.log(columnDefs);
 
   return (
     <>
@@ -59,8 +33,10 @@ const Routine = ({ rowData }: { rowData: any[] }) => {
           columnDefs={columnDefs}
           defaultColDef={{
             editable: false,
+            resizable: false,
+            sortable: false,
+            filter: false,
           }}
-          suppressMovableColumns={true} // Disable column dragging
         />
       </div>
     </>

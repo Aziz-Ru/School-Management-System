@@ -1,9 +1,9 @@
+import TeacherList from "@/components/teacher/components/TeacherList";
 import { ITEM_PAR_PAGE } from "@/lib/data";
 import prisma from "@/lib/db";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import TeacherList from "./_components/TeacherList";
 
 const Teacher = async ({
   searchParams,
@@ -17,7 +17,6 @@ const Teacher = async ({
   if (user.role !== "ADMIN" && user.role !== "TEACHER") {
     notFound();
   }
-  
 
   const { page, ...queryParams } = searchParams;
   const currentPage = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;

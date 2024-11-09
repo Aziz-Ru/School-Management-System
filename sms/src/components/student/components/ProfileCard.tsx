@@ -1,18 +1,6 @@
 import Icon from "@/components/LucidIcon";
+import { Student } from "@/utils/types";
 import Image from "next/image";
-
-interface Student {
-  id: number;
-  password: string;
-  fullName: string;
-  phone: string;
-  address: string;
-  dob: string; // or Date if it's parsed as a Date object in your code
-  img: string | null;
-  sex: "MALE" | "FEMALE" | "OTHER"; // assuming possible values; update if needed
-  sectionId: string;
-  createdAt: Date; // Using Date here since it represents a timestamp
-}
 
 const ProfileCard = ({ student }: { student: Student }) => {
   return (
@@ -68,7 +56,7 @@ const ProfileCard = ({ student }: { student: Student }) => {
             <Icon name="Calendar" size={18} />
             <span className="site-txt flex gap-2">
               <span className="font-bold">DOB:</span>
-              <span>{new Date(student.dob).toLocaleDateString()}</span>
+              {/* <span>{student.dob!.toDateString()}</span> */}
             </span>
           </div>
         </div>

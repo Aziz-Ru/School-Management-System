@@ -1,11 +1,13 @@
 import NoticeCards from "@/components/NoticeCard";
-import prisma from "@/lib/db";
-import Link from "next/link";
+import ProfileCard from "@/components/teacher/components/ProfileCard";
+import Routine from "@/components/teacher/components/Routine";
+
+import AttendenceList from "@/components/teacher/components/TeacherAttendence";
+import { DaysOfWeek, Times } from "@/lib/data";
+import { get_notice } from "@/utils/get_latest_notice";
+import { getTeacherData } from "@/utils/get_teacherData";
+import { Status } from "@/utils/types";
 import { notFound } from "next/navigation";
-import { get_notice } from "../../../../../utils/get_latest_notice";
-import ProfileCard from "../_components/ProfileCard";
-import Routine from "../_components/Routine";
-import AttendenceList from "../_components/TeacherAttendence";
 
 const TeacherPage = async ({
   params,
@@ -15,61 +17,36 @@ const TeacherPage = async ({
   searchParams: { [key: string]: string };
 }) => {
   const date = searchParams.date ? new Date(searchParams.date) : new Date();
-  // console.log(date.toDateString());
-  const [teacher, schedule, attendence] = await prisma.$transaction([
-    prisma.teacher.findUnique({
-      where: {
-        id: parseInt(params.id),
-      },
-      select: {
-        id: true,
-        fullName: true,
-        phone: true,
-        img: true,
-        email: true,
-      },
-    }),
-    prisma.schedule.findMany({
-      where: {
-        teacherId: parseInt(params.id),
-      },
-      select: {
-        startEnd: true,
-        subject: {
-          select: {
-            courseName: true,
-          },
-        },
-        section: {
-          select: {
-            sectionName: true,
-            classId: true,
-          },
-        },
-      },
-    }),
-    prisma.teacherAttendence.findMany({
-      where: { teacherId: parseInt(params.id), year: date.getFullYear() },
-    }),
-  ]);
+  const uid = parseInt(params.id);
+  if (isNaN(uid)) {
+    notFound();
+  }
+
+  const { teacher, schedule, attendence, status } = await getTeacherData(uid);
+  if (status !== Status.OK) {
+    notFound();
+  }
+
   const { notices } = await get_notice(3);
   if (!teacher) {
     notFound();
   }
 
-  const routine = times.map((t) => {
-    const obj: any = { time: t.time };
-    const days = daysOfWeek.map((day) => {
-      const daySchedule = schedule.find((s) => s.startEnd === t.time);
-      if (daySchedule) {
-        obj[day] = `${daySchedule.subject!.courseName}-${
-          daySchedule.section!.sectionName
-        } -${daySchedule.section!.classId}`;
-      } else {
-        obj[day] = "";
-      }
+  const routine = DaysOfWeek.map((day) => {
+    let obj: any = { Day: day };
+
+    Times.map((t) => {
+      const res = schedule?.find(
+        (s) => s.day === day.toUpperCase() && s.startEnd === t.time
+      );
+      obj[t.time] = res
+        ? `${res.subject!.courseName}-${res.section?.sectionName}(${
+            res.section?.classId
+          })`
+        : "";
     });
-    return { ...obj, ...days };
+
+    return obj;
   });
 
   const getPresent = (
@@ -92,7 +69,7 @@ const TeacherPage = async ({
     const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
     let monthData: any = { Month: monthNames[month] };
     for (let day = 1; day <= daysInMonth; day++) {
-      const isPresent = getPresent(attendence, day, month);
+      const isPresent = getPresent(attendence!, day, month);
       const dayObj = { [day]: isPresent };
       monthData = { ...monthData, ...dayObj };
     }
@@ -105,7 +82,7 @@ const TeacherPage = async ({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4 p-4">
           {/* User INFO */}
-          <ProfileCard teacher={teacher} />
+          <ProfileCard teacher={teacher!} />
         </div>
         {/* Routine */}
         <div className="p-4">
@@ -117,35 +94,6 @@ const TeacherPage = async ({
         </div>
       </div>
       <div className="w-full xl:w-1/3 px-4 pt-4">
-        <div className="site-bg p-4 rounded-md border site-border shadow-sm ">
-          <h1 className="text-xl font-semibold">Shortcuts</h1>
-          <div className="mt-4 flex flex-wrap text-xs gap-4">
-            <Link
-              className="p-3 rounded-md site-txt bg-purple-200 dark:bg-purple-800"
-              href="/dashboard/list/cls"
-            >
-              Class
-            </Link>
-            <Link
-              className="p-3 rounded-md site-txt bg-sky-200 dark:bg-sky-800"
-              href="/dashboard/list/sections"
-            >
-              Sections
-            </Link>
-            <Link
-              className="p-3 rounded-md site-txt bg-pink-200 dark:bg-pink-800"
-              href="/dashboard/list/teachers"
-            >
-              Teachers
-            </Link>
-            <Link
-              className="p-3 rounded-md site-txt bg-red-200 dark:bg-red-800"
-              href="/dashboard/list/teachers"
-            >
-              Students
-            </Link>
-          </div>
-        </div>
         <NoticeCards notices={notices} />
       </div>
     </div>
@@ -167,30 +115,4 @@ const monthNames = [
   "December",
 ];
 
-const times = [
-  {
-    time: "10:00 - 11:00 AM",
-  },
-  {
-    time: "11:00 - 12:00 PM",
-  },
-  {
-    time: "12:00 - 1:00 PM",
-  },
-
-  {
-    time: "2:00 - 3:00 PM",
-  },
-  {
-    time: "3:00 - 4:00 PM",
-  },
-];
-const daysOfWeek = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-];
 export default TeacherPage;

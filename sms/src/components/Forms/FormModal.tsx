@@ -12,23 +12,29 @@ import {
 const FormModal = ({
   table,
   children,
+  type = "Add",
 }: {
   table: string;
+  type?: "Add" | "Edit";
   children: React.ReactNode;
 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
-          <Icon name="Plus" size={18} color="#FFFFFF" />
-          Add {table}
+          {type === "Add" ? (
+            <Icon name="Plus" size={18} color="#FFFFFF" />
+          ) : (
+            <Icon name="Edit" size={18} color="#FFFFFF" />
+          )}
+          {table}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-center text-2xl">
-          Add New {table}
+          {type} {table}
         </DialogTitle>
-        <DialogDescription> {}</DialogDescription>
+        <DialogDescription></DialogDescription>
         {children}
       </DialogContent>
     </Dialog>

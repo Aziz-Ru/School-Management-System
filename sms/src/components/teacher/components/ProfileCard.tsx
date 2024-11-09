@@ -1,16 +1,8 @@
 import Icon from "@/components/LucidIcon";
+import { Teacher } from "@/utils/types";
 import Image from "next/image";
 
-interface Student {
-  id: number;
-  fullName: string;
-  phone: string;
-  img: string | null;
-  email: string;
-}
-
-
-const ProfileCard = ({ teacher }: { teacher: Student }) => {
+const ProfileCard = ({ teacher }: { teacher: Teacher }) => {
   return (
     <div className="bg-sky-50  py-6 px-4 rounded-md flex-1 flex gap-4 border border-gray-200">
       <div className="w-1/3">

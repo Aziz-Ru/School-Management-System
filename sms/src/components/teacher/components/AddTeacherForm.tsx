@@ -15,7 +15,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { useRef, useState } from "react";
 import { MultiSelect } from "react-multi-select-component";
-import { addTeacherAction } from "../_actions/teacher";
+import { addTeacherAction } from "../actions/teacher";
 
 export default function AddTeacherForm({
   courseOption,

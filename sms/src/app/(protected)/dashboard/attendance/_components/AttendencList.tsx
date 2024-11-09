@@ -35,7 +35,7 @@ const TeacherAttendenceList = ({ teachers }: { teachers: TeacherData[] }) => {
     const res = attendence.find((att) => att.date.getDate() == day);
     return res ? true : false;
   };
-  
+
   useEffect(() => {
     if (teachers) {
       const data = teachers.map((teacher: any, index: number) => {
@@ -92,10 +92,11 @@ const TeacherAttendenceList = ({ teachers }: { teachers: TeacherData[] }) => {
           }),
         });
         const res = await response.json();
+
         if (res.data) {
           toast({ title: res.data.msg });
         } else {
-          toast({ title: "Failed to Marked" });
+          toast({ title: res.error });
         }
       } else {
         const response = await fetch(
