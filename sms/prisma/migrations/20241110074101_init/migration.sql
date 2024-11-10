@@ -107,10 +107,20 @@ CREATE TABLE `section` (
 -- CreateTable
 CREATE TABLE `exam` (
     `id` VARCHAR(191) NOT NULL,
+    `type` ENUM('MID', 'FINAL') NOT NULL DEFAULT 'FINAL',
     `sectionId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `exam_sectionId_key`(`sectionId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `examCourse` (
+    `id` VARCHAR(191) NOT NULL,
+    `examId` VARCHAR(191) NOT NULL,
+    `subjectId` VARCHAR(191) NOT NULL,
+    `date` DATETIME(3) NOT NULL,
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,7 +128,6 @@ CREATE TABLE `exam` (
 CREATE TABLE `result` (
     `id` VARCHAR(191) NOT NULL,
     `studentId` INTEGER NOT NULL,
-    `subjectId` VARCHAR(191) NOT NULL,
     `examId` VARCHAR(191) NOT NULL,
     `mark` INTEGER NOT NULL,
     `grade` VARCHAR(191) NOT NULL,
@@ -227,13 +236,16 @@ ALTER TABLE `section` ADD CONSTRAINT `section_classId_fkey` FOREIGN KEY (`classI
 ALTER TABLE `exam` ADD CONSTRAINT `exam_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `examCourse` ADD CONSTRAINT `examCourse_examId_fkey` FOREIGN KEY (`examId`) REFERENCES `exam`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `examCourse` ADD CONSTRAINT `examCourse_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `result` ADD CONSTRAINT `result_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `student`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `result` ADD CONSTRAINT `result_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `subject`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `result` ADD CONSTRAINT `result_examId_fkey` FOREIGN KEY (`examId`) REFERENCES `exam`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `result` ADD CONSTRAINT `result_examId_fkey` FOREIGN KEY (`examId`) REFERENCES `examCourse`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `schedule` ADD CONSTRAINT `schedule_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

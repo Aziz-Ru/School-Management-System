@@ -48,6 +48,7 @@ export const getTeacherProfile = async (
               classId: true,
             },
           },
+          day: true,
         },
       }),
       prisma.teacherAttendence.findMany({

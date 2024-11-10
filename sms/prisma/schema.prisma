@@ -86,8 +86,8 @@ model subject {
   course     course           @relation(fields: [courseName], references: [courseName], onDelete: Cascade)
   class      Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
   syllabus   String?
+  exams      examCourse[]
   schedules schedule[]
-  result     result[]
   @@unique([courseName, classId])
 }
 
@@ -111,24 +111,33 @@ model section {
 
 model exam {
   id          String        @id @default(uuid())
-  sectionId   String        @unique
+  type         EXAM_TYPE    @default(FINAL)
+  sectionId   String        
   section     section       @relation(fields: [sectionId], references: [id])
-  result      result[]
+  examSubject examCourse[]
   createdAt   DateTime      @default(now())
+  @@unique([type,sectionId])
 }
 
-
+model examCourse{
+  id        String @id @default(uuid())
+  examId    String
+  subjectId  String
+  date       DateTime
+  result     result[]
+  exam      exam   @relation(fields: [examId], references: [id])
+  subject    subject @relation(fields: [subjectId], references: [id])
+  
+}
 
 model result {
   id        String      @id @default(uuid())
   studentId Int
-  subjectId String
   examId    String
   mark      Int
   grade     String
   student   student     @relation(fields: [studentId], references: [id])
-  subject   subject     @relation(fields: [subjectId], references: [id])
-  exam      exam        @relation(fields: [examId], references: [id])
+  exam      examCourse        @relation(fields: [examId], references: [id])
   createdAt DateTime    @default(now())
 }
 
@@ -203,6 +212,10 @@ enum LEVEL {
   PRIMARY
   SCHOOL
   COLLEGE
+}
+enum EXAM_TYPE{
+  MID
+  FINAL
 }
 
 enum DAY {

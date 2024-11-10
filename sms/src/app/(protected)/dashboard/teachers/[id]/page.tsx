@@ -87,7 +87,7 @@ const TeacherPage = async ({
         {/* Routine */}
         <div className="p-4">
           <h1 className="text-2xl font-semibold mb-2">Routine</h1>
-          <Routine rowData={routine} />
+          <Routine schedules={schedule!} />
         </div>
         <div className="">
           <AttendenceList months={calendar} />

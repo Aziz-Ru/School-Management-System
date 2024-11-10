@@ -17,7 +17,7 @@ export const SITE_ADDRESS = "Dhaka, Bangladesh";
 export const SITE_FAX = "123456789";
 export const SITE_COPYRIGHT = "School Management System";
 export const SITE_POWERED_BY = "School Management System";
-export const SCHOOL_NAME = "Chattogram Cantonment Public School & College";
+export const SCHOOL_NAME = "School Management System";
 export const SCHOOL_CODE = "123456";
 export const SCHOOL_EIIN = "EN23456";
 export const SCHOOL_MESSAGE = "A School of Creative Learning";
@@ -93,6 +93,12 @@ export const MenuItems = [
         href: "/profile",
         visiable: ["TEACHER", "STUDENT"],
       },
+      {
+        icon: "School",
+        label: "Class",
+        href: "/dashboard/class",
+        visiable: ["ADMIN"],
+      },
 
       {
         icon: "Book",
@@ -100,12 +106,7 @@ export const MenuItems = [
         href: "/dashboard/course",
         visiable: ["ADMIN", "TEACHER"],
       },
-      {
-        icon: "School",
-        label: "Class",
-        href: "/dashboard/class",
-        visiable: ["ADMIN"],
-      },
+
       {
         icon: "User",
         label: "Teachers",
@@ -118,6 +119,13 @@ export const MenuItems = [
         label: "Students",
         href: "/dashboard/students?page=1",
         visiable: ["ADMIN", "TEACHER"],
+      },
+
+      {
+        icon: "BookCheck",
+        label: "Sections",
+        href: "/dashboard/sections",
+        visiable: ["ADMIN"],
       },
 
       {

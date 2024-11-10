@@ -21,7 +21,7 @@ import {
 import { Class, Subject } from "@/utils/types";
 
 import { toast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createExam } from "../_action/exam";
 
 const AddExamForm = ({
@@ -31,21 +31,23 @@ const AddExamForm = ({
   classData: Class[];
   subjects: Subject[];
 }) => {
-  const [selectedClass, setSelectedClass] = useState<Class>();
-  const [selectedSection, setSelectedSection] = useState("");
+  const [classId, setClassId] = useState<Class>();
   const [examSubject, setExamSubject] = useState<Subject[]>([]);
-
+  const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
-    if (selectedClass) {
+    if (classId) {
+      setExamSubject([]);
+      setDates([]);
       subjects.map((subject) => {
-        if (subject.classId == selectedClass.id) {
+        if (subject.classId == classId.id) {
           setExamSubject((prev: any) => [...prev, subject]);
         }
       });
     }
-  }, [selectedClass, classData, subjects]);
+  }, [classId, classData, subjects]);
 
   const [dates, setDates] = useState<{ id: string; date: string }[]>([]);
+
   const handleDateChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
@@ -58,6 +60,7 @@ const AddExamForm = ({
 
   return (
     <form
+      ref={formRef}
       action={async (formData) => {
         formData.append("dates", JSON.stringify(dates));
         const { error, msg } = await createExam(formData);
@@ -65,6 +68,7 @@ const AddExamForm = ({
           toast({ title: error });
         } else {
           toast({ title: msg });
+          // formRef.current?.reset();
         }
       }}
     >
@@ -73,9 +77,9 @@ const AddExamForm = ({
         <div className="flex flex-col gap-3 mb-4 w-full">
           <Label>Class</Label>
           <Select
-            value={selectedClass?.className}
+            value={classId?.className}
             onValueChange={(e) => {
-              setSelectedClass(classData[parseInt(e) - 1]);
+              setClassId(classData[parseInt(e) - 1]);
             }}
             name={"classId"}
             required={true}
@@ -98,7 +102,7 @@ const AddExamForm = ({
           </Select>
         </div>
       </div>
-      <Table>
+      <Table className="p-2">
         <TableHeader>
           <TableRow>
             <TableHead>Subject</TableHead>
@@ -125,7 +129,13 @@ const AddExamForm = ({
           })}
         </TableBody>
       </Table>
-      <Button>Create</Button>
+      <div className="py-3 flex justify-between items-center">
+        <select name="type" className="px-4 py-2 bg-transparent rounded border">
+          <option value="MID">Mid</option>
+          <option value="FINAL">Final</option>
+        </select>
+        <Button>Create</Button>
+      </div>
     </form>
   );
 };
