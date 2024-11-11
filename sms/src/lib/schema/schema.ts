@@ -1,120 +1,122 @@
 import { z } from "zod";
 
+// Enum for attendance status
 export enum AttendanceStatus {
-  PRESENT,
-  ABSENT,
-  LATE,
-  HALF_DAY,
-  EXCUSED,
-  ON_LEAVE,
+  PRESENT = "PRESENT",
+  ABSENT = "ABSENT",
+  LATE = "LATE",
+  HALF_DAY = "HALF_DAY",
+  EXCUSED = "EXCUSED",
+  ON_LEAVE = "ON_LEAVE",
 }
 
 // Enum for notice types (e.g., general announcements, events, assignments, etc.)
 export enum NoticeType {
-  ANNOUNCEMENT,
-  EVENT,
-  ASSIGNMENT,
-  ALERT,
+  ANNOUNCEMENT = "ANNOUNCEMENT",
+  EVENT = "EVENT",
+  ASSIGNMENT = "ASSIGNMENT",
+  ALERT = "ALERT",
 }
 
 // Enum to define the target audience for the notice
 export enum AudienceType {
-  ALL, // Notice for the whole school
-  STAFF, // Notice for all staff members
-  STUDENTS, // Notice for all students
-  PARENTS, // Notice for all parents
-  SECTION, // Notice for a specific section
+  ALL = "ALL", // Notice for the whole school
+  STAFF = "STAFF", // Notice for all staff members
+  STUDENTS = "STUDENTS", // Notice for all students
+  PARENTS = "PARENTS", // Notice for all parents
+  SECTION = "SECTION", // Notice for a specific section
 }
 
 export enum RoomType {
-  CLASSROOM,
-  LABORATORY,
-  LIBRARY,
-  COMPUTER_LAB,
-  MUSIC_ROOM,
-  ART_ROOM,
-  GYMNASIUM,
-  AUDITORIUM,
+  CLASSROOM = "CLASSROOM",
+  LABORATORY = "LABORATORY",
+  LIBRARY = "LIBRARY",
+  COMPUTER_LAB = "COMPUTER_LAB",
+  MUSIC_ROOM = "MUSIC_ROOM",
+  ART_ROOM = "ART_ROOM",
+  GYMNASIUM = "GYMNASIUM",
+  AUDITORIUM = "AUDITORIUM",
 }
 
 export enum DayOfWeek {
-  SATURDAY,
-  SUNDAY,
-  MONDAY,
-  TUESDAY,
-  WEDNESDAY,
-  THURSDAY,
-  FRIDAY,
+  SATURDAY = "SATURDAY",
+  SUNDAY = "SUNDAY",
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+  FRIDAY = "FRIDAY",
 }
 
 export enum PeriodType {
-  REGULAR,
-  LAB,
-  ACTIVITY,
-  BREAK,
-  ASSEMBLY,
+  REGULAR = "REGULAR",
+  LAB = "LAB",
+  ACTIVITY = "ACTIVITY",
+  BREAK = "BREAK",
+  ASSEMBLY = "ASSEMBLY",
 }
 
 export enum Degree {
-  BSC,
-  MSC,
-  BBA,
+  BSC = "BSC",
+  MSC = "MSC",
+  BBA = "BBA",
 }
 
 export enum EXAM_TYPE {
-  MIDTERM,
-  FINAL,
-  QUIZ,
-  ASSIGNMENT,
+  MIDTERM = "MIDTERM",
+  FINAL = "FINAL",
+  QUIZ = "QUIZ",
+  ASSIGNMENT = "ASSIGNMENT",
 }
+
 export enum GENDER {
-  MALE,
-  FEMALE,
+  MALE = "MALE",
+  FEMALE = "FEMALE",
 }
 
 export enum Rank {
-  SENIOR,
-  ASISTANT,
+  SENIOR = "SENIOR",
+  ASSISTANT = "ASSISTANT", // Fixed typo (ASISTANT -> ASSISTANT)
 }
 
 export enum PublishStatus {
-  DRAFT,
-  PUBLISHED,
-  ARCHIVED,
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
+  ARCHIVED = "ARCHIVED",
 }
 
 export enum LeaveType {
-  SICK_LEAVE,
-  FAMILY_EMERGENCY,
-  PLANNED_ABSENCE,
-  SPORTS_ACTIVITY,
-  ACADEMIC_ACTIVITY,
-  OTHER,
+  SICK_LEAVE = "SICK_LEAVE",
+  FAMILY_EMERGENCY = "FAMILY_EMERGENCY",
+  PLANNED_ABSENCE = "PLANNED_ABSENCE",
+  SPORTS_ACTIVITY = "SPORTS_ACTIVITY",
+  ACADEMIC_ACTIVITY = "ACADEMIC_ACTIVITY",
+  OTHER = "OTHER",
 }
 
 export enum LeaveStatus {
-  PENDING, // Initial state when leave is requested
-  APPROVED, // Leave approved by authority
-  REJECTED, // Leave request denied
-  CANCELLED, // Leave cancelled by teacher
-  PARTIALLY_APPROVED, // Approved with modified dates
-  ON_HOLD, // Need more information/documentation
-  IN_PROGRESS, // Currently on leave
-  COMPLETED, // Leave period completed
-  EXPIRED, // Approved but not taken
+  PENDING = "PENDING", // Initial state when leave is requested
+  APPROVED = "APPROVED", // Leave approved by authority
+  REJECTED = "REJECTED", // Leave request denied
+  CANCELLED = "CANCELLED", // Leave cancelled by teacher
+  PARTIALLY_APPROVED = "PARTIALLY_APPROVED", // Approved with modified dates
+  ON_HOLD = "ON_HOLD", // Need more information/documentation
+  IN_PROGRESS = "IN_PROGRESS", // Currently on leave
+  COMPLETED = "COMPLETED", // Leave period completed
+  EXPIRED = "EXPIRED", // Approved but not taken
 }
 
 export enum UserRole {
-  ADMIN,
-  TEACHER,
-  STUDENT,
-  STAFF,
+  ADMIN = "ADMIN",
+  TEACHER = "TEACHER",
+  STUDENT = "STUDENT",
+  STAFF = "STAFF",
 }
 
 export enum UserStatus {
-  ACTIVE,
-  INACTIVE,
-  SUSPENDED,
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  SUSPENDED = "SUSPENDED",
 }
 
 // Room schema
@@ -124,7 +126,7 @@ export const RoomSchema = z.object({
   floor: z.number().int(),
   building: z.string().optional(),
   capacity: z.number().int(),
-  type: z.nativeEnum(RoomType).default(RoomType.CLASSROOM),
+  type: z.nativeEnum(RoomType),
   isActive: z.boolean().default(true),
   schedules: z.array(z.string()).optional(), // Array of section_subject_schedule IDs
 });
@@ -206,18 +208,49 @@ export const UserSchema = z.object({});
 
 // Teacher schema
 export const TeacherSchema = z.object({
-  id: z.number().int(),
-  email: z.string().email(),
-  password: z.string(),
+  id: z
+    .number({
+      required_error: "Id must be required",
+      invalid_type_error: "Invalid type of Id",
+    })
+    .int({ message: "Id must be integer" })
+    .min(1000, { message: "Id is greater than 1000" })
+    .max(9999, { message: "Id is less than 9999" }),
+  email: z
+    .string({
+      required_error: "Email must be required",
+      invalid_type_error: "Invalid type of Email",
+    })
+    .email({ message: "Email must be valid" }),
+  password: z
+    .string({
+      required_error: "Password must be required",
+      invalid_type_error: "Invalid type of Password",
+    })
+    .min(6, { message: "Password Minimum Length 6" }),
   role: z.nativeEnum(UserRole).refine((value) => value == UserRole.TEACHER, {
     message: "Role Must be Teacher",
   }),
-  sex: z.nativeEnum(GENDER),
-  status: z.nativeEnum(UserStatus).default(UserStatus.ACTIVE),
+  sex: z.nativeEnum(GENDER, { message: "Invalid Sex" }),
+  rank: z.nativeEnum(Rank, { message: "Invalid Rank" }),
+  status: z
+    .nativeEnum(UserStatus, { message: "Invalid User Status" })
+    .default(UserStatus.ACTIVE),
   lastLogin: z.date().optional(),
-  subject_id: z.string().uuid(),
-  degrees: z.nativeEnum(Degree).default(Degree.BBA),
+  subject_id: z
+    .string({
+      required_error: "Subject  must be required",
+      invalid_type_error: "Invalid type of Subject",
+    })
+    .uuid({ message: "Invalid Subject" }),
+  degrees: z
+    .nativeEnum(Degree, { message: "Invalid Degree" })
+    .default(Degree.BBA),
   salary: z.number().int().default(25000),
+  address: z.string({
+    required_error: "Address must be required",
+    invalid_type_error: "Invalid type of Address",
+  }),
   createdAt: z.date().default(new Date()),
   updatedAt: z.date().default(new Date()),
 });

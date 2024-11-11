@@ -1,6 +1,6 @@
 import TableSearch from "@/components/TableSearch";
-import AddTeacherForm from "@/components/teacher/components/AddTeacherForm";
-import TeacherList from "@/components/teacher/components/TeacherList";
+import AddTeacherForm from "@/components/teacher/AddTeacherForm";
+import TeacherList from "@/components/teacher/TeacherList";
 import { get_teachers } from "@/lib/controller/get_teachers";
 import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";

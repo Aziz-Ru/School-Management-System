@@ -5,9 +5,9 @@ import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { addTeacherAction } from "@/lib/actions/teacher";
 import { Subject } from "@/lib/types";
 import { useRef } from "react";
-import { addTeacherAction } from "../actions/teacher";
 
 export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
   const formRef = useRef<HTMLFormElement>(null);
