@@ -51,16 +51,16 @@ export const addTeacherAction = async (
     await prisma.user.create({
       data: {
         id: validateResult.data.id,
-        email: validateResult.data.email,
-        phone: validateResult.data.phone,
-        sex: validateResult.data.sex,
-        level: validateResult.data.level,
-        address: validateResult.data.address,
-        rank: validateResult.data.rank,
-        password: hashedPassword,
-        courses: {
-          connect: courses.map((cn) => ({ courseName: cn })),
-        },
+        // email: validateResult.data.email,
+        // phone: validateResult.data.phone,
+        // sex: validateResult.data.sex,
+        // level: validateResult.data.level,
+        // address: validateResult.data.address,
+        // rank: validateResult.data.rank,
+        // password: hashedPassword,
+        // courses: {
+        //   connect: courses.map((cn) => ({ courseName: cn })),
+        // },
       },
     });
 
