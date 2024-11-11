@@ -4,71 +4,44 @@ import FormInput from "@/components/Forms/FormInput";
 import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { useRef, useState } from "react";
-import { MultiSelect } from "react-multi-select-component";
+import { Subject } from "@/lib/types";
+import { useRef } from "react";
 import { addTeacherAction } from "../actions/teacher";
 
-export default function AddTeacherForm({
-  courseOption,
-}: {
-  courseOption: { label: string; value: string }[];
-}) {
-  const [level, setLevel] = useState("");
-  const [rank, setRank] = useState("");
-  const [gender, setGender] = useState("");
+export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [selected, setSelected] = useState<{ label: string; value: string }[]>(
-    []
-  );
 
   return (
     <FormModal table={"Teacher"}>
       <form
         ref={formRef}
         action={async (formData: FormData) => {
-          if (selected.length == 0) {
-            toast({
-              title: "Select a Course",
-              description: "Please Select a Course For This Teacher",
-            });
-            return;
-          }
-          formData.append(
-            "course",
-            selected.map((course) => course.value).join(",")
-          );
-
           const { error, msg } = await addTeacherAction(formData);
           if (error) {
             toast({ title: error, description: "Failed to added New Teacher" });
           } else if (msg) {
             const today = new Date();
-            setSelected([]);
             toast({ title: msg, description: `A Teacher Added at ${today}` });
-            setLevel("");
-            setRank("");
-            setGender("");
             formRef.current!.reset();
           }
         }}
       >
         {/* Full Name */}
-        <FormInput
-          type="text"
-          name="fullName"
-          label="Full Name"
-          required={true}
-          width="w-full"
-        />
+        <div className="w-full flex gap-4">
+          <FormInput
+            type="text"
+            name="first_name"
+            label="First Name"
+            required={true}
+          />
+          <FormInput
+            type="text"
+            name="last_name"
+            label="Last Name"
+            required={true}
+          />
+        </div>
 
         <div className="w-full flex gap-4">
           {/* Email */}
@@ -88,65 +61,53 @@ export default function AddTeacherForm({
             required={true}
           />
         </div>
-        <div className="mb-3">
-          <Label>Select Course</Label>
-          <MultiSelect
-            value={selected}
-            onChange={setSelected}
-            options={courseOption}
-            labelledBy="Select"
-          />
+        <div className="flex w-full gap-4">
+          <div className="w-1/2 flex flex-col gap-3 mb-4">
+            <Label>Select Course</Label>
+            <select name="subject_id" className="input ">
+              {subjects.map((subject) => {
+                return (
+                  <option value={subject.subject_id}>
+                    {subject.subject_name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="w-1/2 flex flex-col gap-3 mb-4">
+            <Label>Select Degree</Label>
+            <select name="degree" className="input">
+              <option value={"MSC"}>MSc</option>
+              <option value={"BSC"}>BSc</option>
+              <option value={"BBA"}>BBa</option>
+            </select>
+          </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex w-full gap-4">
           <div className="w-1/2">
             {/* Level */}
             <div className="flex flex-col gap-3 mb-4">
               <Label>Level</Label>
-              <Select
-                name="level"
-                value={level}
-                onValueChange={(e) => {
-                  setLevel(e);
-                }}
-                required={true}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={`Select Level `} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"PRIMARY"}>PRIMARY</SelectItem>
-                    <SelectItem value={"SCHOOL"}>SCHOOL</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <select name="level" className="input">
+                <option value={"PRIMARY"}>Primary</option>
+                <option value={"SECONDARY"}>Secondary</option>
+              </select>
             </div>
           </div>
 
           {/* Rank */}
           <div className="w-1/2">
             <div className="flex flex-col gap-3 mb-4">
-              <Label>RANK</Label>
-              <Select
-                name="rank"
-                value={rank}
-                onValueChange={(e) => setRank(e)}
-                required={true}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={`Select Rank `} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"SENIOR"}>SENIOR</SelectItem>
-                    <SelectItem value={"ASSISTANT"}>ASSISTANT</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Label>Rank</Label>
+              <select name="rank" className="input">
+                <option value={"ASSISTANT"}>Assistant</option>
+                <option value={"SENIOR"}>Senior</option>
+              </select>
             </div>
           </div>
         </div>
+
         <div className="flex gap-4 w-full">
           {/* Sex */}
           <FormInput
@@ -159,22 +120,10 @@ export default function AddTeacherForm({
             {/* Address */}
             <div className="flex flex-col gap-3 mb-4">
               <Label>GENDER</Label>
-              <Select
-                name="sex"
-                value={gender}
-                onValueChange={(e) => setGender(e)}
-                required={true}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={`Select Gender `} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"MALE"}>MALE</SelectItem>
-                    <SelectItem value={"FEMALE"}>FEMALE</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <select name="gender" className="input">
+                <option value={"MALE"}>Male</option>
+                <option value={"FEMALE"}>Female</option>
+              </select>
             </div>
           </div>
         </div>

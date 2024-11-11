@@ -1,30 +1,18 @@
 "use client";
 import DetailsLink from "@/components/buttons/DetailsLink";
 import TableList from "@/components/TableList";
-import TableSearch from "@/components/TableSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { User } from "@/lib/types";
 import Image from "next/image";
 import { useMemo } from "react";
-import AddTeacherForm from "./AddTeacherForm";
 
-interface Teacher {
-  id: number;
-  fullName: string;
-  email: string;
-  img: string | null;
-  address: string;
-  level: string;
-  phone: string;
-  courses: { courseName: string }[];
-}
-
-interface TeacherListProps {
-  teachers: Teacher[];
-  courses: any;
+const TeacherList = ({
+  teachers,
+  role,
+}: {
+  teachers: User[];
   role: string;
-}
-
-const TeacherList = ({ teachers, courses, role }: TeacherListProps) => {
+}) => {
   const Columns = useMemo(() => {
     const base = [
       {
@@ -70,7 +58,7 @@ const TeacherList = ({ teachers, courses, role }: TeacherListProps) => {
     return base;
   }, [role]);
 
-  const renderRow = (item: Teacher) => {
+  const renderRow = (item: User) => {
     return (
       <TableRow key={item.id}>
         <TableCell className="flex items-center p-3">
@@ -78,26 +66,26 @@ const TeacherList = ({ teachers, courses, role }: TeacherListProps) => {
             width={40}
             height={40}
             src={item.img || "/image/noavatar.png"}
-            alt={item.fullName}
+            alt={"profile"}
             className="w-10 h-10 rounded-full"
           />
           <div className="ml-2">
-            <h3 className="font-semibold">{item.fullName}</h3>
+            <h3 className="font-semibold">{`${item.teacherProfile?.first_name} ${item.teacherProfile?.last_name}`}</h3>
             <p className="text-gray-500">{item.email}</p>
           </div>
         </TableCell>
         <TableCell>{item.id}</TableCell>
 
         <TableCell className="hidden md:table-cell">
-          {item.courses.map((course) => (
-            <span key={course.courseName} className="badge">
-              {course.courseName}
-            </span>
-          ))}
+          {item.teacherProfile?.subject?.subject_name}
         </TableCell>
         <TableCell className="hidden md:table-cell">{item.phone}</TableCell>
-        <TableCell className="hidden md:table-cell">{item.level}</TableCell>
-        <TableCell className="hidden xl:table-cell">{item.address}</TableCell>
+        <TableCell className="hidden md:table-cell">
+          {item.teacherProfile?.rank}
+        </TableCell>
+        <TableCell className="hidden xl:table-cell">
+          {item.lastLogin ? item.lastLogin.toDateString() : ""}
+        </TableCell>
 
         {role === "ADMIN" && (
           <TableCell className="text-center">
@@ -108,18 +96,7 @@ const TeacherList = ({ teachers, courses, role }: TeacherListProps) => {
     );
   };
 
-  return (
-    <div>
-      {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableSearch />
-        {role === "ADMIN" && <AddTeacherForm courseOption={courses} />}
-      </div>
-      <div className="">
-        <TableList columns={Columns} data={teachers} renderRow={renderRow} />
-      </div>
-    </div>
-  );
+  return <TableList columns={Columns} data={teachers} renderRow={renderRow} />;
 };
 
 export default TeacherList;

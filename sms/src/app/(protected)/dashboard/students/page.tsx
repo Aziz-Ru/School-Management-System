@@ -1,8 +1,5 @@
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/db";
-import { decrypt } from "@/session";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
 import { AddStudentForm } from "../../../../components/student/components/StudentForm";
 import StudentsList from "../../../../components/student/components/StudentList";
 
@@ -11,13 +8,14 @@ const StudenListPage = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
-  const cookieStore = cookies();
-  const session = cookieStore.get("__session");
-  const { user } = await decrypt(session!.value);
+  // const cookieStore = cookies();
+  // const session = cookieStore.get("__session");
+  // const { user } = await decrypt(session!.value);
 
-  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
-    notFound();
-  }
+  // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+  //   notFound();
+  // }
+  return <div>Hi</div>;
 
   const { page, ...queryParams } = searchParams;
   const currentPage = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;

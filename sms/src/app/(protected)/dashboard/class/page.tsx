@@ -1,26 +1,39 @@
-import prisma from "@/lib/db";
-import { decrypt } from "@/session";
-import { cookies } from "next/headers";
+import TableSearch from "@/components/TableSearch";
+import { getClassesInfos } from "@/lib/controller/get_classes";
+import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
+import AddClassForm from "./_components/AddClassForm";
 import ClassList from "./_components/ClassList";
 
-const ClassListPage = async () => {
+const ClassListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const searchQuery = searchParams.q ? searchParams.q : undefined;
 
-  const classList = await prisma.class.findMany({
-    include: { _count: { select: { sections: true, course: true } } },
-  });
-  
-  const cookieStore = cookies();
-  const session = cookieStore.get("__session");
-  const { user } = await decrypt(session!.value);
-
-  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+  const { classes, status } = await getClassesInfos(searchQuery as string);
+  if (status != Status.OK) {
     notFound();
   }
 
+  // const cookieStore = cookies();
+  // const session = cookieStore.get("__session");
+  // const { user } = await decrypt(session!.value);
+
+  // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+  //   notFound();
+  // }
+
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">
-      <ClassList classList={classList} />
+      <div className="flex items-center justify-between">
+        <TableSearch name="Class Id" />
+        {classes!.length === 0 && <AddClassForm />}
+      </div>
+      <div>
+        <ClassList classList={classes!} />
+      </div>
     </div>
   );
 };

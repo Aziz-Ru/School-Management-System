@@ -7,246 +7,454 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model admin {
-  id       String @id
-  password String
+
+// Acdemic Building
+model Room {
+  id              String    @id @default(cuid())
+  roomNumber      String    @unique
+  roomName        String?   // Optional descriptive name
+  floor           Int
+  building        String?
+  capacity        Int
+  type            RoomType  @default(CLASSROOM)
+  isActive        Boolean   @default(true)
+  schedules       section_subject_schedule[]
 }
 
 
-model school {
-  id         String  @id @default(cuid())
-  name       String
-  email      String  @unique
-  phone      String  @unique
-  address    String
-  message    String?
-  schoolCode String
-  EIIN       String
-  imageURL   String?
+// teacher subjects
+model subject{
+  subject_id   String @id @unique @default(uuid())
+  subject_name  String @unique
+  subject_code   Int
+  teacher       teacher[]
+  class_subject  class_subject[]
+  
 }
 
+//classes 1-10
+model classes{
+  class_id  Int @unique @id
+  class_name String
+  description String @db.Text
+  level      Level   
+  sections sections[]
+  subjects  class_subject[]
+}
+//class subject
+model class_subject{
+  subject_id    String    
+  class_id      Int
+  description   String @db.Text
+  class         classes  @relation(fields: [class_id],references: [class_id])
+  subject       subject @relation(fields: [subject_id],references: [subject_id])
+  section_subjects    section_subject[]
+  @@id([subject_id,class_id])
+}
 
-model classes {
-  class_id  Int  @id @unique
-  className String
-  level     LEVEL     @default(PRIMARY)
-  sections  section[]
-  course    subject[]
+// section of each class
+model sections{
+  section_id String @id @default(uuid())
+  section_name String
+  class_id    Int 
+  academic_year Int
+  room_number  Int
+  class_teacher  Int
+  teacher    teacher @relation(fields: [class_teacher],references: [teacher_id])
+  class      classes@relation(fields: [class_id],references: [class_id])
+  students   student[]
+  exams      exam[]
+  section_subjects  section_subject[]
+  attendance    student_attendance[]
+  maximum_student Int @default(50)
+  createdAt    DateTime @default(now())
+}
+
+// section subject of the class
+model section_subject {
+class_id      Int
+subject_id     String 
+section_id     String 
+teacher_id     Int
+class_subjects class_subject @relation(fields: [subject_id,class_id],references: [subject_id,class_id])
+section        sections @relation(fields: [section_id],references: [section_id])
+teachers       teacher @relation(fields: [teacher_id],references: [teacher_id])
+schedules      section_subject_schedule[]
+exams          exam_subjects[]
+subject_marks   subject_marks[]
+@@id([subject_id,section_id])
+
+}
+
+model section_subject_schedule{
+  schedule_id    String @id @default(uuid())
+  subject_id     String
+  section_id     String
+  subject        section_subject @relation(fields: [subject_id,section_id],references: [subject_id,section_id])
+  timeslot_id       String
+  timeslots      timeslot @relation(fields: [timeslot_id],references: [id])
+  room_id       String
+  room           Room @relation(fields: [room_id],references: [id])
+  createdAt       DateTime @default(now())
+}
+model timeslot{
+  id    String @id @default(uuid())
+  schedule  section_subject_schedule[]
+  start_time         String
+  end_time           String //HH:MM
+  day            DayOfWeek
+  type           PeriodType @default(REGULAR)
+  academic_year  Int
+}
+
+model user{
+    id            Int    @id @unique @default(autoincrement())
+    email         String    @unique
+    password      String
+    role          UserRole
+    sex            GENDER 
+    status        UserStatus @default(ACTIVE)
+    img           String
+    lastLogin     DateTime?
+    teacherProfile teacher?
+    studentProfile student?
+    phone           String
+    address         String
+    student_attendance_mark   student_attendance[]
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
 }
 
 
 model teacher {
-
-  id             Int              @id @unique
-  password       String
-  fullName       String
-  email          String
-  phone          String
-  address        String
-  message        String?
-  img            String?
-  courses        course[]
-  sectionSuper   String?
-  section        section[]
-  schedule       schedule[]
-  attendence     teacherAttendence[]
-  sex            GENDER           @default(MALE)
-  rank           RANK             @default(ASSISTANT)
-  level          LEVEL            @default(SCHOOL)
-  createdAt      DateTime         @default(now())
+  first_name    String
+  last_name     String
+  abbreviation  String
+  teacher_id      Int @unique
+  teacher        user @relation(fields: [teacher_id],references: [id])
+  subject_id      String
+  subject        subject @relation(fields: [subject_id],references: [subject_id])
+  degrees        Degree @default(BBA)
+  class_teacher  sections[]
+  rank            Rank 
+  level            Level
+  leaves         TeacherLeave[]
+  attendance     TeacherAttendance[]
+  enrolled_subjects  section_subject[]
+  salary         Int @default(25000)
+  @@id([teacher_id,subject_id])
 }
 
-model student {
-  id             Int          @id @unique
-  password       String
-  fullName       String
-  phone          String
-  address        String
-  dob            String
-  lastExamStatus Boolean @default(false)
-  img            String?
-  result         result[]
-  sex            GENDER       @default(MALE)
-  sectionId      String
-  section        section      @relation(fields: [sectionId], references: [id])
-  attendenceList attendence[]
-  createdAt      DateTime     @default(now())
+model student{
+first_name    String
+last_name     String
+student_id Int @unique @id
+student     user @relation(fields: [student_id],references: [id])
+section_id   String
+dob          DateTime
+level        Level
+section     sections @relation(fields: [section_id],references: [section_id])
+attendance   student_attendance[]
+exam_result   exam_result[]
+subject_marks  subject_marks[]
+attendance_summery   attendance_summery[]
+
 }
 
-
-
-
-model course {
-  courseName String    @id @unique
-  mark       Int       @default(100)
-  subject    subject[]
-  teachers   teacher[]
-  createdAt  DateTime  @default(now())
-}
-
-model subject {
-  id         String           @id @default(uuid())
-  classId    Int
-  courseName String
-  course     course           @relation(fields: [courseName], references: [courseName], onDelete: Cascade)
-  class      Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
-  syllabus   String?
-  exams      examCourse[]
-  schedules schedule[]
-  @@unique([courseName, classId])
-}
-
-model section {
-  id               String           @id @default(uuid())
-  sectionName      String
-  classId          Int
-  index            Int              @default(1)
-  year             Int
-  sectionTeacherId Int?
-  students         student[]
-  attendence       attendence[]
-  schedule          schedule[]
-  exam             exam[]
-  sectionTeacher   teacher?         @relation(fields: [sectionTeacherId], references: [id], onDelete: Cascade)
-  classTable       Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
-  @@unique([sectionName, classId, year])
+model TeacherLeave {
+  id          String   @id @default(cuid())
+  teacher_id   Int
+  teacher     teacher  @relation(fields: [teacher_id], references: [teacher_id])
+  startDate   DateTime
+  endDate     DateTime
+  type        LeaveType
+  status      LeaveStatus @default(PENDING)
+  reason      String @db.Text
 }
 
 
+model student_attendance {
+  id              String            @id @unique @default(cuid())
+  student_id       Int
+  student         student          @relation(fields: [student_id], references: [student_id])
+  sectionId       String
+  section         sections          @relation(fields: [sectionId], references: [section_id])
+  date            DateTime
+  status          AttendanceStatus
+  timeIn          DateTime?
+  timeOut         DateTime?
+  lateMinutes     Int?            // If late, how many minutes
+  markedById      Int          // Teacher/Staff who marked attendance
+  markedBy        user            @relation(fields: [markedById], references: [id])
+  remarks         String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 
-model exam {
-  id          String        @id @default(uuid())
-  type         EXAM_TYPE    @default(FINAL)
-  sectionId   String        
-  section     section       @relation(fields: [sectionId], references: [id])
-  examSubject examCourse[]
-  createdAt   DateTime      @default(now())
-  @@unique([type,sectionId])
+  @@unique([student_id, date])
+  @@index([date, status])
+  @@index([student_id, status])
 }
 
-model examCourse{
-  id        String @id @default(uuid())
-  examId    String
-  subjectId  String
-  date       DateTime
-  result     result[]
-  exam      exam   @relation(fields: [examId], references: [id])
-  subject    subject @relation(fields: [subjectId], references: [id])
+model TeacherAttendance {
+  id              String           @id @default(cuid())
+  teacherId       Int
+  teacher         teacher          @relation(fields: [teacherId], references: [teacher_id])
+  date            DateTime
+  status          AttendanceStatus
+  timeIn          DateTime?
+  timeOut         DateTime?
+  lateMinutes     Int?
+  substitutedBy   Int?            // If another teacher covered
   
+  remarks         String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([teacherId, date])
+  @@index([date, status])
 }
 
-model result {
-  id        String      @id @default(uuid())
-  studentId Int
-  examId    String
-  mark      Int
-  grade     String
-  student   student     @relation(fields: [studentId], references: [id])
-  exam      examCourse        @relation(fields: [examId], references: [id])
-  createdAt DateTime    @default(now())
+model attendance_summery {
+
+  id              String    @id @default(cuid())
+  student_id       Int
+  student         student   @relation(fields: [student_id], references: [student_id])
+  academicYear    Int
+  month           Int
+  totalDays       Int
+  presentDays     Int
+  absentDays      Int
+  lateDays        Int
+  excusedDays     Int
+  leavesDays      Int
+  attendancePercentage Float
+  lastCalculated  DateTime
+  
+  @@unique([student_id, academicYear, month])
 }
 
-model schedule {
-  id        String         @id @default(uuid())
-  startEnd String
-  sectionId String
-  teacherId Int
-  subjectId  String
-  day       DAY
-  section   section        @relation(fields: [sectionId], references: [id])
-  subject   subject @relation(fields: [subjectId], references: [id])
-  teacher   teacher        @relation(fields: [teacherId], references: [id])
-  @@unique([teacherId,startEnd,day,sectionId])
+model AttendancePolicy {
+  id                    String    @id @default(cuid())
+  academicYear          Int
+  requiredAttendance    Float     // Percentage required
+  lateGracePeriod      Int       // Minutes
+  autoMarkAbsentAfter   Int       // Minutes
+  countLateAsHalfDay    Int       // Number of lates to count as half day
+  countLateAsAbsent     Int       // Number of lates to count as absent
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
 }
 
-model authority {
-  id       String  @id @default(uuid())
-  fullName String
-  phone    String
-  message  message[]
-  rank     String
-  imageURL String
+
+
+//exam
+model exam {
+  id String  @id @default(uuid())
+  type EXAM_TYPE
+  section_id   String
+  section      sections @relation( fields: [section_id],references: [section_id])
+  start_date   DateTime
+  end_date     DateTime
+  exam_results  exam_result[]
+  exam_subjects  exam_subjects[]
+  publish_status  PublishStatus @default(DRAFT)
 }
 
-model message{
-  id     String  @id
-  title  String
-  message  String
-  authorId   String
-  author     authority @relation(fields: [authorId],references: [id])
-  createdAt DateTime
+// exam subject 
+model exam_subjects{
+  id            String    @id @default(uuid())
+  exam_id       String
+  exam           exam @relation(fields: [exam_id],references: [id])
+  subject_id    String
+  section_id     String
+  subject       section_subject @relation(fields: [subject_id,section_id],references: [subject_id,section_id]) 
+  max_mark      Float
+  passing_mark  Float
+  weigtage      Float
+  subject_marks  subject_marks[]
 }
 
-model notice {
-  id        String   @id @default(uuid())
-  title     String
-  content   String @db.Text
-  createdAt DateTime @default(now())
+//  subject mark of student 
+model subject_marks{
+  id String  @id @default(uuid())
+  exam_subject_id   String
+  exam_subject     exam_subjects @relation(fields: [exam_subject_id],references: [id])
+  student_id        Int
+  student           student @relation(fields: [student_id],references: [student_id])
+  subject_id  String
+  section_id    String
+  section_subject  section_subject @relation(fields: [section_id,subject_id],references: [section_id,subject_id])
+  obtained_marks  Float
+  percentage Float
+  grade String
+  practical_marks  Float?
+  theory_mark  Float?
+  assignment_mark Float?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
 }
 
-model attendence {
-  id        String   @id @default(uuid())
-  year      Int   @default(2024)
-  month     Int
-  studentId Int
-  present   Boolean  @default(false)
-  sectionId String
-  section   section  @relation(fields: [sectionId], references: [id])
-  student   student  @relation(fields: [studentId], references: [id])
-  date      DateTime
-  @@unique([studentId,date,month])
+
+//overall exam result  of each student
+model exam_result {
+  id            String    @id @default(cuid())
+  examId        String
+  exam          exam      @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student_id     Int
+  student       student   @relation(fields: [student_id], references: [student_id])
+  totalObtainedMarks Float
+  percentage    Float
+  gradeId       String
+  grade         String    
+  rank          Int?      // Class rank
+  remarks       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // @@unique([examId, studentId])
 }
 
-model teacherAttendence {
-  id        String  @id @default(uuid())
-  year      Int   @default(2024)
-  month     Int
-  teacherId Int
-  present   Boolean @default(false)
-  date      DateTime
-  teacher   teacher @relation(fields: [teacherId], references: [id])
-   @@unique([teacherId,date,month])
+
+model Notice {
+  id            String    @id @default(cuid())
+  title         String
+  description   String    @db.Text
+  type          NoticeType
+  targetAudience AudienceType
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  startDate     DateTime  // When the notice becomes active
+  endDate       DateTime? // Optional end date for time-sensitive notices
+
+  @@index([startDate, endDate])
+  @@index([type, targetAudience])
 }
 
-enum RANK {
-  SENIOR
-  ASSISTANT
-}
-
-enum LEVEL {
+enum Level {
   PRIMARY
-  SCHOOL
-  COLLEGE
-}
-enum EXAM_TYPE{
-  MID
-  FINAL
+  SECONDARY
 }
 
-enum DAY {
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+  EXCUSED
+  ON_LEAVE
+}
+
+// Enum for notice types (e.g., general announcements, events, assignments, etc.)
+enum NoticeType {
+  ANNOUNCEMENT
+  EVENT
+  ASSIGNMENT
+  ALERT
+}
+
+// Enum to define the target audience for the notice
+enum AudienceType {
+  ALL            // Notice for the whole school
+  STAFF          // Notice for all staff members
+  STUDENTS       // Notice for all students
+  PARENTS        // Notice for all parents
+  SECTION        // Notice for a specific section
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+}
+
+
+enum RoomType {
+  CLASSROOM
+  LABORATORY
+  LIBRARY
+  COMPUTER_LAB
+  MUSIC_ROOM
+  ART_ROOM
+  GYMNASIUM
+  AUDITORIUM
+}
+
+enum DayOfWeek {
   SATURDAY
   SUNDAY
   MONDAY
   TUESDAY
   WEDNESDAY
   THURSDAY
+  FRIDAY
 }
 
-enum MONTH {
-  JANUARY
-  FEBRUARY
-  MARCH
-  APRIL
-  MAY
-  JUNE
-  JULY
-  AUGUST
-  SEPTEMBER
-  OCTOBER
-  NOVEMBER
-  DECEMBER
+enum PeriodType {
+  REGULAR
+  LAB
+  ACTIVITY
+  BREAK
+  ASSEMBLY
 }
-enum GENDER {
-  MALE
-  FEMALE
+
+enum Degree {
+  BSC
+  MSC
+  BBA
+}
+
+enum EXAM_TYPE {
+  MIDTERM
+  FINAL
+  QUIZ
+  ASSIGNMENT
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+
+
+enum LeaveType {
+  SICK_LEAVE
+  FAMILY_EMERGENCY
+  PLANNED_ABSENCE
+  SPORTS_ACTIVITY
+  ACADEMIC_ACTIVITY
+  OTHER
+}
+
+
+
+enum LeaveStatus {
+  PENDING      // Initial state when leave is requested
+  APPROVED     // Leave approved by authority
+  REJECTED     // Leave request denied
+  CANCELLED    // Leave cancelled by teacher
+  PARTIALLY_APPROVED  // Approved with modified dates
+  ON_HOLD     // Need more information/documentation
+  IN_PROGRESS  // Currently on leave
+  COMPLETED    // Leave period completed
+  EXPIRED      // Approved but not taken
+}
+
+enum UserRole {
+    ADMIN
+    TEACHER
+    STUDENT
+    STAFF
+  }
+
+  enum UserStatus {
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+  }
+
+enum Rank {
+  SENIOR
+  ASISTANT
 }
