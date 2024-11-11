@@ -114,7 +114,7 @@ model user{
     role          UserRole
     sex            GENDER 
     status        UserStatus @default(ACTIVE)
-    img           String
+    img           String?
     lastLogin     DateTime?
     teacherProfile teacher?
     studentProfile student?
@@ -456,5 +456,5 @@ enum UserRole {
 
 enum Rank {
   SENIOR
-  ASISTANT
+  ASSISTANT
 }

@@ -26,8 +26,13 @@ const TeacherList = ({
         className: "table-cell ",
       },
       {
-        header: "Course",
-        accessor: "course",
+        header: "Subject",
+        accessor: "subject",
+        className: "hidden md:table-cell ",
+      },
+      {
+        header: "Degree",
+        accessor: "degree",
         className: "hidden md:table-cell ",
       },
       {
@@ -45,10 +50,16 @@ const TeacherList = ({
       {
         header: "Address",
         accessor: "address",
-        className: "hidden xl:table-cell ",
+        className: "hidden lg:table-cell ",
       },
     ];
     if (role === "ADMIN") {
+      base.push({
+        header: "Last Login",
+        accessor: "last_login",
+        className: "hidden xl:table-cell",
+      });
+
       base.push({
         header: "Action",
         accessor: "action",
@@ -60,7 +71,7 @@ const TeacherList = ({
 
   const renderRow = (item: User) => {
     return (
-      <TableRow key={item.id}>
+      <TableRow key={`${item.id}-${item.address}`}>
         <TableCell className="flex items-center p-3">
           <Image
             width={40}
@@ -79,12 +90,16 @@ const TeacherList = ({
         <TableCell className="hidden md:table-cell">
           {item.teacherProfile?.subject?.subject_name}
         </TableCell>
+        <TableCell className="hidden md:table-cell">
+          {item.teacherProfile?.degrees}
+        </TableCell>
         <TableCell className="hidden md:table-cell">{item.phone}</TableCell>
         <TableCell className="hidden md:table-cell">
-          {item.teacherProfile?.rank}
+          {item.teacherProfile?.level}
         </TableCell>
+        <TableCell className="hidden lg:table-cell">{item.address!}</TableCell>
         <TableCell className="hidden xl:table-cell">
-          {item.lastLogin ? item.lastLogin.toDateString() : ""}
+          {item.lastLogin ? item.lastLogin.toDateString() : "NO Info"}
         </TableCell>
 
         {role === "ADMIN" && (

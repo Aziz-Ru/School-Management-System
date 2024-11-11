@@ -67,7 +67,7 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
             <select name="subject_id" className="input ">
               {subjects.map((subject) => {
                 return (
-                  <option value={subject.subject_id}>
+                  <option key={subject.subject_id} value={subject.subject_id}>
                     {subject.subject_name}
                   </option>
                 );

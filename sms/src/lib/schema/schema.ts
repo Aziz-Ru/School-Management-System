@@ -119,6 +119,11 @@ export enum UserStatus {
   SUSPENDED = "SUSPENDED",
 }
 
+export enum Level {
+  PRIMARY = "PRIMARY",
+  SECONDAY = "SECONDARY",
+}
+
 // Room schema
 export const RoomSchema = z.object({
   roomNumber: z.string(),
@@ -203,9 +208,6 @@ export const TimeslotSchema = z.object({
   academic_year: z.number().int(),
 });
 
-// User schema
-export const UserSchema = z.object({});
-
 // Teacher schema
 export const TeacherSchema = z.object({
   id: z
@@ -228,6 +230,18 @@ export const TeacherSchema = z.object({
       invalid_type_error: "Invalid type of Password",
     })
     .min(6, { message: "Password Minimum Length 6" }),
+  first_name: z
+    .string({
+      required_error: "first_name must be required",
+      invalid_type_error: "Invalid type of first_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
+  last_name: z
+    .string({
+      required_error: "last_name must be required",
+      invalid_type_error: "Invalid type of last_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
   role: z.nativeEnum(UserRole).refine((value) => value == UserRole.TEACHER, {
     message: "Role Must be Teacher",
   }),
@@ -237,6 +251,14 @@ export const TeacherSchema = z.object({
     .nativeEnum(UserStatus, { message: "Invalid User Status" })
     .default(UserStatus.ACTIVE),
   lastLogin: z.date().optional(),
+  phone: z
+    .string({
+      required_error: "Phone must be required",
+      invalid_type_error: "Phone must be a string",
+    })
+    .regex(/^(\+8801|01)[0-9]\d{8}$/, {
+      message: "Invalid Bangladeshi Phone Number",
+    }),
   subject_id: z
     .string({
       required_error: "Subject  must be required",
@@ -251,6 +273,7 @@ export const TeacherSchema = z.object({
     required_error: "Address must be required",
     invalid_type_error: "Invalid type of Address",
   }),
+  level: z.nativeEnum(Level, { message: "level must be valid" }),
   createdAt: z.date().default(new Date()),
   updatedAt: z.date().default(new Date()),
 });

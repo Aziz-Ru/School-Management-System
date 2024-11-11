@@ -156,7 +156,7 @@ export interface Classes {
   class_id: number;
   class_name: string;
   description?: string;
-  level?: "PRIMARY" | "SECONDARY";
+  level?: string;
   sections?: Section[];
   subjects?: ClassSubject[];
   _count?: {
@@ -241,6 +241,7 @@ export interface User {
   sex: string;
   status: string;
   img?: string | null;
+  address?: string;
   lastLogin: Date | null;
   teacherProfile?: Teacher | null;
   studentProfile?: Student | null;
@@ -260,7 +261,7 @@ export interface Teacher {
   degrees?: String;
   class_teacher?: Section[];
   rank?: Rank;
-  level?: Level;
+  level?: string;
   leaves?: TeacherLeave[];
   attendance?: TeacherAttendance[];
   enrolled_subjects?: SectionSubject[];
