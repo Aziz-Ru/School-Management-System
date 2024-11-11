@@ -12,6 +12,7 @@ model admin {
   password String
 }
 
+
 model school {
   id         String  @id @default(cuid())
   name       String
@@ -25,7 +26,17 @@ model school {
 }
 
 
+model classes {
+  class_id  Int  @id @unique
+  className String
+  level     LEVEL     @default(PRIMARY)
+  sections  section[]
+  course    subject[]
+}
+
+
 model teacher {
+
   id             Int              @id @unique
   password       String
   fullName       String
@@ -63,13 +74,7 @@ model student {
 }
 
 
-model Class {
-  id        Int       @id
-  className String
-  level     LEVEL     @default(PRIMARY)
-  sections  section[]
-  course    subject[]
-}
+
 
 model course {
   courseName String    @id @unique

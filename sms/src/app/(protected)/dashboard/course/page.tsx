@@ -5,7 +5,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { decrypt } from "@/session";
 import { getCourses } from "@/utils/get_courses";
 import { getTeacherEnrolledCourse } from "@/utils/get_enrolledCourse";
-import { Status, Subject } from "@/utils/types";
+import { Status } from "@/utils/types";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import AddCourseForm from "./_components/AddCourseForm";
@@ -38,9 +38,14 @@ const TeacherViewColumns = [
     accessor: "class",
   },
   {
+    header: "Section",
+    accessor: "section",
+  },
+  {
     header: "Course",
     accessor: "course",
   },
+
   {
     header: "Action",
     accessor: "action",
@@ -110,10 +115,11 @@ const CourseListPage = async () => {
       return <div>Your Enrolled Course are null</div>;
     }
 
-    const renderRow = (item: Subject) => {
+    const renderRow = (item: any) => {
       return (
         <TableRow key={item.id}>
           <TableCell>{item.classId}</TableCell>
+          <TableCell>{item.sectionName!}</TableCell>
           <TableCell>{item.courseName}</TableCell>
           <TableCell>Exam</TableCell>
         </TableRow>

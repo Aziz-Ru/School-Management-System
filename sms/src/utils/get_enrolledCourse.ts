@@ -6,10 +6,9 @@ type ReturnProps = {
   status: Status;
 };
 
-export const getTeacherEnrolledCourse = async (
-  teacherId: number
-): Promise<ReturnProps> => {
+export const getTeacherEnrolledCourse = async (teacherId: number) => {
   try {
+    
     const schedules = await prisma.schedule.findMany({
       where: {
         teacherId: teacherId,
