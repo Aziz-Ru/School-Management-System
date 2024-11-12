@@ -1,8 +1,8 @@
 import NoticeCards from "@/components/NoticeCard";
-import ProfileCard from "@/components/teacher/components/ProfileCard";
-import Routine from "@/components/teacher/components/Routine";
+import ProfileCard from "@/components/teacher/ProfileCard";
+import Routine from "@/components/teacher/Routine";
 
-import AttendenceList from "@/components/teacher/components/TeacherAttendence";
+import AttendenceList from "@/components/teacher/TeacherAttendence";
 import { DaysOfWeek, Times } from "@/lib/data";
 import { get_notice } from "@/utils/get_latest_notice";
 import { getTeacherData } from "@/utils/get_teacherData";

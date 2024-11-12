@@ -1,23 +1,28 @@
-import Link from "next/link";
-import Icon from "./LucidIcon";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
-const TableSearch = () => {
+const TableSearch = ({ name }: { name: string }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [query] = useDebounce(searchQuery, 500);
+  const router = useRouter();
+  const pathName = usePathname();
+
+  useEffect(() => {
+    router.replace(`${pathName}?q=${query}`);
+  }, [query, router, pathName]);
+
   return (
-    <div className="w-full md:w-auto flex items-center gap-2   rounded-md px-2">
-      <Input
-        className=" outline-none site-bg w-full p-2 "
+    <div>
+      <input
+        onChange={(e) => setSearchQuery(e.target.value)}
         type="text"
-        name="Search"
-        placeholder="Search..."
+        required={true}
+        placeholder={`Search ${name}`}
+        className="border px-4 py-2 border-gray-400 text-gray-600 rounded-md bg-transparent text-sm outline-none  focus:ring-blue-500 focus:border-blue-500"
       />
-      <Link href={""}>
-        <Button className="bg-sky-400 hover:bg-sky-300 text-white">
-          <Icon name="Search" size={18} color="#FFFFFF" />
-          Search
-        </Button>
-      </Link>
     </div>
   );
 };

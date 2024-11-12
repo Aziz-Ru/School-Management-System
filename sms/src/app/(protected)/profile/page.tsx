@@ -1,5 +1,5 @@
 import NoticeCards from "@/components/NoticeCard";
-import Routine from "@/components/teacher/components/Routine";
+import Routine from "@/components/teacher/Routine";
 import { getAttendencCalendar } from "@/lib/utils";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";

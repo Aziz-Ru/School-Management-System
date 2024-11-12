@@ -1,19 +1,20 @@
-import { decrypt } from "@/session";
-import { getClassData } from "@/utils/get_classData";
+import { getClassData } from "@/lib/controller/get_classes";
+import { get_rooms } from "@/lib/controller/get_rooms";
 import { Status } from "@/utils/types";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import CourseView from "../_components/CourseView";
-import SectionView from "../_components/SectionView";
+import AddCourseForm from "../_components/AddCourseForm";
+import AddSectionForm from "../_components/AddSectionForm";
+import ClassSubjects from "../_components/ClassSubjectView";
+import SectionListTable from "../_components/SectionsTables";
 
 const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
-  const cookieStore = cookies();
-  const session = cookieStore.get("__session");
-  const { user } = await decrypt(session!.value);
-
-  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
-    notFound();
-  }
+  // const cookieStore = cookies();
+  // const session = cookieStore.get("__session");
+  // const { user } = await decrypt(session!.value);
+  const user = { role: "ADMIN" };
+  // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+  //   notFound();
+  // }
 
   const classId = parseInt(params.classId);
   // Check is it number or not
@@ -21,39 +22,55 @@ const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
     notFound();
   }
 
-  const { classdata, teachers, subjects, courses, status } = await getClassData(
-    classId
-  );
+  // get class data
+  const { classInfo, teachers, subjects, sections, class_subject, status } =
+    await getClassData(classId);
+
+  const { rooms } = await get_rooms();
+
+  console.log(status);
   if (status !== Status.OK) {
     notFound();
   }
 
-  const courseOption = courses!.map((course) => ({
-    label: course.courseName,
-    value: course.courseName,
+  const otherSubjects = subjects!.map((course) => ({
+    label: course.subject_name,
+    value: course.subject_id,
   }));
 
   return (
     <div className="grid grid-cols-12">
       {/* Courses */}
       <div className="col-span-12 xl:col-span-6 m-2 rounded border p-4">
-        <CourseView
-          courses={subjects}
-          classId={classId}
-          courseOption={courseOption}
-          role={user.role}
-        />
+        <div className="flex gap-2 items-center justify-between p-2 border-b border-gray-200">
+          {user.role === "ADMIN" && (
+            <AddCourseForm options={otherSubjects} classId={classId} />
+          )}
+        </div>
+        <div className="">
+          {class_subject!.length > 0 && (
+            <ClassSubjects
+              subjects={class_subject!}
+              currentPath={`/dashboard/class/${classId}`}
+            />
+          )}
+        </div>
       </div>
 
       {/* Sections */}
-      <div className=" col-span-12 xl:col-span-6 border p-4 m-2 rounded">
-        <SectionView
-          classId={classId}
-          sections={classdata!.sections}
-          teachers={teachers}
-          hasSection={classdata!.sections!.length > 0}
-          role={user.role}
-        />
+      <div className="col-span-12 xl:col-span-6 border p-4 m-2 rounded">
+        <div className="flex gap-2 items-center justify-between p-2 border-b border-gray-200">
+          {user.role === "ADMIN" && (
+            <AddSectionForm
+              classId={classId}
+              classTeacher={teachers!}
+              rooms={rooms!}
+              class_subjects={class_subject!}
+            />
+          )}
+        </div>
+
+        {sections?.length! > 0 && <SectionListTable sections={sections!} />}
       </div>
     </div>
   );

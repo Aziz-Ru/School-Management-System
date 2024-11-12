@@ -2,7 +2,7 @@
 import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { addClassAction } from "../_actions/class";
+import { addClassAction } from "@/lib/actions/class";
 
 const AddClassForm = () => {
   return (

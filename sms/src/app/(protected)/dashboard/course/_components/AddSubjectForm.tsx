@@ -1,20 +1,20 @@
 "use client";
 import FormInput from "@/components/Forms/FormInput";
 import FormModal from "@/components/Forms/FormModal";
-import FormSelect from "@/components/Forms/FormSelect";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { addSubjectAction } from "@/lib/actions/subjects";
 import { useRef } from "react";
-import { addCourseAction } from "../_actions/course";
 
-const AddCourseForm = () => {
+const AddSubjectForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   return (
     <FormModal table="Course">
       <form
         ref={formRef}
+        
         action={async (formData: FormData) => {
-          const { error, msg } = await addCourseAction(formData);
+          const { error, msg } = await addSubjectAction(formData);
           if (error) {
             toast({ title: error, description: "Failed to added New Course" });
           }
@@ -28,12 +28,18 @@ const AddCourseForm = () => {
         <div className="w-full">
           <FormInput
             type="text"
-            name="courseName"
-            label="Course Name"
+            name="name"
+            label="Subject Name"
             required={true}
             width="w-full"
           />
-          <FormSelect name="mark" options={["100", "50"]} label="Mark" />
+          <FormInput
+            type="number"
+            name="code"
+            label="Subject Code"
+            required={true}
+            width="w-full"
+          />
         </div>
         <Button type="submit" className="w-full">
           Add Course
@@ -43,4 +49,4 @@ const AddCourseForm = () => {
   );
 };
 
-export default AddCourseForm;
+export default AddSubjectForm;

@@ -6,6 +6,17 @@ export enum Status {
   INTERNAL_SERVER_ERROR = 500,
 }
 
+export type FilterOptions = {
+  q?: string;
+  subject?: string;
+  level?: string;
+  status?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+};
+
 export interface Class {
   id: number;
   className: string;
