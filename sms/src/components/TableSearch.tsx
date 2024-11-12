@@ -12,7 +12,7 @@ const TableSearch = ({ name }: { name: string }) => {
 
   useEffect(() => {
     router.replace(`${pathName}?q=${query}`);
-  }, [query, router]);
+  }, [query, router, pathName]);
 
   return (
     <div>

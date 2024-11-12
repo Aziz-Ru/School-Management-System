@@ -28,7 +28,7 @@ const ClassListPage = async ({
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">
       <div className="flex items-center justify-between">
-        <TableSearch name="Class Id" />
+        <TableSearch name="Class Name" />
         {classes!.length === 0 && <AddClassForm />}
       </div>
       <div>

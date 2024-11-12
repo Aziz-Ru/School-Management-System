@@ -32,10 +32,6 @@ export enum RoomType {
   LABORATORY = "LABORATORY",
   LIBRARY = "LIBRARY",
   COMPUTER_LAB = "COMPUTER_LAB",
-  MUSIC_ROOM = "MUSIC_ROOM",
-  ART_ROOM = "ART_ROOM",
-  GYMNASIUM = "GYMNASIUM",
-  AUDITORIUM = "AUDITORIUM",
 }
 
 export enum DayOfWeek {
@@ -126,14 +122,32 @@ export enum Level {
 
 // Room schema
 export const RoomSchema = z.object({
-  roomNumber: z.string(),
-  roomName: z.string().optional(),
-  floor: z.number().int(),
-  building: z.string().optional(),
-  capacity: z.number().int(),
+  room_number: z
+    .number({
+      required_error: "Room Number must be required",
+      invalid_type_error: "Room Number type is Invalid ",
+    })
+    .min(1, { message: "Room Number must be greater than 0" }),
+
+  floor: z
+    .number({
+      required_error: "Floor must be required",
+      invalid_type_error: "Floor type is Invalid ",
+    })
+    .int(),
+  building: z.string({
+    required_error: "Building must be required",
+    invalid_type_error: "Building type is Invalid ",
+  }),
+  capacity: z
+    .number({
+      required_error: "Capacity must be required",
+      invalid_type_error: "Capacity type is Invalid ",
+    })
+    .int({ message: "Capacity must be integer" })
+    .max(100),
   type: z.nativeEnum(RoomType),
   isActive: z.boolean().default(true),
-  schedules: z.array(z.string()).optional(), // Array of section_subject_schedule IDs
 });
 
 // Subject schema
@@ -172,14 +186,39 @@ export const ClassSubjectSchema = z.object({
 
 // Sections schema
 export const SectionSchema = z.object({
-  class_id: z.number().int().max(10).min(1),
-  academic_year: z.number().int(),
-  room_number: z.number().int(),
-  class_teacher: z.number().int(),
-  teacher: z.string(), // Teacher ID
-  class: ClassesSchema,
+  section_name: z.string({
+    required_error: "Section Name must be required",
+    invalid_type_error: "Section Name type is Invalid ",
+  }),
+  class_id: z
+    .number({
+      required_error: "Class id must be required",
+      invalid_type_error: "Invalid type of Class id",
+    })
+    .int({ message: "Class id must be integer" })
+    .max(10, { message: "Class id must be less than 10" })
+    .min(1, { message: "Class id must be greater than 1" }),
+  academic_year: z
+    .number({
+      required_error: "Academic Year must be required",
+      invalid_type_error: "Invalid type of Academic Year",
+    })
+    .int({ message: "Academic Year must be integer" }),
+  room_number: z
+    .number({
+      required_error: "Room Number must be required",
+      invalid_type_error: "Invalid type of Room Number",
+    })
+    .int({ message: "Room Number must be integer" }),
+  class_teacher_id: z
+    .number({
+      required_error: "Class Teacher must be required",
+      invalid_type_error: "Invalid type of Class Teacher",
+    })
+    .int({
+      message: "Class Teacher must be integer",
+    }),
   maximum_student: z.number().int().default(50),
-  createdAt: z.date().default(new Date()),
 });
 
 // Section Subject schema

@@ -1,5 +1,6 @@
 "use server";
 
+import { FilterOptions } from "@/utils/types";
 import prisma from "../db";
 import { Status, Subject, User, UserRole } from "../types";
 
@@ -9,16 +10,6 @@ type GetTeachersReturnProps = {
   status: Status;
 };
 
-type FilterOptions = {
-  q?: string;
-  subject?: string;
-  level?: string;
-  status?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  page?: number;
-  limit?: number;
-};
 export const get_teachers = async (
   filters: FilterOptions
 ): Promise<GetTeachersReturnProps> => {

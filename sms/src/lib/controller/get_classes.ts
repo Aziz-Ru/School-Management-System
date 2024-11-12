@@ -20,7 +20,7 @@ export const getClassesInfos = async (
 ): Promise<getClassInfoReturnProps> => {
   try {
     const classInfo = await prisma.classes.findMany({
-      where: { class_name: q },
+      where: { class_name: { contains: q } },
       select: {
         class_id: true,
         class_name: true,
@@ -65,7 +65,20 @@ export async function getClassData(classId: number): Promise<ReturnProps> {
             subject_id: true,
             class_id: true,
             description: true,
-            subject: true,
+            subject: {
+              select: {
+                subject_name: true,
+                subject_code: true,
+                subject_id: true,
+                teacher: {
+                  select: {
+                    first_name: true,
+                    last_name: true,
+                    teacher_id: true,
+                  },
+                },
+              },
+            },
           },
         }),
         prisma.teacher.findMany({
@@ -92,6 +105,11 @@ export async function getClassData(classId: number): Promise<ReturnProps> {
                 first_name: true,
                 last_name: true,
                 teacher_id: true,
+              },
+            },
+            _count: {
+              select: {
+                students: true,
               },
             },
           },

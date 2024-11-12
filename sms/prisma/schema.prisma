@@ -10,15 +10,16 @@ datasource db {
 
 // Acdemic Building
 model Room {
-  id              String    @id @default(cuid())
-  roomNumber      String    @unique
-  roomName        String?   // Optional descriptive name
+  id              String  @id @default(uuid())
+  roomNumber      Int    
   floor           Int
-  building        String?
+  building        String
   capacity        Int
   type            RoomType  @default(CLASSROOM)
   isActive        Boolean   @default(true)
   schedules       section_subject_schedule[]
+  @@unique([roomNumber, floor, building])
+  
 }
 
 
@@ -50,6 +51,7 @@ model class_subject{
   subject       subject @relation(fields: [subject_id],references: [subject_id])
   section_subjects    section_subject[]
   @@id([subject_id,class_id])
+  @@unique([subject_id,class_id])
 }
 
 // section of each class
@@ -57,7 +59,7 @@ model sections{
   section_id String @id @default(uuid())
   section_name String
   class_id    Int 
-  academic_year Int
+  academic_year Int 
   room_number  Int
   class_teacher  Int
   teacher    teacher @relation(fields: [class_teacher],references: [teacher_id])
@@ -68,6 +70,9 @@ model sections{
   attendance    student_attendance[]
   maximum_student Int @default(50)
   createdAt    DateTime @default(now())
+  @@unique([section_name,class_id,academic_year])
+  @@unique([room_number,academic_year])
+  @@unique([class_teacher,academic_year])
 }
 
 // section subject of the class

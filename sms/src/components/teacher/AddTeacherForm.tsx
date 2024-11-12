@@ -65,6 +65,9 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
           <div className="w-1/2 flex flex-col gap-3 mb-4">
             <Label>Select Course</Label>
             <select name="subject_id" className="input ">
+              <option value="#" disabled selected>
+                Course
+              </option>
               {subjects.map((subject) => {
                 return (
                   <option key={subject.subject_id} value={subject.subject_id}>
@@ -77,9 +80,18 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
           <div className="w-1/2 flex flex-col gap-3 mb-4">
             <Label>Select Degree</Label>
             <select name="degree" className="input">
-              <option value={"MSC"}>MSc</option>
-              <option value={"BSC"}>BSc</option>
-              <option value={"BBA"}>BBa</option>
+              <option value="#" disabled selected>
+                Degree
+              </option>
+              <option className="text-gray-800" value={"MSC"}>
+                MSc
+              </option>
+              <option className="text-gray-800" value={"BSC"}>
+                BSc
+              </option>
+              <option className="text-gray-800" value={"BBA"}>
+                BBa
+              </option>
             </select>
           </div>
         </div>
@@ -90,8 +102,15 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
             <div className="flex flex-col gap-3 mb-4">
               <Label>Level</Label>
               <select name="level" className="input">
-                <option value={"PRIMARY"}>Primary</option>
-                <option value={"SECONDARY"}>Secondary</option>
+                <option value="#" disabled selected>
+                  Select Level
+                </option>
+                <option className="text-gray-800" value={"PRIMARY"}>
+                  Primary
+                </option>
+                <option className="text-gray-800" value={"SECONDARY"}>
+                  Secondary
+                </option>
               </select>
             </div>
           </div>
@@ -101,6 +120,9 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
             <div className="flex flex-col gap-3 mb-4">
               <Label>Rank</Label>
               <select name="rank" className="input">
+                <option value="#" disabled selected>
+                  Select Rank
+                </option>
                 <option value={"ASSISTANT"}>Assistant</option>
                 <option value={"SENIOR"}>Senior</option>
               </select>

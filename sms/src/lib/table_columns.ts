@@ -26,7 +26,6 @@ export const classListColumns = [
   },
 ];
 
-
 export const AdminCourseViewColumns = [
   {
     header: "Info",
@@ -66,5 +65,57 @@ export const TeacherCourseViewColumns = [
   {
     header: "Action",
     accessor: "action",
+  },
+];
+
+export const RoomTableColumns = [
+  {
+    header: "Room Number",
+    accessor: "room_number",
+  },
+  {
+    header: "Floor",
+    accessor: "floor",
+  },
+  {
+    header: "Building",
+    accessor: "building",
+  },
+
+  {
+    header: "Capacity",
+    accessor: "capacity",
+  },
+];
+
+export const sectionsTableColumns = [
+  {
+    header: "Name",
+    accessor: "name",
+  },
+  {
+    header: "Students",
+    accessor: "students",
+    className: "hidden sm:table-cell",
+  },
+  {
+    header: "Academic Year",
+    accessor: "year",
+    className: "hidden sm:table-cell",
+  },
+  {
+    header: "Room Number",
+    accessor: "room_number",
+    className: "hidden sm:table-cell",
+  },
+  {
+    header: "Class Teacher",
+    accessor: "class_teacher",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Action",
+    accessor: "actions",
   },
 ];

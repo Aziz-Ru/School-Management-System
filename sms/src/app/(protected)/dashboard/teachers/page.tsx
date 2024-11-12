@@ -28,7 +28,7 @@ const Teacher = async ({
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">
       <div className="flex items-center justify-between">
-        <TableSearch name="Teacher" />
+        <TableSearch name="Teacher Name" />
         {user.role === "ADMIN" && <AddTeacherForm subjects={subjects!} />}
       </div>
       <div>

@@ -131,14 +131,14 @@ export enum Rank {
 
 export interface Room {
   id: string;
-  roomNumber: string;
-  roomName?: string;
+  roomNumber: number;
+  roomName?: string | null;
   floor: number;
-  building?: string;
+  building?: string | null;
   capacity: number;
-  type: RoomType;
-  isActive: boolean;
-  schedules: SectionSubjectSchedule[];
+  type: string;
+  isActive?: boolean;
+  schedules?: SectionSubjectSchedule[];
 }
 
 export interface Subject {
@@ -193,8 +193,8 @@ export interface Section {
   attendance?: StudentAttendance[];
   maximum_student?: number;
   _count?: {
-    students?: true;
-    exams?: true;
+    students?: number;
+    exams?: number;
   };
 }
 
@@ -203,7 +203,7 @@ export interface SectionSubject {
   subject_id: string;
   section_id: string;
   teacher_id: number;
-  class_subjects: ClassSubject;
+  class_subjects?: ClassSubject;
   section?: Section;
   teachers: Teacher;
   schedules?: SectionSubjectSchedule[];
@@ -233,16 +233,31 @@ export interface Timeslot {
   academic_year: number;
 }
 
+export interface Student {
+  first_name: string;
+  last_name: string;
+  student_id: number;
+  student?: User;
+  section_id?: string;
+  dob?: Date;
+  level?: Level;
+  section?: Section;
+  attendance?: StudentAttendance[];
+  exam_result?: ExamResult[];
+  subject_marks?: SubjectMarks[];
+  attendance_summery?: AttendanceSummery[];
+}
+
 export interface User {
   id: number;
   email: string;
   password?: string;
-  role: string;
-  sex: string;
-  status: string;
+  role?: string;
+  sex?: string;
+  status?: string;
   img?: string | null;
   address?: string;
-  lastLogin: Date | null;
+  lastLogin?: Date | null;
   teacherProfile?: Teacher | null;
   studentProfile?: Student | null;
   phone?: string;
@@ -266,19 +281,6 @@ export interface Teacher {
   attendance?: TeacherAttendance[];
   enrolled_subjects?: SectionSubject[];
   salary?: number;
-}
-
-export interface Student {
-  student_id: number;
-  student: User;
-  section_id: string;
-  dob: Date;
-  level: Level;
-  section: Section;
-  attendance: StudentAttendance[];
-  exam_result: ExamResult[];
-  subject_marks: SubjectMarks[];
-  attendance_summery: AttendanceSummery[];
 }
 
 export interface TeacherLeave {
