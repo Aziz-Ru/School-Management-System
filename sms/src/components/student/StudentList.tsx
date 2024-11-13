@@ -6,6 +6,7 @@ import { User } from "@/lib/types";
 import Image from "next/image";
 
 const StudentsList = ({ students }: { students: User[] }) => {
+  
   const renderRow = (item: User) => {
     return (
       <TableRow key={item.id}>
@@ -20,13 +21,11 @@ const StudentsList = ({ students }: { students: User[] }) => {
           <div className="flex flex-col">
             <h3 className="font-semibold">{`${item.studentProfile?.first_name} ${item.studentProfile?.last_name}`}</h3>
             <span className="text-xs text-gray-500">
-              {item.studentProfile?.section?.section_name}
+              {item.studentProfile?.student_id}
             </span>
           </div>
         </TableCell>
-        <TableCell className="hidden md:table-cell px-1">
-          {item.studentProfile?.student_id}
-        </TableCell>
+
         <TableCell className="hidden md:table-cell px-1">
           {item.studentProfile?.section?.section_name}
         </TableCell>
@@ -36,6 +35,9 @@ const StudentsList = ({ students }: { students: User[] }) => {
         </TableCell>
         <TableCell className="hidden xl:table-cell px-1">
           {item.address}
+        </TableCell>
+        <TableCell className="hidden xl:table-cell px-1">
+          {new Date(item.lastLogin!).toDateString()}
         </TableCell>
         <TableCell>
           <DetailsLink href={`/dashboard/students/${item.id}`} />

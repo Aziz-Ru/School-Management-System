@@ -1,6 +1,8 @@
 import { AddStudentForm } from "@/components/student/StudentForm";
 import TableSearch from "@/components/TableSearch";
 import { get_students } from "@/lib/controller/get_students";
+import { Status } from "@/lib/types";
+import { notFound } from "next/navigation";
 import StudentsList from "../../../../components/student/StudentList";
 
 const StudenListPage = async ({
@@ -15,11 +17,12 @@ const StudenListPage = async ({
   // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
   //   notFound();
   // }
-
-  const { status, students, classes } = await get_students({ q: "" });
-
   const { page, q, ...queryParams } = searchParams;
   const currentPage = page && !isNaN(parseInt(page)) ? parseInt(page) : 1;
+  const { status, students, classes } = await get_students({ q });
+  if (status != Status.OK) {
+    notFound();
+  }
 
   return (
     <div>
@@ -31,7 +34,7 @@ const StudenListPage = async ({
         </div>
         {/* List */}
 
-        <StudentsList students={students!} />
+        {students?.length! > 0 && <StudentsList students={students!} />}
       </div>
     </div>
   );

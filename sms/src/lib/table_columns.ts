@@ -125,11 +125,6 @@ export const StudentTableListColumn = [
     header: "Name",
     accessor: "info",
   },
-  {
-    header: "Student ID",
-    accessor: "studentId",
-    className: "hidden md:table-cell",
-  },
 
   {
     header: "Section",
@@ -145,6 +140,11 @@ export const StudentTableListColumn = [
   {
     header: "Address",
     accessor: "address",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "Last Login",
+    accessor: "last_login",
     className: "hidden xl:table-cell",
   },
 

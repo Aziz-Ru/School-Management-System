@@ -2,7 +2,7 @@
 
 import { FilterOptions } from "@/utils/types";
 import prisma from "../db";
-import { Classes, Status, User } from "../types";
+import { Classes, Status, User, UserRole } from "../types";
 
 type GetStudentReturnProps = {
   students?: User[];
@@ -14,16 +14,28 @@ export const get_students = async (
   filters: FilterOptions
 ): Promise<GetStudentReturnProps> => {
   try {
-    const [students, classes] = await prisma.$transaction([
-      prisma.user.findMany({
-        where: {
-          role: "STUDENT",
-          studentProfile: {
-            first_name: {
-              contains: filters.q,
+    const where = {
+      role: UserRole.STUDENT,
+      AND: [] as any[],
+    };
+
+    if (filters.q) {
+      where.AND.push({
+        OR: [
+          {
+            studentProfile: {
+              student_id_str: {
+                contains: filters.q!,
+              },
             },
           },
-        },
+        ],
+      });
+    }
+
+    const [students, classes] = await prisma.$transaction([
+      prisma.user.findMany({
+        where: where,
         select: {
           id: true,
           email: true,
@@ -66,13 +78,19 @@ export const get_students = async (
               section_id: true,
               academic_year: true,
               room_number: true,
+              index: true,
+              class_id: true,
+              _count: {
+                select: {
+                  students: true,
+                },
+              },
             },
           },
         },
       }),
     ]);
 
-    console.log(students);
     return {
       students,
       classes,

@@ -313,8 +313,6 @@ export const TeacherSchema = z.object({
     invalid_type_error: "Invalid type of Address",
   }),
   level: z.nativeEnum(Level, { message: "level must be valid" }),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
 });
 
 // Teacher Leave schema
@@ -330,17 +328,64 @@ export const TeacherLeaveSchema = z.object({
 });
 
 export const StudentSchema = z.object({
-  id: z.number().int(),
-  email: z.string().email(),
-  password: z.string(),
+  id: z
+    .number({
+      required_error: "Id must be required",
+      invalid_type_error: "Invalid type of Id",
+    })
+    .int({ message: "Id must be integer" }),
+
+  email: z
+    .string({
+      required_error: "Email must be required",
+      invalid_type_error: "Invalid type of Email",
+    })
+    .email({ message: "Email must be valid" }),
+  password: z
+    .string({
+      required_error: "Password must be required",
+      invalid_type_error: "Invalid type of Password",
+    })
+    .min(6, { message: "Password Minimum Length 6" }),
+  first_name: z
+    .string({
+      required_error: "first_name must be required",
+      invalid_type_error: "Invalid type of first_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
+  last_name: z
+    .string({
+      required_error: "last_name must be required",
+      invalid_type_error: "Invalid type of last_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
   role: z.nativeEnum(UserRole).refine((value) => value == UserRole.STUDENT, {
-    message: "Role Must be Teacher",
+    message: "Role Must be Student",
   }),
-  sex: z.nativeEnum(GENDER),
-  dob: z.date(),
-  status: z.nativeEnum(UserStatus).default(UserStatus.ACTIVE),
+  sex: z.nativeEnum(GENDER, { message: "Invalid Sex" }),
+
+  status: z
+    .nativeEnum(UserStatus, { message: "Invalid User Status" })
+    .default(UserStatus.ACTIVE),
   lastLogin: z.date().optional(),
-  section_id: z.string().uuid(),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
+  dob: z.date(),
+  phone: z
+    .string({
+      required_error: "Phone must be required",
+      invalid_type_error: "Phone must be a string",
+    })
+    .regex(/^(\+8801|01)[0-9]\d{8}$/, {
+      message: "Invalid Bangladeshi Phone Number",
+    }),
+  address: z.string({
+    required_error: "Address must be required",
+    invalid_type_error: "Invalid type of Address",
+  }),
+  level: z.nativeEnum(Level, { message: "level must be valid" }),
+  section_id: z
+    .string({
+      required_error: "Section  must be required",
+      invalid_type_error: "Invalid type of Subject",
+    })
+    .uuid({ message: "Invalid Section" }),
 });

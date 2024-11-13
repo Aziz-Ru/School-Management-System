@@ -192,6 +192,7 @@ export interface Section {
   section_subjects?: SectionSubject[];
   attendance?: StudentAttendance[];
   maximum_student?: number;
+  index?: number;
   _count?: {
     students?: number;
     exams?: number;

@@ -56,7 +56,9 @@ export const addSectionAction = async (
           },
         },
       }),
-      prisma.sections.count(),
+      prisma.sections.count({
+        where: { academic_year: new Date().getFullYear() },
+      }),
     ]);
 
   if (existSection) {
@@ -79,6 +81,7 @@ export const addSectionAction = async (
         academic_year: validResult.data.academic_year,
         room_number: validResult.data.room_number,
         class_teacher: validResult.data.class_teacher_id,
+        index: numOfSection + 1,
       },
     }),
     prisma.class_subject.findMany({
