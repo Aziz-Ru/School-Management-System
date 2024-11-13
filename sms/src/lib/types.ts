@@ -40,6 +40,17 @@ export enum Gender {
   FEMALE = "FEMALE",
 }
 
+export type FilterOptions = {
+  q?: string;
+  subject?: string;
+  level?: string;
+  status?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+};
+
 export enum RoomType {
   CLASSROOM = "CLASSROOM",
   LABORATORY = "LABORATORY",
@@ -299,19 +310,19 @@ export interface TeacherLeave {
 export interface StudentAttendance {
   id: string;
   student_id: number;
-  student: Student;
+  student?: Student;
   sectionId: string;
-  section: Section;
+  section?: Section;
   date: Date;
-  status: AttendanceStatus;
+  status: string;
   timeIn?: Date;
   timeOut?: Date;
   lateMinutes?: number;
-  markedById: number;
-  markedBy: User;
+  markedById?: number;
+  markedBy?: User;
   remarks?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface TeacherAttendance {

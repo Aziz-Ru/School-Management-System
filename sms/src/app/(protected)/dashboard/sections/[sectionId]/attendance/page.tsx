@@ -1,4 +1,4 @@
-import { getSectionStudentAttendance } from "@/utils/get_sectionData";
+import { get_section_attendance } from "@/lib/controller/get_sections";
 import AttendenceList from "../../_components/AttendencList";
 
 const SectionAttendance = async ({
@@ -6,15 +6,19 @@ const SectionAttendance = async ({
 }: {
   params: { sectionId: string };
 }) => {
-  const { students, status } = await getSectionStudentAttendance(
-    params.sectionId,
-    new Date()
+  const { section, students,section_attendance, status } = await get_section_attendance(
+    params.sectionId
   );
 
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="p-4">
-        <AttendenceList sectionId={params.sectionId} students={students!} />
+        <AttendenceList
+          acdemic_year={section?.academic_year!}
+          sectionId={params.sectionId}
+          section_attendance={section_attendance!}
+          students={students!}
+        />
       </div>
     </div>
   );

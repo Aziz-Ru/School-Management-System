@@ -94,6 +94,10 @@ export const sectionsTableColumns = [
     accessor: "name",
   },
   {
+    header: "Class",
+    accessor: "class",
+  },
+  {
     header: "Students",
     accessor: "students",
     className: "hidden sm:table-cell",
@@ -151,5 +155,22 @@ export const StudentTableListColumn = [
   {
     header: "Action",
     accessor: "action",
+  },
+];
+
+
+export const SectionStudentTableColumns = [
+  {
+    header: "ID",
+    accessor: "id",
+  },
+  {
+    header: "Name",
+    accessor: "name",
+    className: "",
+  },
+  {
+    header: "Attedance",
+    accessor: "attendance",
   },
 ];

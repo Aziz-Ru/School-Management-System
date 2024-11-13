@@ -13,14 +13,4 @@ export const getPresent = (
   return false;
 };
 
-export const getDaysOfCurrentMonth = () => {
-  const date = new Date();
-  const daysInMonth = new Date(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    0
-  ).getDate();
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-  return { days };
-};

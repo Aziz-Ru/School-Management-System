@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { FilterOptions } from "@/utils/types";
+import { FilterOptions, StudentAttendance } from "@/lib/types";
 import { Section, SectionSubject, Status, User } from "../types";
 
 type ReturnProps = {
@@ -72,13 +72,12 @@ type SectionReturnProps = {
   students?: User[];
   status: Status;
   section_subjects?: SectionSubject[];
-  attendance?: any[];
+  attendance?: StudentAttendance[];
 };
 
 export const get_section_info = async (
   sectionId: string
 ): Promise<SectionReturnProps> => {
-  
   try {
     const [section, students, attendance, section_subjects] =
       await prisma.$transaction([
@@ -128,6 +127,13 @@ export const get_section_info = async (
           where: {
             sectionId: sectionId,
           },
+          select: {
+            id: true,
+            student_id: true,
+            sectionId: true,
+            date: true,
+            status: true,
+          },
         }),
         prisma.section_subject.findMany({
           where: {
@@ -172,6 +178,56 @@ export const get_section_info = async (
       students,
       attendance,
       section_subjects,
+      status: Status.OK,
+    };
+  } catch (error) {
+    return { status: Status.INTERNAL_SERVER_ERROR };
+  }
+};
+
+export const get_section_attendance = async (section_id: string) => {
+  try {
+    const [section_info, students, section_attendance] =
+      await prisma.$transaction([
+        prisma.sections.findUnique({
+          where: { section_id: section_id },
+          select: {
+            section_id: true,
+            section_name: true,
+            academic_year: true,
+            class_id: true,
+            room_number: true,
+          },
+        }),
+        prisma.student.findMany({
+          where: {
+            section_id: section_id,
+          },
+          select: {
+            student_id: true,
+            first_name: true,
+            last_name: true,
+            section_id: true,
+          },
+        }),
+        prisma.student_attendance.findMany({
+          where: {
+            sectionId: section_id,
+          },
+          select: {
+            id: true,
+            student_id: true,
+            sectionId: true,
+            date: true,
+            status: true,
+          },
+        }),
+      ]);
+
+    return {
+      section: section_info,
+      students,
+      section_attendance,
       status: Status.OK,
     };
   } catch (error) {

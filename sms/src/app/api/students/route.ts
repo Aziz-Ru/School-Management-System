@@ -1,4 +1,3 @@
-import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -13,22 +12,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const students = await prisma.student.findMany({
-      where: {
-        section: {
-          classId: {
-            lte: parseInt(classId),
-          },
-        },
-      },
-      select: {
-        id: true,
-        fullName: true,
-        lastExamStatus: true,
-      },
-    });
-
-    return NextResponse.json({ data: students }, { status: 200 });
+    return NextResponse.json({ data: "" }, { status: 200 });
   } catch (error: any) {
     console.error(error.message);
     return NextResponse.json({ error: "Internal Error" }, { status: 500 });

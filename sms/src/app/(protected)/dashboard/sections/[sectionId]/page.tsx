@@ -29,17 +29,22 @@ const SectionPage = async ({
 
   const { notices } = await get_notice();
 
-  const attdanceData = [];
+  const attdanceChartData = [];
 
   for (let i = 0; i < 12; i++) {
     const daysInMonth = new Date(section?.academic_year!, i + 1, 0).getDate();
     const totalPresent = daysInMonth * students?.length!;
-    const present = attendance?.filter((att) => att.month == i).length;
-    const absent = totalPresent - present!;
-    attdanceData.push({
+
+    const present = attendance?.filter(
+      (att) => new Date(att.date).getMonth() == i
+    ).length;
+
+    const presentPercentage = ((present ? present : 0) / totalPresent) * 100;
+    const absentPercetange = 100 - presentPercentage;
+    attdanceChartData.push({
       month: MonthNames[i].substring(0, 3),
-      present,
-      absent,
+      present: presentPercentage,
+      absent: absentPercetange,
     });
   }
 
@@ -59,7 +64,10 @@ const SectionPage = async ({
       {/* Name */}
 
       <div className="col-span-12 xl:col-span-8">
-        <AttendanceChart chartData={attdanceData} chartConfig={chartConfig} />
+        <AttendanceChart
+          chartData={attdanceChartData}
+          chartConfig={chartConfig}
+        />
         <br />
         <StudentList students={students!} classId={section!.class_id!} />
       </div>
@@ -67,7 +75,7 @@ const SectionPage = async ({
       {/* Annoucement */}
       <div className="col-span-12 xl:col-span-4">
         <div className="p-1">
-          <Card className="p-4 mb-4">
+          <Card className="mb-4">
             <CardHeader>
               <CardTitle className="mb-4">
                 Section Name:{section?.section_name}
