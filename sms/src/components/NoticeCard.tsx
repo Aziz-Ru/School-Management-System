@@ -10,8 +10,8 @@ import {
 
 const NoticeCards = ({ notices }: { notices: Notice[] | undefined }) => {
   return (
-    <div className="">
-      <h1 className="font-bold text-2xl mb-4 text-center">Notices</h1>
+    <div className="p-4">
+      <h1 className="font-bold text-2xl mb-4">Notices</h1>
       <div className="">
         {notices?.map((notice, index) => {
           return (

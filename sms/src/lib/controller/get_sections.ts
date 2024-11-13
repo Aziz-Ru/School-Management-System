@@ -78,6 +78,7 @@ type SectionReturnProps = {
 export const get_section_info = async (
   sectionId: string
 ): Promise<SectionReturnProps> => {
+  
   try {
     const [section, students, attendance, section_subjects] =
       await prisma.$transaction([

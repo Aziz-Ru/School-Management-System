@@ -119,3 +119,37 @@ export const sectionsTableColumns = [
     accessor: "actions",
   },
 ];
+
+export const StudentTableListColumn = [
+  {
+    header: "Name",
+    accessor: "info",
+  },
+  {
+    header: "Student ID",
+    accessor: "studentId",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Section",
+    accessor: "section",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden lg:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden xl:table-cell",
+  },
+
+  {
+    header: "Action",
+    accessor: "action",
+  },
+];

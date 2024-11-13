@@ -15,16 +15,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { Classes } from "@/lib/types";
 import { useEffect, useRef, useState } from "react";
-import { addStudentAction } from "../actions/addstudentAction";
+import { addStudentAction } from "./actions/addstudentAction";
 
-interface ClassData {
-  id: number;
-  className: string;
-  sections: { id: string; sectionName: string }[];
-}
-
-export function AddStudentForm({ classData }: { classData: ClassData[] }) {
+export function AddStudentForm({ classData }: { classData: Classes[] }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [studentId, setStudentId] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
@@ -32,7 +27,6 @@ export function AddStudentForm({ classData }: { classData: ClassData[] }) {
   const [sections, setSections] = useState<
     { id: string; sectionName: string }[]
   >([]);
-
   useEffect(() => {
     const getStudentId = async () => {
       const res = await fetch(`/api/section/${selectedSection}`);
@@ -56,9 +50,6 @@ export function AddStudentForm({ classData }: { classData: ClassData[] }) {
           const { msg, error } = await addStudentAction(formData);
           if (msg) {
             formRef.current?.reset();
-            setStudentId("");
-            setSelectedClass("");
-            setSelectedSection("");
             toast({ title: "Add Student Successfully", description: msg });
           }
           if (error) {
@@ -70,42 +61,36 @@ export function AddStudentForm({ classData }: { classData: ClassData[] }) {
           {/* Full Name */}
           <FormInput
             type="text"
-            name="fullName"
-            label="Full Name"
+            name="first_name"
+            label="First Name"
+            required={true}
+          />
+          <FormInput
+            type="text"
+            name="last_name"
+            label="Last Name"
             required={true}
           />
           {/* Phone */}
+        </div>
+        <div className="">
+          <FormInput type="email" name="email" label="Email" required={true} />
           <FormInput type="tel" name="phone" label="Phone" required={true} />
         </div>
+
         <div className="flex gap-4">
           {/* CLASS */}
           <div className="flex flex-col gap-3 mb-4 w-1/2">
             <Label>Class</Label>
-            <Select
-              value={selectedClass}
-              onValueChange={(e) => {
-                setSelectedClass(e);
-                setSections(classData[parseInt(e) - 1].sections);
-              }}
-              name={"classId"}
-              required={true}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={`Select Class `} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Class</SelectLabel>
-                  {classData.map((cls) => {
-                    return (
-                      <SelectItem key={cls.id} value={cls.id.toString()}>
-                        {cls.className}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <select name="class_id" className="input">
+              {classData.map((class_info, index) => {
+                return (
+                  <option key={index} value={class_info.class_id}>
+                    {class_info.class_name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
           {/* SECTION */}

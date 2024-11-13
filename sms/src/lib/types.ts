@@ -270,6 +270,7 @@ export interface Teacher {
   first_name: string;
   last_name: string;
   teacher_id: number;
+  abbreviation?: string;
   teacher?: User;
   subject_id?: string;
   subject?: Subject;

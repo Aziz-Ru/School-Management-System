@@ -58,16 +58,16 @@ const SectionPage = async ({
     <div className="p-4 grid grid-cols-12 gap-2">
       {/* Name */}
 
-      <div className="col-span-12 lg:col-span-8">
+      <div className="col-span-12 xl:col-span-8">
         <AttendanceChart chartData={attdanceData} chartConfig={chartConfig} />
         <br />
         <StudentList students={students!} classId={section!.class_id!} />
       </div>
 
       {/* Annoucement */}
-      <div className="col-span-12 lg:col-span-4">
+      <div className="col-span-12 xl:col-span-4">
         <div className="p-1">
-          <Card className="p-4">
+          <Card className="p-4 mb-4">
             <CardHeader>
               <CardTitle className="mb-4">
                 Section Name:{section?.section_name}
