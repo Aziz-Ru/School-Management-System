@@ -62,14 +62,13 @@ export async function getClassData(classId: number): Promise<ReturnProps> {
         prisma.class_subject.findMany({
           where: { class_id: classId },
           select: {
-            subject_id: true,
+            subject_name: true,
             class_id: true,
             description: true,
             subject: {
               select: {
                 subject_name: true,
                 subject_code: true,
-                subject_id: true,
                 teacher: {
                   select: {
                     first_name: true,

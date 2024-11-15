@@ -1,23 +1,18 @@
 "use client";
 import { DaysOfWeek, Times } from "@/lib/data";
-import { Schedule, Subject, Teacher } from "@/utils/types";
+import { SectionSubjectSchedule } from "@/lib/types";
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
 import { useState } from "react";
-import RoutineEditForm from "./RoutineEditForm";
 
 const Routine = ({
   schedules,
-  teachers,
-  subjects,
-  sectionId,
+  section_id,
 }: {
-  schedules: Schedule[];
-  teachers: Teacher[];
-  subjects: Subject[];
-  sectionId: string;
+  section_id: string;
+  schedules: SectionSubjectSchedule[];
 }) => {
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     {
@@ -29,42 +24,55 @@ const Routine = ({
     ...Times.map((day) => ({
       field: day.time,
       width: 150,
-      cellRenderer: (params: any) => {
-        const schedule = schedules.find(
-          (schedule) =>
-            schedule.day === params.data.day.toUpperCase() &&
-            schedule.startEnd === params.colDef.field
-        );
+      // cellRenderer: (params: any) => {
+      //   const schedule = schedules.find(
+      //     (schedule) =>
+      //       schedule.day === params.data.day.toUpperCase() &&
+      //       schedule.startEnd === params.colDef.field
+      //   );
 
-        return params.value ? (
-          <RoutineEditForm
-            teachers={teachers}
-            sectionId={sectionId}
-            subjects={subjects}
-            activeSchedule={schedule!}
-          />
-        ) : (
-          ""
-        );
-      },
+      //   return params.value ? (
+      //     <RoutineEditForm
+      //       teachers={teachers}
+      //       sectionId={sectionId}
+      //       subjects={subjects}
+      //       activeSchedule={schedule!}
+      //     />
+      //   ) : (
+      //     ""
+      //   );
+      // },
     })),
   ]);
-
   const [rowData, setRowData] = useState([
     ...DaysOfWeek.map((day) => {
       let obj: any = { day: day };
-      Times.map((t) => {
-        obj[t.time] = schedules.find(
-          (schedule) =>
-            schedule.day === day.toUpperCase() && schedule.startEnd === t.time
-        )?.subject?.courseName;
+      schedules.map((schedule) => {
+        if (schedule.timeslots?.day === day.toUpperCase()) {
+          obj[
+            `${schedule.timeslots.start_time}-${schedule.timeslots.start_time}`
+          ] = schedule.subject?.subject_name;
+        }
       });
       return obj;
     }),
   ]);
 
+  // const [rowData, setRowData] = useState([
+  //   ...DaysOfWeek.map((day) => {
+  //     let obj: any = { day: day };
+  //     Times.map((t) => {
+  //       obj[t.time] = schedules.find(
+  //         (schedule) =>
+  //           schedule. === day.toUpperCase() && schedule.startEnd === t.time
+  //       )?.subject?.courseName;
+  //     });
+  //     return obj;
+  //   }),
+  // ]);
+
   return (
-    <div className="ag-theme-quartz" style={{ height: 300, width: "100%" }}>
+    <div className="ag-theme-quartz" style={{ height: 350, width: "100%" }}>
       <AgGridReact
         defaultColDef={{
           sortable: false,

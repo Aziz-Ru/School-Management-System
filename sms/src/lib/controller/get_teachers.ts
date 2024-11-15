@@ -1,6 +1,6 @@
 "use server";
 
-import { FilterOptions } from "@/utils/types";
+import { FilterOptions } from "@/lib/types";
 import prisma from "../db";
 import { Status, Subject, User, UserRole } from "../types";
 
@@ -60,6 +60,7 @@ export const get_teachers = async (
           phone: true,
           role: true,
           address: true,
+
           teacherProfile: {
             select: {
               first_name: true,
@@ -67,14 +68,7 @@ export const get_teachers = async (
               teacher_id: true,
               degrees: true,
               level: true,
-
-              subject: {
-                select: {
-                  subject_id: true,
-                  subject_name: true,
-                  subject_code: true,
-                },
-              },
+              subject_name: true,
             },
           },
         },

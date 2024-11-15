@@ -153,7 +153,6 @@ export interface Room {
 }
 
 export interface Subject {
-  subject_id: string;
   subject_name: string;
   subject_code: number;
   teacher?: Teacher[];
@@ -177,7 +176,7 @@ export interface Classes {
 }
 
 export interface ClassSubject {
-  subject_id: string;
+  subject_name: string;
   class_id: number;
   description?: string;
   class?: Classes;
@@ -212,12 +211,12 @@ export interface Section {
 
 export interface SectionSubject {
   class_id: number;
-  subject_id: string;
+  subject_name: string;
   section_id: string;
-  teacher_id: number;
+  teacher_id?: number;
   class_subjects?: ClassSubject;
   section?: Section;
-  teachers: Teacher;
+  teachers?: Teacher;
   schedules?: SectionSubjectSchedule[];
   exams?: ExamSubject[];
   subject_marks?: SubjectMarks[];
@@ -225,24 +224,20 @@ export interface SectionSubject {
 
 export interface SectionSubjectSchedule {
   schedule_id: string;
-  subject_id: string;
-  section_id: string;
-  subject: SectionSubject;
-  timeslot_id: string;
-  timeslots: Timeslot;
-  room_id: string;
-  room: Room;
-  createdAt: Date;
+  subject_id?: string;
+  section_id?: string;
+  subject?: SectionSubject;
+  timeslot_id?: string;
+  timeslots?: Timeslot;
+  createdAt?: Date;
 }
 
 export interface Timeslot {
   id: string;
-  schedule: SectionSubjectSchedule[];
   start_time: string;
   end_time: string;
-  day: DayOfWeek;
-  type: PeriodType;
-  academic_year: number;
+  day: string;
+  type?: string;
 }
 
 export interface Student {
@@ -284,7 +279,7 @@ export interface Teacher {
   teacher_id: number;
   abbreviation?: string;
   teacher?: User;
-  subject_id?: string;
+  subject_name?: string;
   subject?: Subject;
   degrees?: String;
   class_teacher?: Section[];

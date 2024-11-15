@@ -51,20 +51,19 @@ export const MonthNames = [
 
 export const Times = [
   {
-    time: "10:00 - 11:00 AM",
+    time: "10:00-11:00",
   },
   {
-    time: "11:00 - 12:00 PM",
+    time: "11:00-12:00",
   },
   {
-    time: "12:00 - 1:00 PM",
-  },
-
-  {
-    time: "2:00 - 3:00 PM",
+    time: "12:00-1:00",
   },
   {
-    time: "3:00 - 4:00 PM",
+    time: "2:00-3:00",
+  },
+  {
+    time: "3:00-4:00",
   },
 ];
 
@@ -92,6 +91,12 @@ export const MenuItems = [
         label: "Profile",
         href: "/profile",
         visiable: ["TEACHER", "STUDENT"],
+      },
+      {
+        icon: "Building",
+        label: "Building",
+        href: "/dashboard/buildings",
+        visiable: ["ADMIN"],
       },
       {
         icon: "School",

@@ -2,7 +2,7 @@
 import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { AddSubjectToClassAction } from "@/lib/actions/class";
+import { add_subject_to_class_action } from "@/lib/actions/class";
 import { useRef, useState } from "react";
 import { MultiSelect } from "react-multi-select-component";
 
@@ -27,6 +27,7 @@ const AddCourseForm = ({
             toast({
               title: "Select Course",
               description: "Please Select a Course For Class",
+              variant: "destructive",
             });
             return;
           }
@@ -35,10 +36,14 @@ const AddCourseForm = ({
             selectedCourses.map((course) => course.value).join(",")
           );
           formData.append("class_id", classId.toString());
-          const { error, msg } = await AddSubjectToClassAction(formData);
+          const { error, msg } = await add_subject_to_class_action(formData);
 
           if (error) {
-            toast({ title: error, description: "Failed to added New Course" });
+            toast({
+              title: error,
+              description: "Failed to added New Course",
+              variant: "destructive",
+            });
           }
           if (msg) {
             formRef.current!.reset();

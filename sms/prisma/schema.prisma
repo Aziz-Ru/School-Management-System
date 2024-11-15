@@ -17,7 +17,7 @@ model Room {
   capacity        Int
   type            RoomType  @default(CLASSROOM)
   isActive        Boolean   @default(true)
-  schedules       section_subject_schedule[]
+  
   @@unique([roomNumber, floor, building])
   
 }
@@ -25,8 +25,7 @@ model Room {
 
 // teacher subjects
 model subject{
-  subject_id   String @id @unique @default(uuid())
-  subject_name  String @unique
+  subject_name  String @unique @id
   subject_code   Int
   teacher       teacher[]
   class_subject  class_subject[]
@@ -44,14 +43,14 @@ model classes{
 }
 //class subject
 model class_subject{
-  subject_id    String    
+  subject_name    String    
   class_id      Int
   description   String @db.Text
   class         classes  @relation(fields: [class_id],references: [class_id],onDelete: Cascade)
-  subject       subject @relation(fields: [subject_id],references: [subject_id],onDelete: Cascade)
+  subject       subject @relation(fields: [subject_name],references: [subject_name],onDelete: Cascade)
   section_subjects    section_subject[]
-  @@id([subject_id,class_id])
-  @@unique([subject_id,class_id])
+  @@id([subject_name,class_id])
+  @@unique([subject_name,class_id])
 }
 
 // section of each class
@@ -79,30 +78,30 @@ model sections{
 // section subject of the class
 model section_subject {
 class_id      Int
-subject_id     String 
+subject_name     String 
 section_id     String 
 teacher_id     Int
-class_subjects class_subject @relation(fields: [subject_id,class_id],references: [subject_id,class_id],onDelete: Cascade)
+class_subjects class_subject @relation(fields: [subject_name,class_id],references: [subject_name,class_id],onDelete: Cascade)
 section        sections @relation(fields: [section_id],references: [section_id] ,onDelete: Cascade)
 teachers       teacher @relation(fields: [teacher_id],references: [teacher_id] ,onDelete: Cascade)
 schedules      section_subject_schedule[]
 exams          exam_subjects[]
 subject_marks   subject_marks[]
-@@id([subject_id,section_id])
+@@id([subject_name,section_id])
 
 }
 
 model section_subject_schedule{
   schedule_id    String @id @default(uuid())
-  subject_id     String
+  subject_name     String
   section_id     String
-  subject        section_subject @relation(fields: [subject_id,section_id],references: [subject_id,section_id],onDelete: Cascade)
+  subject        section_subject @relation(fields: [subject_name,section_id],references: [subject_name,section_id],onDelete: Cascade)
   timeslot_id       String
   timeslots      timeslot @relation(fields: [timeslot_id],references: [id],onDelete: Cascade)
-  room_id       String
-  room           Room @relation(fields: [room_id],references: [id] ,onDelete: Cascade)
   createdAt       DateTime @default(now())
+  @@unique([subject_name,section_id,timeslot_id])
 }
+
 model timeslot{
   id    String @id @default(uuid())
   schedule  section_subject_schedule[]
@@ -110,7 +109,7 @@ model timeslot{
   end_time           String //HH:MM
   day            DayOfWeek
   type           PeriodType @default(REGULAR)
-  academic_year  Int
+  
 }
 
 model user{
@@ -138,8 +137,8 @@ model teacher {
   abbreviation  String
   teacher_id      Int @unique
   teacher        user @relation(fields: [teacher_id],references: [id],onDelete: Cascade)
-  subject_id      String
-  subject        subject @relation(fields: [subject_id],references: [subject_id],onDelete: Cascade)
+  subject_name      String
+  subject        subject @relation(fields: [subject_name],references: [subject_name],onDelete: Cascade)
   degrees        Degree @default(BBA)
   class_teacher  sections[]
   rank            Rank 
@@ -148,7 +147,7 @@ model teacher {
   attendance     TeacherAttendance[]
   enrolled_subjects  section_subject[]
   salary         Int @default(25000)
-  @@id([teacher_id,subject_id])
+  @@id([teacher_id,subject_name])
 }
 
  model student{
@@ -272,9 +271,9 @@ model exam_subjects{
   id            String    @id @default(uuid())
   exam_id       String
   exam           exam @relation(fields: [exam_id],references: [id],onDelete: Cascade)
-  subject_id    String
+  subject_name    String
   section_id     String
-  subject       section_subject @relation(fields: [subject_id,section_id],references: [subject_id,section_id],onDelete: Cascade) 
+  subject       section_subject @relation(fields: [subject_name,section_id],references: [subject_name,section_id],onDelete: Cascade) 
   max_mark      Float
   passing_mark  Float
   weigtage      Float
@@ -288,9 +287,9 @@ model subject_marks{
   exam_subject     exam_subjects @relation(fields: [exam_subject_id],references: [id],onDelete: Cascade)
   student_id        Int
   student           student @relation(fields: [student_id],references: [student_id],onDelete: Cascade)
-  subject_id  String
+  subject_name  String
   section_id    String
-  section_subject  section_subject @relation(fields: [section_id,subject_id],references: [section_id,subject_id],onDelete: Cascade)
+  section_subject  section_subject @relation(fields: [section_id,subject_name],references: [section_id,subject_name],onDelete: Cascade)
   obtained_marks  Float
   percentage Float
   grade String

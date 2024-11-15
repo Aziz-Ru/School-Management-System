@@ -81,7 +81,7 @@ export const addClassAction = async (): Promise<ReturnProps> => {
   }
 };
 
-export const AddSubjectToClassAction = async (
+export const add_subject_to_class_action = async (
   formData: FormData
 ): Promise<ReturnProps> => {
   try {
@@ -93,9 +93,9 @@ export const AddSubjectToClassAction = async (
     }
 
     const subject_ids = subject_input!.toString().split(",");
-    const subjects = subject_ids.map((SID) => {
+    const subjects = subject_ids.map((sn) => {
       return {
-        subject_id: SID,
+        subject_name: sn,
         class_id: classId,
         description: "This is a Subject for Class",
       };
@@ -106,7 +106,7 @@ export const AddSubjectToClassAction = async (
     const existing_subject = await prisma.class_subject.findMany({
       where: {
         class_id: classId,
-        subject_id: {
+        subject_name: {
           in: [...subject_ids],
         },
       },
@@ -116,18 +116,12 @@ export const AddSubjectToClassAction = async (
       return { error: "Subject Already Exist" };
     }
 
-    // Add course to database
-    // const subjectData = subjects.map((CID) => ({
-    //   id: uuidv4(),
-    //   classId: classId,
-    //   courseName: CID,
-    // }));
-
     await prisma.class_subject.createMany({
       data: subjects,
     });
 
     revalidatePath("/dashboard");
+    revalidatePath(`/dashboard/class/${classId}`);
     return { msg: "Subjects  Added Successfully" };
   } catch (error: any) {
     return { error: "Something went wrong" };

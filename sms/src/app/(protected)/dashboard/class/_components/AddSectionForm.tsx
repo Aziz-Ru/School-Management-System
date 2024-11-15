@@ -107,7 +107,7 @@ const AddSectionForm = ({
                 <Label>Enrolled Teacher</Label>
                 <select
                   required
-                  name={`enrolled_teacher_${subject.subject_id}`}
+                  name={`enrolled_teacher_${subject.subject_name}`}
                   className="outline-none px-4 py-2 rounded bg-transparent border border-gray-300"
                 >
                   <option

@@ -178,8 +178,18 @@ export const ClassesSchema = z.object({
 
 // Class Subject schema
 export const ClassSubjectSchema = z.object({
-  class_id: z.number().int(),
-  subject_id: z.string().uuid(),
+  class_id: z
+    .number({
+      required_error: "Class id must be required",
+      invalid_type_error: "Class id type is Invalid ",
+    })
+    .int({ message: "Class id must be integer" })
+    .min(1, { message: "class id must be greater than 1" })
+    .max(10, { message: "class id must be less than 10" }),
+  subject_name: z.string({
+    required_error: "Subject must be required",
+    invalid_type_error: "Subject name type is Invalid ",
+  }),
   description: z.string(),
   // Array of section_subject IDs
 });
@@ -224,27 +234,60 @@ export const SectionSchema = z.object({
 // Section Subject schema
 export const SectionSubjectSchema = z.object({
   class_id: z.number().int(),
-  subject_id: z.string().uuid(),
-  section_id: z.string().uuid(),
-  teacher_id: z.number().int(),
+  subject_name: z.string({}),
+  section_id: z
+    .string({
+      required_error: "Section must be required",
+      invalid_type_error: "Invalid type of Section",
+    })
+    .uuid({ message: "Invalid Section" }),
+  teacher_id: z
+    .number({
+      required_error: "Teacher must be required",
+      invalid_type_error: "Invalid type of Teacher",
+    })
+    .int(),
   teachers: z.string(),
 });
 
 // Section Subject Schedule schema
 export const SectionSubjectScheduleSchema = z.object({
-  subject_id: z.string(),
-  section_id: z.string(),
-  room_id: z.string().uuid(),
-  createdAt: z.date().default(new Date()),
+  subject_name: z.string({
+    required_error: "Subject must be required",
+    invalid_type_error: "Invalid type of Subject",
+  }),
+  section_id: z
+    .string({
+      required_error: "Section must be required",
+      invalid_type_error: "Invalid type of Section",
+    })
+    .uuid({ message: "Invalid Section" }),
+  timeslot_id: z
+    .string({
+      required_error: "Timeslot must be required",
+      invalid_type_error: "Invalid type of Timeslot",
+    })
+    .uuid({ message: "Invalid Timeslot" }),
 });
 
 // Timeslot schema
 export const TimeslotSchema = z.object({
-  start_time: z.string(),
-  end_time: z.string(),
+  start_time: z.string({
+    required_error: "startTime must be required",
+    invalid_type_error: "Invalid type of StartTime",
+  }),
+  end_time: z.string({
+    required_error: "endTime must be required",
+    invalid_type_error: "Invalid type of endTime",
+  }),
   day: z.nativeEnum(DayOfWeek),
   type: z.nativeEnum(PeriodType).default(PeriodType.REGULAR),
-  academic_year: z.number().int(),
+  academic_year: z
+    .number({
+      required_error: "academic_year must be required",
+      invalid_type_error: "Invalid type of academic_year",
+    })
+    .int(),
 });
 
 // Teacher schema
@@ -298,12 +341,10 @@ export const TeacherSchema = z.object({
     .regex(/^(\+8801|01)[0-9]\d{8}$/, {
       message: "Invalid Bangladeshi Phone Number",
     }),
-  subject_id: z
-    .string({
-      required_error: "Subject  must be required",
-      invalid_type_error: "Invalid type of Subject",
-    })
-    .uuid({ message: "Invalid Subject" }),
+  subject_name: z.string({
+    required_error: "Subject  must be required",
+    invalid_type_error: "Invalid type of Subject",
+  }),
   degrees: z
     .nativeEnum(Degree, { message: "Invalid Degree" })
     .default(Degree.BBA),

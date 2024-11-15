@@ -35,7 +35,7 @@ const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
 
   const otherSubjects = subjects!.map((course) => ({
     label: course.subject_name,
-    value: course.subject_id,
+    value: course.subject_name,
   }));
 
   return (

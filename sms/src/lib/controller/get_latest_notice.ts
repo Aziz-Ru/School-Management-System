@@ -1,5 +1,6 @@
-import prisma from "../lib/db";
-import { Notice, Status } from "./types";
+import { Notice } from "@/utils/types";
+import prisma from "../db";
+import { Status } from "../types";
 
 interface NoticeReturnProps {
   notices?: Notice[];

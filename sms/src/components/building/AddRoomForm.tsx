@@ -58,9 +58,7 @@ const AddRoomForm = () => {
           <div className="w-1/3 flex flex-col gap-3 ">
             <Label>Room Type</Label>
             <select name="type" className="input">
-              <option value="#" disabled selected>
-                Type
-              </option>
+              <option value="#">Type</option>
               <option className="text-gray-800" value={"CLASSROOM"}>
                 CLASSROOM
               </option>

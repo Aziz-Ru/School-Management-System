@@ -1,7 +1,12 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { FilterOptions, StudentAttendance } from "@/lib/types";
+import {
+  FilterOptions,
+  SectionSubjectSchedule,
+  StudentAttendance,
+  Timeslot,
+} from "@/lib/types";
 import { Section, SectionSubject, Status, User } from "../types";
 
 type ReturnProps = {
@@ -140,23 +145,10 @@ export const get_section_info = async (
             section_id: sectionId,
           },
           select: {
-            subject_id: true,
             teacher_id: true,
             class_id: true,
             section_id: true,
-            class_subjects: {
-              select: {
-                subject_id: true,
-                class_id: true,
-                subject: {
-                  select: {
-                    subject_name: true,
-                    subject_id: true,
-                    subject_code: true,
-                  },
-                },
-              },
-            },
+            subject_name: true,
             teachers: {
               select: {
                 first_name: true,
@@ -228,6 +220,82 @@ export const get_section_attendance = async (section_id: string) => {
       section: section_info,
       students,
       section_attendance,
+      status: Status.OK,
+    };
+  } catch (error) {
+    return { status: Status.INTERNAL_SERVER_ERROR };
+  }
+};
+
+type SectionScheduleReturnProps = {
+  section_schedule?: SectionSubjectSchedule[];
+  section_subject?: SectionSubject[];
+  time_slots?: Timeslot[];
+  section?: Section;
+  status: Status;
+};
+
+export const get_section_schedule = async (
+  sectionId: string
+): Promise<SectionScheduleReturnProps> => {
+  try {
+    const [section_schedule, section_subject, time_slots, section] =
+      await prisma.$transaction([
+        prisma.section_subject_schedule.findMany({
+          where: { section_id: sectionId },
+          select: {
+            schedule_id: true,
+            subject_name: true,
+            timeslots: {
+              select: {
+                start_time: true,
+                end_time: true,
+                id: true,
+                day: true,
+              },
+            },
+          },
+        }),
+        prisma.section_subject.findMany({
+          where: {
+            section_id: sectionId,
+          },
+          select: {
+            class_id: true,
+            subject_name: true,
+            section_id: true,
+            teacher_id: true,
+          },
+        }),
+        prisma.timeslot.findMany(),
+        prisma.sections.findUnique({
+          where: {
+            section_id: sectionId,
+          },
+          select: {
+            section_id: true,
+            section_name: true,
+            teacher: {
+              select: {
+                teacher_id: true,
+                last_name: true,
+                first_name: true,
+              },
+            },
+            class_id: true,
+            academic_year: true,
+            room_number: true,
+          },
+        }),
+      ]);
+    if (!section) {
+      return { status: Status.NOT_FOUND };
+    }
+    return {
+      section_schedule,
+      section_subject,
+      time_slots,
+      section,
       status: Status.OK,
     };
   } catch (error) {

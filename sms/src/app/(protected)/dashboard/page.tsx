@@ -1,13 +1,11 @@
 import RoomTable from "@/components/building/RoomTable";
 import EventCalender from "@/components/EventCalender";
-import NoticeCards from "@/components/NoticeCard";
 import { Card } from "@/components/ui/card";
 import UserCard from "@/components/UserCard";
 import { get_rooms } from "@/lib/controller/get_rooms";
-import { get_notice } from "../../../utils/get_latest_notice";
 
 const Page = async () => {
-  const { notices } = await get_notice();
+  // const { notices } = await get_notice();
   const { rooms } = await get_rooms();
 
   return (
@@ -30,7 +28,7 @@ const Page = async () => {
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
-        <NoticeCards notices={notices} />
+        {/* <NoticeCards notices={notices} /> */}
       </div>
     </div>
   );
