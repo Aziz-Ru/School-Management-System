@@ -29,35 +29,47 @@ export const addSectionAction = async (
     return { error: error };
   }
 
-  const [existSection, isTeacherEnrolled, isRoomIdUse, numOfSection] =
-    await prisma.$transaction([
-      prisma.sections.findUnique({
-        where: {
-          section_name_class_id_academic_year: {
-            section_name: validResult.data.section_name,
-            class_id: validResult.data.class_id,
-            academic_year: academic_year,
-          },
+  const [
+    existSection,
+    isTeacherEnrolled,
+    isRoomIdUse,
+    numOfSection,
+    class_subjects,
+  ] = await prisma.$transaction([
+    prisma.sections.findUnique({
+      where: {
+        section_name_class_id_academic_year: {
+          section_name: validResult.data.section_name,
+          class_id: validResult.data.class_id,
+          academic_year: academic_year,
         },
-      }),
-      prisma.sections.findUnique({
-        where: {
-          class_teacher_academic_year: {
-            class_teacher: validResult.data.class_teacher_id,
-            academic_year: academic_year,
-          },
+      },
+    }),
+    prisma.sections.findUnique({
+      where: {
+        class_teacher_academic_year: {
+          class_teacher: validResult.data.class_teacher_id,
+          academic_year: academic_year,
         },
-      }),
-      prisma.sections.findUnique({
-        where: {
-          room_number_academic_year: {
-            room_number: validResult.data.room_number,
-            academic_year: academic_year,
-          },
+      },
+    }),
+    prisma.sections.findUnique({
+      where: {
+        room_number_academic_year: {
+          room_number: validResult.data.room_number,
+          academic_year: academic_year,
         },
-      }),
-      prisma.sections.count(),
-    ]);
+      },
+    }),
+    prisma.sections.count({
+      where: { academic_year: new Date().getFullYear() },
+    }),
+    prisma.class_subject.findMany({
+      where: {
+        class_id: validResult.data.class_id,
+      },
+    }),
+  ]);
 
   if (existSection) {
     return {
@@ -70,31 +82,28 @@ export const addSectionAction = async (
   if (isRoomIdUse) {
     return { error: "Room Number Already Used" };
   }
+  if (class_subjects.length === 0) {
+    return { error: "No Subject Added To This Class" };
+  }
 
-  const [newSection, class_subjects] = await prisma.$transaction([
-    prisma.sections.create({
-      data: {
-        section_name: validResult.data.section_name,
-        class_id: validResult.data.class_id,
-        academic_year: validResult.data.academic_year,
-        room_number: validResult.data.room_number,
-        class_teacher: validResult.data.class_teacher_id,
-      },
-    }),
-    prisma.class_subject.findMany({
-      where: {
-        class_id: validResult.data.class_id,
-      },
-    }),
-  ]);
+  const newSection = await prisma.sections.create({
+    data: {
+      section_name: validResult.data.section_name,
+      class_id: validResult.data.class_id,
+      academic_year: validResult.data.academic_year,
+      room_number: validResult.data.room_number,
+      class_teacher: validResult.data.class_teacher_id,
+      index: numOfSection + 1,
+    },
+  });
 
   const section_subjects_data = class_subjects.map((class_subject) => {
     return {
       class_id: validResult.data.class_id,
-      subject_id: class_subject.subject_id,
+      subject_name: class_subject.subject_name,
       section_id: newSection.section_id,
       teacher_id: parseInt(
-        formData.get(`enrolled_teacher_${class_subject.subject_id}`) as string
+        formData.get(`enrolled_teacher_${class_subject.subject_name}`) as string
       ),
     };
   });

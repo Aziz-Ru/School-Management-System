@@ -28,14 +28,13 @@ const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
 
   const { rooms } = await get_rooms();
 
-  console.log(status);
   if (status !== Status.OK) {
     notFound();
   }
 
   const otherSubjects = subjects!.map((course) => ({
     label: course.subject_name,
-    value: course.subject_id,
+    value: course.subject_name,
   }));
 
   return (

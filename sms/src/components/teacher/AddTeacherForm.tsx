@@ -5,7 +5,7 @@ import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { addTeacherAction } from "@/lib/actions/teacher";
+import { add_teacher_action } from "@/lib/actions/teacher";
 import { Subject } from "@/lib/types";
 import { useRef } from "react";
 
@@ -17,7 +17,7 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
       <form
         ref={formRef}
         action={async (formData: FormData) => {
-          const { error, msg } = await addTeacherAction(formData);
+          const { error, msg } = await add_teacher_action(formData);
           if (error) {
             toast({ title: error, description: "Failed to added New Teacher" });
           } else if (msg) {
@@ -64,13 +64,14 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
         <div className="flex w-full gap-4">
           <div className="w-1/2 flex flex-col gap-3 mb-4">
             <Label>Select Course</Label>
-            <select name="subject_id" className="input ">
-              <option value="#" disabled selected>
-                Course
-              </option>
+            <select name="subject_name" className="input ">
+              <option value="#">Course</option>
               {subjects.map((subject) => {
                 return (
-                  <option key={subject.subject_id} value={subject.subject_id}>
+                  <option
+                    key={subject.subject_name}
+                    value={subject.subject_name}
+                  >
                     {subject.subject_name}
                   </option>
                 );
@@ -80,9 +81,7 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
           <div className="w-1/2 flex flex-col gap-3 mb-4">
             <Label>Select Degree</Label>
             <select name="degree" className="input">
-              <option value="#" disabled selected>
-                Degree
-              </option>
+              <option value="#">Degree</option>
               <option className="text-gray-800" value={"MSC"}>
                 MSc
               </option>
@@ -102,9 +101,7 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
             <div className="flex flex-col gap-3 mb-4">
               <Label>Level</Label>
               <select name="level" className="input">
-                <option value="#" disabled selected>
-                  Select Level
-                </option>
+                <option value="#">Select Level</option>
                 <option className="text-gray-800" value={"PRIMARY"}>
                   Primary
                 </option>
@@ -120,9 +117,7 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
             <div className="flex flex-col gap-3 mb-4">
               <Label>Rank</Label>
               <select name="rank" className="input">
-                <option value="#" disabled selected>
-                  Select Rank
-                </option>
+                <option value="#">Select Rank</option>
                 <option value={"ASSISTANT"}>Assistant</option>
                 <option value={"SENIOR"}>Senior</option>
               </select>

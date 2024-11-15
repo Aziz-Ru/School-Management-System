@@ -2,6 +2,7 @@ import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { User } from "@/lib/types";
 
+import { SectionStudentTableColumns } from "@/lib/table_columns";
 import MigrateStudentForm from "./MigrateStudentForm";
 
 const StudentList = ({
@@ -11,29 +12,13 @@ const StudentList = ({
   students: User[];
   classId: number;
 }) => {
-  const columns = [
-    {
-      header: "ID",
-      accessor: "id",
-    },
-    {
-      header: "Name",
-      accessor: "name",
-      className: "",
-    },
-    {
-      header: "Attednece",
-      accessor: "attendance",
-    },
-  ];
-
   const renderRow = (student: User) => {
     return (
       <TableRow key={student.id}>
         <TableCell>
           <span>{student.id}</span>
         </TableCell>
-        <TableCell>
+        <TableCell className="flex items-center flex-wrap gap-2">
           <span>{student.studentProfile?.first_name}</span>
           <span>{student.studentProfile?.last_name}</span>
         </TableCell>
@@ -51,7 +36,11 @@ const StudentList = ({
       </div>
 
       {students.length > 0 && (
-        <TableList columns={columns} renderRow={renderRow} data={students} />
+        <TableList
+          columns={SectionStudentTableColumns}
+          renderRow={renderRow}
+          data={students}
+        />
       )}
     </div>
   );

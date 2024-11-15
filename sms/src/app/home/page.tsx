@@ -1,12 +1,10 @@
-import NoticeCards from "@/components/NoticeCard";
 import ReadMore from "@/components/buttons/ReadMore";
 import { Card } from "@/components/ui/card";
 import { SCHOOL_INTRO, SCHOOL_NAME } from "@/lib/data";
 import Link from "next/link";
-import { get_notice } from "../../utils/get_latest_notice";
 
 const page = async () => {
-  const { notices, status } = await get_notice(3);
+  // const { notices, status } = await get_notice(3);
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -30,17 +28,19 @@ const page = async () => {
             </div>
           </Card>
           <Card className="px-6 md:px-8 py-4">
-            <h2 className="font-bold text-xl text-center py-4">
+            <h2 className="font-bold text-xl text-center py-4 text-gray-900">
               Welcome To {SCHOOL_NAME}
             </h2>
-            <p className="text-justify">{SCHOOL_INTRO.substring(0, 500)}...</p>
+            <p className="text-justify text-gray-600">
+              {SCHOOL_INTRO.substring(0, 500)}...
+            </p>
             <div className="flex justify-end">
               <ReadMore href="/home" />
             </div>
           </Card>
         </div>
         <div className="col-span-12 md:col-span-5 my-4">
-          <NoticeCards notices={notices} />
+          {/* <NoticeCards notices={notices} /> */}
         </div>
       </div>
     </div>

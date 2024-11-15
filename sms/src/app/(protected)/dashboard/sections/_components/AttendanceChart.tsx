@@ -19,20 +19,7 @@ import {
 
 export const description = "A multiple bar chart";
 
-// const chartData = [
-//   { month: "January", desktop: 1000, mobile: 80 },
-//   { month: "February", desktop: 305, mobile: 200 },
-//   { month: "March", desktop: 237, mobile: 120 },
-//   { month: "April", desktop: 73, mobile: 190 },
-//   { month: "May", desktop: 209, mobile: 130 },
-//   { month: "June", desktop: 214, mobile: 140 },
-//   { month: "July", desktop: 214, mobile: 140 },
-//   { month: "August", desktop: 214, mobile: 140 },
-//   { month: "September", desktop: 214, mobile: 140 },
-//   { month: "October", desktop: 214, mobile: 140 },
-//   { month: "November", desktop: 214, mobile: 140 },
-//   { month: "December", desktop: 214, mobile: 140, car: 100 },
-// ];
+
 
 const chartConfig = {
   present: {

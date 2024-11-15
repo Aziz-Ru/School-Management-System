@@ -178,8 +178,18 @@ export const ClassesSchema = z.object({
 
 // Class Subject schema
 export const ClassSubjectSchema = z.object({
-  class_id: z.number().int(),
-  subject_id: z.string().uuid(),
+  class_id: z
+    .number({
+      required_error: "Class id must be required",
+      invalid_type_error: "Class id type is Invalid ",
+    })
+    .int({ message: "Class id must be integer" })
+    .min(1, { message: "class id must be greater than 1" })
+    .max(10, { message: "class id must be less than 10" }),
+  subject_name: z.string({
+    required_error: "Subject must be required",
+    invalid_type_error: "Subject name type is Invalid ",
+  }),
   description: z.string(),
   // Array of section_subject IDs
 });
@@ -224,27 +234,66 @@ export const SectionSchema = z.object({
 // Section Subject schema
 export const SectionSubjectSchema = z.object({
   class_id: z.number().int(),
-  subject_id: z.string().uuid(),
-  section_id: z.string().uuid(),
-  teacher_id: z.number().int(),
+  subject_name: z.string({}),
+  section_id: z
+    .string({
+      required_error: "Section must be required",
+      invalid_type_error: "Invalid type of Section",
+    })
+    .uuid({ message: "Invalid Section" }),
+  teacher_id: z
+    .number({
+      required_error: "Teacher must be required",
+      invalid_type_error: "Invalid type of Teacher",
+    })
+    .int(),
   teachers: z.string(),
 });
 
 // Section Subject Schedule schema
 export const SectionSubjectScheduleSchema = z.object({
-  subject_id: z.string(),
-  section_id: z.string(),
-  room_id: z.string().uuid(),
-  createdAt: z.date().default(new Date()),
+  subject_name: z.string({
+    required_error: "Subject must be required",
+    invalid_type_error: "Invalid type of Subject",
+  }),
+  section_id: z
+    .string({
+      required_error: "Section must be required",
+      invalid_type_error: "Invalid type of Section",
+    })
+    .uuid({ message: "Invalid Section" }),
+  teacher_id: z
+    .number({
+      required_error: "Teacher must be required",
+      invalid_type_error: "Invalid type of Teacher",
+    })
+    .int({ message: "Teacher must be integer" }),
+  timeslot_id: z
+    .string({
+      required_error: "Timeslot must be required",
+      invalid_type_error: "Invalid type of Timeslot",
+    })
+    .uuid({ message: "Invalid Timeslot" }),
 });
 
 // Timeslot schema
 export const TimeslotSchema = z.object({
-  start_time: z.string(),
-  end_time: z.string(),
+  start_time: z.string({
+    required_error: "startTime must be required",
+    invalid_type_error: "Invalid type of StartTime",
+  }),
+  end_time: z.string({
+    required_error: "endTime must be required",
+    invalid_type_error: "Invalid type of endTime",
+  }),
   day: z.nativeEnum(DayOfWeek),
   type: z.nativeEnum(PeriodType).default(PeriodType.REGULAR),
-  academic_year: z.number().int(),
+  academic_year: z
+    .number({
+      required_error: "academic_year must be required",
+      invalid_type_error: "Invalid type of academic_year",
+    })
+    .int(),
 });
 
 // Teacher schema
@@ -298,12 +347,10 @@ export const TeacherSchema = z.object({
     .regex(/^(\+8801|01)[0-9]\d{8}$/, {
       message: "Invalid Bangladeshi Phone Number",
     }),
-  subject_id: z
-    .string({
-      required_error: "Subject  must be required",
-      invalid_type_error: "Invalid type of Subject",
-    })
-    .uuid({ message: "Invalid Subject" }),
+  subject_name: z.string({
+    required_error: "Subject  must be required",
+    invalid_type_error: "Invalid type of Subject",
+  }),
   degrees: z
     .nativeEnum(Degree, { message: "Invalid Degree" })
     .default(Degree.BBA),
@@ -313,8 +360,6 @@ export const TeacherSchema = z.object({
     invalid_type_error: "Invalid type of Address",
   }),
   level: z.nativeEnum(Level, { message: "level must be valid" }),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
 });
 
 // Teacher Leave schema
@@ -330,17 +375,84 @@ export const TeacherLeaveSchema = z.object({
 });
 
 export const StudentSchema = z.object({
-  id: z.number().int(),
-  email: z.string().email(),
-  password: z.string(),
+  id: z
+    .number({
+      required_error: "Id must be required",
+      invalid_type_error: "Invalid type of Id",
+    })
+    .int({ message: "Id must be integer" }),
+
+  email: z
+    .string({
+      required_error: "Email must be required",
+      invalid_type_error: "Invalid type of Email",
+    })
+    .email({ message: "Email must be valid" }),
+  password: z
+    .string({
+      required_error: "Password must be required",
+      invalid_type_error: "Invalid type of Password",
+    })
+    .min(6, { message: "Password Minimum Length 6" }),
+  first_name: z
+    .string({
+      required_error: "first_name must be required",
+      invalid_type_error: "Invalid type of first_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
+  last_name: z
+    .string({
+      required_error: "last_name must be required",
+      invalid_type_error: "Invalid type of last_name",
+    })
+    .min(2, { message: "Password Minimum Length 6" }),
   role: z.nativeEnum(UserRole).refine((value) => value == UserRole.STUDENT, {
-    message: "Role Must be Teacher",
+    message: "Role Must be Student",
   }),
-  sex: z.nativeEnum(GENDER),
-  dob: z.date(),
-  status: z.nativeEnum(UserStatus).default(UserStatus.ACTIVE),
+  sex: z.nativeEnum(GENDER, { message: "Invalid Sex" }),
+
+  status: z
+    .nativeEnum(UserStatus, { message: "Invalid User Status" })
+    .default(UserStatus.ACTIVE),
   lastLogin: z.date().optional(),
-  section_id: z.string().uuid(),
-  createdAt: z.date().default(new Date()),
-  updatedAt: z.date().default(new Date()),
+  dob: z.date(),
+  phone: z
+    .string({
+      required_error: "Phone must be required",
+      invalid_type_error: "Phone must be a string",
+    })
+    .regex(/^(\+8801|01)[0-9]\d{8}$/, {
+      message: "Invalid Bangladeshi Phone Number",
+    }),
+  address: z.string({
+    required_error: "Address must be required",
+    invalid_type_error: "Invalid type of Address",
+  }),
+  level: z.nativeEnum(Level, { message: "level must be valid" }),
+  section_id: z
+    .string({
+      required_error: "Section  must be required",
+      invalid_type_error: "Invalid type of Subject",
+    })
+    .uuid({ message: "Invalid Section" }),
+});
+
+export const ExamSchema = z.object({
+  type: z.nativeEnum(EXAM_TYPE, { message: "Invalid Exam Type" }),
+  start_date: z.date({
+    required_error: "Start Date must be required",
+    invalid_type_error: "Invalid type of Start Date",
+  }),
+  end_date: z.date({
+    required_error: "End Time must be required",
+    invalid_type_error: "Invalid type of End Date",
+  }),
+  class_id: z
+    .number({
+      required_error: "Class Id must be required",
+      invalid_type_error: "Invalid type of Class Id",
+    })
+    .int({ message: "Class Id must be integer" })
+    .max(10, { message: "Class Id must be less than 10" })
+    .min(1, { message: "Class Id must be greater than 1" }),
 });

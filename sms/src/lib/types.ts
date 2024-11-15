@@ -40,6 +40,17 @@ export enum Gender {
   FEMALE = "FEMALE",
 }
 
+export type FilterOptions = {
+  q?: string;
+  subject?: string;
+  level?: string;
+  status?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
+};
+
 export enum RoomType {
   CLASSROOM = "CLASSROOM",
   LABORATORY = "LABORATORY",
@@ -142,7 +153,6 @@ export interface Room {
 }
 
 export interface Subject {
-  subject_id: string;
   subject_name: string;
   subject_code: number;
   teacher?: Teacher[];
@@ -166,7 +176,7 @@ export interface Classes {
 }
 
 export interface ClassSubject {
-  subject_id: string;
+  subject_name: string;
   class_id: number;
   description?: string;
   class?: Classes;
@@ -192,6 +202,7 @@ export interface Section {
   section_subjects?: SectionSubject[];
   attendance?: StudentAttendance[];
   maximum_student?: number;
+  index?: number;
   _count?: {
     students?: number;
     exams?: number;
@@ -200,12 +211,12 @@ export interface Section {
 
 export interface SectionSubject {
   class_id: number;
-  subject_id: string;
+  subject_name: string;
   section_id: string;
-  teacher_id: number;
+  teacher_id?: number;
   class_subjects?: ClassSubject;
   section?: Section;
-  teachers: Teacher;
+  teachers?: Teacher;
   schedules?: SectionSubjectSchedule[];
   exams?: ExamSubject[];
   subject_marks?: SubjectMarks[];
@@ -213,24 +224,19 @@ export interface SectionSubject {
 
 export interface SectionSubjectSchedule {
   schedule_id: string;
-  subject_id: string;
-  section_id: string;
-  subject: SectionSubject;
-  timeslot_id: string;
-  timeslots: Timeslot;
-  room_id: string;
-  room: Room;
-  createdAt: Date;
+  subject_name?: string;
+  section_id?: string;
+  subject?: SectionSubject;
+  timeslot_id?: string;
+  timeslot?: Timeslot;
+  createdAt?: Date;
 }
 
 export interface Timeslot {
   id: string;
-  schedule: SectionSubjectSchedule[];
-  start_time: string;
-  end_time: string;
-  day: DayOfWeek;
-  type: PeriodType;
-  academic_year: number;
+  hour: number;
+  day: string;
+  type?: string;
 }
 
 export interface Student {
@@ -270,12 +276,13 @@ export interface Teacher {
   first_name: string;
   last_name: string;
   teacher_id: number;
+  abbreviation?: string;
   teacher?: User;
-  subject_id?: string;
+  subject_name?: string;
   subject?: Subject;
-  degrees?: String;
+  degrees?: string;
   class_teacher?: Section[];
-  rank?: Rank;
+  rank?: string;
   level?: string;
   leaves?: TeacherLeave[];
   attendance?: TeacherAttendance[];
@@ -297,34 +304,32 @@ export interface TeacherLeave {
 export interface StudentAttendance {
   id: string;
   student_id: number;
-  student: Student;
+  student?: Student;
   sectionId: string;
-  section: Section;
+  section?: Section;
   date: Date;
-  status: AttendanceStatus;
+  status: string;
   timeIn?: Date;
   timeOut?: Date;
   lateMinutes?: number;
-  markedById: number;
-  markedBy: User;
+  markedById?: number;
+  markedBy?: User;
   remarks?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface TeacherAttendance {
   id: string;
-  teacherId: number;
-  teacher: Teacher;
+  teacherId?: number;
+  teacher?: Teacher;
   date: Date;
-  status: AttendanceStatus;
+  status: string;
   timeIn?: Date;
   timeOut?: Date;
   lateMinutes?: number;
   substitutedBy?: number;
   remarks?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface AttendanceSummery {
@@ -357,14 +362,14 @@ export interface AttendancePolicy {
 
 export interface Exam {
   id: string;
-  type: ExamType;
+  type: string;
   section_id: string;
   section: Section;
   start_date: Date;
   end_date: Date;
-  exam_results: ExamResult[];
-  exam_subjects: ExamSubject[];
-  publish_status: PublishStatus;
+  exam_results?: ExamResult[];
+  exam_subjects?: ExamSubject[];
+  publish_status: string;
 }
 
 export interface ExamSubject {

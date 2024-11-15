@@ -6,8 +6,8 @@ import { Status } from "@/utils/types";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ProfileCard from "../../../../../components/student/components/ProfileCard";
-import StudentRoutine from "../../../../../components/student/components/Routine";
+import ProfileCard from "../../../../../components/student/ProfileCard";
+import StudentRoutine from "../../../../../components/student/Routine";
 import { get_notice } from "../../../../../utils/get_latest_notice";
 
 const Student = async ({ params }: { params: { id: string } }) => {

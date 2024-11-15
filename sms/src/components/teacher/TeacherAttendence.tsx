@@ -3,13 +3,21 @@ import { CellStyle, ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
+const TeacherAttendenceList = ({
 
-const AttendenceList = ({ months }: { months: any[] }) => {
-  const [loading, setLoading] = useState(false);
-  const didMountRef = useRef(false);
-  const [attendenceCol, setAttendenceCol] = useState<ColDef[]>([
+  attendanceData,
+}: {
+  attendanceData: any[];
+}) => {
+  
+  const today = new Date();
+  const currentDay = today.getDate();
+  const currentMonth = today.getMonth();
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const [colDef, setColDef] = useState<ColDef[]>([
     {
       headerName: `Month`,
       field: `Month`,
@@ -17,43 +25,17 @@ const AttendenceList = ({ months }: { months: any[] }) => {
       pinned: "left",
       editable: false as boolean | ((params: any) => boolean),
     },
+    ...days.map((day) => ({
+      headerName: `${day}`,
+      field: `${day}`,
+      width: 50,
+      cellStyle: (params: any): CellStyle => {
+        return params.value ? { backgroundColor: "#cef9ff" } : {};
+      },
+    })),
   ]);
-  const today = new Date();
-  const currentDay = today.getDate();
-  const currentMonth = today.getMonth(); // 0-based index
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
-  useEffect(() => {
-    if (!didMountRef.current) {
-      const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-      const attendenceColDef = days.map((day) => ({
-        headerName: `${day}`,
-        field: `${day}`,
-        width: 50,
-        cellStyle: (params: any): CellStyle => {
-          return params.value ? { backgroundColor: "#cef9ff" } : {};
-        },
-      }));
-      setAttendenceCol((prev) => [...prev, ...attendenceColDef]);
-      didMountRef.current = true;
-      //   console.log("didMountRef");
-    }
-  }, []);
-  //   const gridHeight = studentAttendenceList.length * 50 + 150;
+  //  const gridHeight = studentAttendenceList.length * 50 + 150;
 
   //   const onMarkPresent = async (
   //     day: string | undefined,
@@ -127,31 +109,27 @@ const AttendenceList = ({ months }: { months: any[] }) => {
   //     }
   //   };
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  // const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   return (
-    <div className="p-4">
-      <div className="mb-4">
-        <h1 className="font-bold text-2xl">Attendence</h1>
-      </div>
-      <div className="ag-theme-quartz h-[600px]">
-        <AgGridReact
-          suppressMovableColumns={true}
-          defaultColDef={{
-            resizable: false,
-            editable: (params) =>
-              params.data.Month == monthNames[currentMonth] &&
-              params.colDef.field == currentDay.toString(),
-          }}
-          rowData={months}
-          columnDefs={attendenceCol}
-          //   onCellValueChanged={(e) => {
-          //     onMarkPresent(e.colDef.field, e.data.Id, e.newValue);
-          //   }}
-        />
-      </div>
+    <div className="ag-theme-quartz h-[600px]">
+      <AgGridReact
+        suppressMovableColumns={true}
+        defaultColDef={{
+          resizable: false,
+          editable: false,
+          // editable: (params) =>
+          // params.data.Month == MonthNames[currentMonth] &&
+          // params.colDef.field == currentDay.toString(),
+        }}
+        rowData={attendanceData}
+        columnDefs={colDef}
+        //   onCellValueChanged={(e) => {
+        //     onMarkPresent(e.colDef.field, e.data.Id, e.newValue);
+        //   }}
+      />
     </div>
   );
 };
 
-export default AttendenceList;
+export default TeacherAttendenceList;

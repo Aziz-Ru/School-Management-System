@@ -185,43 +185,6 @@ interface SectionStudentsReturnProps {
   status: Status;
 }
 
-export const getSectionStudentAttendance = async (
-  sectionId: string,
-  date: Date
-): Promise<SectionStudentsReturnProps> => {
-  try {
-    const students = await prisma.student.findMany({
-      where: {
-        sectionId: sectionId,
-      },
-      select: {
-        id: true,
-        fullName: true,
-        attendenceList: {
-          where: {
-            year: date.getFullYear(),
-            date: {
-              gte: new Date(date.getFullYear(), date.getMonth(), 1),
-              lte: new Date(date.getFullYear(), date.getMonth() + 1, 0),
-            },
-          },
-          select: {
-            id: true,
-            date: true,
-            year: true,
-            present: true,
-            sectionId: true,
-          },
-        },
-        sectionId: true,
-      },
-    });
-
-    return { students, status: Status.OK };
-  } catch (error) {
-    return { status: Status.INTERNAL_SERVER_ERROR };
-  }
-};
 
 interface SectionRoutineReturnProps {
   subjects?: Subject[];

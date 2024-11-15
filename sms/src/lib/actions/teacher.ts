@@ -10,7 +10,7 @@ interface ReturnProps {
   msg?: string;
 }
 
-export const addTeacherAction = async (
+export const add_teacher_action = async (
   formData: FormData
 ): Promise<ReturnProps> => {
   try {
@@ -25,7 +25,7 @@ export const addTeacherAction = async (
       rank: formData.get("rank"),
       phone: formData.get("phone"),
       level: formData.get("level"),
-      subject_id: formData.get("subject_id"),
+      subject_name: formData.get("subject_name"),
       degrees: formData.get("degree"),
       address: formData.get("address"),
     });
@@ -67,7 +67,7 @@ export const addTeacherAction = async (
             rank: validateResult.data.rank,
             subject: {
               connect: {
-                subject_id: validateResult.data.subject_id,
+                subject_name: validateResult.data.subject_name,
               },
             },
             level: validateResult.data.level,
@@ -77,7 +77,6 @@ export const addTeacherAction = async (
     });
 
     revalidatePath("/dashboard");
-
     return { msg: "Employee added successfully" };
   } catch (error: any) {
     // console.log(error.message);

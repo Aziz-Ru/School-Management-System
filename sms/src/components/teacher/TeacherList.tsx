@@ -72,7 +72,7 @@ const TeacherList = ({
   const renderRow = (item: User) => {
     return (
       <TableRow key={`${item.id}-${item.address}`}>
-        <TableCell className="flex items-center p-3">
+        <TableCell className="flex items-center border-l">
           <Image
             width={40}
             height={40}
@@ -85,25 +85,29 @@ const TeacherList = ({
             <p className="text-gray-500">{item.email}</p>
           </div>
         </TableCell>
-        <TableCell>{item.id}</TableCell>
+        <TableCell className="border">{item.id}</TableCell>
 
         <TableCell className="hidden md:table-cell">
-          {item.teacherProfile?.subject?.subject_name}
+          {item.teacherProfile?.subject_name}
         </TableCell>
-        <TableCell className="hidden md:table-cell">
+        <TableCell className="hidden md:table-cell border">
           {item.teacherProfile?.degrees}
         </TableCell>
-        <TableCell className="hidden md:table-cell">{item.phone}</TableCell>
-        <TableCell className="hidden md:table-cell">
+        <TableCell className="hidden md:table-cell border">
+          {item.phone}
+        </TableCell>
+        <TableCell className="hidden md:table-cell border">
           {item.teacherProfile?.level}
         </TableCell>
-        <TableCell className="hidden lg:table-cell">{item.address!}</TableCell>
-        <TableCell className="hidden xl:table-cell">
+        <TableCell className="hidden lg:table-cell border">
+          {item.address!}
+        </TableCell>
+        <TableCell className="hidden xl:table-cell border">
           {item.lastLogin ? item.lastLogin.toDateString() : "NO Info"}
         </TableCell>
 
         {role === "ADMIN" && (
-          <TableCell className="text-center">
+          <TableCell className="text-center border">
             <DetailsLink href={`/dashboard/teachers/${item.id}`} />
           </TableCell>
         )}

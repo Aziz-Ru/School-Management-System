@@ -16,7 +16,10 @@ const TableList = ({
         <TableRow className="text-left site-txt text-sm">
           {columns.map((column) => {
             return (
-              <TableHead key={column.accessor} className={column.className}>
+              <TableHead
+                key={column.accessor}
+                className={`${column.className} border`}
+              >
                 {column.header}
               </TableHead>
             );

@@ -25,25 +25,28 @@ const Sections = async ({
   }
   const renderSectionRow = (item: Section) => {
     return (
-      <TableRow key={item.section_id}>
-        <TableCell className="flex items-center p-3 ">
-          <h3 className="font-semibold">{item.section_name}</h3>
+      <TableRow className="text-gray-800" key={item.section_id}>
+        <TableCell className="border p-3 ">
+          <h3 className="font-semibold">
+            {item.section_name.toLocaleUpperCase()}
+          </h3>
         </TableCell>
-        <TableCell className="px-2">
-          <span className="hidden sm:block">{item._count?.students}</span>
+        <TableCell className="px-2 border">{item.class_id}</TableCell>
+        <TableCell className="px-2 hidden sm:table-cell border">
+          {item._count?.students}
         </TableCell>
-        <TableCell className="px-2">
-          <span className="hidden sm:block">{item.academic_year}</span>
+        <TableCell className="px-2 border hidden sm:table-cell">
+          {item.academic_year}
         </TableCell>
-        <TableCell className="px-2">
-          <span className="hidden sm:block">{item.room_number}</span>
+        <TableCell className="px-2 border hidden sm:table-cell ">
+          {item.room_number}
         </TableCell>
 
-        <TableCell className="px-2">
-          <span className="hidden md:block">{`${item.teacher?.first_name} ${item.teacher?.last_name}`}</span>
+        <TableCell className="px-2 border hidden md:table-cell">
+          {`${item.teacher?.first_name} ${item.teacher?.last_name}`}
         </TableCell>
 
-        <TableCell className="px-2">
+        <TableCell className="px-2 border">
           <DetailsLink href={`/dashboard/sections/${item.section_id}`} />
         </TableCell>
       </TableRow>

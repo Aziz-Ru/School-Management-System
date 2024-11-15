@@ -94,6 +94,10 @@ export const sectionsTableColumns = [
     accessor: "name",
   },
   {
+    header: "Class",
+    accessor: "class",
+  },
+  {
     header: "Students",
     accessor: "students",
     className: "hidden sm:table-cell",
@@ -117,5 +121,84 @@ export const sectionsTableColumns = [
   {
     header: "Action",
     accessor: "actions",
+  },
+];
+
+export const StudentTableListColumn = [
+  {
+    header: "Name",
+    accessor: "info",
+  },
+
+  {
+    header: "Section",
+    accessor: "section",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden lg:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "Last Login",
+    accessor: "last_login",
+    className: "hidden xl:table-cell",
+  },
+
+  {
+    header: "Action",
+    accessor: "action",
+  },
+];
+
+export const SectionStudentTableColumns = [
+  {
+    header: "ID",
+    accessor: "id",
+  },
+  {
+    header: "Name",
+    accessor: "name",
+    className: "",
+  },
+  {
+    header: "Attedance",
+    accessor: "attendance",
+  },
+];
+
+export const ExamsListTableColumns = [
+  {
+    header: "Section",
+    accessor: "section",
+  },
+  {
+    header: "Type",
+    accessor: "type",
+  },
+  {
+    header: "Start Date",
+    accessor: "start_date",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "End Date",
+    accessor: "end_date",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "Publish Status",
+    accessor: "publish_status",
+  },
+  {
+    header: "Result",
+    accessor: "result",
   },
 ];

@@ -10,6 +10,7 @@ const ClassListPage = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  
   const searchQuery = searchParams.q ? searchParams.q : undefined;
 
   const { classes, status } = await getClassesInfos(searchQuery as string);

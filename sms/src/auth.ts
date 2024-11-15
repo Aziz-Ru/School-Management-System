@@ -1,6 +1,6 @@
 "use server";
 
-import bcrypt from "bcrypt";
+import brypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import prisma from "./lib/db";
@@ -40,114 +40,50 @@ export async function login(formData: FormData): Promise<ReturnProps> {
     return { error: validResult.error.errors[0].message };
   }
 
-  if (validResult.data.role === "ADMIN") {
-    const admin = await prisma.admin.findUnique({
+  const user = await prisma.user.findUnique({
+    where: {
+      id: validResult.data.uid,
+      role: validResult.data.role,
+    },
+    select: {
+      id: true,
+      password: true,
+      role: true,
+      sex: true,
+      status: true,
+      lastLogin: true,
+    },
+  });
+
+  if (!user) {
+    return { error: "Invalid Credential" };
+  }
+  const isMatchPassword = await brypt.compare(
+    validResult.data.password,
+    user.password
+  );
+
+  if (user?.role === validResult.data.role && isMatchPassword) {
+    await createSession({
+      id: user.id,
+      role: user.role,
+      _xx_httpoui: user.sex,
+      _u_ss_t: user.status,
+      _l_l: user.lastLogin,
+    });
+    prisma.user.update({
       where: {
-        id: validResult.data.uid.toString(),
+        id: user.id,
       },
-      select: {
-        id: true,
-        password: true,
+      data: {
+        lastLogin: new Date().toISOString(),
       },
     });
 
-    if (!admin) {
-      return { error: "Invalid Credentials" };
-    }
-    const isMatchPassword = await bcrypt.compare(
-      validResult.data.password,
-      admin.password
-    );
-    if (!isMatchPassword) {
-      return { error: "Invalid Credentials" };
-    }
-    await createSession({
-      user: {
-        id: admin.id.toString(),
-        role: validResult.data.role,
-        fullName: "ADMIN",
-      },
-    });
-    return { msg: "Admin Login Successully" };
+    return { msg: "Logged In" };
   }
 
-  if (validResult.data.role === "TEACHER") {
-    const teacher = await prisma.teacher.findUnique({
-      where: {
-        id: validResult.data.uid,
-      },
-      select: {
-        id: true,
-        password: true,
-        fullName: true,
-        img: true,
-        createdAt: true,
-      },
-    });
-    if (!teacher) {
-      return { error: "Invalid Credentials" };
-    }
-    const isMatchPassword = await bcrypt.compare(
-      validResult.data.password,
-      teacher.password
-    );
-
-    if (!isMatchPassword) {
-      return { error: "Invalid Credentials" };
-    }
-    await createSession({
-      user: {
-        id: teacher.id.toString(),
-        img: teacher.img as string,
-        role: validResult.data.role,
-        fullName: teacher.fullName,
-        createdAt: teacher.createdAt.toDateString(),
-      },
-    });
-
-    return { msg: `${teacher.id} Login Successfully` };
-  }
-
-  if (validResult.data.role === "STUDENT") {
-    const student = await prisma.student.findUnique({
-      where: {
-        id: validResult.data.uid,
-      },
-      select: {
-        id: true,
-        password: true,
-        fullName: true,
-        sectionId: true,
-        img: true,
-        createdAt: true,
-      },
-    });
-    if (!student) {
-      return { error: "Invalid Credential" };
-    }
-    const isMatchPassword = await bcrypt.compare(
-      validResult.data.password,
-      student.password
-    );
-
-    if (!isMatchPassword) {
-      return { error: "Invalid Credentials" };
-    }
-
-    await createSession({
-      user: {
-        id: student.id.toString(),
-        role: validResult.data.role,
-        fullName: student.fullName,
-        sectionId: student.sectionId,
-        createdAt: student.createdAt.toDateString(),
-        img: student.img as string,
-      },
-    });
-    return { msg: `${student.id} Login Successfully` };
-  }
-
-  return { msg: "Invalid Credential" };
+  return { error: "Invalid Credential" };
 }
 
 export async function logout() {

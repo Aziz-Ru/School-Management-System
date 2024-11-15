@@ -3,39 +3,34 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { studentId, sectionId } = await req.json();
+  const { studentId, sectionId, markedById } = await req.json();
+
   const currentDate = new Date();
-  currentDate.setUTCHours(0, 0, 0, 0);
+  currentDate.setHours(12, 0, 0, 0);
   if (currentDate.toDateString().split(" ")[0] === "Fri") {
     return NextResponse.json(
       { error: "You can't mark attendance on Friday" },
       { status: 400 }
     );
   }
-  console.log(studentId, sectionId);
-  if (isNaN(parseInt(studentId))) {
-    return NextResponse.json({ error: "Invalid Student ID" }, { status: 400 });
+
+  if (isNaN(parseInt(studentId)) || isNaN(parseInt(markedById))) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
   }
 
   try {
-    await prisma.attendence.create({
+    await prisma.student_attendance.create({
       data: {
+        student_id: parseInt(studentId),
+        sectionId: sectionId,
         date: currentDate.toISOString(),
-        student: {
-          connect: {
-            id: parseInt(studentId),
-          },
-        },
-        present: true,
-        section: {
-          connect: {
-            id: sectionId,
-          },
-        },
-        month: currentDate.getMonth() + 1,
+        status: "PRESENT",
+        markedById: parseInt(markedById),
       },
     });
+    revalidatePath("/dashboard/sections");
     revalidatePath("/dashboard");
+
     return NextResponse.json({ msg: "Attendance Marked" });
   } catch (error: any) {
     console.log(error.message);
@@ -46,24 +41,25 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const date = searchParams.get("date");
-    const studentId = searchParams.get("studentId");
-    const sectionId = searchParams.get("sectionId");
 
-    if (!date || !studentId || !sectionId) {
+    const studentId = searchParams.get("studentId");
+
+    if (isNaN(parseInt(studentId!))) {
       return NextResponse.json({ error: "Invalid Request" }, { status: 400 });
     }
 
-    await prisma.attendence.delete({
+    const currentDate = new Date();
+    currentDate.setHours(12, 0, 0, 0);
+    await prisma.student_attendance.delete({
       where: {
-        studentId_date_month: {
-          studentId: parseInt(studentId),
-          date: new Date(date),
-          month: new Date(date).getMonth() + 1,
+        student_id_date: {
+          student_id: parseInt(studentId!),
+          date: currentDate.toISOString(),
         },
       },
     });
 
+    revalidatePath("/dashboard/sections");
     revalidatePath("/dashboard");
 
     return NextResponse.json({ msg: "Attendance Deleted" });
