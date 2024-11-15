@@ -1,11 +1,10 @@
-import NoticeCards from "@/components/NoticeCard";
-import ProfileCard from "@/components/teacher/ProfileCard";
-import Routine from "@/components/teacher/Routine";
+import Schedules from "@/components/teacher/Schedules";
+import TeacherAttendenceList from "@/components/teacher/TeacherAttendence";
+import ProfileCard from "@/components/UserProfileCard";
+import { get_teacher_info } from "@/lib/controller/get_teachers";
 
-import AttendenceList from "@/components/teacher/TeacherAttendence";
-import { DaysOfWeek, Times } from "@/lib/data";
-import { get_notice } from "@/utils/get_latest_notice";
-import { getTeacherData } from "@/utils/get_teacherData";
+import { MonthNames } from "@/lib/data";
+
 import { Status } from "@/utils/types";
 import { notFound } from "next/navigation";
 
@@ -22,32 +21,13 @@ const TeacherPage = async ({
     notFound();
   }
 
-  const { teacher, schedule, attendence, status } = await getTeacherData(uid);
+  const { teacher, schedules, attendance, status } = await get_teacher_info(
+    uid
+  );
+
   if (status !== Status.OK) {
     notFound();
   }
-
-  const { notices } = await get_notice(3);
-  if (!teacher) {
-    notFound();
-  }
-
-  const routine = DaysOfWeek.map((day) => {
-    let obj: any = { Day: day };
-
-    Times.map((t) => {
-      const res = schedule?.find(
-        (s) => s.day === day.toUpperCase() && s.startEnd === t.time
-      );
-      obj[t.time] = res
-        ? `${res.subject!.courseName}-${res.section?.sectionName}(${
-            res.section?.classId
-          })`
-        : "";
-    });
-
-    return obj;
-  });
 
   const getPresent = (
     attendence: any[],
@@ -57,7 +37,6 @@ const TeacherPage = async ({
     const res = attendence.find(
       (d) => d.date.getDate() === day && d.date.getMonth() == month
     );
-
     if (res) {
       return true;
     }
@@ -67,9 +46,9 @@ const TeacherPage = async ({
   let calendar: any[] = [];
   for (let month = 0; month < 12; month++) {
     const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
-    let monthData: any = { Month: monthNames[month] };
+    let monthData: any = { Month: MonthNames[month] };
     for (let day = 1; day <= daysInMonth; day++) {
-      const isPresent = getPresent(attendence!, day, month);
+      const isPresent = getPresent(attendance!, day, month);
       const dayObj = { [day]: isPresent };
       monthData = { ...monthData, ...dayObj };
     }
@@ -82,19 +61,24 @@ const TeacherPage = async ({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4 p-4">
           {/* User INFO */}
-          <ProfileCard teacher={teacher!} />
+          <div className="">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+              Profile
+            </h1>
+            <ProfileCard user={teacher!} />
+          </div>
         </div>
         {/* Routine */}
         <div className="p-4">
-          <h1 className="text-2xl font-semibold mb-2">Routine</h1>
-          <Routine schedules={schedule!} />
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">Routine</h1>
+          <Schedules schedules={schedules!} />
         </div>
-        <div className="">
-          <AttendenceList months={calendar} />
+        <div className="p-4">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+            Attendance
+          </h1>
+          <TeacherAttendenceList attendanceData={calendar!} />
         </div>
-      </div>
-      <div className="w-full xl:w-1/3 px-4 pt-4">
-        <NoticeCards notices={notices} />
       </div>
     </div>
   );

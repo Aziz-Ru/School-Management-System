@@ -238,6 +238,7 @@ type SectionScheduleReturnProps = {
 export const get_section_schedule = async (
   sectionId: string
 ): Promise<SectionScheduleReturnProps> => {
+  
   try {
     const [section_schedule, section_subject, time_slots, section] =
       await prisma.$transaction([
@@ -246,12 +247,11 @@ export const get_section_schedule = async (
           select: {
             schedule_id: true,
             subject_name: true,
-            timeslots: {
+            timeslot: {
               select: {
-                start_time: true,
-                end_time: true,
-                id: true,
                 day: true,
+                id: true,
+                hour: true,
               },
             },
           },

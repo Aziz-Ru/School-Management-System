@@ -158,7 +158,6 @@ export const StudentTableListColumn = [
   },
 ];
 
-
 export const SectionStudentTableColumns = [
   {
     header: "ID",
@@ -172,5 +171,34 @@ export const SectionStudentTableColumns = [
   {
     header: "Attedance",
     accessor: "attendance",
+  },
+];
+
+export const ExamsListTableColumns = [
+  {
+    header: "Section",
+    accessor: "section",
+  },
+  {
+    header: "Type",
+    accessor: "type",
+  },
+  {
+    header: "Start Date",
+    accessor: "start_date",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "End Date",
+    accessor: "end_date",
+    className: "hidden xl:table-cell",
+  },
+  {
+    header: "Publish Status",
+    accessor: "publish_status",
+  },
+  {
+    header: "Result",
+    accessor: "result",
   },
 ];

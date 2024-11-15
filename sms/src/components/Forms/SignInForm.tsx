@@ -32,7 +32,7 @@ const SignInForm = () => {
           action={async (formData) => {
             const { error, msg } = await login(formData);
             if (error) {
-              toast({ title: "Invalid Credential" });
+              toast({ title: "Invalid Credential", variant: "destructive" });
             } else if (msg) {
               if (formData.get("role") === "ADMIN") {
                 router.replace("/dashboard");

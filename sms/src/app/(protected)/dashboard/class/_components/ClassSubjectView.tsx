@@ -5,7 +5,7 @@ import { ClassSubject } from "@/lib/types";
 
 const courseColumns = [
   {
-    header: "Info",
+    header: "Subject",
     accessor: "info",
     className: "px-2",
   },
@@ -25,13 +25,13 @@ const ClassSubjects = ({
 }) => {
   const renderCourseTableRow = (item: ClassSubject) => {
     return (
-      <TableRow key={item.subject_id}>
+      <TableRow key={item.subject_name}>
         <TableCell className="flex items-center p-3 ">
           <h3 className="font-semibold">{item.subject?.subject_name}</h3>
         </TableCell>
 
         <TableCell className="px-2 text-center">
-          <DetailsLink href={`${currentPath}/${item.subject_id}`} />
+          <DetailsLink href={`${currentPath}/${item.subject_name}`} />
         </TableCell>
       </TableRow>
     );

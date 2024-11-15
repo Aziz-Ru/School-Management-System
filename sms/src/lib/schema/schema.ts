@@ -262,6 +262,12 @@ export const SectionSubjectScheduleSchema = z.object({
       invalid_type_error: "Invalid type of Section",
     })
     .uuid({ message: "Invalid Section" }),
+  teacher_id: z
+    .number({
+      required_error: "Teacher must be required",
+      invalid_type_error: "Invalid type of Teacher",
+    })
+    .int({ message: "Teacher must be integer" }),
   timeslot_id: z
     .string({
       required_error: "Timeslot must be required",
@@ -429,4 +435,24 @@ export const StudentSchema = z.object({
       invalid_type_error: "Invalid type of Subject",
     })
     .uuid({ message: "Invalid Section" }),
+});
+
+export const ExamSchema = z.object({
+  type: z.nativeEnum(EXAM_TYPE, { message: "Invalid Exam Type" }),
+  start_date: z.date({
+    required_error: "Start Date must be required",
+    invalid_type_error: "Invalid type of Start Date",
+  }),
+  end_date: z.date({
+    required_error: "End Time must be required",
+    invalid_type_error: "Invalid type of End Date",
+  }),
+  class_id: z
+    .number({
+      required_error: "Class Id must be required",
+      invalid_type_error: "Invalid type of Class Id",
+    })
+    .int({ message: "Class Id must be integer" })
+    .max(10, { message: "Class Id must be less than 10" })
+    .min(1, { message: "Class Id must be greater than 1" }),
 });

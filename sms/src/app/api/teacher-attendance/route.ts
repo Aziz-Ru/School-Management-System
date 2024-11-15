@@ -6,27 +6,27 @@ export async function POST(req: NextRequest) {
   try {
     const { teacherId } = await req.json();
     // Save the attendance in the database
+    
     if (!teacherId || (teacherId && isNaN(teacherId))) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
     const current = new Date();
-    current.setUTCHours(0, 0, 0, 0);
+    current.setHours(0, 0, 0, 0);
     if (current.toDateString().split(" ")[0] === "Fri") {
       return NextResponse.json(
         { error: "You can't mark attendance on Friday" },
         { status: 400 }
       );
     }
-    await prisma.teacherAttendence.create({
+    await prisma.teacher_attendance.create({
       data: {
         teacherId: parseInt(teacherId),
-        present: true,
-        month: current.getMonth() + 1,
-        year: current.getFullYear(),
         date: current.toISOString(),
+        status: "PRESENT",
       },
     });
+    revalidatePath("/dashboard/attendance");
     revalidatePath("/dashboard");
     return NextResponse.json({
       data: { msg: `${teacherId} marked as Present` },
@@ -47,14 +47,13 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Invalid Request" });
   }
   const current = new Date();
-  current.setUTCHours(0, 0, 0, 0);
+  current.setHours(0, 0, 0, 0);
   try {
-    await prisma.teacherAttendence.delete({
+    await prisma.teacher_attendance.delete({
       where: {
-        teacherId_date_month: {
+        teacherId_date: {
           teacherId: parseInt(teacherId),
           date: current.toISOString(),
-          month: current.getMonth() + 1,
         },
       },
     });

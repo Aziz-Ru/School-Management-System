@@ -224,18 +224,17 @@ export interface SectionSubject {
 
 export interface SectionSubjectSchedule {
   schedule_id: string;
-  subject_id?: string;
+  subject_name?: string;
   section_id?: string;
   subject?: SectionSubject;
   timeslot_id?: string;
-  timeslots?: Timeslot;
+  timeslot?: Timeslot;
   createdAt?: Date;
 }
 
 export interface Timeslot {
   id: string;
-  start_time: string;
-  end_time: string;
+  hour: number;
   day: string;
   type?: string;
 }
@@ -281,9 +280,9 @@ export interface Teacher {
   teacher?: User;
   subject_name?: string;
   subject?: Subject;
-  degrees?: String;
+  degrees?: string;
   class_teacher?: Section[];
-  rank?: Rank;
+  rank?: string;
   level?: string;
   leaves?: TeacherLeave[];
   attendance?: TeacherAttendance[];
@@ -322,17 +321,15 @@ export interface StudentAttendance {
 
 export interface TeacherAttendance {
   id: string;
-  teacherId: number;
-  teacher: Teacher;
+  teacherId?: number;
+  teacher?: Teacher;
   date: Date;
-  status: AttendanceStatus;
+  status: string;
   timeIn?: Date;
   timeOut?: Date;
   lateMinutes?: number;
   substitutedBy?: number;
   remarks?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface AttendanceSummery {
@@ -365,14 +362,14 @@ export interface AttendancePolicy {
 
 export interface Exam {
   id: string;
-  type: ExamType;
+  type: string;
   section_id: string;
   section: Section;
   start_date: Date;
   end_date: Date;
-  exam_results: ExamResult[];
-  exam_subjects: ExamSubject[];
-  publish_status: PublishStatus;
+  exam_results?: ExamResult[];
+  exam_subjects?: ExamSubject[];
+  publish_status: string;
 }
 
 export interface ExamSubject {

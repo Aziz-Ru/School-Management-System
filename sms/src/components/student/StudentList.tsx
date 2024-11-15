@@ -6,11 +6,10 @@ import { User } from "@/lib/types";
 import Image from "next/image";
 
 const StudentsList = ({ students }: { students: User[] }) => {
-  
   const renderRow = (item: User) => {
     return (
       <TableRow key={item.id}>
-        <TableCell className="flex items-center gap-4 p-3 ">
+        <TableCell className="flex items-center gap-4 p-3 border">
           <Image
             src={item.img ? item.img : "/image/noavatar.png"}
             alt="profile"
@@ -26,20 +25,20 @@ const StudentsList = ({ students }: { students: User[] }) => {
           </div>
         </TableCell>
 
-        <TableCell className="hidden md:table-cell px-1">
+        <TableCell className="hidden md:table-cell px-1 border">
           {item.studentProfile?.section?.section_name}
         </TableCell>
 
-        <TableCell className="hidden lg:table-cell px-1">
+        <TableCell className="hidden lg:table-cell px-1 border">
           {item.phone}
         </TableCell>
-        <TableCell className="hidden xl:table-cell px-1">
+        <TableCell className="hidden xl:table-cell px-1 border">
           {item.address}
         </TableCell>
-        <TableCell className="hidden xl:table-cell px-1">
+        <TableCell className="hidden xl:table-cell px-1 border">
           {new Date(item.lastLogin!).toDateString()}
         </TableCell>
-        <TableCell>
+        <TableCell className="border">
           <DetailsLink href={`/dashboard/students/${item.id}`} />
         </TableCell>
       </TableRow>

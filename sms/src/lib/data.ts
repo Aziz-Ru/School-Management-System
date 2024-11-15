@@ -67,6 +67,29 @@ export const Times = [
   },
 ];
 
+export const ScheduleHours = [
+  {
+    hour: 1,
+    name: "1st Hour",
+  },
+  {
+    hour: 2,
+    name: "2nd Hour",
+  },
+  {
+    hour: 3,
+    name: "3rd Hour",
+  },
+  {
+    hour: 4,
+    name: "4th Hour",
+  },
+  {
+    hour: 5,
+    name: "5th Hour",
+  },
+];
+
 export const DaysOfWeek = [
   "Saturday",
   "Sunday",

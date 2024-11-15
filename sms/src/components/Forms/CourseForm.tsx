@@ -30,7 +30,7 @@ const CourseForm = () => {
   });
 
   return (
-    <FormModal>
+    <FormModal table="Course">
       <Form {...form}>
         <form onSubmit={form.handleSubmit((v) => {})} className="space-y-8">
           <FormField

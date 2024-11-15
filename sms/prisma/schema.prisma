@@ -96,17 +96,19 @@ model section_subject_schedule{
   subject_name     String
   section_id     String
   subject        section_subject @relation(fields: [subject_name,section_id],references: [subject_name,section_id],onDelete: Cascade)
-  timeslot_id       String
-  timeslots      timeslot @relation(fields: [timeslot_id],references: [id],onDelete: Cascade)
-  createdAt       DateTime @default(now())
-  @@unique([subject_name,section_id,timeslot_id])
+  timeslot_id    String
+  timeslot       timeslot @relation(fields: [timeslot_id],references: [id],onDelete: Cascade)
+  teacher_id     Int
+  teacher        teacher @relation(fields: [teacher_id],references: [teacher_id],onDelete: Cascade)
+  academic_year   Int @default(2024)
+  @@unique([subject_name,section_id,timeslot_id,teacher_id])
+  @@unique([timeslot_id,teacher_id,academic_year])
 }
 
 model timeslot{
   id    String @id @default(uuid())
-  schedule  section_subject_schedule[]
-  start_time         String
-  end_time           String //HH:MM
+  schedules  section_subject_schedule[]
+  hour         Int
   day            DayOfWeek
   type           PeriodType @default(REGULAR)
   
@@ -144,13 +146,14 @@ model teacher {
   rank            Rank 
   level            Level
   leaves         TeacherLeave[]
-  attendance     TeacherAttendance[]
+  attendance     teacher_attendance[]
   enrolled_subjects  section_subject[]
+  schedules     section_subject_schedule[]
   salary         Int @default(25000)
   @@id([teacher_id,subject_name])
 }
 
- model student{
+model student{
 first_name    String
 last_name     String
 student_id Int @unique @id
@@ -201,7 +204,7 @@ model student_attendance {
   @@index([student_id, status])
 }
 
-model TeacherAttendance {
+model teacher_attendance {
   id              String           @id @default(cuid())
   teacherId       Int
   teacher         teacher          @relation(fields: [teacherId], references: [teacher_id],onDelete: Cascade)
@@ -211,7 +214,6 @@ model TeacherAttendance {
   timeOut         DateTime?
   lateMinutes     Int?
   substitutedBy   Int?            // If another teacher covered
-  
   remarks         String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -239,7 +241,7 @@ model attendance_summery {
   @@unique([student_id, academicYear, month])
 }
 
-model AttendancePolicy {
+model attendance_policy {
   id                    String    @id @default(cuid())
   academicYear          Int
   requiredAttendance    Float     // Percentage required
@@ -264,6 +266,7 @@ model exam {
   exam_results  exam_result[]
   exam_subjects  exam_subjects[]
   publish_status  PublishStatus @default(DRAFT)
+  createdAt     DateTime   @default(now())
 }
 
 // exam subject 

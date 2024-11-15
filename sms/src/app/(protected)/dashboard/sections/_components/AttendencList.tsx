@@ -19,6 +19,7 @@ const AttendenceList = ({
   section_attendance: StudentAttendance[];
   acdemic_year: number;
 }) => {
+  
   const gridHeight = students.length * 50 + 80;
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [rowData, setRowData] = useState<any[]>([]);
@@ -76,6 +77,7 @@ const AttendenceList = ({
         return stu;
       }),
     ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMonth]);
 
   const onMarkPresent = async (student_id: string, value: boolean) => {
@@ -93,7 +95,7 @@ const AttendenceList = ({
         if (data.msg) {
           toast({ title: `${student_id} id mark as Present` });
         } else if (data.error) {
-          toast({ title: "Failed to mark this id" });
+          toast({ title: data.error });
         }
       } else {
         const response = await fetch(

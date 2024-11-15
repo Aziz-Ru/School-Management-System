@@ -26,7 +26,9 @@ const AddRoutine = ({
       return time_slot.day === day.toUpperCase();
     });
 
-    setFilteredTimeSlots(filterTimeSlots);
+    setFilteredTimeSlots(
+      filterTimeSlots.sort((a, b) => (a.hour < b.hour ? -1 : 1))
+    );
   };
 
   return (
@@ -37,6 +39,10 @@ const AddRoutine = ({
           <form
             action={async (formData: FormData) => {
               formData.append("section_id", section_id);
+              const teacher_id = subjects.find(
+                (s) => s.subject_name === formData.get("subject_name")
+              )?.teacher_id!;
+              formData.append("teacher_id", teacher_id.toString());
               const { msg, error } = await add_routine_action(formData);
               if (error) {
                 toast({ title: error, variant: "destructive" });
@@ -90,7 +96,7 @@ const AddRoutine = ({
                         key={index}
                         value={time_slot.id}
                       >
-                        {time_slot.start_time} - {time_slot.end_time}
+                        {time_slot.hour}
                       </option>
                     );
                   })}

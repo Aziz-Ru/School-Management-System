@@ -28,7 +28,6 @@ const SingleClassPage = async ({ params }: { params: { classId: string } }) => {
 
   const { rooms } = await get_rooms();
 
-  console.log(status);
   if (status !== Status.OK) {
     notFound();
   }

@@ -19,8 +19,6 @@ import {
 
 export const description = "A multiple bar chart";
 
-
-
 const chartConfig = {
   present: {
     label: "Present",
@@ -35,9 +33,11 @@ const chartConfig = {
 export default function AttendanceChart({
   chartData,
   chartConfig = {},
+  name,
 }: {
   chartData: any;
   chartConfig: any;
+  name: string;
 }) {
   const year = new Date().getFullYear();
   return (
@@ -68,7 +68,7 @@ export default function AttendanceChart({
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing total Student Attendance for the last 1 Year
+          Showing total {name} Attendance for the last 1 Year
         </div>
       </CardFooter>
     </Card>
