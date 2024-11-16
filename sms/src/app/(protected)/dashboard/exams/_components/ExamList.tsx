@@ -1,4 +1,4 @@
-import { DetailsButton } from "@/components/buttons/Buttons";
+import DetailsLink from "@/components/buttons/DetailsLink";
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { ExamsListTableColumns } from "@/lib/table_columns";
@@ -20,7 +20,7 @@ const ExamsList = ({ exams }: { exams: Exam[] }) => {
         </TableCell>
         <TableCell className="border">{exam.publish_status}</TableCell>
         <TableCell className="border-r">
-          <DetailsButton />
+          <DetailsLink href={`/dashboard/exams/${exam.id}`} />
         </TableCell>
       </TableRow>
     );

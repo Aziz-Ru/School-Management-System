@@ -1,5 +1,5 @@
 import AddExamForm from "@/components/Forms/AddExamForm";
-import prisma from "@/lib/db";
+import { get_exams } from "@/lib/controller/get_exams";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -17,16 +17,7 @@ const Exam = async () => {
     redirect("/home");
   }
 
-  const classData = await prisma.classes.findMany();
-
-  const exams = await prisma.exam.findMany({
-    include: {
-      section: true,
-    },
-    orderBy: {
-      start_date: "desc",
-    },
-  });
+  const { exams, status, classData } = await get_exams();
 
   return (
     <div>
@@ -39,7 +30,7 @@ const Exam = async () => {
             <h2 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
               Exam Routine
             </h2>
-            <AddExamForm classData={classData} />
+            <AddExamForm classData={classData!} />
           </div>
 
           <div className="">
