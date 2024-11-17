@@ -25,7 +25,7 @@ const Menu = ({ role }: { role: string }) => {
           })}
         </div>
       ))}
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <span className="hidden lg:block text-gray-400 font-light my-4">
           OTHERS
         </span>

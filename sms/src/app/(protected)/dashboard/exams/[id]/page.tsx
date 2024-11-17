@@ -1,76 +1,119 @@
-import { SCHOOL_NAME } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { get_exams_info } from "@/lib/controller/get_exams";
+import { GradeValues } from "@/lib/data";
 import prisma from "@/lib/db";
+import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
-import styles from "./routine.module.css";
+import ExamsSubjectsList from "../_components/ExamSubjectList";
 
 const Exam = async ({ params }: { params: { id: string } }) => {
-  const exam = await prisma.exam.findUnique({
-    where: {
-      id: params.id,
-      section: {
-        year: new Date().getFullYear(),
-      },
-    },
-    select: {
-      section: {
-        select: {
-          sectionName: true,
-          year: true,
-          classId: true,
-        },
-      },
-      type: true,
-      examSubject: {
-        select: {
-          date: true,
-          subject: {
-            select: {
-              courseName: true,
-              id: true,
-            },
-          },
-        },
-      },
-    },
-  });
-  if (!exam) {
+  const { exam_subjects, status } = await get_exams_info(params.id);
+  if (status !== Status.OK) {
     notFound();
   }
+  const columns = exam_subjects?.map((subject) => {
+    return {
+      subject_name: subject.subject!.subject_name,
+    };
+  });
+
+  const subjects_marks = await prisma.subject_marks.findMany({
+    where: {
+      exam_subject: {
+        exam_id: params.id,
+      },
+    },
+    include: {
+      exam_subject: true,
+    },
+  });
+  const credit = 3;
+  const rowData = subjects_marks.reduce((acc, mark) => {
+    const studentId = mark.student_id;
+    const subjectName = mark.exam_subject.subject_name;
+
+    if (!acc[studentId]) {
+      acc[studentId] = {
+        student_id: studentId,
+        marks: {},
+        grade: 0,
+        totalNumber: 0,
+      };
+    }
+    acc[studentId].marks[subjectName] = mark.obtained_marks || 0;
+    acc[studentId].totalNumber += mark.obtained_marks || 0;
+    acc[studentId].grade +=
+      (GradeValues[mark.grade as keyof typeof GradeValues] || 0) * credit;
+    return acc;
+  }, {} as Record<number, { student_id: number; marks: Record<string, number>; grade: number; totalNumber: number }>);
+
+  const rows = Object.values(rowData);
 
   return (
-    <div className="justify-center items-center flex">
-      <div className={styles.container}>
-        <header className={styles.header}>
-          <div className="">
-            <h1 className={styles.title}>{SCHOOL_NAME}</h1>
-            <div>
-              {exam.type[0] + exam.type.substring(1).toLowerCase()} Examination
-              class {exam.section.classId}- {exam.section.year}
+    <div className="max-w-screen-xl mx-auto">
+      <div className="p-6">
+        <div className="flex flex-col items-center justify-center mb-4">
+          <div className="w-full lg:max-w-96">
+            <div className="flex items-center gap-10 justify-between">
+              <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
+                Subjects
+              </h1>
             </div>
+            <ExamsSubjectsList
+              exam_id={params.id}
+              exams_subjects={exam_subjects!}
+            />
           </div>
-        </header>
+        </div>
 
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.time}>
-              <h1 className={styles.title}>Exam Time 10:00-01:00</h1>
-            </tr>
-            <tr>
-              <th>Date</th>
-              <th>Subject</th>
-            </tr>
-          </thead>
-          <tbody>
-            {exam.examSubject.map((subject, index) => {
-              return (
-                <tr key={index}>
-                  <td>{subject.date.toDateString()}</td>
-                  <td>{subject.subject.courseName}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="">
+          <div className="w-full flex items-center justify-between mb-6">
+            <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
+              Students
+            </h1>
+            <Button>Publish</Button>
+          </div>
+          <div className="">
+            <Table className="w-full border">
+              <TableHeader>
+                <TableRow className="w-full">
+                  <TableHead>Roll Number</TableHead>
+                  {columns!.map((column) => (
+                    <TableHead key={column.subject_name}>
+                      {column.subject_name}
+                    </TableHead>
+                  ))}
+                  <TableHead>Grade</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((row, index) => (
+                  <TableRow key={row.student_id}>
+                    <TableCell>{`${row.student_id}`}</TableCell>
+                    {columns!.map((column) => (
+                      <TableCell key={column.subject_name}>
+                        {row.marks[column.subject_name] || "N/A"}
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      {row.grade > 0
+                        ? (row.grade / (columns!.length * credit)).toFixed(3)
+                        : "N/A"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       </div>
     </div>
   );

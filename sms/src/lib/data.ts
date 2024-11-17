@@ -12,7 +12,7 @@ export const SITE_FACEBOOK = "school";
 export const SITE_INSTAGRAM = "school";
 export const SITE_YOUTUBE = "school";
 export const SITE_PHONE = "123456789";
-export const SITE_EMAIL = "sms@gmai;.com";
+export const SITE_EMAIL = "sms@gmail.com";
 export const SITE_ADDRESS = "Dhaka, Bangladesh";
 export const SITE_FAX = "123456789";
 export const SITE_COPYRIGHT = "School Management System";
@@ -33,7 +33,7 @@ On 1st January, 1971, this institution achieved its first recognition from Secon
 This institution was re-established on 17 March, 1972, with the initiative of the then Brigadier General Mir Showkat Ali BU, psc. Students, teachers, guardians and all the members of the governing body worked jointly to give her the real feature. Next time this institution came under the direct supervision of Bangladesh Army for continuing its gradual acclivity.
 
 `;
-export const SCHOOL_SHORTNAME = "CCPSC";
+export const SCHOOL_SHORTNAME = "SMS";
 export const MonthNames = [
   "January",
   "February",
@@ -130,7 +130,7 @@ export const MenuItems = [
 
       {
         icon: "Book",
-        label: "Course",
+        label: "Subjects",
         href: "/dashboard/course",
         visiable: ["ADMIN", "TEACHER"],
       },
@@ -138,33 +138,39 @@ export const MenuItems = [
       {
         icon: "User",
         label: "Teachers",
-        href: "/dashboard/teachers?page=1",
+        href: "/dashboard/teachers",
         visiable: ["ADMIN", "TEACHER"],
       },
 
       {
         icon: "Users",
         label: "Students",
-        href: "/dashboard/students?page=1",
+        href: "/dashboard/students",
         visiable: ["ADMIN", "TEACHER"],
       },
 
       {
-        icon: "BookCheck",
+        icon: "FileSliders",
         label: "Sections",
         href: "/dashboard/sections",
         visiable: ["ADMIN"],
       },
 
       {
-        icon: "BookCheck",
+        icon: "ClipboardCheck",
         label: "Exams",
         href: "/dashboard/exams",
-        visiable: ["ADMIN", "TEACHER", "STUDENT"],
+        visiable: ["ADMIN"],
+      },
+      {
+        icon: "ClipboardCheck",
+        label: "E-Subjects",
+        href: "/dashboard/e-subjects",
+        visiable: ["TEACHER"],
       },
 
       {
-        icon: "BookCheck",
+        icon: "Award",
         label: "Result",
         href: "/dashboard/results",
         visiable: ["ADMIN", "TEACHER", "STUDENT"],
@@ -178,7 +184,7 @@ export const MenuItems = [
       },
 
       {
-        icon: "MessageSquare",
+        icon: "Bell",
         label: "Notices",
         href: "/dashboard/notices",
         visiable: ["ADMIN"],
@@ -228,3 +234,13 @@ export const Infrastructures = [
     ],
   },
 ];
+
+export const GradeValues = {
+  "A+": 5.0,
+  A: 4.0,
+  "A-": 3.5,
+  B: 3.0,
+  C: 2.5,
+  D: 1.0,
+  F: 0.0,
+};

@@ -1,10 +1,19 @@
 import prisma from "@/lib/db";
+import { decrypt } from "@/session";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { studentId, sectionId, markedById } = await req.json();
+  const { studentId, sectionId } = await req.json();
+  const session = req.cookies.get("__session");
+  const { user } = await decrypt(session!.value);
 
+  if (
+    (user.role !== "ADMIN" && user.role !== "TEACHER") ||
+    isNaN(parseInt(user.id))
+  ) {
+    return NextResponse.json({ error: "Unauthorized User" }, { status: 401 });
+  }
   const currentDate = new Date();
   currentDate.setHours(12, 0, 0, 0);
   if (currentDate.toDateString().split(" ")[0] === "Fri") {
@@ -14,7 +23,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (isNaN(parseInt(studentId)) || isNaN(parseInt(markedById))) {
+  if (isNaN(parseInt(studentId))) {
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
   }
 
@@ -25,7 +34,7 @@ export async function POST(req: NextRequest) {
         sectionId: sectionId,
         date: currentDate.toISOString(),
         status: "PRESENT",
-        markedById: parseInt(markedById),
+        markedById: parseInt(user.id),
       },
     });
     revalidatePath("/dashboard/sections");

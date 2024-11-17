@@ -1,19 +1,9 @@
-import ReadMore from "@/components/buttons/ReadMore";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { get_notice } from "../../../../utils/get_latest_notice";
-import { Status } from "../../../../utils/types";
 import NoticeCreateForm from "./_components/NoticeCreateForm";
 
-const git = async () => {
+const NoticePage = async () => {
   const cookieStore = cookies();
   const session = cookieStore.get("__session");
   const { user } = await decrypt(session!.value);
@@ -21,7 +11,6 @@ const git = async () => {
   if (user.role !== "ADMIN") {
     notFound();
   }
-  const { notices, status } = await get_notice(5);
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -32,7 +21,7 @@ const git = async () => {
         <div className="col-span-12 md:col-span-5">
           <div className="">
             <h1 className="font-bold text-2xl mb-4">Notices</h1>
-            {status != Status.OK ? (
+            {/* {status != Status.OK ? (
               <div className="font-medium">There are no notice</div>
             ) : (
               <div className="">
@@ -55,7 +44,7 @@ const git = async () => {
                   );
                 })}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
@@ -63,4 +52,4 @@ const git = async () => {
   );
 };
 
-export default git;
+export default NoticePage;

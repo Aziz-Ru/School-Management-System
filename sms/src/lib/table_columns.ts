@@ -198,7 +198,7 @@ export const ExamsListTableColumns = [
     accessor: "publish_status",
   },
   {
-    header: "Result",
+    header: "Details",
     accessor: "result",
   },
 ];

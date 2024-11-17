@@ -3,14 +3,14 @@ import { LucideIcon } from "lucide-react";
 const Icon = ({
   name,
   size,
-  color = "#000000",
+  className = "text-white",
 }: {
   name: keyof typeof Icons;
   size: number;
-  color?: string;
+  className?: string;
 }) => {
   const LucideIcon = Icons[name] as LucideIcon;
-  return <LucideIcon color={color} size={size} />;
+  return <LucideIcon className={className} size={size} />;
 };
 
 export default Icon;

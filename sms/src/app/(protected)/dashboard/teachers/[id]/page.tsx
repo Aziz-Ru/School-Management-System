@@ -5,7 +5,7 @@ import { get_teacher_info } from "@/lib/controller/get_teachers";
 
 import { MonthNames } from "@/lib/data";
 
-import { Status } from "@/utils/types";
+import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
 
 const TeacherPage = async ({
@@ -83,20 +83,5 @@ const TeacherPage = async ({
     </div>
   );
 };
-
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 export default TeacherPage;

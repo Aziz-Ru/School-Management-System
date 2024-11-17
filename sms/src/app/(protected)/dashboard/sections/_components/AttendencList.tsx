@@ -19,7 +19,6 @@ const AttendenceList = ({
   section_attendance: StudentAttendance[];
   acdemic_year: number;
 }) => {
-  
   const gridHeight = students.length * 50 + 80;
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [rowData, setRowData] = useState<any[]>([]);
@@ -88,7 +87,6 @@ const AttendenceList = ({
           body: JSON.stringify({
             studentId: student_id,
             sectionId: sectionId,
-            markedById: 1122,
           }),
         });
         const data = await response.json();

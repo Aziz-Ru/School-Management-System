@@ -363,8 +363,8 @@ export interface AttendancePolicy {
 export interface Exam {
   id: string;
   type: string;
-  section_id: string;
-  section: Section;
+  section_id?: string;
+  section?: Section;
   start_date: Date;
   end_date: Date;
   exam_results?: ExamResult[];
@@ -374,15 +374,15 @@ export interface Exam {
 
 export interface ExamSubject {
   id: string;
-  exam_id: string;
-  exam: Exam;
-  subject_id: string;
-  section_id: string;
-  subject: SectionSubject;
-  max_mark: number;
-  passing_mark: number;
-  weigtage: number;
-  subject_marks: SubjectMarks[];
+  exam_id?: string;
+  exam?: Exam;
+  subject_id?: string;
+  section_id?: string;
+  subject?: SectionSubject;
+  max_mark?: number;
+  passing_mark?: number;
+  weigtage?: number;
+  subject_marks?: SubjectMarks[];
 }
 
 export interface SubjectMarks {
