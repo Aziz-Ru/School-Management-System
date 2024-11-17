@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -74,9 +75,12 @@ const Exam = async ({ params }: { params: { id: string } }) => {
         </div>
 
         <div className="">
-          <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
-            Students
-          </h1>
+          <div className="w-full flex items-center justify-between mb-6">
+            <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
+              Students
+            </h1>
+            <Button>Publish</Button>
+          </div>
           <div className="">
             <Table className="w-full border">
               <TableHeader>

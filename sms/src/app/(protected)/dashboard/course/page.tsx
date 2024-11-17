@@ -20,7 +20,7 @@ const CourseListPage = async () => {
 
     const renderRow = (item: Subject) => {
       return (
-        <TableRow key={item.subject_id}>
+        <TableRow key={item.subject_name}>
           <TableCell className="table-cell px-1">{item.subject_name}</TableCell>
           <TableCell className="table-cell text-center">
             {item.subject_code}
@@ -29,7 +29,7 @@ const CourseListPage = async () => {
             {item._count?.teacher}
           </TableCell>
           <TableCell className="text-center">
-            <DetailsLink href={`/dashboard/course/${item.subject_id}`} />
+            <DetailsLink href={`/dashboard/course/${item.subject_name}`} />
           </TableCell>
         </TableRow>
       );

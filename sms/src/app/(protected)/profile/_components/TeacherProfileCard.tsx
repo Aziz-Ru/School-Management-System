@@ -1,69 +1,87 @@
-import Icon from "@/components/LucidIcon";
-import Image from "next/image";
-import { TeacherProfile } from "../../../../utils/types";
+import Schedules from "@/components/teacher/Schedules";
+import TeacherAttendenceList from "@/components/teacher/TeacherAttendence";
+import ProfileCard from "@/components/UserProfileCard";
+import { get_teacher_info } from "@/lib/controller/get_teachers";
 
-const TeacherProfileCard = ({ teacher }: { teacher: TeacherProfile }) => {
+import { MonthNames } from "@/lib/data";
+
+import { Status } from "@/lib/types";
+import { notFound } from "next/navigation";
+
+const TeacherPage = async ({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { [key: string]: string };
+}) => {
+  const date = searchParams.date ? new Date(searchParams.date) : new Date();
+  const uid = parseInt(params.id);
+  if (isNaN(uid)) {
+    notFound();
+  }
+
+  const { teacher, schedules, attendance, status } = await get_teacher_info(
+    uid
+  );
+
+  if (status !== Status.OK) {
+    notFound();
+  }
+
+  const getPresent = (
+    attendence: any[],
+    day: number,
+    month: number
+  ): boolean => {
+    const res = attendence.find(
+      (d) => d.date.getDate() === day && d.date.getMonth() == month
+    );
+    if (res) {
+      return true;
+    }
+    return false;
+  };
+
+  let calendar: any[] = [];
+  for (let month = 0; month < 12; month++) {
+    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
+    let monthData: any = { Month: MonthNames[month] };
+    for (let day = 1; day <= daysInMonth; day++) {
+      const isPresent = getPresent(attendance!, day, month);
+      const dayObj = { [day]: isPresent };
+      monthData = { ...monthData, ...dayObj };
+    }
+    calendar.push(monthData);
+  }
+
   return (
-    <div className="bg-sky-50  py-6 px-4 rounded-md flex-1 flex gap-4 border border-gray-200">
-      <div className="w-1/3">
-        {teacher.img ? (
-          <Image
-            className="rounded-full w-36 h-36 object-cover"
-            src={teacher.img}
-            width={144}
-            height={144}
-            alt="Avatar"
-          />
-        ) : (
-          <Image
-            className="rounded-full w-36 h-36 object-cover"
-            src={"/image/noavatar.png"}
-            width={144}
-            height={144}
-            alt="Avatar"
-          />
-        )}
-      </div>
-      <div className="w-2/3 flex flex-col gap-2">
-        <div className="font-semibold site-txt ">
-          <span className="text-xl">Name:</span>
-          <span>{teacher.fullName}</span>
+    <div className="flex flex-col xl:flex-row">
+      <div className="w-full xl:w-2/3">
+        {/* TOP */}
+        <div className="flex flex-col lg:flex-row gap-4 p-4">
+          {/* User INFO */}
+          <div className="">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+              Profile
+            </h1>
+            <ProfileCard user={teacher!} />
+          </div>
         </div>
-
-        <div className="flex items-center justify-between gap-2 flex-wrap text-xs  font-medium">
-          <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="IdCard" size={18} />
-            <span className="site-txt flex gap-2">
-              <span className="font-bold">Id:</span>
-              <span>{teacher.id}</span>
-            </span>
-          </div>
-          <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="Mail" size={18} />
-            <span className="site-txt flex flex-wrap gap-2">
-              <span className="font-bold">Mail:</span>
-
-              <span>{teacher.email}</span>
-            </span>
-          </div>
-          <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="Phone" size={18} />
-            <span className="site-txt flex gap-2">
-              <span className="font-bold">Phone:</span>
-              <span>{teacher.phone}</span>
-            </span>
-          </div>
-          {/* <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="Calendar" size={18} />
-            <span className="site-txt flex gap-2">
-              <span className="font-bold">DOB:</span>
-              <span>{}</span>
-            </span>
-          </div> */}
+        {/* Routine */}
+        <div className="p-4">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">Routine</h1>
+          <Schedules schedules={schedules!} />
+        </div>
+        <div className="p-4">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+            Attendance
+          </h1>
+          <TeacherAttendenceList attendanceData={calendar!} />
         </div>
       </div>
     </div>
   );
 };
 
-export default TeacherProfileCard;
+export default TeacherPage;

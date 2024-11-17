@@ -71,6 +71,7 @@ export const add_exam_by_admin = async (
     }
 
     for (const section of sections) {
+      
       const newExam = await prisma.exam.create({
         data: {
           type: validation.data.type,

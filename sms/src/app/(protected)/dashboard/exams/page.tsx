@@ -8,6 +8,7 @@ import ExamsList from "./_components/ExamList";
 const Exam = async () => {
   const session = cookies().get("__session");
   const { user } = await decrypt(session!.value);
+
   if (
     session === undefined ||
     user == null ||
@@ -30,7 +31,7 @@ const Exam = async () => {
             <h2 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
               Exam Routine
             </h2>
-            <AddExamForm classData={classData!} />
+            {user.role === "ADMIN" && <AddExamForm classData={classData!} />}
           </div>
 
           <div className="">

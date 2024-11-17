@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import Student from "./_components/Student";
 import Teacher from "./_components/Teacher";
 
-
 const ProfilePage = async () => {
   const session = cookies().get("__session")?.value;
   if (!session) {
@@ -27,7 +26,7 @@ const ProfilePage = async () => {
     return <Student role="STUDENT" id={uid} />;
   }
   if (user.role === "TEACHER") {
-    return <Teacher role="TEACHER" id={uid} />;
+    return <Teacher id={uid} />;
   }
 
   notFound();

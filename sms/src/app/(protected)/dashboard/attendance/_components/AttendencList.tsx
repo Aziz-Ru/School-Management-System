@@ -118,10 +118,8 @@ const TeacherAttendenceList = ({ attendance }: { attendance: Teacher[] }) => {
     <div>
       <div className=" flex flex-col gap-10">
         <div className="">
-          <div className="flex gap-4 items-center justify-start ">
-            <h2 className="font-bold text-gray-800 text-xl">
-              Month: {MonthNames[selectedMonth]}
-            </h2>
+          <div className="flex gap-3 items-center justify-start ">
+            <h2 className="font-bold text-gray-800 text-xl">Month</h2>
 
             <select
               onChange={onMonthChange}
