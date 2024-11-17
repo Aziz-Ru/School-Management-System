@@ -86,7 +86,6 @@ section        sections @relation(fields: [section_id],references: [section_id] 
 teachers       teacher @relation(fields: [teacher_id],references: [teacher_id] ,onDelete: Cascade)
 schedules      section_subject_schedule[]
 exams          exam_subjects[]
-subject_marks   subject_marks[]
 @@id([subject_name,section_id])
 
 }
@@ -290,9 +289,6 @@ model subject_marks{
   exam_subject     exam_subjects @relation(fields: [exam_subject_id],references: [id],onDelete: Cascade)
   student_id        Int
   student           student @relation(fields: [student_id],references: [student_id],onDelete: Cascade)
-  subject_name  String
-  section_id    String
-  section_subject  section_subject @relation(fields: [section_id,subject_name],references: [section_id,subject_name],onDelete: Cascade)
   obtained_marks  Float
   percentage Float
   grade String
@@ -301,7 +297,7 @@ model subject_marks{
   assignment_mark Float?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-
+  @@unique([exam_subject_id,student_id])
 }
 
 
@@ -313,15 +309,11 @@ model exam_result {
   student_id     Int
   student       student   @relation(fields: [student_id], references: [student_id],onDelete: Cascade)
   totalObtainedMarks Float
-  percentage    Float
-  gradeId       String
-  grade         String    
-  rank          Int?      // Class rank
-  remarks       String?
+  totalMarks         Float
+  gpa               Float
+  grade             String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  // @@unique([examId, studentId])
 }
 
 

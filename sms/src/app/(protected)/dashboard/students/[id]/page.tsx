@@ -1,4 +1,3 @@
-import NoticeCards from "@/components/NoticeCard";
 import { DaysOfWeek, MonthNames, Times } from "@/lib/data";
 import { decrypt } from "@/session";
 import { getStudentData } from "@/utils/get_studentData";
@@ -8,7 +7,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProfileCard from "../../../../../components/student/ProfileCard";
 import StudentRoutine from "../../../../../components/student/Routine";
-import { get_notice } from "../../../../../utils/get_latest_notice";
 
 const Student = async ({ params }: { params: { id: string } }) => {
   const session = cookies().get("__session");
@@ -24,7 +22,6 @@ const Student = async ({ params }: { params: { id: string } }) => {
     sectionId
   );
 
-  const { notices } = await get_notice(3);
   if (status !== Status.OK) {
     notFound();
   }
@@ -113,7 +110,7 @@ const Student = async ({ params }: { params: { id: string } }) => {
             </Link>
           </div>
         </div>
-        <NoticeCards notices={notices} />
+        {/* <NoticeCards notices={notices} /> */}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "../db";
-import { Classes, Exam, Status } from "../types";
+import { Classes, Exam, ExamSubject, Status } from "../types";
 
 type GetExamsReturnProps = {
   classData?: Classes[];
@@ -28,9 +28,16 @@ export const get_exams = async (): Promise<GetExamsReturnProps> => {
   }
 };
 
-export const get_exams_info = async (exam_id: string) => {
+type GetExamsInfoReturnProps = {
+  exam_subjects?: ExamSubject[];
+  status: Status;
+};
+
+export const get_exams_info = async (
+  exam_id: string
+): Promise<GetExamsInfoReturnProps> => {
   try {
-    const [] = await prisma.$transaction([
+    const [exam_subjects] = await prisma.$transaction([
       prisma.exam_subjects.findMany({
         where: {
           exam_id,
@@ -39,10 +46,30 @@ export const get_exams_info = async (exam_id: string) => {
           id: true,
           exam_id: true,
           exam: {
-            select: {},
+            select: {
+              type: true,
+              id: true,
+              start_date: true,
+              end_date: true,
+              publish_status: true,
+            },
+          },
+          subject: {
+            select: {
+              class_id: true,
+              subject_name: true,
+              section_id: true,
+            },
           },
         },
       }),
     ]);
-  } catch (error) {}
+    if (exam_subjects.length === 0) {
+      return { status: Status.NOT_FOUND };
+    }
+
+    return { exam_subjects, status: Status.OK };
+  } catch (error) {
+    return { status: Status.INTERNAL_SERVER_ERROR };
+  }
 };

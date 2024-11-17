@@ -9,7 +9,7 @@ const StudentsList = ({ students }: { students: User[] }) => {
   const renderRow = (item: User) => {
     return (
       <TableRow key={item.id}>
-        <TableCell className="flex items-center gap-4 p-3 border">
+        <TableCell className="flex items-center gap-4 p-3 border-l">
           <Image
             src={item.img ? item.img : "/image/noavatar.png"}
             alt="profile"

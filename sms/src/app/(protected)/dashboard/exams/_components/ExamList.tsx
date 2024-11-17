@@ -9,7 +9,7 @@ const ExamsList = ({ exams }: { exams: Exam[] }) => {
     return (
       <TableRow key={exam.id}>
         <TableCell className="border-l">
-          {exam.section.section_name}({exam.section.class_id})
+          {exam.section!.section_name}({exam.section!.class_id})
         </TableCell>
         <TableCell className="border">{exam.type}</TableCell>
         <TableCell className="hidden xl:table-cell border">

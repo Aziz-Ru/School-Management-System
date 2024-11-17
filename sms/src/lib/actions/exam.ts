@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import prisma from "../db";
 import { ExamSchema } from "../schema/schema";
 
@@ -37,6 +38,13 @@ export const add_exam_by_admin = async (
         class_id: validation.data.class_id,
         academic_year: new Date().getFullYear(),
       },
+      include: {
+        students: {
+          select: {
+            student_id: true,
+          },
+        },
+      },
     });
 
     const [exams, section_subjects] = await prisma.$transaction([
@@ -61,8 +69,9 @@ export const add_exam_by_admin = async (
     if (exams.length > 0) {
       throw new Error(`${validation.data.type} exam already exists`);
     }
+
     for (const section of sections) {
-      await prisma.exam.create({
+      const newExam = await prisma.exam.create({
         data: {
           type: validation.data.type,
           start_date: validation.data.start_date,
@@ -89,11 +98,86 @@ export const add_exam_by_admin = async (
           },
         },
       });
+
+      const examSubjects = await prisma.exam_subjects.findMany({
+        where: { exam_id: newExam.id },
+      });
+
+      for (const student of section.students) {
+        await prisma.subject_marks.createMany({
+          data: examSubjects.map((examSubject) => {
+            return {
+              exam_subject_id: examSubject.id,
+              student_id: student.student_id,
+              obtained_marks: 0,
+              percentage: 0,
+              grade: "F",
+              practical_marks: 0,
+              theory_mark: 0,
+              assignment_mark: 0,
+            };
+          }),
+        });
+      }
     }
+
+    revalidatePath("/dashboard/exams");
     return {
       msg: `Exam added all section of class ${validation.data.class_id}`,
     };
   } catch (error: any) {
     return { error: error.message };
   }
+};
+
+export const update_exam_marks = async (
+  formData: FormData
+): Promise<ReturnProps> => {
+  try {
+    const { exam_subject_id, ...student_ids } = Object.fromEntries(
+      formData.entries()
+    );
+    Object.entries(student_ids).forEach(([key, value]) => {
+      const student_id = Number(key);
+      const mark = Number(value);
+      if (isNaN(student_id)) {
+        throw new Error("Invalid student");
+      }
+      if (isNaN(Number(mark)) || mark < 0 || mark > 100) {
+        throw new Error("Invalid  marks");
+      }
+    });
+
+    for (const [student_id, obtained_marks] of Object.entries(student_ids)) {
+      await prisma.subject_marks.update({
+        where: {
+          exam_subject_id_student_id: {
+            exam_subject_id: exam_subject_id as string,
+            student_id: parseInt(student_id),
+          },
+        },
+        data: {
+          obtained_marks: parseInt(obtained_marks as string),
+          percentage: (parseInt(obtained_marks as string) / 100) * 100,
+          grade: calculateGrade(parseInt(obtained_marks as string)),
+        },
+      });
+    }
+
+    revalidatePath("/dashboard/exams");
+    return { msg: "Marks updated successfully" };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+const calculateGrade = (marks: number): string => {
+  if (marks >= 80) return "A+";
+  if (marks >= 70) return "A";
+  if (marks >= 60) return "A-";
+  if (marks >= 50) return "B";
+  if (marks >= 40) return "C";
+  if (marks >= 33) return "D";
+
+  return "F";
 };
