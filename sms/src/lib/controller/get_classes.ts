@@ -35,7 +35,7 @@ export const getClassesInfos = async (
     });
 
     return { classes: classInfo, status: Status.OK };
-  } catch (error) {
+  } catch (error: any) {
     return { status: Status.INTERNAL_SERVER_ERROR };
   }
 };

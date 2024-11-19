@@ -8,27 +8,6 @@ const MigrateStudentForm = ({ classId }: { classId: number }) => {
     []
   );
 
-  // useEffect(() => {
-  //   const getStudents = async () => {
-  //     try {
-  //       const response = await fetch(`/api/students?classId=${classId}`);
-  //       const res = await response.json();
-  //       if (res.data) {
-  //         const studentData = res.data.map((student: any) => {
-  //           return {
-  //             label: `${student.id} \t\t LastExamStatus: ${student.lastExamStatus}`,
-  //             value: student.id.toString(),
-  //           };
-  //         });
-  //         setStudents(studentData);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getStudents();
-  // }, [classId]);
-
   return (
     <FormModal table="Student">
       <MultiSelect

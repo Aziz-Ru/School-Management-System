@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { v4 as uuid4 } from "uuid";
-
 
 const NoticeCreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,14 +23,13 @@ const NoticeCreateForm = () => {
       alert("Please upload a PDF file");
       return;
     }
-    
 
     try {
       const res = await fetch("/api/notices", {
         method: "POST",
         body: formData,
       });
-      
+
       const data = await res.json();
 
       if (data.error) {

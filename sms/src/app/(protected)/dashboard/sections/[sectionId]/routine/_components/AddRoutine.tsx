@@ -17,6 +17,7 @@ const AddRoutine = ({
   subjects: SectionSubject[];
   time_slots: Timeslot[];
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [filteredTimeSlots, setFilteredTimeSlots] = useState<Timeslot[]>([]);
 
   const onChangeDay = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,26 +32,30 @@ const AddRoutine = ({
     );
   };
 
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    formData.append("section_id", section_id);
+    const teacher_id = subjects.find(
+      (s) => s.subject_name === formData.get("subject_name")
+    )?.teacher_id!;
+    formData.append("teacher_id", teacher_id.toString());
+    const { msg, error } = await add_routine_action(formData);
+    if (error) {
+      toast({ title: error, variant: "destructive" });
+    }
+    if (msg) {
+      toast({ title: msg });
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className="">
       <div className="max-w-screen-xl">
         <h1 className="text-2xl font-bold text-start">Manage Schedule</h1>
         <div className="mt-2 w-full ">
           <form
-            action={async (formData: FormData) => {
-              formData.append("section_id", section_id);
-              const teacher_id = subjects.find(
-                (s) => s.subject_name === formData.get("subject_name")
-              )?.teacher_id!;
-              formData.append("teacher_id", teacher_id.toString());
-              const { msg, error } = await add_routine_action(formData);
-              if (error) {
-                toast({ title: error, variant: "destructive" });
-              }
-              if (msg) {
-                toast({ title: msg });
-              }
-            }}
+            action={handleAction}
             className="flex flex-col w-full gap-3 px-3"
           >
             <div className="flex gap-3">
@@ -103,8 +108,9 @@ const AddRoutine = ({
                 </select>
               </div>
             </div>
-
-            <Button type="submit">Add</Button>
+            <Button disabled={isLoading} type="submit">
+              {isLoading ? "Loading..." : "Add"}
+            </Button>
           </form>
         </div>
       </div>

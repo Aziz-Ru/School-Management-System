@@ -5,7 +5,6 @@ const SectionNavbar = ({ sectionId }: { sectionId: string }) => {
     { name: "Section", path: `/dashboard/sections/${sectionId}` },
     { name: "Attendance", path: `/dashboard/sections/${sectionId}/attendance` },
     { name: "Routine", path: `/dashboard/sections/${sectionId}/routine` },
-    { name: "Results", path: `/dashboard/sections/${sectionId}/results` },
   ];
 
   return (

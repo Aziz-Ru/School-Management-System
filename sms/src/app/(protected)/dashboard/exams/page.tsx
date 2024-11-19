@@ -1,4 +1,4 @@
-import AddExamForm from "@/components/Forms/AddExamForm";
+import AddExamForm from "@/app/(protected)/dashboard/exams/_components/AddExamForm";
 import { get_exams } from "@/lib/controller/get_exams";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";

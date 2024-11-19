@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { addSectionAction } from "@/lib/actions/section";
 import { ClassSubject, Room, Teacher } from "@/lib/types";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const AddSectionForm = ({
   classId,
@@ -21,29 +21,27 @@ const AddSectionForm = ({
   rooms: Room[];
 }) => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    formData.append("class_id", classId.toString());
+    const { error, msg } = await addSectionAction(formData);
+    if (error) {
+      toast({ title: error, description: "Failed to added New Section" });
+    } else if (msg) {
+      formRef.current!.reset();
+      const today = new Date();
+      toast({
+        title: msg,
+        description: `Class Teacher Added at ${today}`,
+      });
+    }
+    setIsLoading(false);
+  };
 
   return (
     <FormModal table="Section">
-      <form
-        action={async (formData: FormData) => {
-          formData.append("class_id", classId.toString());
-
-          const { error, msg } = await addSectionAction(formData);
-          if (error) {
-            toast({ title: error, description: "Failed to added New Section" });
-          }
-          if (msg) {
-            formRef.current!.reset();
-
-            const today = new Date();
-            toast({
-              title: msg,
-              description: `Class Teacher Added at ${today}`,
-            });
-          }
-        }}
-        ref={formRef}
-      >
+      <form action={handleAction} ref={formRef}>
         <div className="w-full flex items-center gap-4 ">
           <FormInput
             type="text"
@@ -127,8 +125,8 @@ const AddSectionForm = ({
           );
         })}
 
-        <Button type="submit" className="w-full">
-          Add Section
+        <Button disabled={isLoading} type="submit" className="w-full">
+          {isLoading ? "Loading..." : "Add Section"}
         </Button>
       </form>
     </FormModal>

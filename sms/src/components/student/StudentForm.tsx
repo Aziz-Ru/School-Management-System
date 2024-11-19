@@ -43,6 +43,7 @@ function errorReducer(state: ErrorState, action: ActionType): ErrorState {
 export function AddStudentForm({ classData }: { classData: Classes[] }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [studentId, setStudentId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [selected_class_id, setSelected_class_id] = useState<number>(0);
   const [sections, setSections] = useState<Section[]>([]);
   const [state, dispatch] = useReducer(errorReducer, initialErrorState);
@@ -98,6 +99,7 @@ export function AddStudentForm({ classData }: { classData: Classes[] }) {
   };
 
   const onSubmitAction = async (formData: FormData) => {
+    setIsLoading(true);
     formData.append("student_id", studentId);
     if (formData.get("section_id") == "#") {
       dispatch({ type: "SET_SECTION_ERROR", error: "Please Choose Section" });
@@ -120,6 +122,7 @@ export function AddStudentForm({ classData }: { classData: Classes[] }) {
         variant: "destructive",
       });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -246,8 +249,8 @@ export function AddStudentForm({ classData }: { classData: Classes[] }) {
           </div>
         </div>
 
-        <Button type="submit" className="mt-4 w-full">
-          Add
+        <Button disabled={isLoading} type="submit" className="mt-4 w-full">
+          {isLoading ? "Loading..." : "Add Student"}
         </Button>
       </form>
     </FormModal>
