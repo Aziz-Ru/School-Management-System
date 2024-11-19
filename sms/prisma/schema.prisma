@@ -302,6 +302,7 @@ model subject_marks{
 
 
 //overall exam result  of each student
+
 model exam_result {
   id            String    @id @default(cuid())
   examId        String
@@ -311,25 +312,18 @@ model exam_result {
   totalObtainedMarks Float
   totalMarks         Float
   gpa               Float
-  grade             String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  @@unique([examId, student_id])
 }
 
 
 model Notice {
   id            String    @id @default(cuid())
   title         String
-  description   String    @db.Text
+  filePathName  String
   type          NoticeType
-  targetAudience AudienceType
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  startDate     DateTime  // When the notice becomes active
-  endDate       DateTime? // Optional end date for time-sensitive notices
-
-  @@index([startDate, endDate])
-  @@index([type, targetAudience])
 }
 
 enum Level {
@@ -348,10 +342,10 @@ enum AttendanceStatus {
 
 // Enum for notice types (e.g., general announcements, events, assignments, etc.)
 enum NoticeType {
-  ANNOUNCEMENT
+  ACADEMIC
+  EXAMINATION
+  ADMINISTRATIVE
   EVENT
-  ASSIGNMENT
-  ALERT
 }
 
 // Enum to define the target audience for the notice
@@ -359,8 +353,7 @@ enum AudienceType {
   ALL            // Notice for the whole school
   STAFF          // Notice for all staff members
   STUDENTS       // Notice for all students
-  PARENTS        // Notice for all parents
-  SECTION        // Notice for a specific section
+  
 }
 
 enum GENDER {

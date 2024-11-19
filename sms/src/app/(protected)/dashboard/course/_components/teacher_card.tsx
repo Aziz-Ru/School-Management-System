@@ -6,10 +6,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { NO_AVATAR_URL } from "@/lib/data";
+import { Teacher } from "@/lib/types";
 import Image from "next/image";
-import { TeacherProfile } from "../../../../../utils/types";
 
-const Teacher_card = ({ profile }: { profile: TeacherProfile }) => {
+const Teacher_card = ({ profile }: { profile: Teacher }) => {
   return (
     <Card className="w-72">
       <CardHeader>
@@ -21,13 +21,11 @@ const Teacher_card = ({ profile }: { profile: TeacherProfile }) => {
             height={40}
             alt="profile"
           />
-          <CardTitle>{profile.fullName}</CardTitle>
+          <CardTitle>{`${profile.first_name} ${profile.last_name}`}</CardTitle>
         </div>
-        <CardDescription>ID:{profile.id.toString()}</CardDescription>
+        <CardDescription>ID:{profile.teacher_id.toString()}</CardDescription>
       </CardHeader>
       <CardContent>
-        <CardDescription>Email: {profile.email}</CardDescription>
-        <CardDescription>Phone: {profile.phone}</CardDescription>
         <CardDescription>Level: {profile.level}</CardDescription>
         <CardDescription>Rank:{profile.rank}</CardDescription>
       </CardContent>

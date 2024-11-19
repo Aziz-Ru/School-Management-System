@@ -1,24 +1,61 @@
 "use client";
 import FormInput from "@/components/Forms/FormInput";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { createNotice } from "../_actions/create_notice_action";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { v4 as uuid4 } from "uuid";
+
 
 const NoticeCreateForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const fileInput = formData.get("file") as File;
+    if (!fileInput) {
+      alert("Please upload a file.");
+      return;
+    }
+    if (fileInput.type !== "application/pdf") {
+      alert("Please upload a PDF file");
+      return;
+    }
+    
+
+    try {
+      const res = await fetch("/api/notices", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await res.json();
+
+      if (data.error) {
+        toast({ title: "Failed to create Notice", variant: "destructive" });
+      }
+      if (data.msg) {
+        formRef.current;
+        router.push("/dashboard/notices");
+        toast({ title: "Notice created successfully" });
+      }
+    } catch (error) {
+      toast({ title: "Failed to create Notice", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div>
       <h1 className="font-bold text-2xl mb-4">Create New Notice</h1>
       <form
-        action={async (formData: FormData) => {
-          const { msg, error } = await createNotice(formData);
-          if (msg) {
-            toast({ title: msg });
-          } else {
-            toast({ title: error });
-          }
-        }}
+        ref={formRef}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-4"
       >
         <FormInput
@@ -28,11 +65,22 @@ const NoticeCreateForm = () => {
           required={true}
           width="w-full"
         />
-        <div className="">
-          <Label className="mb-4"> Content</Label>
-          <Textarea name="content" rows={20} placeholder="Type Your Content" />
-        </div>
-        <Button type="submit">Create Notice</Button>
+        <FormInput
+          type="file"
+          name="file"
+          label="File"
+          required={true}
+          width="w-full"
+        />
+        <select name="type" defaultValue="ACADEMIC" className="input">
+          <option value="ACADEMIC">ACADEMIC</option>
+          <option value="EXAMINATION">EXAMINATION</option>
+          <option value="ADMINISTRATIVE">ADMINISTRATIVE</option>
+          <option value="EVENT">EVENT</option>
+        </select>
+        <Button disabled={isLoading} type="submit">
+          {isLoading ? "Creating" : "Create Notice"}
+        </Button>
       </form>
     </div>
   );

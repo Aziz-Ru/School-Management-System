@@ -3,7 +3,7 @@ import { ChartConfig } from "@/components/ui/chart";
 import { get_section_info } from "@/lib/controller/get_sections";
 import { MonthNames } from "@/lib/data";
 
-import { Status } from "@/utils/types";
+import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
 import AttendanceChart from "../_components/AttendanceChart";
 import StudentList from "../_components/StudentList";

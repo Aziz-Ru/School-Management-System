@@ -12,10 +12,10 @@ export enum AttendanceStatus {
 
 // Enum for notice types (e.g., general announcements, events, assignments, etc.)
 export enum NoticeType {
-  ANNOUNCEMENT = "ANNOUNCEMENT",
+  ACADEMIC = "ACADEMIC",
+  EXAMINATION = "EXAMINATION",
+  ADMINISTRATIVE = "ADMINISTRATIVE",
   EVENT = "EVENT",
-  ASSIGNMENT = "ASSIGNMENT",
-  ALERT = "ALERT",
 }
 
 // Enum to define the target audience for the notice
@@ -455,4 +455,18 @@ export const ExamSchema = z.object({
     .int({ message: "Class Id must be integer" })
     .max(10, { message: "Class Id must be less than 10" })
     .min(1, { message: "Class Id must be greater than 1" }),
+});
+
+export const NoticeSchema = z.object({
+  title: z.string({
+    required_error: "Title must be required",
+    invalid_type_error: "Invalid type of Title",
+  }),
+  type: z.nativeEnum(NoticeType, { message: "Invalid Notice Type" }),
+  fileUploadUrl: z
+    .string({
+      required_error: "URL must be required",
+      invalid_type_error: "Invalid type of URL",
+    })
+    .url({ message: "Invalid URL" }),
 });

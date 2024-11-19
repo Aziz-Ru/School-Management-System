@@ -1,6 +1,6 @@
 "use server";
 
-import { FilterOptions } from "@/utils/types";
+import { FilterOptions } from "@/lib/types";
 import prisma from "../db";
 import { Classes, Status, User, UserRole } from "../types";
 
@@ -87,6 +87,9 @@ export const get_students = async (
               },
             },
           },
+        },
+        orderBy: {
+          class_id: "asc",
         },
       }),
     ]);
