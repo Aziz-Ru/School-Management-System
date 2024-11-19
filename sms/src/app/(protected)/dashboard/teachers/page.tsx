@@ -3,6 +3,8 @@ import AddTeacherForm from "@/components/teacher/AddTeacherForm";
 import TeacherList from "@/components/teacher/TeacherList";
 import { get_teachers } from "@/lib/controller/get_teachers";
 import { Status } from "@/lib/types";
+import { decrypt } from "@/session";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 const Teacher = async ({
@@ -10,13 +12,13 @@ const Teacher = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
-  // const cookieStore = cookies();
-  // const session = cookieStore.get("__session");
-  // const { user } = await decrypt(session!.value);
-  const user = { role: "ADMIN" };
-  // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
-  //   notFound();
-  // }
+  const cookieStore = cookies();
+  const session = cookieStore.get("__session");
+  const { user } = await decrypt(session!.value);
+
+  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+    notFound();
+  }
 
   const { q, ...queryParams } = searchParams;
 

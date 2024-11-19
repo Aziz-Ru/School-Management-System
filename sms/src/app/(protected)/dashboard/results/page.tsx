@@ -1,16 +1,19 @@
-import { decrypt } from "@/session";
-import { cookies } from "next/headers";
+"use server";
+
+import getSession from "@/lib/get_session";
 import { notFound } from "next/navigation";
 
 const ResultPage = async () => {
-  const cookieStore = cookies();
-  const session = cookieStore.get("__session");
-  const { user } = await decrypt(session!.value);
+  const { user } = await getSession();
 
-  if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+  if (
+    user.role !== "TEACHER" ||
+    user.role !== "ADMIN" ||
+    user.role !== "STUDENT"
+  ) {
     notFound();
   }
-  return <div>ResultPage</div>;
+  return <ResultPage />;
 };
 
 export default ResultPage;

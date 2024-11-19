@@ -11,14 +11,14 @@ const TableList = ({
   columns: { header: string; accessor: string; className?: string }[];
 }) => {
   return (
-    <Table className="mt-4 w-full">
+    <Table className="mt-4 w-full border">
       <TableHeader>
         <TableRow className="text-left site-txt text-sm">
           {columns.map((column) => {
             return (
               <TableHead
                 key={column.accessor}
-                className={`${column.className} border`}
+                className={`${column.className}`}
               >
                 {column.header}
               </TableHead>

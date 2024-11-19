@@ -29,7 +29,10 @@ const CourseListPage = async () => {
             {item._count?.teacher}
           </TableCell>
           <TableCell className="text-center">
-            <DetailsLink href={`/dashboard/course/${item.subject_name}`} />
+            <DetailsLink
+              title="Teachers"
+              href={`/dashboard/course/${item.subject_name}`}
+            />
           </TableCell>
         </TableRow>
       );
