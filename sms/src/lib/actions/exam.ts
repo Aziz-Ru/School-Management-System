@@ -71,7 +71,6 @@ export const add_exam_by_admin = async (
     }
 
     for (const section of sections) {
-      
       const newExam = await prisma.exam.create({
         data: {
           type: validation.data.type,
@@ -181,4 +180,13 @@ const calculateGrade = (marks: number): string => {
   if (marks >= 33) return "D";
 
   return "F";
+};
+
+export const publish_exam = async (formData: FormData) => {
+  const inputData = Object.fromEntries(formData.entries());
+  try {
+    console.log(inputData);
+  } catch (error: any) {
+    return { error: error.message };
+  }
 };

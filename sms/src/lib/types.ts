@@ -376,7 +376,7 @@ export interface ExamSubject {
   id: string;
   exam_id?: string;
   exam?: Exam;
-  subject_id?: string;
+  subject_name?: string;
   section_id?: string;
   subject?: SectionSubject;
   max_mark?: number;
@@ -387,21 +387,20 @@ export interface ExamSubject {
 
 export interface SubjectMarks {
   id: string;
-  exam_subject_id: string;
+  exam_subject_id?: string;
   exam_subject: ExamSubject;
-  student_id: number;
-  student: Student;
-  subject_id: string;
-  section_id: string;
-  section_subject: SectionSubject;
-  obtained_marks: number;
-  percentage: number;
-  grade: string;
-  practical_marks?: number;
+  student_id?: number;
+  student?: Student;
+  subject_id?: string;
+  section_id?: string;
+  section_subject?: SectionSubject;
+  obtained_marks?: number;
+  percentage?: number;
+  grade?: string;
   theory_mark?: number;
   assignment_mark?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ExamResult {

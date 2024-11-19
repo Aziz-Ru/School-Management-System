@@ -23,9 +23,9 @@ const FormModal = ({
       <DialogTrigger asChild>
         <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
           {type === "Add" ? (
-            <Icon name="Plus" size={18} color="#FFFFFF" />
+            <Icon name="Plus" size={18} />
           ) : (
-            <Icon name="Edit" size={18} color="#FFFFFF" />
+            <Icon name="Edit" size={18} />
           )}
           {table}
         </Button>

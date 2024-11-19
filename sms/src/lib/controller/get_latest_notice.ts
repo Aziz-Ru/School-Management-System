@@ -1,15 +1,7 @@
-import { Notice } from "@/utils/types";
 import prisma from "../db";
 import { Status } from "../types";
 
-interface NoticeReturnProps {
-  notices?: Notice[];
-  status: Status;
-}
-
-export async function get_notice(
-  num_of_notice = 3
-): Promise<NoticeReturnProps> {
+export async function get_notice(num_of_notice = 3) {
   try {
     const notices = await prisma.notice.findMany({
       orderBy: {
@@ -26,7 +18,7 @@ export async function get_notice(
   }
 }
 
-export async function get_notice_by_id(id: string): Promise<Notice | null> {
+export async function get_notice_by_id(id: string) {
   try {
     const notice = await prisma.notice.findUnique({
       where: {

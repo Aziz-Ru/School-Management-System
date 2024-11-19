@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import prisma from "@/lib/db";
 import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
 import ExamsSubjectsList from "../_components/ExamSubjectList";
+import PublishExamResult from "../_components/PublishExamResult";
 
 const Exam = async ({ params }: { params: { id: string } }) => {
   const { exam_subjects, status } = await get_exams_info(params.id);
@@ -35,6 +35,7 @@ const Exam = async ({ params }: { params: { id: string } }) => {
       exam_subject: true,
     },
   });
+
   const credit = 3;
   const rowData = subjects_marks.reduce((acc, mark) => {
     const studentId = mark.student_id;
@@ -48,6 +49,7 @@ const Exam = async ({ params }: { params: { id: string } }) => {
         totalNumber: 0,
       };
     }
+
     acc[studentId].marks[subjectName] = mark.obtained_marks || 0;
     acc[studentId].totalNumber += mark.obtained_marks || 0;
     acc[studentId].grade +=
@@ -79,7 +81,10 @@ const Exam = async ({ params }: { params: { id: string } }) => {
             <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
               Students
             </h1>
-            <Button>Publish</Button>
+            <PublishExamResult
+              exam_id={params.id}
+              data={JSON.stringify(rows)}
+            />
           </div>
           <div className="">
             <Table className="w-full border">
@@ -95,7 +100,7 @@ const Exam = async ({ params }: { params: { id: string } }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((row, index) => (
+                {rows.map((row) => (
                   <TableRow key={row.student_id}>
                     <TableCell>{`${row.student_id}`}</TableCell>
                     {columns!.map((column) => (

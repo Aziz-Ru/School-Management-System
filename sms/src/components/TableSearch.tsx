@@ -11,8 +11,17 @@ const TableSearch = ({ name }: { name: string }) => {
   const pathName = usePathname();
 
   useEffect(() => {
-    router.replace(`${pathName}?q=${query}`);
-  }, [query, router, pathName]);
+    if (!isSearching) {
+      router.replace(pathName);
+      setIsSearching(true);
+      return;
+    }
+    if (query) {
+      router.replace(`${pathName}?q=${query}`);
+    } else {
+      router.replace(pathName);
+    }
+  }, [query, router, pathName, isSearching]);
 
   return (
     <div>
