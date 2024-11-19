@@ -3,10 +3,10 @@ import EventCalender from "@/components/EventCalender";
 import { Card } from "@/components/ui/card";
 import UserCard from "@/components/UserCard";
 import { get_rooms } from "@/lib/controller/get_rooms";
+import { Status } from "@/lib/types";
 
 const Page = async () => {
-  
-  const { rooms } = await get_rooms();
+  const { rooms, status } = await get_rooms();
 
   return (
     <div className="p-4 gap-4 flex flex-col lg:flex-row">
@@ -21,14 +21,13 @@ const Page = async () => {
         <Card className="w-full p-4">
           <h1 className="font-bold text-xl mb-3">Academic Rooms</h1>
           <div className="">
-            <RoomTable rooms={rooms!} />
+            {status == Status.OK && <RoomTable rooms={rooms!} />}
           </div>
         </Card>
       </div>
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
-       
       </div>
     </div>
   );

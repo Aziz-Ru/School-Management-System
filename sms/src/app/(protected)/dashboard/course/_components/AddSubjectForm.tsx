@@ -4,27 +4,27 @@ import FormModal from "@/components/Forms/FormModal";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { addSubjectAction } from "@/lib/actions/subjects";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const AddSubjectForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAction = async (formData: FormData) => {
+    const { error, msg } = await addSubjectAction(formData);
+    if (error) {
+      toast({ title: error, description: "Failed to added New Course" });
+    }
+    if (msg) {
+      formRef.current!.reset();
+      const today = new Date();
+      toast({ title: msg, description: `A Course Added at ${today}` });
+    }
+  };
+
   return (
     <FormModal table="Course">
-      <form
-        ref={formRef}
-        
-        action={async (formData: FormData) => {
-          const { error, msg } = await addSubjectAction(formData);
-          if (error) {
-            toast({ title: error, description: "Failed to added New Course" });
-          }
-          if (msg) {
-            formRef.current!.reset();
-            const today = new Date();
-            toast({ title: msg, description: `A Course Added at ${today}` });
-          }
-        }}
-      >
+      <form ref={formRef} action={handleAction}>
         <div className="w-full">
           <FormInput
             type="text"
@@ -41,8 +41,8 @@ const AddSubjectForm = () => {
             width="w-full"
           />
         </div>
-        <Button type="submit" className="w-full">
-          Add Course
+        <Button disabled={isLoading} type="submit" className="w-full">
+          {isLoading ? "Adding..." : "Add Course"}
         </Button>
       </form>
     </FormModal>

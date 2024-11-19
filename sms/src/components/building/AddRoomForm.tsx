@@ -1,21 +1,25 @@
 "use client";
 import { toast } from "@/hooks/use-toast";
 import { addRoomAction } from "@/lib/actions/room";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 
 const AddRoomForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    const { msg, error } = await addRoomAction(formData);
+    if (msg) {
+      toast({ title: msg });
+    } else if (error) {
+      toast({ title: error });
+    }
+    setIsLoading(false);
+  };
+
   return (
-    <form
-      action={async (formData: FormData) => {
-        const { msg, error } = await addRoomAction(formData);
-        if (msg) {
-          toast({ title: msg });
-        } else if (error) {
-          toast({ title: error });
-        }
-      }}
-    >
+    <form action={handleAction}>
       <h1 className="font-bold text-xl mb-4">Add Class Room</h1>
       <div className="mb-4 w-full">
         <div className="flex items-center w-full gap-2 mb-4">
@@ -88,7 +92,9 @@ const AddRoomForm = () => {
           </div>
         </div>
       </div>
-      <Button type="submit">Add</Button>
+      <Button disabled={isLoading} type="submit">
+        {isLoading ? "Loading..." : "Add Room"}
+      </Button>
     </form>
   );
 };

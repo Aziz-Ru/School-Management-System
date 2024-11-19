@@ -7,26 +7,28 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { add_teacher_action } from "@/lib/actions/teacher";
 import { Subject } from "@/lib/types";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    const { error, msg } = await add_teacher_action(formData);
+    if (error) {
+      toast({ title: error, description: "Failed to added New Teacher" });
+    } else if (msg) {
+      const today = new Date();
+      toast({ title: msg, description: `A Teacher Added at ${today}` });
+      formRef.current!.reset();
+    }
+    setIsLoading(false);
+  };
 
   return (
     <FormModal table={"Teacher"}>
-      <form
-        ref={formRef}
-        action={async (formData: FormData) => {
-          const { error, msg } = await add_teacher_action(formData);
-          if (error) {
-            toast({ title: error, description: "Failed to added New Teacher" });
-          } else if (msg) {
-            const today = new Date();
-            toast({ title: msg, description: `A Teacher Added at ${today}` });
-            formRef.current!.reset();
-          }
-        }}
-      >
+      <form ref={formRef} action={handleAction}>
         {/* Full Name */}
         <div className="w-full flex gap-4">
           <FormInput
@@ -145,8 +147,8 @@ export default function AddTeacherForm({ subjects }: { subjects: Subject[] }) {
           </div>
         </div>
 
-        <Button type="submit" className="mt-4 w-full">
-          Add
+        <Button disabled={isLoading} type="submit" className="mt-4 w-full">
+          {isLoading ? "Loading..." : "Add Teacher"}
         </Button>
       </form>
     </FormModal>

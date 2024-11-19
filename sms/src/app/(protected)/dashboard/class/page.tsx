@@ -10,21 +10,13 @@ const ClassListPage = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
-  
   const searchQuery = searchParams.q ? searchParams.q : undefined;
 
   const { classes, status } = await getClassesInfos(searchQuery as string);
+
   if (status != Status.OK) {
     notFound();
   }
-
-  // const cookieStore = cookies();
-  // const session = cookieStore.get("__session");
-  // const { user } = await decrypt(session!.value);
-
-  // if (user.role !== "ADMIN" && user.role !== "TEACHER") {
-  //   notFound();
-  // }
 
   return (
     <div className="site-bg p-4 m-4 mt-0 flex-1">

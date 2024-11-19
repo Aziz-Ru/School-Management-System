@@ -17,42 +17,43 @@ const AddCourseForm = ({
   const [selectedCourses, setSelectedCourses] = useState<
     { label: string; value: string }[]
   >([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    if (selectedCourses.length == 0) {
+      toast({
+        title: "Select Course",
+        description: "Please Select a Course For Class",
+        variant: "destructive",
+      });
+      return;
+    }
+    formData.append(
+      "subjects",
+      selectedCourses.map((course) => course.value).join(",")
+    );
+    formData.append("class_id", classId.toString());
+    const { error, msg } = await add_subject_to_class_action(formData);
+
+    if (error) {
+      toast({
+        title: error,
+        description: "Failed to added New Course",
+        variant: "destructive",
+      });
+    }
+    if (msg) {
+      formRef.current!.reset();
+      setSelectedCourses([]);
+      const today = new Date();
+      toast({ title: msg, description: `Course Added at ${today}` });
+    }
+    setIsLoading(false);
+  };
 
   return (
     <FormModal table="Subject">
-      <form
-        ref={formRef}
-        action={async (formData: FormData) => {
-          if (selectedCourses.length == 0) {
-            toast({
-              title: "Select Course",
-              description: "Please Select a Course For Class",
-              variant: "destructive",
-            });
-            return;
-          }
-          formData.append(
-            "subjects",
-            selectedCourses.map((course) => course.value).join(",")
-          );
-          formData.append("class_id", classId.toString());
-          const { error, msg } = await add_subject_to_class_action(formData);
-
-          if (error) {
-            toast({
-              title: error,
-              description: "Failed to added New Course",
-              variant: "destructive",
-            });
-          }
-          if (msg) {
-            formRef.current!.reset();
-            setSelectedCourses([]);
-            const today = new Date();
-            toast({ title: msg, description: `Course Added at ${today}` });
-          }
-        }}
-      >
+      <form ref={formRef} action={handleAction}>
         <div className="mb-4">
           <MultiSelect
             value={selectedCourses}
@@ -61,8 +62,8 @@ const AddCourseForm = ({
             labelledBy="Select"
           />
         </div>
-        <Button type="submit" className="w-full">
-          Add Course
+        <Button disabled={isLoading} type="submit" className="w-full">
+          {isLoading ? "Adding..." : "Add Course"}
         </Button>
       </form>
     </FormModal>

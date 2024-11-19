@@ -1,23 +1,31 @@
 "use client";
 import { Classes } from "@/lib/types";
 
+import FormInput from "@/components/Forms/FormInput";
+import FormModal from "@/components/Forms/FormModal";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { add_exam_by_admin } from "@/lib/actions/exam";
-import { useRef } from "react";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import FormInput from "./FormInput";
-import FormModal from "./FormModal";
+import { useRef, useState } from "react";
 
 const AddExamForm = ({ classData }: { classData: Classes[] }) => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [isLoaing, setIsLoading] = useState(false);
 
   const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
     const { error, msg } = await add_exam_by_admin(formData);
-    if (error) {
-      toast({ title: error, variant: "destructive" });
-    } else {
-      toast({ title: msg });
+    try {
+      if (error) {
+        toast({ title: error, variant: "destructive" });
+      } else {
+        toast({ title: msg });
+      }
+    } catch (error) {
+      toast({ title: "Failed to create an exam", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,8 +67,8 @@ const AddExamForm = ({ classData }: { classData: Classes[] }) => {
             required={true}
           />
         </div>
-        <Button type="submit" className="w-full">
-          Add
+        <Button disabled={isLoaing} type="submit" className="w-full">
+          {isLoaing ? "Loading..." : "Create Exam"}
         </Button>
       </form>
     </FormModal>

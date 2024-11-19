@@ -4,6 +4,7 @@ import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -16,7 +17,25 @@ import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 const SignInForm = () => {
   const router = useRouter();
+  const [isLoaing, setIsLoading] = useState(false);
 
+  const handleAction = async (formData: FormData) => {
+    setIsLoading(true);
+    const { error, msg } = await login(formData);
+    if (error) {
+      toast({ title: "Invalid Credential", variant: "destructive" });
+    } else if (msg) {
+      if (formData.get("role") === "ADMIN") {
+        router.replace("/dashboard");
+      } else if (formData.get("role") === "TEACHER") {
+        router.replace("/profile");
+      } else if (formData.get("role") === "STUDENT") {
+        router.replace("/profile");
+      }
+      toast({ title: "Logged In", description: "Welcome To SMS" });
+    }
+    setIsLoading(false);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,24 +46,7 @@ const SignInForm = () => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-center text-2xl">Sign In Form</DialogTitle>
         <DialogDescription> {}</DialogDescription>
-        <form
-          className="w-full"
-          action={async (formData) => {
-            const { error, msg } = await login(formData);
-            if (error) {
-              toast({ title: "Invalid Credential", variant: "destructive" });
-            } else if (msg) {
-              if (formData.get("role") === "ADMIN") {
-                router.replace("/dashboard");
-              } else if (formData.get("role") === "TEACHER") {
-                router.replace("/profile");
-              } else if (formData.get("role") === "STUDENT") {
-                router.replace("/profile");
-              }
-              toast({ title: "Logged In", description: "Welcome To SMS" });
-            }
-          }}
-        >
+        <form className="w-full" action={handleAction}>
           <div className="p-2">
             <FormInput
               type="texr"
@@ -70,8 +72,8 @@ const SignInForm = () => {
               options={["ADMIN", "TEACHER", "STUDENT"]}
             />
           </div>
-          <Button className="p-2" type="submit">
-            Sign In
+          <Button disabled={isLoaing} className="p-2" type="submit">
+            {isLoaing ? "Loading..." : "Login"}
           </Button>
         </form>
       </DialogContent>
