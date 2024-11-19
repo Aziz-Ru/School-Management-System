@@ -29,7 +29,7 @@ const Exam = async () => {
         <div className="">
           <div className="border-b pb-2 flex justify-between items-center">
             <h2 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
-              Exam Routine
+              Exams
             </h2>
             {user.role === "ADMIN" && <AddExamForm classData={classData!} />}
           </div>

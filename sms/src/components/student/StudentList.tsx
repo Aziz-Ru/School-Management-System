@@ -39,7 +39,10 @@ const StudentsList = ({ students }: { students: User[] }) => {
           {new Date(item.lastLogin!).toDateString()}
         </TableCell>
         <TableCell className="border">
-          <DetailsLink href={`/dashboard/students/${item.id}`} />
+          <DetailsLink
+            title="Profile"
+            href={`/dashboard/students/${item.id}`}
+          />
         </TableCell>
       </TableRow>
     );

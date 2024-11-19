@@ -61,7 +61,7 @@ const TeacherList = ({
       });
 
       base.push({
-        header: "Action",
+        header: "Profile",
         accessor: "action",
         className: "text-center",
       });
@@ -108,7 +108,10 @@ const TeacherList = ({
 
         {role === "ADMIN" && (
           <TableCell className="text-center border">
-            <DetailsLink href={`/dashboard/teachers/${item.id}`} />
+            <DetailsLink
+              href={`/dashboard/teachers/${item.id}`}
+              title="Profile"
+            />
           </TableCell>
         )}
       </TableRow>
