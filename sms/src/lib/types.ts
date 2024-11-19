@@ -405,17 +405,11 @@ export interface SubjectMarks {
 
 export interface ExamResult {
   id: string;
-  examId: string;
-  exam: Exam;
-  student_id: number;
-  student: Student;
-  totalObtainedMarks: number;
-  totalMaxMarks: number;
-  percentage: number;
-  grade: string;
-  rank?: number;
-  remarks?: string;
-  isPublished: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  examId?: string;
+  exam?: Exam;
+  student_id?: number;
+  student?: Student;
+  totalObtainedMarks?: number;
+  totalMaxMarks?: number;
+  gpa?: number;
 }

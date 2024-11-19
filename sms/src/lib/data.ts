@@ -244,3 +244,22 @@ export const GradeValues = {
   D: 1.0,
   F: 0.0,
 };
+
+export const ExamResultColumns = [
+  {
+    header: "Section Name",
+    accessor: "section_name",
+  },
+  {
+    header: "Class",
+    accessor: "class",
+  },
+  {
+    header: "Exam Type",
+    accessor: "type",
+  },
+  {
+    header: "Result",
+    accessor: "result",
+  },
+];

@@ -1,16 +1,19 @@
 "use server";
-import { decrypt } from "@/session";
-import { cookies } from "next/headers";
-import AdminPage from "./_components/AdminPage";
+
+import getSession from "@/lib/get_session";
+import { notFound } from "next/navigation";
 
 const ResultPage = async () => {
-  const cookieStore = cookies();
-  const session = cookieStore.get("__session");
-  const { user } = await decrypt(session!.value);
+  const { user } = await getSession();
 
-  if (user.role == "ADMIN") return <AdminPage />;
-
-  return <div></div>;
+  if (
+    user.role !== "TEACHER" ||
+    user.role !== "ADMIN" ||
+    user.role !== "STUDENT"
+  ) {
+    notFound();
+  }
+  return <ResultPage />;
 };
 
 export default ResultPage;

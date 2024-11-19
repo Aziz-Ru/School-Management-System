@@ -9,12 +9,18 @@ import {
 import { get_exams_info } from "@/lib/controller/get_exams";
 import { GradeValues } from "@/lib/data";
 import prisma from "@/lib/db";
+import getSession from "@/lib/get_session";
 import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
 import ExamsSubjectsList from "../_components/ExamSubjectList";
 import PublishExamResult from "../_components/PublishExamResult";
 
 const Exam = async ({ params }: { params: { id: string } }) => {
+  const { user } = await getSession();
+
+  if (user.role !== "ADMIN") {
+    notFound();
+  }
   const { exam_subjects, status } = await get_exams_info(params.id);
   if (status !== Status.OK) {
     notFound();
