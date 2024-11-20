@@ -413,3 +413,10 @@ export interface ExamResult {
   totalMaxMarks?: number;
   gpa?: number;
 }
+
+export interface Notice {
+  id: string;
+  title: string;
+  type?: string;
+  filePathName?: string;
+}

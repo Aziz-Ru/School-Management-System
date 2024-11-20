@@ -14,25 +14,18 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import FormInput from "./FormInput";
-import FormSelect from "./FormSelect";
 const SignInForm = () => {
   const router = useRouter();
   const [isLoaing, setIsLoading] = useState(false);
 
   const handleAction = async (formData: FormData) => {
     setIsLoading(true);
-    const { error, msg } = await login(formData);
+    const { error, redirect } = await login(formData);
+    if (redirect) {
+      router.push(redirect);
+    }
     if (error) {
       toast({ title: "Invalid Credential", variant: "destructive" });
-    } else if (msg) {
-      if (formData.get("role") === "ADMIN") {
-        router.replace("/dashboard");
-      } else if (formData.get("role") === "TEACHER") {
-        router.replace("/profile");
-      } else if (formData.get("role") === "STUDENT") {
-        router.replace("/profile");
-      }
-      toast({ title: "Logged In", description: "Welcome To SMS" });
     }
     setIsLoading(false);
   };
@@ -65,14 +58,8 @@ const SignInForm = () => {
               required={true}
             />
           </div>
-          <div className="p-2">
-            <FormSelect
-              name="role"
-              label="Role"
-              options={["ADMIN", "TEACHER", "STUDENT"]}
-            />
-          </div>
-          <Button disabled={isLoaing} className="p-2" type="submit">
+
+          <Button disabled={isLoaing} className="p-2 w-full" type="submit">
             {isLoaing ? "Loading..." : "Login"}
           </Button>
         </form>

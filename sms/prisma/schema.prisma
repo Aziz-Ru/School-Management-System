@@ -3,13 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  
 }
 
-
-// Acdemic Building
 model Room {
   id              String  @id @default(uuid())
   roomNumber      Int    
@@ -22,7 +20,6 @@ model Room {
   @@unique([roomNumber, floor, building])
   
 }
-
 
 // teacher subjects
 model subject{
@@ -410,8 +407,6 @@ enum PublishStatus {
   PUBLISHED
   ARCHIVED
 }
-
-
 
 enum LeaveType {
   SICK_LEAVE

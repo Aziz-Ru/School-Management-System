@@ -19,51 +19,49 @@ const userSchema = z.object({
       invalid_type_error: "password must be a string",
     })
     .min(6, "Password must be atleast 6 chracters"),
-  role: z.enum(["ADMIN", "TEACHER", "STUDENT"], {
-    errorMap: () => ({ message: "Role Must Be Valid" }),
-  }),
 });
 
 interface ReturnProps {
   error?: string;
-  msg?: string;
+  redirect?: string;
 }
 
 export async function login(formData: FormData): Promise<ReturnProps> {
-  const validResult = userSchema.safeParse({
-    uid: parseInt(formData.get("uid") as string),
-    password: formData.get("password"),
-    role: formData.get("role"),
-  });
+  try {
+    const validResult = userSchema.safeParse({
+      uid: parseInt(formData.get("uid") as string),
+      password: formData.get("password"),
+    });
 
-  if (validResult.error) {
-    return { error: validResult.error.errors[0].message };
-  }
+    if (validResult.error) {
+      return { error: validResult.error.errors[0].message };
+    }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: validResult.data.uid,
-      role: validResult.data.role,
-    },
-    select: {
-      id: true,
-      password: true,
-      role: true,
-      sex: true,
-      status: true,
-      lastLogin: true,
-    },
-  });
+    const user = await prisma.user.findUnique({
+      where: {
+        id: validResult.data.uid,
+      },
+      select: {
+        id: true,
+        password: true,
+        role: true,
+        sex: true,
+        status: true,
+        lastLogin: true,
+      },
+    });
 
-  if (!user) {
-    return { error: "Invalid Credential" };
-  }
-  const isMatchPassword = await brypt.compare(
-    validResult.data.password,
-    user.password
-  );
+    if (!user) {
+      throw new Error("Invalid Credential");
+    }
+    const isMatchPassword = await brypt.compare(
+      validResult.data.password,
+      user.password
+    );
+    if (!isMatchPassword) {
+      throw new Error("Invalid Credential");
+    }
 
-  if (user?.role === validResult.data.role && isMatchPassword) {
     await createSession({
       id: user.id,
       role: user.role,
@@ -80,10 +78,13 @@ export async function login(formData: FormData): Promise<ReturnProps> {
       },
     });
 
-    return { msg: "Logged In" };
+    return {
+      redirect: user.role === "ADMIN" ? "/dashboard" : "/profile",
+    };
+  } catch (error) {
+    console.error(error);
+    return { error: "Something Went Wrong" };
   }
-
-  return { error: "Invalid Credential" };
 }
 
 export async function logout() {

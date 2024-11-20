@@ -14,10 +14,16 @@ export default async function DashboardLayout({
 }) {
   const session = cookies().get("__session")?.value;
   const { user } = await decrypt(session);
-  if (session === undefined || user == null || user == undefined) {
+  if (
+    session === undefined ||
+    user == null ||
+    user == undefined ||
+    (user.role !== "ADMIN" &&
+      user.role !== "TEACHER" &&
+      user.role !== "STUDENT")
+  ) {
     redirect("/home");
   }
-
   return (
     <section className="h-screen flex">
       {/* Left */}
