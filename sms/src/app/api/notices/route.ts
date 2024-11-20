@@ -17,21 +17,22 @@ export async function POST(req: NextRequest) {
     const uploadFile = new File([inputFile], `notice/${uuid4()}.pdf`, {
       type: "application/pdf",
     });
-    const { error } = await supabase.storage
-      .from("sms")
-      .upload(uploadFile.name, uploadFile);
-    if (error) {
-      throw error;
-    }
+    // const { error } = await supabase.storage
+    //   .from("sms")
+    //   .upload(uploadFile.name, uploadFile);
+    // if (error) {
+    //   throw error;
+    // }
 
-    const uploadUrl = await supabase.storage
-      .from("sms")
-      .getPublicUrl(uploadFile.name);
+    // const uploadUrl = await supabase.storage
+    //   .from("sms")
+    //   .getPublicUrl(uploadFile.name);
 
     const validation = NoticeSchema.safeParse({
       title: formData.get("title") as string,
       type: formData.get("type") as string,
-      fileUploadUrl: uploadUrl.data.publicUrl,
+      fileUploadUrl:
+        "https://gdpojtdcyjcuolxmdzsr.supabase.co/storage/v1/object/public/sms/notice/a9acf9dc-787e-436e-a72d-ebf647748f94.pdf",
     });
 
     if (!validation.success) {
