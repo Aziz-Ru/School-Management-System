@@ -1,6 +1,5 @@
 import prisma from "@/lib/db";
 import { NoticeSchema } from "@/lib/schema/schema";
-import { supabase } from "@/lib/supbase";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid4 } from "uuid";
@@ -36,7 +35,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!validation.success) {
-      await supabase.storage.from("sms").remove([uploadFile.name]);
+      // await supabase.storage.from("sms").remove([uploadFile.name]);
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
