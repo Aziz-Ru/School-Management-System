@@ -1,4 +1,3 @@
-import DetailsLink from "@/components/buttons/DetailsLink";
 import TableList from "@/components/TableList";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { get_subjects } from "@/lib/controller/get_subjects";
@@ -27,12 +26,6 @@ const CourseListPage = async () => {
           </TableCell>
           <TableCell className="hidden sm:table-cell text-center">
             {item._count?.teacher}
-          </TableCell>
-          <TableCell className="text-center">
-            <DetailsLink
-              title="Teachers"
-              href={`/dashboard/course/${item.subject_name}`}
-            />
           </TableCell>
         </TableRow>
       );

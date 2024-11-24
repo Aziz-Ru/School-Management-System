@@ -39,6 +39,7 @@ const page = async () => {
             </div>
           </Card>
         </div>
+
         <div className="col-span-12 md:col-span-5 my-4 p-2">
           <h2 className="font-bold text-2xl mb-2">Notices</h2>
           {notices!.map((notice) => (
@@ -51,13 +52,14 @@ const page = async () => {
               </div>
               <Link
                 className="text-blue-600"
-                href={`/dashboard/notices/${notice.id}`}
+                href={`/home/notices/${notice.id}`}
               >
                 View
               </Link>
             </div>
           ))}
         </div>
+        
       </div>
     </div>
   );

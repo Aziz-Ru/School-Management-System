@@ -1,5 +1,6 @@
 import prisma from "@/lib/db";
 import { NoticeSchema } from "@/lib/schema/schema";
+import { supabase } from "@/lib/supbase";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid4 } from "uuid";
@@ -16,26 +17,25 @@ export async function POST(req: NextRequest) {
     const uploadFile = new File([inputFile], `notice/${uuid4()}.pdf`, {
       type: "application/pdf",
     });
-    // const { error } = await supabase.storage
-    //   .from("sms")
-    //   .upload(uploadFile.name, uploadFile);
-    // if (error) {
-    //   throw error;
-    // }
+    const { error } = await supabase.storage
+      .from("sms")
+      .upload(uploadFile.name, uploadFile);
+    if (error) {
+      throw error;
+    }
 
-    // const uploadUrl = await supabase.storage
-    //   .from("sms")
-    //   .getPublicUrl(uploadFile.name);
+    const uploadUrl = await supabase.storage
+      .from("sms")
+      .getPublicUrl(uploadFile.name);
 
     const validation = NoticeSchema.safeParse({
       title: formData.get("title") as string,
       type: formData.get("type") as string,
-      fileUploadUrl:
-        "https://gdpojtdcyjcuolxmdzsr.supabase.co/storage/v1/object/public/sms/notice/a9acf9dc-787e-436e-a72d-ebf647748f94.pdf",
+      fileUploadUrl: uploadUrl.data.publicUrl,
     });
 
     if (!validation.success) {
-      // await supabase.storage.from("sms").remove([uploadFile.name]);
+      await supabase.storage.from("sms").remove([uploadFile.name]);
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
