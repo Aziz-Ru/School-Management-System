@@ -33,6 +33,8 @@ export async function POST(req: NextRequest) {
         student_id: parseInt(studentId),
         sectionId: sectionId,
         date: currentDate.toISOString(),
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
         status: "PRESENT",
         markedById: parseInt(user.id),
       },

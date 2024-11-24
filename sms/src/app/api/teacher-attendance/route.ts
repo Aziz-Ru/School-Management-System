@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const { teacherId } = await req.json();
     // Save the attendance in the database
-    
+
     if (!teacherId || (teacherId && isNaN(teacherId))) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
@@ -23,6 +23,8 @@ export async function POST(req: NextRequest) {
       data: {
         teacherId: parseInt(teacherId),
         date: current.toISOString(),
+        year: current.getFullYear(),
+        month: current.getMonth() + 1,
         status: "PRESENT",
       },
     });

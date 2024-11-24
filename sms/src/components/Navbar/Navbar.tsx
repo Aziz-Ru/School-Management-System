@@ -12,9 +12,13 @@ const Navbar = async () => {
 
   return (
     <header className="top-0 left-0 w-full z-50  shadow">
-      <nav className="bg-indigo-700 text-white">
+      <nav className="bg-indigo-700 text-white px-10">
         <div className="max-w-screen-xl mx-auto  flex flex-wrap items-center justify-between">
           <div className="flex items-center gap-2">
+            <Link href={"/home"} className="font-bold text-xl">
+              SMS
+            </Link>
+
             {user ? (
               <Link href={user.role == "ADMIN" ? "/dashboard" : "/profile"}>
                 <div className="flex gap-4 px-4 py-3.5">
@@ -44,6 +48,7 @@ const Navbar = async () => {
               </Link>
             )}
           </div>
+
           <Menus isLoggedIn={user ? true : false} />
         </div>
       </nav>

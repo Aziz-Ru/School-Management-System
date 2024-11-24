@@ -35,7 +35,7 @@ const page = async () => {
               {SCHOOL_INTRO.substring(0, 500)}...
             </p>
             <div className="flex justify-end">
-              <ReadMore href="/home" />
+              <ReadMore href="/home/message/welcome" />
             </div>
           </Card>
         </div>
@@ -59,7 +59,6 @@ const page = async () => {
             </div>
           ))}
         </div>
-        
       </div>
     </div>
   );

@@ -32,8 +32,8 @@ const DropdownAcademic = () => {
           }`}
         >
           <NavLink path="/home/notices" title="Notices" isLast={false} />
-          <NavLink path="/home/syllabus" title="Syllabus" isLast={false} />
-          <NavLink
+          {/* <NavLink path="/home/syllabus" title="Syllabus" isLast={false} /> */}
+          {/* <NavLink
             path="/home/class-teacher"
             title="Class Teacher"
             isLast={false}
@@ -43,7 +43,7 @@ const DropdownAcademic = () => {
             title="Co-Ordinator"
             isLast={false}
           />
-          <NavLink path="/home/facilities" title="Facilities" isLast={true} />
+          <NavLink path="/home/facilities" title="Facilities" isLast={true} /> */}
         </ul>
       </div>
     </ClickoutSide>

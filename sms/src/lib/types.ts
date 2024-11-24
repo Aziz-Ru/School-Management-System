@@ -308,6 +308,8 @@ export interface StudentAttendance {
   sectionId: string;
   section?: Section;
   date: Date;
+  year?: number;
+  month?: number;
   status: string;
   timeIn?: Date;
   timeOut?: Date;
@@ -323,6 +325,8 @@ export interface TeacherAttendance {
   id: string;
   teacherId?: number;
   teacher?: Teacher;
+  year?: number;
+  month?: number;
   date: Date;
   status: string;
   timeIn?: Date;

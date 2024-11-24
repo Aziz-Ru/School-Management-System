@@ -1,7 +1,9 @@
 const Admission = () => {
   return (
-    <div className="flex items-center justify-center">
-      <h1 className="text-2xl font-bold">Admission Time is Finised</h1>
+    <div className="flex items-center justify-center p-10">
+      <h1 className="text-2xl font-bold">
+        You Will Get Notice When Admission Open
+      </h1>
     </div>
   );
 };

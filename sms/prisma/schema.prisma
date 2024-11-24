@@ -186,6 +186,8 @@ model student_attendance {
   sectionId       String
   section         sections          @relation(fields: [sectionId], references: [section_id],onDelete: Cascade)
   date            DateTime
+  year            Int  @default(2024)
+  month           Int @default(11)
   status          AttendanceStatus
   timeIn          DateTime?
   timeOut         DateTime?
@@ -207,6 +209,8 @@ model teacher_attendance {
   teacher         teacher          @relation(fields: [teacherId], references: [teacher_id],onDelete: Cascade)
   date            DateTime
   status          AttendanceStatus
+  year            Int  @default(2024)
+  month           Int @default(11)
   timeIn          DateTime?
   timeOut         DateTime?
   lateMinutes     Int?
