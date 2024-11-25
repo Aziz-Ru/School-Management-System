@@ -60,7 +60,7 @@ const Page = async () => {
       <div className="w-full lg:w-1/3 flex flex-col">
         <EventCalender />
         <div className="">
-          {notices!.map((notice) => (
+          {notices?.map((notice) => (
             <div
               key={notice.id}
               className="flex items-center justify-between p-4 border border-gray-200 rounded-md"

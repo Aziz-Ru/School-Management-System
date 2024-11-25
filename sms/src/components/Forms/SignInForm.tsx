@@ -31,11 +31,11 @@ const SignInForm = () => {
       });
       const result = await response.json();
 
-      if (response.status == 200) {
+      if (response.ok) {
         if (result.role == "ADMIN") {
-          router.push("/dashboard");
+          router.replace("/dashboard");
         } else {
-          router.push("/profile");
+          router.replace("/profile");
         }
       }
       if (result.error) {

@@ -1,8 +1,7 @@
 import { deleteSession } from "@/session";
-import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  deleteSession();
-  redirect("/home");
+  await deleteSession();
+  return NextResponse.json({ msg: "Logged Out Successfully" }, { status: 200 });
 }

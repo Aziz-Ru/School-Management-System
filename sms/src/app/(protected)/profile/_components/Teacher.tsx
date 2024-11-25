@@ -1,15 +1,16 @@
+"use server";
 import Schedules from "@/components/teacher/Schedules";
 import TeacherAttendenceList from "@/components/teacher/TeacherAttendence";
 import ProfileCard from "@/components/UserProfileCard";
 import { get_teacher_info } from "@/lib/controller/get_teachers";
-
 import { MonthNames } from "@/lib/data";
-
 import { Status } from "@/lib/types";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const TeacherPage = async ({ id }: { id: number }) => {
-  const { teacher, schedules, attendance, status } = await get_teacher_info(id);
+  const { teacher, schedules, notices, attendance, status } =
+    await get_teacher_info(id);
 
   if (status !== Status.OK) {
     notFound();
@@ -41,6 +42,10 @@ const TeacherPage = async ({ id }: { id: number }) => {
     }
     calendar.push(monthData);
   }
+  const enrolledSection = teacher?.teacherProfile?.class_teacher;
+  const thisYearSection = enrolledSection?.find(
+    (s) => s.academic_year == new Date().getFullYear()
+  );
 
   return (
     <div className="flex flex-col xl:flex-row">
@@ -65,6 +70,52 @@ const TeacherPage = async ({ id }: { id: number }) => {
             Attendance
           </h1>
           <TeacherAttendenceList attendanceData={calendar!} />
+        </div>
+      </div>
+      {/* Right */}
+      <div className="w-full xl:w-1/3">
+        <div className="mt-1 p-2">
+          <h2 className="font-bold text-2xl ">
+            Enrolled Section for this year
+          </h2>
+          <div className="mt-3">
+            {thisYearSection && (
+              <>
+                <div className="flex gap-4 justify-around border p-4">
+                  <span>{thisYearSection.section_name}</span>
+                  <span>{thisYearSection.class_id}</span>
+                  <span>{thisYearSection.academic_year}</span>
+                  <Link
+                    href={`/dashboard/sections/${thisYearSection.section_id}`}
+                    className="underline text-blue-600"
+                  >
+                    Go
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="mt-1 p-2">
+          <h2 className="font-bold text-2xl ">Recent Notices</h2>
+        </div>
+        <div className="mt-1">
+          {notices?.map((notice) => (
+            <div
+              key={notice.id}
+              className="flex items-center justify-between p-4 border border-gray-200 rounded-md"
+            >
+              <div>
+                <h2 className="font-bold ">{notice.title}</h2>
+              </div>
+              <Link
+                className="text-blue-600"
+                href={`/dashboard/notices/${notice.id}`}
+              >
+                View
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </div>
