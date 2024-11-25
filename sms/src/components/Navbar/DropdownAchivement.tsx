@@ -35,13 +35,8 @@ const DropdownAchivement = () => {
             isOpen ? "" : "hidden"
           }`}
         >
-          <NavLink path="/board-result" title="Board Result" isLast={false} />
-          <NavLink
-            path="/academic-result"
-            title="Academic Result"
-            isLast={false}
-          />
-          <NavLink path="/co-curricular" title="Co-Curricular" isLast={true} />
+          <NavLink path="/home/result" title="Board Result" isLast={false} />
+          <NavLink path="/home/result" title="Academic Result" isLast={false} />
         </ul>
       </div>
     </ClickoutSide>

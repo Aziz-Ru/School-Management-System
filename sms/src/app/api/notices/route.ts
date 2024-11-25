@@ -1,11 +1,22 @@
 import prisma from "@/lib/db";
 import { NoticeSchema } from "@/lib/schema/schema";
 import { supabase } from "@/lib/supbase";
+import { decrypt } from "@/session";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid4 } from "uuid";
+
 export async function POST(req: NextRequest) {
   try {
+    const session = cookies().get("__session")?.value;
+    if (session == null) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const { user } = await decrypt(session);
+    if (user == null) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const formData = await req.formData();
     const inputFile = formData.get("file") as File;
     if (inputFile == null || inputFile.type !== "application/pdf") {

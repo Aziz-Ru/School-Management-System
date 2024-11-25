@@ -5,12 +5,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex flex-col">
+    <div className="">
       <div className="">
         <Hero />
       </div>
       <div className="overflow-auto">
-        <section className="">{children}</section>
+        <section className="max-w-screen-xl mx-auto min-h-[50vh]">
+          {children}
+        </section>
         <Footer />
       </div>
     </div>

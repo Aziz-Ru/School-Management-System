@@ -2,6 +2,7 @@
 
 import {
   FilterOptions,
+  Notice,
   SectionSubjectSchedule,
   TeacherAttendance,
 } from "@/lib/types";
@@ -91,6 +92,7 @@ type GetTeacherInfoReturnProps = {
   teacher?: User;
   schedules?: SectionSubjectSchedule[];
   attendance?: TeacherAttendance[];
+  notices?: Notice[];
   status: Status;
 };
 
@@ -100,94 +102,105 @@ export const get_teacher_info = async (
   const date = new Date();
 
   try {
-    const [teacher, schedules, attendance] = await prisma.$transaction([
-      prisma.user.findUnique({
-        where: {
-          id: uid,
-        },
-        select: {
-          id: true,
-          email: true,
-          sex: true,
-          phone: true,
-          role: true,
-          address: true,
-          img: true,
-          teacherProfile: {
-            select: {
-              first_name: true,
-              last_name: true,
-              teacher_id: true,
-              degrees: true,
-              level: true,
-              subject_name: true,
-              rank: true,
-              salary: true,
-              class_teacher: {
-                select: {
-                  section_name: true,
-                  section_id: true,
-                  class_id: true,
-                  room_number: true,
-                  academic_year: true,
+    const [teacher, schedules, attendance, notices] = await prisma.$transaction(
+      [
+        prisma.user.findUnique({
+          where: {
+            id: uid,
+          },
+          select: {
+            id: true,
+            email: true,
+            sex: true,
+            phone: true,
+            role: true,
+            address: true,
+            img: true,
+            teacherProfile: {
+              select: {
+                first_name: true,
+                last_name: true,
+                teacher_id: true,
+                degrees: true,
+                level: true,
+                subject_name: true,
+                rank: true,
+                salary: true,
+                class_teacher: {
+                  select: {
+                    section_name: true,
+                    section_id: true,
+                    class_id: true,
+                    room_number: true,
+                    academic_year: true,
+                  },
+                },
+                enrolled_subjects: {
+                  select: {
+                    subject_name: true,
+                    section_id: true,
+                    class_id: true,
+                  },
                 },
               },
-              enrolled_subjects: {
-                select: {
-                  subject_name: true,
-                  section_id: true,
-                  class_id: true,
-                },
+            },
+          },
+        }),
+        prisma.section_subject_schedule.findMany({
+          where: {
+            teacher_id: uid,
+            academic_year: date.getFullYear(),
+          },
+          include: {
+            subject: {
+              select: {
+                class_id: true,
+                section_id: true,
+                teacher_id: true,
+                subject_name: true,
+                section: true,
+              },
+            },
+            timeslot: {
+              select: {
+                hour: true,
+                day: true,
+                id: true,
               },
             },
           },
-        },
-      }),
-      prisma.section_subject_schedule.findMany({
-        where: {
-          teacher_id: uid,
-          academic_year: date.getFullYear(),
-        },
-        include: {
-          subject: {
-            select: {
-              class_id: true,
-              section_id: true,
-              teacher_id: true,
-              subject_name: true,
-              section: true,
-            },
+        }),
+        prisma.teacher_attendance.findMany({
+          where: {
+            teacherId: uid,
+            year: date.getFullYear(),
           },
-          timeslot: {
-            select: {
-              hour: true,
-              day: true,
-              id: true,
-            },
+          select: {
+            id: true,
+            teacherId: true,
+            status: true,
+            date: true,
           },
-        },
-      }),
-      prisma.teacher_attendance.findMany({
-        where: {
-          teacherId: uid,
-          date: {
-            gte: new Date(date.getFullYear(), 0, 1).toISOString(),
-            lte: new Date(date.getFullYear(), 11, 31).toISOString(),
+        }),
+        prisma.notice.findMany({
+          select: {
+            id: true,
+            title: true,
+            filePathName: true,
+            type: true,
           },
-        },
-        select: {
-          id: true,
-          teacherId: true,
-          status: true,
-          date: true,
-        },
-      }),
-    ]);
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 5,
+        }),
+      ]
+    );
 
     if (!teacher) {
       return { status: Status.NOT_FOUND };
     }
-    return { teacher, schedules, attendance, status: Status.OK };
+    return { teacher, schedules, attendance, notices, status: Status.OK };
   } catch (error) {
     return { status: Status.INTERNAL_SERVER_ERROR };
   }

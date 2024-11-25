@@ -79,7 +79,9 @@ export function AddStudentForm({ classData }: { classData: Classes[] }) {
   };
 
   const onChangeClass = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSections(classData[parseInt(e.target.value) - 1].sections!);
+    const sid = parseInt(e.target.value);
+    const cs = classData.find((cl) => cl.class_id == sid)?.sections;
+    setSections(cs ?? []);
     dispatch({ type: "SET_CLASS_ERROR", error: "" });
   };
 

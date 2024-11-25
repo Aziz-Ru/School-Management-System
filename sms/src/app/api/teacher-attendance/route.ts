@@ -1,12 +1,22 @@
 import prisma from "@/lib/db";
+import { decrypt } from "@/session";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  const session = cookies().get("__session")?.value;
+  if (session == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { user } = await decrypt(session);
+  if (user == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const { teacherId } = await req.json();
     // Save the attendance in the database
-    
+
     if (!teacherId || (teacherId && isNaN(teacherId))) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
@@ -23,6 +33,8 @@ export async function POST(req: NextRequest) {
       data: {
         teacherId: parseInt(teacherId),
         date: current.toISOString(),
+        year: current.getFullYear(),
+        month: current.getMonth() + 1,
         status: "PRESENT",
       },
     });
@@ -40,6 +52,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const session = cookies().get("__session")?.value;
+  if (session == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { user } = await decrypt(session);
+  if (user == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const searchParams = new URL(req.url).searchParams;
   const teacherId = searchParams.get("teacherId");
 

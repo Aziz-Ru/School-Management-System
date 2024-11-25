@@ -1,4 +1,5 @@
-import prisma from "@/lib/db";
+import { get_notices } from "@/lib/controller/get_notices";
+import { Status } from "@/lib/types";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -9,15 +10,15 @@ const NoticePage = async () => {
   const cookieStore = cookies();
   const session = cookieStore.get("__session");
   const { user } = await decrypt(session!.value);
-  
+
   if (user.role !== "ADMIN") {
     notFound();
   }
-  const notices = await prisma.notice.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+
+  const { notices, status } = await get_notices({ take: 10 });
+  if (status !== Status.OK) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -29,7 +30,7 @@ const NoticePage = async () => {
           <div className="">
             <h1 className="font-bold text-2xl mb-4">Notices</h1>
             <div className="">
-              {notices.map((notice) => (
+              {notices!.map((notice) => (
                 <div
                   key={notice.id}
                   className="flex items-center justify-between p-4 border border-gray-200 rounded-md"

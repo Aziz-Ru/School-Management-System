@@ -6,10 +6,9 @@ import ThreeLineSvg from "../svg/ThreeLineSvg";
 import DropdownAcademic from "./DropdownAcademic";
 import DropdownAchivement from "./DropdownAchivement";
 import DropdownAdmission from "./DropdownAdmission";
-import DropdownCoCurricular from "./DropdownCoCurricular";
 import DropdownSchool from "./DropdownSchool";
 
-const Menus = ({isLoggedIn}:{isLoggedIn:boolean}) => {
+const Menus = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const Menus = ({isLoggedIn}:{isLoggedIn:boolean}) => {
           <DropdownAcademic />
           <DropdownAchivement />
           <DropdownAdmission />
-          <DropdownCoCurricular />
           {!isLoggedIn && <SignInForm />}
         </div>
       </div>

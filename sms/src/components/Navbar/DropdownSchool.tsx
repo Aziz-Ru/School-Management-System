@@ -38,7 +38,11 @@ const DropdownSchool = () => {
             isOpen ? "" : "hidden"
           }`}
         >
-          <NavLink path={"/principal"} title={"Principal"} isLast={false} />
+          <NavLink
+            path={"/home/details/principal"}
+            title={"Principal"}
+            isLast={false}
+          />
           <NavLink
             path={"/home/details/history"}
             title={"Institution History"}

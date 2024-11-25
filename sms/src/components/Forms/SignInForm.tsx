@@ -1,6 +1,5 @@
 "use client";
 
-import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
 
 import { useRouter } from "next/navigation";
@@ -14,27 +13,38 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import FormInput from "./FormInput";
-import FormSelect from "./FormSelect";
 const SignInForm = () => {
   const router = useRouter();
   const [isLoaing, setIsLoading] = useState(false);
 
-  const handleAction = async (formData: FormData) => {
+  const handleAction = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     setIsLoading(true);
-    const { error, msg } = await login(formData);
-    if (error) {
-      toast({ title: "Invalid Credential", variant: "destructive" });
-    } else if (msg) {
-      if (formData.get("role") === "ADMIN") {
-        router.replace("/dashboard");
-      } else if (formData.get("role") === "TEACHER") {
-        router.replace("/profile");
-      } else if (formData.get("role") === "STUDENT") {
-        router.replace("/profile");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          uid: formData.get("uid"),
+          password: formData.get("password"),
+        }),
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        if (result.role == "ADMIN") {
+          router.replace("/dashboard");
+        } else {
+          router.replace("/profile");
+        }
       }
-      toast({ title: "Logged In", description: "Welcome To SMS" });
+      if (result.error) {
+        toast({ title: "Invalid Credential", variant: "destructive" });
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   return (
     <Dialog>
@@ -46,7 +56,7 @@ const SignInForm = () => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-center text-2xl">Sign In Form</DialogTitle>
         <DialogDescription> {}</DialogDescription>
-        <form className="w-full" action={handleAction}>
+        <form className="w-full" onSubmit={handleAction}>
           <div className="p-2">
             <FormInput
               type="texr"
@@ -65,14 +75,8 @@ const SignInForm = () => {
               required={true}
             />
           </div>
-          <div className="p-2">
-            <FormSelect
-              name="role"
-              label="Role"
-              options={["ADMIN", "TEACHER", "STUDENT"]}
-            />
-          </div>
-          <Button disabled={isLoaing} className="p-2" type="submit">
+
+          <Button disabled={isLoaing} className="p-2 w-full" type="submit">
             {isLoaing ? "Loading..." : "Login"}
           </Button>
         </form>

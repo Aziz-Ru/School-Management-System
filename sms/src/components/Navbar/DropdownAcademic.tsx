@@ -31,11 +31,19 @@ const DropdownAcademic = () => {
             isOpen ? "" : "hidden"
           }`}
         >
-          <NavLink path="/class-routine" title="Class Routine" isLast={false} />
-          <NavLink path="/syllabus" title="Syllabus" isLast={false} />
-          <NavLink path="/class-teacher" title="Class Teacher" isLast={false} />
-          <NavLink path="/co-ordinator" title="Co-Ordinator" isLast={false} />
-          <NavLink path="/facilities" title="Facilities" isLast={true} />
+          <NavLink path="/home/notices" title="Notices" isLast={false} />
+          {/* <NavLink path="/home/syllabus" title="Syllabus" isLast={false} /> */}
+          {/* <NavLink
+            path="/home/class-teacher"
+            title="Class Teacher"
+            isLast={false}
+          />
+          <NavLink
+            path="/home/co-ordinator"
+            title="Co-Ordinator"
+            isLast={false}
+          />
+          <NavLink path="/home/facilities" title="Facilities" isLast={true} /> */}
         </ul>
       </div>
     </ClickoutSide>

@@ -5,12 +5,16 @@ const FormInput = ({
   type,
   name,
   label,
+  value,
   required,
+  disabled = false,
   width = "w-1/2",
 }: {
   type: string;
   name: string;
+  value?: string;
   required: boolean;
+  disabled?: boolean;
   label: string;
   width?: string;
 }) => {
@@ -21,6 +25,8 @@ const FormInput = ({
         className="w-full"
         type={type}
         id={label}
+        disabled={disabled}
+        defaultValue={value}
         name={name}
         required={required}
         placeholder={`Enter ${label}`}

@@ -3,13 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  
 }
 
-
-// Acdemic Building
 model Room {
   id              String  @id @default(uuid())
   roomNumber      Int    
@@ -22,7 +20,6 @@ model Room {
   @@unique([roomNumber, floor, building])
   
 }
-
 
 // teacher subjects
 model subject{
@@ -119,7 +116,7 @@ model user{
     email         String    @unique
     password      String
     role          UserRole
-    sex            GENDER 
+    sex           GENDER 
     status        UserStatus @default(ACTIVE)
     img           String?
     lastLogin     DateTime?
@@ -189,6 +186,8 @@ model student_attendance {
   sectionId       String
   section         sections          @relation(fields: [sectionId], references: [section_id],onDelete: Cascade)
   date            DateTime
+  year            Int  @default(2024)
+  month           Int @default(11)
   status          AttendanceStatus
   timeIn          DateTime?
   timeOut         DateTime?
@@ -198,7 +197,6 @@ model student_attendance {
   remarks         String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
-
   @@unique([student_id, date])
   @@index([date, status])
   @@index([student_id, status])
@@ -210,6 +208,8 @@ model teacher_attendance {
   teacher         teacher          @relation(fields: [teacherId], references: [teacher_id],onDelete: Cascade)
   date            DateTime
   status          AttendanceStatus
+  year            Int  @default(2024)
+  month           Int @default(11)
   timeIn          DateTime?
   timeOut         DateTime?
   lateMinutes     Int?
@@ -327,6 +327,8 @@ model Notice {
   createdAt     DateTime  @default(now())
 }
 
+
+
 enum Level {
   PRIMARY
   SECONDARY
@@ -410,8 +412,6 @@ enum PublishStatus {
   PUBLISHED
   ARCHIVED
 }
-
-
 
 enum LeaveType {
   SICK_LEAVE

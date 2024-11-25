@@ -308,6 +308,8 @@ export interface StudentAttendance {
   sectionId: string;
   section?: Section;
   date: Date;
+  year?: number;
+  month?: number;
   status: string;
   timeIn?: Date;
   timeOut?: Date;
@@ -323,6 +325,8 @@ export interface TeacherAttendance {
   id: string;
   teacherId?: number;
   teacher?: Teacher;
+  year?: number;
+  month?: number;
   date: Date;
   status: string;
   timeIn?: Date;
@@ -412,4 +416,11 @@ export interface ExamResult {
   totalObtainedMarks?: number;
   totalMaxMarks?: number;
   gpa?: number;
+}
+
+export interface Notice {
+  id: string;
+  title: string;
+  type?: string;
+  filePathName?: string;
 }
