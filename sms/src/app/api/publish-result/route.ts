@@ -1,8 +1,18 @@
 import prisma from "@/lib/db";
+import { decrypt } from "@/session";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  const session = cookies().get("__session")?.value;
+  if (session == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { user } = await decrypt(session);
+  if (user == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const { exam_id, data } = await req.json();
 

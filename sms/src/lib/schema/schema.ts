@@ -470,3 +470,18 @@ export const NoticeSchema = z.object({
     })
     .url({ message: "Invalid URL" }),
 });
+
+export const userSchema = z.object({
+  uid: z
+    .number({
+      required_error: "uId must be required",
+      invalid_type_error: "uId must be a number",
+    })
+    .min(1000),
+  password: z
+    .string({
+      required_error: "password must be required",
+      invalid_type_error: "password must be a string",
+    })
+    .min(6, "Password must be atleast 6 chracters"),
+});

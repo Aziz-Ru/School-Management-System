@@ -1,6 +1,5 @@
 "use client";
 
-import { login } from "@/auth";
 import { toast } from "@/hooks/use-toast";
 
 import { useRouter } from "next/navigation";
@@ -18,16 +17,34 @@ const SignInForm = () => {
   const router = useRouter();
   const [isLoaing, setIsLoading] = useState(false);
 
-  const handleAction = async (formData: FormData) => {
+  const handleAction = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     setIsLoading(true);
-    const { error, redirect } = await login(formData);
-    if (redirect) {
-      router.push(redirect);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          uid: formData.get("uid"),
+          password: formData.get("password"),
+        }),
+      });
+      const result = await response.json();
+
+      if (response.status == 200) {
+        if (result.role == "ADMIN") {
+          router.push("/dashboard");
+        } else {
+          router.push("/profile");
+        }
+      }
+      if (result.error) {
+        toast({ title: "Invalid Credential", variant: "destructive" });
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
     }
-    if (error) {
-      toast({ title: "Invalid Credential", variant: "destructive" });
-    }
-    setIsLoading(false);
   };
   return (
     <Dialog>
@@ -39,7 +56,7 @@ const SignInForm = () => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-center text-2xl">Sign In Form</DialogTitle>
         <DialogDescription> {}</DialogDescription>
-        <form className="w-full" action={handleAction}>
+        <form className="w-full" onSubmit={handleAction}>
           <div className="p-2">
             <FormInput
               type="texr"

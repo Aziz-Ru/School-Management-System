@@ -27,7 +27,6 @@ const FormModal = ({
           ) : (
             <Icon name="Edit" size={18} />
           )}
-          {table}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">

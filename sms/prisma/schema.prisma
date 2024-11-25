@@ -116,7 +116,7 @@ model user{
     email         String    @unique
     password      String
     role          UserRole
-    sex            GENDER 
+    sex           GENDER 
     status        UserStatus @default(ACTIVE)
     img           String?
     lastLogin     DateTime?
@@ -197,7 +197,6 @@ model student_attendance {
   remarks         String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
-
   @@unique([student_id, date])
   @@index([date, status])
   @@index([student_id, status])
@@ -327,6 +326,8 @@ model Notice {
   type          NoticeType
   createdAt     DateTime  @default(now())
 }
+
+
 
 enum Level {
   PRIMARY

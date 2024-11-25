@@ -41,6 +41,12 @@ export const AdminCourseViewColumns = [
     accessor: "teacher",
     className: "hidden sm:table-cell text-center",
   },
+
+  {
+    header: "Action",
+    accessor: "action",
+    className: "flex justify-center items-center",
+  },
 ];
 
 export const TeacherCourseViewColumns = [
