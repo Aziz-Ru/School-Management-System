@@ -38,14 +38,14 @@ const UserProfileCard = ({ user }: { user: User }) => {
 
         <div className="flex items-center justify-between gap-2 flex-wrap text-xs  font-medium">
           <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="IdCard" size={18} />
+            <Icon name="IdCard" size={18} className="text-black" />
             <span className="site-txt flex gap-2">
               <span className="font-bold">Id:</span>
               <span>{user.id}</span>
             </span>
           </div>
           <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="Mail" size={18} />
+            <Icon name="Mail" size={18} className="text-black" />
             <span className="site-txt flex flex-wrap gap-2">
               <span className="font-bold">Mail:</span>
 
@@ -53,30 +53,31 @@ const UserProfileCard = ({ user }: { user: User }) => {
             </span>
           </div>
           <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="MapPinHouse" size={18} />
+            <Icon name="MapPinHouse" size={18} className="text-black" />
             <span className="site-txt flex gap-2">
               <span className="font-bold">Address:</span>
               <span>{user.address}</span>
             </span>
           </div>
           <div className="w-full md:w-1/3 flex items-center gap-2">
-            <Icon name="Phone" size={18} />
+            <Icon name="Phone" size={18} className="text-black" />
             <span className="site-txt flex gap-2">
               <span className="font-bold">Phone:</span>
               <span>{user.phone}</span>
             </span>
           </div>
+
           {user.teacherProfile && (
             <>
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="BookA" size={18} />
+                <Icon name="BookA" size={18} className="text-black" />
                 <span className="site-txt flex gap-2">
                   <span className="font-bold">Enrolled:</span>
                   <span>{user.teacherProfile.subject_name}</span>
                 </span>
               </div>
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="BookA" size={18} />
+                <Icon name="BookA" size={18} className="text-black" />
                 <span className="site-txt flex gap-2">
                   <span className="font-bold">Degree:</span>
                   <span>{user.teacherProfile.degrees}</span>
@@ -84,14 +85,14 @@ const UserProfileCard = ({ user }: { user: User }) => {
               </div>
 
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="ShieldHalf" size={18} />
+                <Icon name="ShieldHalf" size={18} className="text-black" />
                 <span className="site-txt flex gap-2">
                   <span className="font-bold">Rank:</span>
                   <span>{user.teacherProfile.rank}</span>
                 </span>
               </div>
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="ShieldHalf" size={18} />
+                <Icon name="ShieldHalf" className="text-black" size={18} />
                 <span className="site-txt flex gap-2">
                   <span className="font-bold">Salary:</span>
                   <span>{user.teacherProfile.salary}</span>
@@ -99,19 +100,27 @@ const UserProfileCard = ({ user }: { user: User }) => {
               </div>
             </>
           )}
+
           {user.studentProfile && (
             <>
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="BookA" size={18} />
+                <Icon name="BookA" size={18} className="text-black" />
                 <span className="site-txt flex gap-2">
-                  <span className="font-bold">Enrolled:</span>
+                  <span className="font-bold">Class:</span>
                   <span>{user.studentProfile.section?.class_id}</span>
                 </span>
               </div>
               <div className="w-full md:w-1/3 flex items-center gap-2">
-                <Icon name="BookA" size={18} />
+                <Icon name="BookA" size={18} className="text-black" />
                 <span className="site-txt flex gap-2">
-                  <span className="font-bold">Degree:</span>
+                  <span className="font-bold">Section :</span>
+                  <span>{user.studentProfile!.section!.section_name}</span>
+                </span>
+              </div>
+              <div className="w-full md:w-1/3 flex items-center gap-2">
+                <Icon name="BookA" size={18} className="text-black" />
+                <span className="site-txt flex gap-2">
+                  <span className="font-bold">DOB:</span>
                   <span>
                     {new Date(user.studentProfile.dob!).toLocaleDateString()}
                   </span>

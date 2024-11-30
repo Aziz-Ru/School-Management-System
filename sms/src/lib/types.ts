@@ -190,12 +190,12 @@ export interface Section {
   class_id?: number;
   academic_year: number;
   room_number: number;
-  class_teacher?: number;
+  class_teacher?: number | null;
   teacher?: {
     first_name: string;
     last_name: string;
     teacher_id: number;
-  };
+  } | null;
   class?: Classes;
   students?: Student[];
   exams?: Exam[];
@@ -423,4 +423,5 @@ export interface Notice {
   title: string;
   type?: string;
   filePathName?: string;
+  createdAt?: Date;
 }

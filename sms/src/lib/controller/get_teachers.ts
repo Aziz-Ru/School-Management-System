@@ -218,10 +218,7 @@ export const get_teacher_attendance = async () => {
       where: {
         attendance: {
           some: {
-            date: {
-              gte: new Date(date.getFullYear(), 0, 1).toISOString(),
-              lte: new Date(date.getFullYear(), 11, 31).toISOString(),
-            },
+            year: date.getFullYear(),
           },
         },
       },

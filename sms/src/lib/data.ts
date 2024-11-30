@@ -1,5 +1,6 @@
 export const role = "admin";
 export const NO_AVATAR_URL = "/image/noavatar.png";
+export const SCHOOL_LOGO = "/image/school-logo.png";
 export const ITEM_PAR_PAGE = 10;
 export const SITE_NAME = "School Management System";
 export const SITE_URL = "http://localhost:3000";
@@ -21,7 +22,6 @@ export const SCHOOL_NAME = "School Management System";
 export const SCHOOL_CODE = "123456";
 export const SCHOOL_EIIN = "EN23456";
 export const SCHOOL_MESSAGE = "A School of Creative Learning";
-export const SCHOOL_LOGO = "/image/logo.png";
 export const GENEREL_SESSION =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.q2-bjp-bIbC1KcsegBorKoJvi6BU7tJOGfaLqLVIeT0";
 export const SCHOOL_INTRO = `17th October, 1961. The then Station Commander Colonel Ahmed Ali Sheik, T.P.K. – invited the then President of Pakistan Field Martial Md. Ayub Khan. NPK, H.J. to inaugurate the foundation of this institution. According to the society registration act XXI 1860, this institution was established by Chittagong Cantonment Public School Foundation. From 23rd October 1961 this institution started its journey. After that many gracious and affluent men came forward to make this great endeavor successful with monetary and moral support. Behind it there were sincerity and generosity. 
@@ -109,6 +109,7 @@ export const MenuItems = [
         href: "/dashboard",
         visiable: ["ADMIN"],
       },
+
       {
         icon: "User",
         label: "Profile",
@@ -116,30 +117,41 @@ export const MenuItems = [
         visiable: ["TEACHER", "STUDENT"],
       },
       {
-        icon: "Building",
-        label: "Building",
-        href: "/dashboard/buildings",
-        visiable: ["ADMIN"],
+        icon: "ClipboardCheck",
+        label: "E-Subjects",
+        href: "/dashboard/e-subjects",
+        visiable: ["TEACHER"],
       },
-      {
-        icon: "School",
-        label: "Class",
-        href: "/dashboard/class",
-        visiable: ["ADMIN"],
-      },
-
       {
         icon: "Book",
         label: "Subjects",
         href: "/dashboard/course",
         visiable: ["ADMIN", "TEACHER"],
       },
-
       {
         icon: "User",
         label: "Teachers",
         href: "/dashboard/teachers",
         visiable: ["ADMIN", "TEACHER"],
+      },
+      {
+        icon: "Calendar",
+        label: "Attendence",
+        href: "/dashboard/attendance",
+        visiable: ["ADMIN"],
+      },
+
+      {
+        icon: "School",
+        label: "Class",
+        href: "/dashboard/class",
+        visiable: ["ADMIN"],
+      },
+      {
+        icon: "FileSliders",
+        label: "Sections",
+        href: "/dashboard/sections",
+        visiable: ["ADMIN"],
       },
 
       {
@@ -150,23 +162,10 @@ export const MenuItems = [
       },
 
       {
-        icon: "FileSliders",
-        label: "Sections",
-        href: "/dashboard/sections",
-        visiable: ["ADMIN"],
-      },
-
-      {
         icon: "ClipboardCheck",
         label: "Exams",
         href: "/dashboard/exams",
         visiable: ["ADMIN"],
-      },
-      {
-        icon: "ClipboardCheck",
-        label: "E-Subjects",
-        href: "/dashboard/e-subjects",
-        visiable: ["TEACHER"],
       },
 
       {
@@ -177,16 +176,15 @@ export const MenuItems = [
       },
 
       {
-        icon: "Calendar",
-        label: "Attendence",
-        href: "/dashboard/attendance",
-        visiable: ["ADMIN"],
-      },
-
-      {
         icon: "Bell",
         label: "Notices",
         href: "/dashboard/notices",
+        visiable: ["ADMIN"],
+      },
+      {
+        icon: "Building",
+        label: "Building",
+        href: "/dashboard/buildings",
         visiable: ["ADMIN"],
       },
     ],

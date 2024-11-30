@@ -60,8 +60,8 @@ model sections{
   room_number  Int
   class_teacher  Int
   index      Int @default(0)
-  teacher    teacher @relation(fields: [class_teacher],references: [teacher_id],onDelete: Cascade)
-  class      classes@relation(fields: [class_id],references: [class_id],onDelete: Cascade)
+  teacher    teacher? @relation(fields: [class_teacher],references: [teacher_id],onDelete: Cascade)
+  class      classes  @relation(fields: [class_id],references: [class_id],onDelete: Cascade)
   students   student[]
   exams      exam[]
   section_subjects  section_subject[]
@@ -327,6 +327,28 @@ model Notice {
   createdAt     DateTime  @default(now())
 }
 
+model Authority{
+  id            String  @id @default(cuid())
+  fullName   String
+  phone      String
+  type       AuthorityType
+  message    String  @db.Text
+  createdAt  DateTime  @default(now())
+
+  
+}
+
+enum AuthorityType {
+  PRINCIPAL
+  VICE_PRINCIPAL
+  ADMINISTRATOR
+  PRESIDENT
+  DIRECTOR
+  MANAGER
+  SUPERVISOR
+  COORDINATOR
+
+}
 
 
 enum Level {

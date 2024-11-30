@@ -22,19 +22,23 @@ const CourseListPage = async () => {
   const renderRow = (item: Subject) => {
     return (
       <TableRow key={item.subject_name}>
-        <TableCell className="table-cell px-1">{item.subject_name}</TableCell>
-        <TableCell className="table-cell text-center">
+        <TableCell className="table-cell px-1 border-r">
+          {item.subject_name}
+        </TableCell>
+        <TableCell className="table-cell text-center border-r">
           {item.subject_code}
         </TableCell>
-        <TableCell className="hidden sm:table-cell text-center">
+        <TableCell className="hidden sm:table-cell text-center border-r">
           {item._count?.teacher}
         </TableCell>
         <TableCell>
           <div className="flex justify-center">
-            {user.role === "ADMIN" && (
+            {user.role === "ADMIN" ? (
               <div>
                 <EditSubjectForm data={item} />
               </div>
+            ) : (
+              <div>No Action</div>
             )}
           </div>
         </TableCell>

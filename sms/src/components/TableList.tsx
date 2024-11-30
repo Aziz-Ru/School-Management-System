@@ -13,12 +13,12 @@ const TableList = ({
   return (
     <Table className="mt-4 w-full border">
       <TableHeader>
-        <TableRow className="text-left site-txt text-sm">
+        <TableRow className="text-left bg-black hover:bg-black text-white">
           {columns.map((column) => {
             return (
               <TableHead
                 key={column.accessor}
-                className={`${column.className}`}
+                className={`${column.className} border-r text-white`}
               >
                 {column.header}
               </TableHead>

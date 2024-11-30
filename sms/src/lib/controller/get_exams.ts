@@ -31,6 +31,7 @@ export const get_exams = async (): Promise<GetExamsReturnProps> => {
 type GetExamsInfoReturnProps = {
   exam_subjects?: ExamSubject[];
   subject_marks?: SubjectMarks[];
+  exam?: Exam;
   status: Status;
 };
 
@@ -38,7 +39,7 @@ export const get_exams_info = async (
   exam_id: string
 ): Promise<GetExamsInfoReturnProps> => {
   try {
-    const [exam_subjects, subject_marks] = await prisma.$transaction([
+    const [exam_subjects, subject_marks, exam] = await prisma.$transaction([
       prisma.exam_subjects.findMany({
         where: {
           exam_id,
@@ -83,12 +84,24 @@ export const get_exams_info = async (
           grade: true,
         },
       }),
+      prisma.exam.findUnique({
+        where: {
+          id: exam_id,
+        },
+        select: {
+          id: true,
+          type: true,
+          start_date: true,
+          end_date: true,
+          publish_status: true,
+        },
+      }),
     ]);
-    if (exam_subjects.length === 0) {
+    if (exam_subjects.length === 0 || exam == null) {
       return { status: Status.NOT_FOUND };
     }
 
-    return { exam_subjects, subject_marks, status: Status.OK };
+    return { exam_subjects, subject_marks, exam, status: Status.OK };
   } catch (error) {
     return { status: Status.INTERNAL_SERVER_ERROR };
   }

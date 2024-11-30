@@ -45,16 +45,16 @@ const Page = async () => {
   return (
     <div className="p-4 gap-4 flex flex-col lg:flex-row">
       <div className="w-full lg:w-2/3">
+        <div className="h-10"></div>
+        <AttedanceChart chartData={teacherChartData} name={"Teachers"} />
+        <div className="h-10"></div>
+        <AttedanceChart chartData={studenceChartData} name={"Students"} />
         <Card className="w-full p-4">
           <h1 className="font-bold text-xl mb-3">Academic Rooms</h1>
           <div className="">
             {status == Status.OK && <RoomTable rooms={rooms!} />}
           </div>
         </Card>
-        <div className="h-10"></div>
-        <AttedanceChart chartData={teacherChartData} name={"Teachers"} />
-        <div className="h-10"></div>
-        <AttedanceChart chartData={studenceChartData} name={"Students"} />
       </div>
       {/* Right */}
       <div className="w-full lg:w-1/3 flex flex-col">

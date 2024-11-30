@@ -7,9 +7,9 @@ const RoomTable = ({ rooms }: { rooms: Room[] }) => {
   const renderRow = (room: Room) => {
     return (
       <TableRow key={room.id}>
-        <TableCell>{room.roomNumber}</TableCell>
-        <TableCell>{room.floor}</TableCell>
-        <TableCell>{room.building}</TableCell>
+        <TableCell className="border-r">{room.roomNumber}</TableCell>
+        <TableCell className="border-r">{room.floor}</TableCell>
+        <TableCell className="border-r">{room.building}</TableCell>
         <TableCell>{room.capacity}</TableCell>
       </TableRow>
     );

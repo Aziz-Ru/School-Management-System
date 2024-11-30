@@ -67,3 +67,37 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextResponse) {
+  try {
+    const session = cookies().get("__session")?.value;
+    if (session == null) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const { user } = await decrypt(session);
+    if (user == null) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const searchParams = new URLSearchParams(req.url);
+    const body = await req.json();
+
+    if (body.id == null) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+
+    await prisma.notice.delete({
+      where: { id: body.id },
+    });
+    revalidatePath("/dashboard/notices");
+    return Response.json(
+      { msg: "Notice deleted successfully." },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete Notice" },
+      { status: 500 }
+    );
+  }
+}
