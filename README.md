@@ -1,6 +1,7 @@
 # School Management System
 
-** If You get any Problem on main Branch clone dev1 branch**
+**If You get any Problem on main Branch clone dev1 branch**
+
 This is school management system which built on next js, prisma ,mysql.
 
 Some Features of this project:
