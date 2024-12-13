@@ -1,12 +1,12 @@
 import RoomTable from "@/components/building/RoomTable";
 import AttedanceChart from "@/components/charts/AreaChart";
 import EventCalender from "@/components/EventCalender";
+import NoticeCard from "@/components/NoticeCard";
 import { Card } from "@/components/ui/card";
 import { get_dashboard } from "@/lib/controller/get_dashboard";
 import { get_rooms } from "@/lib/controller/get_rooms";
 import { MonthNames } from "@/lib/data";
 import { Status } from "@/lib/types";
-import Link from "next/link";
 
 const Page = async () => {
   const today = new Date();
@@ -61,20 +61,7 @@ const Page = async () => {
         <EventCalender />
         <div className="">
           {notices?.map((notice) => (
-            <div
-              key={notice.id}
-              className="flex items-center justify-between p-4 border border-gray-200 rounded-md"
-            >
-              <div>
-                <h2 className="font-bold ">{notice.title}</h2>
-              </div>
-              <Link
-                className="text-blue-600"
-                href={`/dashboard/notices/${notice.id}`}
-              >
-                View
-              </Link>
-            </div>
+            <NoticeCard key={notice.id} notice={notice} />
           ))}
         </div>
       </div>

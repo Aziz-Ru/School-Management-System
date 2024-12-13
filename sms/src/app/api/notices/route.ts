@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextResponse) {
+export async function DELETE(req: NextRequest) {
   try {
     const session = cookies().get("__session")?.value;
     if (session == null) {
@@ -90,7 +90,7 @@ export async function DELETE(req: NextResponse) {
       where: { id: body.id },
     });
     revalidatePath("/dashboard/notices");
-    return Response.json(
+    return NextResponse.json(
       { msg: "Notice deleted successfully." },
       { status: 200 }
     );
