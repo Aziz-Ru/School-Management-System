@@ -6,24 +6,24 @@ import { Status } from "@/lib/types";
 
 const AcademicRooms = async () => {
   const { rooms, status } = await get_rooms();
-  
+
   if (status !== Status.OK) {
     return <div>Something went wrong</div>;
   }
 
   return (
     <div className="mx-auto">
-      <div className="flex flex-col gap-4 items-start justify-between md:flex-row p-4 w-full">
+      <div className="flex flex-col gap-4 items-start justify-between  p-4 w-full">
+        {/* Form */}
+        <Card className="w-full border p-3">
+          <AddRoomForm />
+        </Card>
         {/* View */}
-        <Card className="w-full md:w-1/2 p-4">
+        <Card className="w-full  p-4">
           <h1 className="font-bold text-xl mb-3">Academic Rooms</h1>
           <div className="">
             <RoomTable rooms={rooms!} />
           </div>
-        </Card>
-        {/* Form */}
-        <Card className="w-full md:w-1/2 border p-3">
-          <AddRoomForm />
         </Card>
       </div>
     </div>

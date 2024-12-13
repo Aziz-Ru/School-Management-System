@@ -215,16 +215,13 @@ export const get_teacher_attendance = async () => {
   const date = new Date();
   try {
     const attendance = await prisma.teacher.findMany({
-      where: {
-        attendance: {
-          some: {
-            date: {
-              gte: new Date(date.getFullYear(), 0, 1).toISOString(),
-              lte: new Date(date.getFullYear(), 11, 31).toISOString(),
-            },
-          },
-        },
-      },
+      // where: {
+      //   attendance: {
+      //     some: {
+      //       year: date.getFullYear(),
+      //     },
+      //   },
+      // },
       select: {
         teacher_id: true,
         first_name: true,

@@ -1,6 +1,6 @@
 import AdminNavbar from "@/components/Navbar/AdminNavbar";
 import Menu from "@/components/slidebar/AdminSideBar";
-import { SCHOOL_SHORTNAME } from "@/lib/data";
+import { SCHOOL_LOGO, SCHOOL_SHORTNAME } from "@/lib/data";
 import { decrypt } from "@/session";
 import { cookies } from "next/headers";
 import Image from "next/image";
@@ -32,14 +32,14 @@ export default async function DashboardLayout({
           href={"/"}
           className="flex items-center justify-center lg:justify-start gap-2"
         >
-          <Image src={"/image/logo.png"} width={32} height={32} alt="logo" />
+          <Image src={SCHOOL_LOGO} width={32} height={32} alt="logo" />
           <span className="hidden font-bold lg:block">{SCHOOL_SHORTNAME}</span>
         </Link>
         <Menu role={user.role} />
       </div>
       {/* Right */}
       <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] site-bg overflow-scroll">
-        <AdminNavbar user={{ role: "Admin" }} />
+        <AdminNavbar user={{ role: user.role }} />
         {children}
       </div>
     </section>

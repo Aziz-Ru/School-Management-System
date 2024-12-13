@@ -17,6 +17,7 @@ const AttendanceList = async () => {
   if (status !== Status.OK) {
     notFound();
   }
+  console.log(attendance);
 
   return (
     <div className="p-4">

@@ -4,10 +4,16 @@ import { DaysOfWeek, ScheduleHours } from "@/lib/data";
 import { SectionSubjectSchedule } from "@/lib/types";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import TableList from "../TableList";
-import { TableCell, TableRow } from "../ui/table";
+import TableList from "./TableList";
+import { TableCell, TableRow } from "./ui/table";
 
-const Schedules = ({ schedules }: { schedules: SectionSubjectSchedule[] }) => {
+const Schedules = ({
+  schedules,
+  role,
+}: {
+  schedules: SectionSubjectSchedule[];
+  role: "TEACHER" | "STUDENT";
+}) => {
   const colDef = [
     {
       accessor: "day",
@@ -27,11 +33,11 @@ const Schedules = ({ schedules }: { schedules: SectionSubjectSchedule[] }) => {
     const filteredSchedules = schedules.filter(
       (schedule) => schedule.timeslot?.day === day.toUpperCase()
     );
-
     filteredSchedules.forEach((sch) => {
-      o[
-        sch.timeslot?.hour.toString()!
-      ] = `${sch.subject?.section?.section_name}(${sch.subject?.class_id})`;
+      o[sch.timeslot?.hour.toString()!] =
+        role == "TEACHER"
+          ? `${sch.subject?.section?.section_name}(${sch.subject?.class_id})`
+          : `${sch.subject?.subject_name}`;
     });
     return o;
   });

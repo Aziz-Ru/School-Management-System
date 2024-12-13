@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig } from "@/components/ui/chart";
 import { get_section_info } from "@/lib/controller/get_sections";
 import { MonthNames } from "@/lib/data";
 
+import AttedanceChart from "@/components/charts/AreaChart";
 import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
-import AttendanceChart from "../_components/AttendanceChart";
 import StudentList from "../_components/StudentList";
+
 
 const SectionPage = async ({
   params,
@@ -30,7 +30,7 @@ const SectionPage = async ({
 
   const attdanceChartData = [];
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < date.getMonth() + 1; i++) {
     const daysInMonth = new Date(section?.academic_year!, i + 1, 0).getDate();
     const totalPresent = daysInMonth * students?.length!;
 
@@ -39,34 +39,19 @@ const SectionPage = async ({
     ).length;
 
     const presentPercentage = ((present ? present : 0) / totalPresent) * 100;
-    const absentPercetange = 100 - presentPercentage;
+
     attdanceChartData.push({
       month: MonthNames[i].substring(0, 3),
       present: presentPercentage,
-      absent: absentPercetange,
     });
   }
-
-  const chartConfig = {
-    present: {
-      label: "Present",
-      color: "hsl(var(--chart-2))",
-    },
-    absent: {
-      label: "Absent",
-      color: "hsl(var(--chart-1))",
-    },
-  } satisfies ChartConfig;
 
   return (
     <div className="p-4 grid grid-cols-12 gap-2">
       {/* Name */}
 
       <div className="col-span-12 xl:col-span-8">
-        <AttendanceChart
-          chartData={attdanceChartData}
-          chartConfig={chartConfig}
-        />
+        <AttedanceChart name="Student" chartData={attdanceChartData} />
         <br />
         <StudentList students={students!} classId={section!.class_id!} />
       </div>
@@ -77,6 +62,7 @@ const SectionPage = async ({
           <Card className="mb-4">
             <CardHeader>
               <CardTitle className="mb-4">
+                Class :{section?.class_id} <span className="w-20"></span>
                 Section Name:{section?.section_name}
               </CardTitle>
               <div className="flex flex-wrap gap-3 text-gray-600">
@@ -112,5 +98,7 @@ const SectionPage = async ({
     </div>
   );
 };
+
+
 
 export default SectionPage;

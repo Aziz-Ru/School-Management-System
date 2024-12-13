@@ -124,8 +124,10 @@ export const get_student_info = async (id: number) => {
               student_id: true,
               first_name: true,
               last_name: true,
+              dob: true,
               section: {
                 select: {
+                  class_id: true,
                   section_id: true,
                   section_name: true,
                   academic_year: true,
@@ -154,6 +156,7 @@ export const get_student_info = async (id: number) => {
           title: true,
           filePathName: true,
           type: true,
+          createdAt: true,
         },
         orderBy: {
           createdAt: "desc",

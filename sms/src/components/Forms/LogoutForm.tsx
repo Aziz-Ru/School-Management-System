@@ -27,6 +27,7 @@ const LogoutForm = () => {
         <AlertDialogFooter>
           <AlertDialogAction>Cancel</AlertDialogAction>
           <form
+            className="my-4 sm:my-0"
             onSubmit={async (e) => {
               e.preventDefault();
               const response = await fetch("/api/auth/logout", {
@@ -37,7 +38,9 @@ const LogoutForm = () => {
               }
             }}
           >
-            <AlertDialogAction type="submit">Continue</AlertDialogAction>
+            <AlertDialogAction type="submit" className="sm:block w-full">
+              Continue
+            </AlertDialogAction>
           </form>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -17,24 +17,11 @@ export async function POST(req: NextRequest) {
     const { exam_id, data } = await req.json();
 
     const results = JSON.parse(data);
-
-    const prevResult = await prisma.exam_result.findMany({
+    await prisma.exam_result.deleteMany({
       where: {
         examId: exam_id,
-        student_id: {
-          in: results.map((res: any) => res.student_id),
-        },
       },
     });
-    if (prevResult.length > 0) {
-      return NextResponse.json(
-        {
-          error:
-            "Result Already Published If you want to  republish the result please delete previous result",
-        },
-        { status: 400 }
-      );
-    }
 
     await prisma.$transaction([
       prisma.exam_result.createMany({
@@ -60,6 +47,64 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     return NextResponse.json(
       { error: "Failed to Publish Result" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const session = cookies().get("__session")?.value;
+  if (session == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { user } = await decrypt(session);
+  if (user == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const { exam_id } = await req.json();
+    await prisma.exam.update({
+      where: { id: exam_id },
+      data: { publish_status: "DRAFT" },
+    });
+    revalidatePath("/dashboard/results");
+    revalidatePath("/dashboard/exams");
+    return NextResponse.json({ msg: "Exam Status Updated" });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to Update Status" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const session = cookies().get("__session")?.value;
+  if (session == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { user } = await decrypt(session);
+  if (user == null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const { exam_id } = await req.json();
+    await prisma.exam_result.deleteMany({
+      where: {
+        examId: exam_id,
+      },
+    });
+    await prisma.exam.delete({
+      where: {
+        id: exam_id,
+      },
+    });
+    revalidatePath("/dashboard/results");
+    revalidatePath("/dashboard/exams");
+    return NextResponse.json({ msg: "Exam Result Deleted" }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "Failed to Delete Result" },
       { status: 500 }
     );
   }

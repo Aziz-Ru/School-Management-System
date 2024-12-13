@@ -20,6 +20,7 @@ export const get_notices = async ({
         title: true,
         filePathName: true,
         type: true,
+        createdAt: true,
       },
       orderBy: {
         createdAt: "desc",

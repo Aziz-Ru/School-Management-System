@@ -33,7 +33,7 @@ const TeacherList = ({
       {
         header: "Degree",
         accessor: "degree",
-        className: "hidden md:table-cell ",
+        className: "hidden xl:table-cell ",
       },
       {
         header: "Phone",
@@ -50,7 +50,7 @@ const TeacherList = ({
       {
         header: "Address",
         accessor: "address",
-        className: "hidden lg:table-cell ",
+        className: "hidden xl:table-cell ",
       },
     ];
     if (role === "ADMIN") {
@@ -90,7 +90,7 @@ const TeacherList = ({
         <TableCell className="hidden md:table-cell">
           {item.teacherProfile?.subject_name}
         </TableCell>
-        <TableCell className="hidden md:table-cell border">
+        <TableCell className="hidden xl:table-cell border">
           {item.teacherProfile?.degrees}
         </TableCell>
         <TableCell className="hidden md:table-cell border">
@@ -99,7 +99,7 @@ const TeacherList = ({
         <TableCell className="hidden md:table-cell border">
           {item.teacherProfile?.level}
         </TableCell>
-        <TableCell className="hidden lg:table-cell border">
+        <TableCell className="hidden xl:table-cell border">
           {item.address!}
         </TableCell>
         <TableCell className="hidden xl:table-cell border">

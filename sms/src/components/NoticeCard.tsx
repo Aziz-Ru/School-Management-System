@@ -1,38 +1,26 @@
-// import ReadMore from "./buttons/ReadMore";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "./ui/card";
+import { Notice } from "@/lib/types";
+import Link from "next/link";
 
-// const NoticeCards = ({ notices }: { notices: Notice[] | undefined }) => {
-//   return (
-//     <div className="p-4">
-//       <h1 className="font-bold text-2xl mb-4">Notices</h1>
-//       <div className="">
-//         {notices?.map((notice, index) => {
-//           return (
-//             <Card key={index} className="my-4">
-//               <CardHeader>
-//                 <CardTitle>{notice.title}</CardTitle>
-//               </CardHeader>
-//               <CardContent>
-//                 <CardDescription>
-//                   {notice.content.substring(0, 100)}
-//                   <div className="flex justify-between items-center">
-//                     <span>{notice.createdAt.toDateString()}</span>
-//                     <ReadMore href={`/home/notices/${notice.id}`} />
-//                   </div>
-//                 </CardDescription>
-//               </CardContent>
-//             </Card>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };
+const NoticeCard = ({ notice }: { notice: Notice }) => {
+  return (
+    <div
+      key={notice.id}
+      className="flex items-center justify-between p-4 border border-gray-200 rounded-md"
+    >
+      <div>
+        <h2 className="font-bold">{notice.title}</h2>
+      </div>
+      <div className="">
+        <span className="mx-6">{notice.createdAt?.toDateString()}</span>
+        <Link
+          className="text-blue-600"
+          href={`/dashboard/notices/${notice.id}`}
+        >
+          View
+        </Link>
+      </div>
+    </div>
+  );
+};
 
-// export default NoticeCards;
+export default NoticeCard;

@@ -12,8 +12,10 @@ import prisma from "@/lib/db";
 import getSession from "@/lib/get_session";
 import { Status } from "@/lib/types";
 import { notFound } from "next/navigation";
+import DeleteExam from "../_components/DeleteExam";
 import ExamsSubjectsList from "../_components/ExamSubjectList";
 import PublishExamResult from "../_components/PublishExamResult";
+import UpdateStatus from "../_components/UpdateStatus";
 
 const Exam = async ({ params }: { params: { id: string } }) => {
   const { user } = await getSession();
@@ -21,7 +23,7 @@ const Exam = async ({ params }: { params: { id: string } }) => {
   if (user.role !== "ADMIN") {
     notFound();
   }
-  const { exam_subjects, status } = await get_exams_info(params.id);
+  const { exam_subjects, exam, status } = await get_exams_info(params.id);
   if (status !== Status.OK) {
     notFound();
   }
@@ -87,10 +89,17 @@ const Exam = async ({ params }: { params: { id: string } }) => {
             <h1 className="scroll-m-20  text-xl font-semibold tracking-tight first:mt-0">
               Students
             </h1>
-            <PublishExamResult
-              exam_id={params.id}
-              data={JSON.stringify(rows)}
-            />
+            <div className=" flex items-center gap-10">
+              {exam?.publish_status === "DRAFT" ? (
+                <PublishExamResult
+                  exam_id={params.id}
+                  data={JSON.stringify(rows)}
+                />
+              ) : (
+                <UpdateStatus exam_id={params.id} />
+              )}
+              <DeleteExam exam_id={params.id} />
+            </div>
           </div>
           <div className="">
             <Table className="w-full border">
